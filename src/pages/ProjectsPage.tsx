@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './ProjectsPage.css'
 import { motion } from 'framer-motion'
+import LivePreview from '../components/LivePreview'
 
 interface Project {
   id: string
@@ -134,6 +135,8 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                   </div>
 
                   <p className="project-description">{project.description}</p>
+
+                  <LivePreview url={project.liveUrl} title={project.title} />
 
                   <div className="tech-stack">
                     {project.tech.map((tech, techIndex) => (

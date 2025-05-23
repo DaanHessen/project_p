@@ -139,7 +139,7 @@ const SocialMediaPanel = ({ currentPage, onArrowClick }: SocialMediaPanelProps) 
         }}
         whileTap={{ scale: 0.9 }}
         animate={{
-          rotate: currentPage >= 2 ? 180 : 0,
+          rotate: currentPage === 3 ? 180 : 0,
           scale: 1
         }}
         transition={{

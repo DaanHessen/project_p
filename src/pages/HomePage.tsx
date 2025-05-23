@@ -12,7 +12,7 @@ interface HomePageProps {
 
 const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete }: HomePageProps) => {
   const title = `Daan Hessen`
-  const subtitle = `// student HBO-ICT at Hogeschool Utrecht`
+  const subtitle = `student HBO-ICT at Hogeschool Utrecht`
   const description = `2nd year student at HBO-ICT, specializing in software development. Passionate about building web applications and exploring new technologies. Feel free to contact me through email or social media!`
 
   const asciiArt = `     ____  __  __

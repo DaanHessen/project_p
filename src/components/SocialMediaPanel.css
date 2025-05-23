@@ -3,7 +3,7 @@
 .social-media-panel {
   position: fixed;
   top: 50%;
-  right: 2rem;
+  right: 4rem;
   transform: translateY(-50%);
   z-index: 1000;
   display: flex;
