@@ -62,7 +62,8 @@ const LivePreview = ({ url, title }: LivePreviewProps) => {
             onLoad={handleLoad}
             onError={handleError}
             className={`preview-iframe ${isLoaded ? 'loaded' : ''}`}
-            sandbox="allow-same-origin allow-scripts allow-forms"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+            referrerPolicy="no-referrer-when-downgrade"
           />
         )}
         

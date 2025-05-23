@@ -17,6 +17,11 @@
   --accent-primary: #6b8dd6;
   --accent-secondary: #9bb8ff;
   --accent-warm: #d4a574;
+  --accent-purple: #b794f6;
+  --accent-green: #68d391;
+  --accent-orange: #f6ad55;
+  --accent-pink: #f093fb;
+  --accent-cyan: #4fd1c7;
   --cursor-color: #6b8dd6;
   
   /* Shadows and effects */
@@ -30,6 +35,9 @@
   --gradient-secondary: linear-gradient(135deg, #9bb8ff 0%, #6b8dd6 100%);
   --gradient-text: linear-gradient(135deg, #e8eaed 0%, #6b8dd6 50%, #9bb8ff 100%);
   --gradient-warm: linear-gradient(135deg, #d4a574 0%, #b8925c 100%);
+  --gradient-purple: linear-gradient(135deg, #b794f6 0%, #9c88d4 100%);
+  --gradient-green: linear-gradient(135deg, #68d391 0%, #4fd171 100%);
+  --gradient-colorful: linear-gradient(135deg, #6b8dd6 0%, #b794f6 25%, #68d391 50%, #f6ad55 75%, #f093fb 100%);
   
   /* Typography - Using JetBrains Mono as primary for hacker/typewriter feel */
   font-family: 'JetBrains Mono', 'Space Grotesk', monospace, -apple-system, BlinkMacSystemFont, sans-serif;
