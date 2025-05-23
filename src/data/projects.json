@@ -6,8 +6,7 @@
     "tech": ["React", "TypeScript", "Tailwind CSS", "Vercel"],
     "image": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&crop=center",
     "liveUrl": "https://basebymonsees.nl",
-    "codeUrl": "https://github.com/daanhessen/basebymonsees",
-    "featured": true
+    "codeUrl": "https://github.com/daanhessen/basebymonsees"
   },
   {
     "id": "portfolio",
@@ -16,7 +15,6 @@
     "tech": ["React", "TypeScript", "CSS3", "Vite"],
     "image": "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=400&h=250&fit=crop&crop=center",
     "liveUrl": "https://daanhessen.nl",
-    "codeUrl": "https://github.com/daanhessen/portfolio",
-    "featured": true
+    "codeUrl": "https://github.com/daanhessen/portfolio"
   }
 ] 

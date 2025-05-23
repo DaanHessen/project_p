@@ -3,6 +3,7 @@ import HomePage from './pages/HomePage'
 import ProjectsPage from './pages/ProjectsPage'
 import AboutPage from './pages/AboutPage'
 import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 
 function App() {
   const [titleComplete, setTitleComplete] = useState(false)
@@ -65,15 +66,33 @@ function App() {
         setTitleComplete={setTitleComplete}
       />
       
-      <ProjectsPage 
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
-      
       <AboutPage 
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
+      
+      <ProjectsPage 
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+
+      {/* Page Indicator */}
+      <motion.div 
+        className="page-indicator"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: titleComplete ? 1 : 0 }}
+        transition={{ delay: 1, duration: 0.5 }}
+      >
+        {[1, 2, 3].map((page) => (
+          <motion.div
+            key={page}
+            className={`indicator-dot ${currentPage === page ? 'active' : ''}`}
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setCurrentPage(page)}
+          />
+        ))}
+      </motion.div>
     </div>
   )
 }
