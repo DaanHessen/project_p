@@ -45,9 +45,9 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
         <div className="projects-content">
           <div className="projects-header">
             <motion.div 
-              className="ascii-decoration"
+              className="ascii-title-section"
               initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: currentPage === 3 ? 0.6 : 0, y: currentPage === 3 ? 0 : 10 }}
+              animate={{ opacity: currentPage === 3 ? 1 : 0, y: currentPage === 3 ? 0 : 10 }}
               transition={{ delay: currentPage === 3 ? 0.05 : 0, duration: 0.15 }}
             >
               <pre className="ascii-text">
@@ -55,23 +55,15 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
     ║            PROJECT PORTFOLIO          ║
     ╚═══════════════════════════════════════╝`}
               </pre>
+              <motion.p 
+                className="ascii-description"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: currentPage === 3 ? 1 : 0, y: currentPage === 3 ? 0 : 15 }}
+                transition={{ delay: currentPage === 3 ? 0.1 : 0, duration: 0.2 }}
+              >
+                View my projects, check the source code, or see what I've been working on. Also includes various school-related projects.
+              </motion.p>
             </motion.div>
-            <motion.h1 
-              className="projects-title"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: currentPage === 3 ? 1 : 0, y: currentPage === 3 ? 0 : 20 }}
-              transition={{ delay: currentPage === 3 ? 0.1 : 0, duration: 0.2 }}
-            >
-              Projects & Experience
-            </motion.h1>
-            <motion.p 
-              className="projects-subtitle"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: currentPage === 3 ? 1 : 0, y: currentPage === 3 ? 0 : 15 }}
-              transition={{ delay: currentPage === 3 ? 0.15 : 0, duration: 0.2 }}
-            >
-              A curated collection of my latest work and contributions
-            </motion.p>
           </div>
 
           {projects.length > 0 ? (
