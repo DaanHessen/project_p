@@ -148,9 +148,6 @@ function App() {
           <div className="coming-soon">
             <h1>Projects & Experience</h1>
             <p>Portfolio showcase coming soon...</p>
-            <button onClick={() => setCurrentPage(1)} className="back-button">
-              ↑ Back to Top
-            </button>
           </div>
         </div>
       </div>
