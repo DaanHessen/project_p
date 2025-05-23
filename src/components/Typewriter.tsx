@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
 type TypewriterProps = {
   text: string
@@ -11,7 +11,7 @@ type TypewriterProps = {
 
 const Typewriter = ({ 
   text, 
-  speed = 80, 
+  speed = 50, 
   delay = 0, 
   className = '', 
   showCursor = true,
@@ -20,42 +20,48 @@ const Typewriter = ({
   const [displayedText, setDisplayedText] = useState('')
   const [isComplete, setIsComplete] = useState(false)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  const cleanup = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+      intervalRef.current = null
+    }
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+  }, [])
 
   useEffect(() => {
     // Reset state when text changes
     setDisplayedText('')
     setIsComplete(false)
+    cleanup()
     
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current)
-    }
+    if (!text) return
 
     const startTyping = () => {
+      let currentIndex = 0
+      
       intervalRef.current = setInterval(() => {
-        setDisplayedText((prevText) => {
-          if (prevText.length < text.length) {
-            return text.slice(0, prevText.length + 1)
-          } else {
-            setIsComplete(true)
-            onComplete?.()
-            if (intervalRef.current) {
-              clearInterval(intervalRef.current)
-            }
-            return prevText
-          }
-        })
-      }, speed + Math.random() * 20) // Add slight randomness for more human-like typing
+        if (currentIndex < text.length) {
+          setDisplayedText(text.slice(0, currentIndex + 1))
+          currentIndex++
+        } else {
+          setIsComplete(true)
+          onComplete?.()
+          cleanup()
+        }
+      }, speed + Math.random() * 10)
     }
 
-    const timeoutId = setTimeout(startTyping, delay)
-    
-    return () => {
-      clearTimeout(timeoutId)
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
-      }
-    }
-  }, [text, speed, delay, onComplete])
+    // Start typing after delay
+    timeoutRef.current = setTimeout(startTyping, delay)
+
+    // Cleanup on unmount or text change
+    return cleanup
+  }, [text, speed, delay, onComplete, cleanup])
 
   return (
     <div className={`typewriter ${className}`} data-text={text}>
