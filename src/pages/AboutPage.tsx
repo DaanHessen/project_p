@@ -7,6 +7,13 @@ interface AboutPageProps {
 }
 
 const AboutPage = ({ currentPage }: AboutPageProps) => {
+  const aboutAsciiArt = `    ___    __                   __ 
+   /   |  / /_  ____  __  __  / /_
+  / /| | / __ \\/ __ \\/ / / / / __/
+ / ___ |/ /_/ / /_/ / /_/ / / /_  
+/_/  |_/_.___/\\____/\\__,_/  \\__/  
+                                 `
+
   return (
     <motion.div 
       className={`page page-two page-transition`}
@@ -27,172 +34,120 @@ const AboutPage = ({ currentPage }: AboutPageProps) => {
           <div className="about-header">
             <motion.div 
               className="ascii-title-section"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: currentPage === 2 ? 1 : 0, y: currentPage === 2 ? 0 : 10 }}
-              transition={{ delay: currentPage === 2 ? 0.05 : 0, duration: 0.15 }}
+              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              animate={{ opacity: currentPage === 2 ? 1 : 0, y: currentPage === 2 ? 0 : 20, scale: currentPage === 2 ? 1 : 0.9 }}
+              transition={{ delay: currentPage === 2 ? 0.1 : 0, duration: 0.2 }}
             >
               <pre className="ascii-text">
-{`    ┌─────────────────────────────────────┐
-    │              ABOUT ME               │
-    └─────────────────────────────────────┘`}
+{aboutAsciiArt}
               </pre>
               <motion.p 
                 className="ascii-description"
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: currentPage === 2 ? 1 : 0, y: currentPage === 2 ? 0 : 15 }}
-                transition={{ delay: currentPage === 2 ? 0.1 : 0, duration: 0.2 }}
+                transition={{ delay: currentPage === 2 ? 0.15 : 0, duration: 0.2 }}
               >
                 Get to know me, my background, and my journey in technology
               </motion.p>
             </motion.div>
           </div>
 
-          <div className="about-grid">
-            <div className="about-left-column">
-              <motion.div 
-                className="about-section background-section"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: currentPage === 2 ? 1 : 0, y: currentPage === 2 ? 0 : 30 }}
-                transition={{ delay: currentPage === 2 ? 0.15 : 0, duration: 0.2 }}
-              >
-                <h2 className="section-title">Background</h2>
-                <p className="section-text">
-                My name is Daan Hessen, and I'm 23 years old. I've worked in the restaurant side of the hospitality industry for about 
-                seven years now. During that time, I've gained a lot of experience and learned a great deal. But I also discovered that 
-                my true passion doesn't lie in hospitality.
-                </p>
-                <p className="section-text">
-                That's why, two years ago, I decided to start studying HBO-ICT at the University of Utrecht. It wasn't a random 
-                choice—technology and its rapid development have always fascinated me, and I've always been curious about how things work 
-                and why they work the way they do.
-                </p>
-              </motion.div>
-
-              <motion.div 
-                className="about-section learning-section"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: currentPage === 2 ? 1 : 0, y: currentPage === 2 ? 0 : 30 }}
-                transition={{ delay: currentPage === 2 ? 0.2 : 0, duration: 0.2 }}
-              >
-                <h2 className="section-title">Currently Learning & Contact</h2>
-                <p className="section-text">
-                  I'm currently focused on object-oriented programming, mostly through JavaScript, Java and Python.
-                </p>
-                <p className="section-text">
-                  We're actually in the middle of a big project, where we're building a web-based simulation tool for hydrological pipe modelling.
-                  Our client is a professor at the University of Utrecht, for the study of 'Werktuigbouwkunde' (Mechanical Engineering).
-                </p>
-                <div className="contact-note">
-                  <p>
-                    <strong>Feel free to reach out!</strong> Feel free to reach out through my email or through my social media platforms!
-                  </p>
+          <motion.div 
+            className="about-main"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: currentPage === 2 ? 1 : 0, y: currentPage === 2 ? 0 : 30 }}
+            transition={{ delay: currentPage === 2 ? 0.2 : 0, duration: 0.25 }}
+          >
+            <div className="about-grid">
+              <div className="about-card personal-card">
+                <div className="card-header">
+                  <div className="card-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                  </div>
+                  <h2>Background</h2>
                 </div>
-              </motion.div>
-            </div>
+                <div className="card-content">
+                  <p>I'm Daan Hessen, 23 years old, with seven years of experience in the hospitality industry. While I gained valuable skills there, I discovered my true passion lies in technology.</p>
+                  <p>Two years ago, I started studying HBO-ICT at Hogeschool Utrecht, driven by my fascination with technology's rapid development and my curiosity about how things work.</p>
+                </div>
+              </div>
 
-            <div className="about-right-column">
-              <motion.div 
-                className="about-section skills-section"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: currentPage === 2 ? 1 : 0, y: currentPage === 2 ? 0 : 30 }}
-                transition={{ delay: currentPage === 2 ? 0.25 : 0, duration: 0.2 }}
-              >
-                <h2 className="section-title">Skills & Technologies</h2>
-                <p className="section-text" style={{marginBottom: '1rem', fontStyle: 'italic', color: 'var(--text-comment)'}}>
-                  <strong>Note:</strong> I am familiar with these technologies but am still actively learning and far from mastering them as I continue my studies.
-                </p>
-                <div className="skills-grid">
-                  <div className="skill-category">
-                    <h3>Programming</h3>
-                    <div className="tech-tags">
-                      <motion.span 
-                        className="tech-tag"
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ duration: 0.1 }}
-                      >
-                        Java
-                      </motion.span>
-                      <motion.span 
-                        className="tech-tag"
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ duration: 0.1 }}
-                      >
-                        JavaScript
-                      </motion.span>
-                      <motion.span 
-                        className="tech-tag"
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ duration: 0.1 }}
-                      >
-                        Python
-                      </motion.span>
-                    </div>
+              <div className="about-card learning-card">
+                <div className="card-header">
+                  <div className="card-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                    </svg>
                   </div>
-                  <div className="skill-category">
-                    <h3>Frontend</h3>
-                    <div className="tech-tags">
-                      <motion.span 
-                        className="tech-tag"
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ duration: 0.1 }}
-                      >
-                        React
-                      </motion.span>
-                    </div>
+                  <h2>Currently Learning</h2>
+                </div>
+                <div className="card-content">
+                  <p>Focused on object-oriented programming through JavaScript, Java, and Python. Currently working on a web-based simulation tool for hydrological pipe modeling.</p>
+                  <p>Our client is a professor at the University of Utrecht for Werktuigbouwkunde (Mechanical Engineering), making this project both challenging and rewarding.</p>
+                </div>
+              </div>
+
+              <div className="about-card skills-card">
+                <div className="card-header">
+                  <div className="card-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
+                    </svg>
                   </div>
-                  <div className="skill-category">
-                    <h3>Tools & Others</h3>
-                    <div className="tech-tags">
-                      <motion.span 
-                        className="tech-tag"
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ duration: 0.1 }}
-                      >
-                        Git
-                      </motion.span>
-                      <motion.span 
-                        className="tech-tag"
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ duration: 0.1 }}
-                      >
-                        Vite
-                      </motion.span>
-                      <motion.span 
-                        className="tech-tag"
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ duration: 0.1 }}
-                      >
-                        Figma
-                      </motion.span>
-                      <motion.span 
-                        className="tech-tag"
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ duration: 0.1 }}
-                      >
-                        Vercel
-                      </motion.span>
-                      <motion.span 
-                        className="tech-tag"
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ duration: 0.1 }}
-                      >
-                        SEO Optimization
-                      </motion.span>
+                  <h2>Skills & Technologies</h2>
+                </div>
+                <div className="card-content">
+                  <div className="skills-disclaimer">
+                    <p><em>Note: I'm familiar with these technologies but actively learning as I continue my studies.</em></p>
+                  </div>
+                  <div className="skills-categories">
+                    <div className="skill-category">
+                      <h4>Programming</h4>
+                      <div className="tech-stack">
+                        <span className="tech-tag">Java</span>
+                        <span className="tech-tag">JavaScript</span>
+                        <span className="tech-tag">Python</span>
+                      </div>
+                    </div>
+                    <div className="skill-category">
+                      <h4>Frontend</h4>
+                      <div className="tech-stack">
+                        <span className="tech-tag">React</span>
+                        <span className="tech-tag">TypeScript</span>
+                        <span className="tech-tag">CSS3</span>
+                      </div>
+                    </div>
+                    <div className="skill-category">
+                      <h4>Tools & Others</h4>
+                      <div className="tech-stack">
+                        <span className="tech-tag">Git</span>
+                        <span className="tech-tag">Vite</span>
+                        <span className="tech-tag">Figma</span>
+                        <span className="tech-tag">Vercel</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
+
+              <div className="about-card contact-card">
+                <div className="card-header">
+                  <div className="card-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                  </div>
+                  <h2>Let's Connect</h2>
+                </div>
+                <div className="card-content">
+                  <p><strong>Feel free to reach out!</strong> I'm always open to connecting with fellow developers, students, or anyone interested in technology.</p>
+                  <p>Contact me through email or social media platforms — I'd love to hear from you!</p>
+                </div>
+              </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </motion.div>

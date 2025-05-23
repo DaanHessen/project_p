@@ -20,6 +20,14 @@ interface ProjectsPageProps {
 const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
   const [projects, setProjects] = useState<Project[]>([])
 
+  const projectsAsciiArt = `    ____                   _           __      
+   / __ \\________  ____  (_)__  _____/ /______
+  / /_/ / ___/ _ \\/ __ \\/ / _ \\/ ___/ __/ ___/
+ / ____/ /  /  __/ /_/ / /  __/ /__/ /_(__  ) 
+/_/   /_/   \\___/\\____/ /\\___/\\___/\\__/____/  
+                    _/ /                     
+                   |__/                      `
+
   useEffect(() => {
     import('../data/projects.json')
       .then(data => setProjects(data.default || data))
@@ -46,20 +54,18 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
           <div className="projects-header">
             <motion.div 
               className="ascii-title-section"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: currentPage === 3 ? 1 : 0, y: currentPage === 3 ? 0 : 10 }}
-              transition={{ delay: currentPage === 3 ? 0.05 : 0, duration: 0.15 }}
+              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              animate={{ opacity: currentPage === 3 ? 1 : 0, y: currentPage === 3 ? 0 : 20, scale: currentPage === 3 ? 1 : 0.9 }}
+              transition={{ delay: currentPage === 3 ? 0.1 : 0, duration: 0.2 }}
             >
               <pre className="ascii-text">
-{`    ╔═══════════════════════════════════════╗
-    ║            PROJECT PORTFOLIO          ║
-    ╚═══════════════════════════════════════╝`}
+{projectsAsciiArt}
               </pre>
               <motion.p 
                 className="ascii-description"
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: currentPage === 3 ? 1 : 0, y: currentPage === 3 ? 0 : 15 }}
-                transition={{ delay: currentPage === 3 ? 0.1 : 0, duration: 0.2 }}
+                transition={{ delay: currentPage === 3 ? 0.15 : 0, duration: 0.2 }}
               >
                 View my projects, check the source code, or see what I've been working on. Also includes various school-related projects.
               </motion.p>

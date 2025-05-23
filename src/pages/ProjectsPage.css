@@ -96,15 +96,14 @@
 
 .ascii-text {
   font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(1.1rem, 3.2vw, 1.6rem);
+  font-size: 0.7rem;
+  line-height: 1.2;
   color: var(--accent-primary);
-  margin: 0 0 1rem 0;
-  line-height: 1;
-  text-shadow: 
-    0 0 20px rgba(107, 141, 214, 0.4),
-    0 0 40px rgba(107, 141, 214, 0.2);
-  letter-spacing: 1px;
-  font-weight: 600;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 20px rgba(107, 141, 214, 0.3);
+  margin: 0;
+  white-space: pre;
 }
 
 .ascii-description {
@@ -514,7 +513,7 @@
   }
 
   .ascii-text {
-    font-size: clamp(0.9rem, 4vw, 1.3rem);
+    font-size: 0.55rem;
   }
 
   .header-prompt {
@@ -568,8 +567,7 @@
   }
 
   .ascii-text {
-    font-size: clamp(0.8rem, 4.5vw, 1.2rem);
-    letter-spacing: 0.5px;
+    font-size: 0.45rem;
   }
 
   .ascii-description {
