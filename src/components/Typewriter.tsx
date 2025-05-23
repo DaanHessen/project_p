@@ -7,7 +7,7 @@ interface TypewriterProps {
   className?: string
 }
 
-const Typewriter = ({ text, speed = 25, onComplete, className }: TypewriterProps) => {
+const Typewriter = ({ text, speed = 15, onComplete, className }: TypewriterProps) => {
   const [displayText, setDisplayText] = useState('')
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isTyping, setIsTyping] = useState(true)
@@ -23,7 +23,7 @@ const Typewriter = ({ text, speed = 25, onComplete, className }: TypewriterProps
     } else {
       setIsTyping(false)
       if (onComplete) {
-        setTimeout(onComplete, 100)
+        setTimeout(onComplete, 50)
       }
     }
   }, [currentIndex, text, speed, onComplete])

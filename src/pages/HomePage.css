@@ -1,135 +1,125 @@
-/* HomePage specific styles */
+/* HomePage - Award-winning elegant design with subtle tech aesthetic */
 
 .page-one {
   z-index: 2;
+  transform: translateY(0);
   background: transparent;
 }
 
-.page-one.slide-up {
-  transform: translateY(-100vh) scale(0.95);
+.page-one.page-slide-up {
+  transform: translateY(-100vh) scale(0.98);
 }
 
+/* Main content */
 .main-content {
-  position: relative;
-  animation: contentSlideUp 0.8s ease-out 0.1s both;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 900px;
 }
 
-/* Typography specific to homepage */
-.typewriter.title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 600;
+/* CLI Header - Simplified and elegant */
+.cli-header {
   margin-bottom: 1.5rem;
+  animation: fastFadeIn 0.3s ease-out 0.05s both;
+}
+
+.cli-prompt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: var(--accent-primary);
+  margin: 0;
+  opacity: 0.8;
+  text-shadow: 0 0 15px rgba(107, 141, 214, 0.4);
+  letter-spacing: 0.5px;
+}
+
+/* Title - Enhanced elegance */
+.title {
+  font-size: clamp(3.5rem, 10vw, 6rem);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
   background: var(--gradient-text);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 0 30px rgba(107, 141, 214, 0.3);
-  letter-spacing: -0.02em;
-  font-family: 'JetBrains Mono', monospace;
-  min-height: 4rem; /* Prevent layout shift */
-}
-
-.subtitle {
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  color: var(--text-comment);
-  margin-bottom: 2rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 400;
-  opacity: 0.8;
-  min-height: 1.5rem; /* Prevent layout shift */
-}
-
-.description {
-  font-size: clamp(0.95rem, 2vw, 1.1rem);
-  color: var(--text-secondary);
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.7;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 400;
-  min-height: 3rem; /* Prevent layout shift */
-}
-
-/* Typewriter component styles */
-.typewriter {
+  text-align: center;
+  line-height: 1.05;
+  margin-bottom: 1rem;
   position: relative;
-  display: inline-block;
+  letter-spacing: -0.02em;
 }
 
-.typewriter-text {
-  display: inline-block;
+.title::after {
+  content: '█';
+  color: var(--cursor-color);
+  animation: blink 0.8s infinite;
+  font-size: inherit;
+  margin-left: 0.05em;
+  filter: drop-shadow(0 0 8px rgba(107, 141, 214, 0.6));
 }
 
-/* Cursor styles for typewriter effect */
-.cursor {
-  display: inline-block;
-  width: 3px;
-  height: 1.2em;
-  background-color: var(--cursor-color);
-  margin-left: 2px;
-  vertical-align: baseline;
-  animation: fastBlink 1s infinite;
+/* Subtitle - Refined */
+.subtitle {
+  font-size: clamp(1.2rem, 3.5vw, 1.7rem);
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  opacity: 0.9;
+  text-align: center;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.3px;
 }
 
-.cursor-typing {
-  animation: fastTyping 0.08s infinite;
+/* Description - Enhanced readability */
+.description {
+  font-size: clamp(1.1rem, 2.8vw, 1.3rem);
+  color: var(--text-tertiary);
+  line-height: 1.7;
+  text-align: center;
+  max-width: 650px;
+  font-family: 'Space Grotesk', sans-serif;
+  opacity: 0.85;
+  font-weight: 400;
+  letter-spacing: 0.2px;
 }
 
-.cursor-idle {
-  animation: fastBlink 1.2s infinite;
-}
-
-@keyframes fastBlink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
-@keyframes fastTyping {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0.3; }
-}
-
-/* Title-specific cursor styling */
-.typewriter.title .cursor {
-  background: var(--gradient-primary);
-  width: 4px;
-  height: 1.1em;
-  border-radius: 2px;
-  box-shadow: 0 0 15px rgba(107, 141, 214, 0.6);
-}
-
-/* Responsive adjustments for homepage */
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .typewriter.title {
-    font-size: clamp(2rem, 8vw, 3rem);
-    margin-bottom: 1rem;
-    min-height: 3rem;
+  .main-content {
+    gap: 1.5rem;
+    padding: 0 1rem;
   }
   
-  .subtitle {
-    font-size: clamp(0.9rem, 4vw, 1.1rem);
-    margin-bottom: 1.5rem;
-    min-height: 1.2rem;
+  .cli-header {
+    margin-bottom: 1rem;
   }
   
   .description {
-    font-size: clamp(0.85rem, 3.5vw, 1rem);
-    min-height: 2.5rem;
+    max-width: 550px;
   }
 }
 
 @media (max-width: 480px) {
-  .typewriter.title {
-    font-size: clamp(1.75rem, 9vw, 2.5rem);
-    min-height: 2.5rem;
+  .main-content {
+    gap: 1.25rem;
+    padding: 0 0.75rem;
   }
   
-  .subtitle {
-    font-size: clamp(0.8rem, 4.5vw, 1rem);
-    min-height: 1rem;
+  .cli-header {
+    margin-bottom: 0.75rem;
   }
   
   .description {
-    min-height: 2rem;
+    max-width: 450px;
+  }
+}
+
+/* Performance optimizations */
+@media (prefers-reduced-motion: no-preference) {
+  .title::after {
+    animation: blink 0.8s infinite;
   }
 } 

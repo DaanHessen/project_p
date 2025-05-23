@@ -17,6 +17,8 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
   const handleArrowClick = () => {
     if (currentPage === 1) {
       setCurrentPage(2)
+    } else if (currentPage === 2) {
+      setCurrentPage(3)
     } else {
       setCurrentPage(1)
     }
@@ -31,12 +33,18 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
         />
       )}
 
-      <div className={`page page-one ${currentPage === 2 ? 'slide-up' : ''}`}>
+      <div className={`page page-one page-transition ${currentPage >= 2 ? 'page-slide-up' : ''}`}>
         <div className="content-container">
           <div className="main-content">
+            <div className="cli-header">
+              <pre className="cli-prompt">
+{`$ whoami`}
+              </pre>
+            </div>
+
             <Typewriter 
               text={title}
-              speed={35}
+              speed={20}
               onComplete={() => setTitleComplete(true)}
               className="title"
             />

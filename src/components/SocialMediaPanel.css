@@ -15,18 +15,7 @@
   border: 1px solid rgba(107, 141, 214, 0.15);
   border-radius: 20px;
   box-shadow: var(--shadow-primary);
-  animation: floatIn 0.8s ease-out 1.2s both;
-}
-
-@keyframes floatIn {
-  from {
-    opacity: 0;
-    transform: translateY(-50%) translateX(120px) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0) scale(1);
-  }
+  animation: floatIn 0.6s ease-out 0.8s both;
 }
 
 /* Social Media Icons - Fixed hover behavior */
@@ -41,16 +30,20 @@
   border: 1.5px solid rgba(107, 141, 214, 0.2);
   border-radius: 16px;
   text-decoration: none;
-  transition: all 0.25s ease-out;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  /* Prevent layout shifts */
+  /* Prevent layout shifts and ensure no gaps */
   box-sizing: border-box;
+  /* Remove any potential gaps that could break hover */
+  margin: 0;
+  padding: 0;
 }
 
-/* Simplified hover effect - no complex animations that can conflict */
-.social-icon:hover {
+/* Enhanced hover effect that works reliably */
+.social-icon:hover,
+.social-icon:focus-visible {
   color: var(--text-primary);
   border-color: var(--accent-primary);
   background: rgba(107, 141, 214, 0.2);
@@ -58,6 +51,8 @@
   box-shadow: 
     0 12px 32px rgba(107, 141, 214, 0.3),
     0 0 0 1px rgba(107, 141, 214, 0.4);
+  /* Ensure hover state stays active */
+  outline: none;
 }
 
 .social-icon svg {
@@ -66,9 +61,12 @@
   position: relative;
   z-index: 1;
   transition: transform 0.25s ease-out;
+  /* Ensure the SVG fills the entire clickable area */
+  pointer-events: none;
 }
 
-.social-icon:hover svg {
+.social-icon:hover svg,
+.social-icon:focus-visible svg {
   transform: scale(1.1);
 }
 
@@ -84,20 +82,25 @@
   border: none;
   border-radius: 16px;
   cursor: pointer;
-  transition: all 0.25s ease-out;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(107, 141, 214, 0.3);
   margin-top: 0.8rem;
-  /* Prevent layout shifts */
+  /* Prevent layout shifts and ensure no gaps */
   box-sizing: border-box;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
 }
 
-.scroll-arrow:hover {
+.scroll-arrow:hover,
+.scroll-arrow:focus-visible {
   transform: translateY(-4px) scale(1.05);
   box-shadow: 
     0 16px 40px rgba(107, 141, 214, 0.4),
     0 0 0 1px rgba(107, 141, 214, 0.5);
+  outline: none;
 }
 
 .scroll-arrow svg {
@@ -106,9 +109,12 @@
   transition: transform 0.25s ease-out;
   position: relative;
   z-index: 1;
+  /* Ensure the SVG fills the entire clickable area */
+  pointer-events: none;
 }
 
-.scroll-arrow:hover svg {
+.scroll-arrow:hover svg,
+.scroll-arrow:focus-visible svg {
   transform: scale(1.1);
 }
 
@@ -116,8 +122,20 @@
   transform: rotate(180deg);
 }
 
-.scroll-arrow.rotate:hover svg {
+.scroll-arrow.rotate:hover svg,
+.scroll-arrow.rotate:focus-visible svg {
   transform: rotate(180deg) scale(1.1);
+}
+
+/* Enhanced interaction for better UX */
+.social-icon:active {
+  transform: translateY(-2px) scale(1.02);
+  transition: all 0.1s ease-out;
+}
+
+.scroll-arrow:active {
+  transform: translateY(-2px) scale(1.02);
+  transition: all 0.1s ease-out;
 }
 
 /* Responsive adjustments for social media panel */
@@ -190,5 +208,27 @@
   .scroll-arrow svg {
     width: 20px;
     height: 20px;
+  }
+}
+
+/* Enhanced focus states for accessibility */
+.social-icon:focus-visible,
+.scroll-arrow:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* Ensure smooth transitions work with reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .social-icon,
+  .scroll-arrow,
+  .social-icon svg,
+  .scroll-arrow svg {
+    transition: none;
+  }
+  
+  .social-icon:hover,
+  .scroll-arrow:hover {
+    transform: none;
   }
 } 

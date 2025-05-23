@@ -1,6 +1,7 @@
 import './globals.css'
 import HomePage from './pages/HomePage'
 import ProjectsPage from './pages/ProjectsPage'
+import AboutPage from './pages/AboutPage'
 import { useState, useEffect } from 'react'
 
 function App() {
@@ -11,10 +12,20 @@ function App() {
     const handleScroll = (e: WheelEvent) => {
       e.preventDefault()
       
-      if (e.deltaY > 0 && currentPage === 1) {
-        setCurrentPage(2)
-      } else if (e.deltaY < 0 && currentPage === 2) {
-        setCurrentPage(1)
+      if (e.deltaY > 0) {
+        // Scrolling down
+        if (currentPage === 1) {
+          setCurrentPage(2)
+        } else if (currentPage === 2) {
+          setCurrentPage(3)
+        }
+      } else if (e.deltaY < 0) {
+        // Scrolling up
+        if (currentPage === 3) {
+          setCurrentPage(2)
+        } else if (currentPage === 2) {
+          setCurrentPage(1)
+        }
       }
     }
 
@@ -23,10 +34,14 @@ function App() {
         e.preventDefault()
         if (currentPage === 1) {
           setCurrentPage(2)
+        } else if (currentPage === 2) {
+          setCurrentPage(3)
         }
       } else if (e.key === 'ArrowUp' || e.key === 'Escape') {
         e.preventDefault()
-        if (currentPage === 2) {
+        if (currentPage === 3) {
+          setCurrentPage(2)
+        } else if (currentPage === 2) {
           setCurrentPage(1)
         }
       }
@@ -41,21 +56,8 @@ function App() {
     }
   }, [currentPage])
 
-  useEffect(() => {
-    const parallax = document.querySelector('.parallax-background') as HTMLElement
-    if (parallax) {
-      if (currentPage === 1) {
-        parallax.style.transform = 'translateZ(0) scale(1.1)'
-      } else {
-        parallax.style.transform = 'translateY(-10vh) scale(1.2)'
-      }
-    }
-  }, [currentPage])
-
   return (
     <div className="app-container">
-      <div className="parallax-background"></div>
-
       <HomePage 
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
@@ -64,6 +66,11 @@ function App() {
       />
       
       <ProjectsPage 
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+      
+      <AboutPage 
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />

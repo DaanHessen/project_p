@@ -2,6 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
 
+/* Import animations - all animations consolidated in one file */
+@import './animations.css';
+
 :root {
   /* Core color palette with improved contrast */
   --bg-primary: #0f1015;
@@ -27,10 +30,6 @@
   --gradient-secondary: linear-gradient(135deg, #9bb8ff 0%, #6b8dd6 100%);
   --gradient-text: linear-gradient(135deg, #e8eaed 0%, #6b8dd6 50%, #9bb8ff 100%);
   --gradient-warm: linear-gradient(135deg, #d4a574 0%, #b8925c 100%);
-  
-  /* Parallax and animation */
-  --parallax-speed: 0.5;
-  --parallax-scale: 1.2;
   
   /* Typography - Using JetBrains Mono as primary for hacker/typewriter feel */
   font-family: 'JetBrains Mono', 'Space Grotesk', monospace, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -69,12 +68,13 @@ body {
   height: 100vh;
 }
 
-/* App Container & Page System - Global layout rules */
+/* App Container & Page System */
 .app-container {
   width: 100%;
   height: 100vh;
   position: relative;
   overflow: hidden;
+  background: var(--bg-primary);
 }
 
 .page {
@@ -85,8 +85,6 @@ body {
   left: 0;
   display: flex;
   flex-direction: column;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-  will-change: transform;
 }
 
 .content-container {
@@ -100,77 +98,40 @@ body {
   z-index: 2;
 }
 
-/* Stunning Parallax Background with landscape */
-.parallax-background {
-  position: fixed;
-  top: -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
-  background: 
-    /* Dark overlay for readability */
-    linear-gradient(
-      135deg,
-      rgba(15, 16, 21, 0.9) 0%,
-      rgba(22, 25, 34, 0.8) 30%,
-      rgba(30, 34, 46, 0.7) 70%,
-      rgba(15, 16, 21, 0.9) 100%
-    ),
-    /* Beautiful mountain landscape */
-    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23192845;stop-opacity:1" /><stop offset="30%" style="stop-color:%23263856;stop-opacity:1" /><stop offset="70%" style="stop-color:%231a2332;stop-opacity:1" /><stop offset="100%" style="stop-color:%230f1419;stop-opacity:1" /></linearGradient><linearGradient id="mountain1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23334155;stop-opacity:1" /><stop offset="100%" style="stop-color:%231e293b;stop-opacity:1" /></linearGradient><linearGradient id="mountain2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23475569;stop-opacity:1" /><stop offset="100%" style="stop-color:%23334155;stop-opacity:1" /></linearGradient><linearGradient id="mountain3" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%235a6b7d;stop-opacity:1" /><stop offset="100%" style="stop-color:%23475569;stop-opacity:1" /></linearGradient></defs><rect width="1200" height="800" fill="url(%23sky)"/><circle cx="600" cy="150" r="60" fill="%23f1f5f9" opacity="0.9"/><polygon points="0,800 0,500 200,400 400,450 600,350 800,400 1000,300 1200,350 1200,800" fill="url(%23mountain1)"/><polygon points="0,800 0,600 150,500 350,520 550,450 750,480 950,400 1200,420 1200,800" fill="url(%23mountain2)"/><polygon points="0,800 0,700 100,650 300,670 500,600 700,620 900,580 1100,600 1200,580 1200,800" fill="url(%23mountain3)"/><g opacity="0.6"><circle cx="100" cy="80" r="1" fill="%23f1f5f9"/><circle cx="200" cy="120" r="1" fill="%23f1f5f9"/><circle cx="350" cy="60" r="1" fill="%23f1f5f9"/><circle cx="450" cy="100" r="1" fill="%23f1f5f9"/><circle cx="600" cy="40" r="1" fill="%23f1f5f9"/><circle cx="750" cy="90" r="1" fill="%23f1f5f9"/><circle cx="850" cy="50" r="1" fill="%23f1f5f9"/><circle cx="950" cy="110" r="1" fill="%23f1f5f9"/><circle cx="1050" cy="70" r="1" fill="%23f1f5f9"/><circle cx="1150" cy="95" r="1" fill="%23f1f5f9"/></g></svg>') center/cover;
-  z-index: -1;
-  will-change: transform;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+/* Enhanced scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-/* Parallax effects for different pages */
-.page-one .parallax-background {
-  transform: translateZ(0) scale(1.1);
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
 }
 
-.page-one.slide-up ~ .parallax-background {
-  transform: translateY(-5vh) scale(1.15);
+::-webkit-scrollbar-thumb {
+  background: var(--accent-primary);
+  border-radius: 4px;
 }
 
-.page-two.slide-in ~ .parallax-background {
-  transform: translateY(-10vh) scale(1.2);
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-secondary);
 }
 
-/* Global animations - Faster and smoother */
-@keyframes contentSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+/* Selection styling */
+::selection {
+  background: rgba(107, 141, 214, 0.3);
+  color: var(--text-primary);
 }
 
-@keyframes fastFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+::-moz-selection {
+  background: rgba(107, 141, 214, 0.3);
+  color: var(--text-primary);
 }
 
-@keyframes subtleFloat {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-/* Global utility classes - Faster animations */
-.fade-in {
-  animation: fastFadeIn 0.5s ease-out 0.3s both;
-}
-
-.fade-in-delayed {
-  animation: fastFadeIn 0.5s ease-out 0.6s both;
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Responsive breakpoints - Global */
@@ -189,5 +150,14 @@ body {
 @media (max-width: 480px) {
   .content-container {
     padding: 0.75rem;
+  }
+}
+
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 } 

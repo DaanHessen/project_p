@@ -1,0 +1,281 @@
+/* 
+  ANIMATIONS.CSS - All animations consolidated in one file
+  Snappy, quick, satisfying, and professional animations throughout the site
+*/
+
+/* ===========================================
+   CORE KEYFRAME ANIMATIONS
+   =========================================== */
+
+/* Fast fade-in with subtle slide up */
+@keyframes fastFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Content slide up for sections */
+@keyframes contentSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Typewriter cursor blink */
+@keyframes blink {
+  0%, 60% { opacity: 1; }
+  61%, 100% { opacity: 0; }
+}
+
+/* Pulse animation for status dots */
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+}
+
+/* Subtle floating animation */
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Page slide in from bottom */
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(100vh);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Project card slide in */
+@keyframes projectCardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Loading spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Social media panel float in */
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(60px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0) scale(1);
+  }
+}
+
+/* Button press animation */
+@keyframes buttonPress {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+
+/* Hover lift effect */
+@keyframes hoverLift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+/* ===========================================
+   UTILITY ANIMATION CLASSES
+   =========================================== */
+
+/* Primary fade-in sequence */
+.fade-in {
+  animation: fastFadeIn 0.3s ease-out 0.1s both;
+}
+
+.fade-in-delayed {
+  animation: fastFadeIn 0.3s ease-out 0.2s both;
+}
+
+.fade-in-final {
+  animation: fastFadeIn 0.3s ease-out 0.3s both;
+}
+
+.fade-in-late {
+  animation: fastFadeIn 0.3s ease-out 0.4s both;
+}
+
+/* Content animations */
+.slide-up {
+  animation: contentSlideUp 0.4s ease-out both;
+}
+
+.slide-up-delayed {
+  animation: contentSlideUp 0.4s ease-out 0.2s both;
+}
+
+/* Floating animations */
+.float {
+  animation: subtleFloat 3s ease-in-out infinite;
+}
+
+.float-delayed {
+  animation: subtleFloat 3s ease-in-out infinite 1.5s;
+}
+
+/* ===========================================
+   INTERACTION ANIMATIONS
+   =========================================== */
+
+/* Smooth hover transitions */
+.hover-lift {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-3px);
+}
+
+/* Button interactions */
+.button-smooth {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.button-smooth:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.button-smooth:active {
+  transform: translateY(0) scale(0.98);
+  transition: all 0.1s ease-out;
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-6px);
+}
+
+/* Text hover effects */
+.text-hover {
+  transition: all 0.2s ease-out;
+}
+
+.text-hover:hover {
+  transform: translateY(-1px);
+}
+
+/* ===========================================
+   PAGE TRANSITION ANIMATIONS
+   =========================================== */
+
+/* Page system transitions */
+.page-transition {
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.page-slide-up {
+  transform: translateY(-100vh) scale(0.98);
+}
+
+.page-slide-in {
+  transform: translateY(0);
+  animation: slideInFromBottom 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ===========================================
+   MICRO-INTERACTIONS
+   =========================================== */
+
+/* Scale animations */
+.scale-hover {
+  transition: transform 0.2s ease-out;
+}
+
+.scale-hover:hover {
+  transform: scale(1.05);
+}
+
+.scale-press:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease-out;
+}
+
+/* Border animations */
+.border-glow {
+  transition: all 0.25s ease-out;
+}
+
+.border-glow:hover {
+  box-shadow: 0 0 20px rgba(107, 141, 214, 0.3);
+}
+
+/* Icon animations */
+.icon-spin {
+  transition: transform 0.25s ease-out;
+}
+
+.icon-spin:hover {
+  transform: rotate(15deg) scale(1.1);
+}
+
+/* ===========================================
+   PERFORMANCE OPTIMIZATIONS
+   =========================================== */
+
+/* Hardware acceleration for smooth animations */
+.gpu-accelerated {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .fade-in,
+  .fade-in-delayed,
+  .fade-in-final,
+  .fade-in-late,
+  .slide-up,
+  .slide-up-delayed {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+} 
