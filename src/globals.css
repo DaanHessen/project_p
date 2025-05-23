@@ -71,6 +71,16 @@ body {
   /* Hide scrollbars completely */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
+  /* Enhanced mobile touch support */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Optimize touch performance */
+  touch-action: pan-y; /* Allow vertical panning for swipe gestures */
+  -webkit-overflow-scrolling: touch;
 }
 
 body::-webkit-scrollbar {
@@ -89,6 +99,16 @@ body::-webkit-scrollbar {
   position: relative;
   overflow: hidden;
   background: var(--bg-primary);
+  /* Enhanced touch and mobile performance */
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
 }
 
 .page {

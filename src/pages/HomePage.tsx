@@ -13,12 +13,14 @@ interface HomePageProps {
 const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete }: HomePageProps) => {
   const description = `I'm Daan Hessen, 23 years old, with seven years of experience in the hospitality industry. While I gained valuable skills there, I discovered my true passion lies in technology. Two years ago, I started studying HBO-ICT at Hogeschool Utrecht, driven by my fascination with technology's rapid development and my curiosity about how things work. Currently focused on object-oriented programming through JavaScript, Java, and Python.`
 
-  const asciiArt = `    ____                   __  __                       
-   / __ \\____ _____ _____  / / / /__  ______________  ____ 
-  / / / / __ \`/ __ \`/ __ \\/ /_/ / _ \\/ ___/ ___/ _ \\/ __ \\
- / /_/ / /_/ / /_/ / / / / __  /  __(__  |__  )  __/ / / /
-/_____/\\__,_/\\__,_/_/ /_/_/ /_/\\___/____/____/\\___/_/ /_/ 
-                                                         `
+  const asciiArt = ` *******       **         **     ****     **       **      ** ********  ********  ******** ******** ****     **
+/**////**     ****       ****   /**/**   /**      /**     /**/**/////  **//////  **////// /**///// /**/**   /**
+/**    /**   **//**     **//**  /**//**  /**      /**     /**/**      /**       /**       /**      /**//**  /**
+/**    /**  **  //**   **  //** /** //** /**      /**********/******* /*********/*********/******* /** //** /**
+/**    /** ********** **********/**  //**/**      /**//////**/**////  ////////**////////**/**////  /**  //**/**
+/**    ** /**//////**/**//////**/**   //****      /**     /**/**             /**       /**/**      /**   //****
+/*******  /**     /**/**     /**/**    //***      /**     /**/******** ********  ******** /********/**    //***
+///////   //      // //      // //      ///       //      // //////// ////////  ////////  //////// //      ///`
 
   // Immediately set title complete for faster loading
   useEffect(() => {

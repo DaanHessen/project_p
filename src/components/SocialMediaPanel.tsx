@@ -21,7 +21,7 @@ const SocialMediaPanel = ({ currentPage, onArrowClick }: SocialMediaPanelProps) 
       }}
     >
       <motion.a 
-        href="https://linkedin.com/in/daanhessen" 
+        href="https://www.linkedin.com/in/daan-hessen-552789236/" 
         target="_blank" 
         rel="noopener noreferrer" 
         className="social-icon linkedin"
@@ -73,24 +73,6 @@ const SocialMediaPanel = ({ currentPage, onArrowClick }: SocialMediaPanelProps) 
       </motion.a>
 
       <motion.a 
-        href="https://buymeacoffee.com/daanhessen" 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className="social-icon coffee"
-        title="Buy Me a Coffee"
-        whileHover={{ 
-          scale: 1.1, 
-          rotate: -5,
-          transition: { duration: 0.1, type: "spring", stiffness: 400 }
-        }}
-        whileTap={{ scale: 0.9 }}
-      >
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20.216 6.415l-.132-.666c-.119-.598-.388-1.163-.766-1.587l-.755-.755a2.93 2.93 0 00-2.076-.862H7.727c-.776 0-1.516.304-2.076.862l-.755.755a2.93 2.93 0 00-.766 1.587l-.132.666-.132.666c-.119.598-.119 1.219 0 1.817l.132.666.132.666c.119.598.388 1.163.766 1.587l.755.755c.56.558 1.3.862 2.076.862h8.488c.776 0 1.516-.304 2.076-.862l.755-.755a2.93 2.93 0 00.766-1.587l.132-.666.132-.666c.119-.598.119-1.219 0-1.817l-.132-.666zM6.984 16.329c0 .663.537 1.2 1.2 1.2s1.2-.537 1.2-1.2-.537-1.2-1.2-1.2-1.2.537-1.2 1.2zm9.6 0c0 .663.537 1.2 1.2 1.2s1.2-.537 1.2-1.2-.537-1.2-1.2-1.2-1.2.537-1.2 1.2z"/>
-        </svg>
-      </motion.a>
-
-      <motion.a 
         href="tel:+31642872646" 
         className="social-icon phone"
         title="Call me at +31 6 4287 2646"
@@ -121,6 +103,24 @@ const SocialMediaPanel = ({ currentPage, onArrowClick }: SocialMediaPanelProps) 
       >
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z"/>
+        </svg>
+      </motion.a>
+
+      <motion.a 
+        href="https://buymeacoffee.com/daanhessen" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="social-icon coffee"
+        title="Buy Me a Coffee"
+        whileHover={{ 
+          scale: 1.1, 
+          rotate: -5,
+          transition: { duration: 0.1, type: "spring", stiffness: 400 }
+        }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6.898 0L5.682 2.799H3.877v2.523h.695L5.277 9.8H4.172l1.46 8.23.938-.01L7.512 24h8.918l.062-.4.88-5.58.888.01 1.46-8.231h-1.056l.705-4.477h.756V2.8h-1.918L16.99 0H6.898zm.528.805h9.043l.771 1.78H6.652l.774-1.78zm-2.75 2.797H19.32v.92H4.676v-.92zm.453 6.998h13.635l-1.176 6.62-5.649-.06-5.636.06-1.174-6.62z"/>
         </svg>
       </motion.a>
       
