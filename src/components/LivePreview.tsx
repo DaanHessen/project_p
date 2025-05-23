@@ -12,7 +12,12 @@ const LivePreview = ({ url, title }: LivePreviewProps) => {
   const [hasError, setHasError] = useState(false)
 
   const handleClick = () => {
-    window.open(url, '_blank', 'noopener,noreferrer')
+    // Open in a new window with desktop dimensions
+    window.open(
+      url, 
+      '_blank', 
+      'width=1440,height=900,resizable=yes,scrollbars=yes,location=yes,menubar=no,toolbar=yes'
+    )
   }
 
   const handleLoad = () => {
@@ -53,7 +58,7 @@ const LivePreview = ({ url, title }: LivePreviewProps) => {
               </svg>
             </div>
             <p>Preview unavailable</p>
-            <span>Click to visit site</span>
+            <span>Click to visit site in desktop view</span>
           </div>
         ) : (
           <iframe
@@ -62,8 +67,7 @@ const LivePreview = ({ url, title }: LivePreviewProps) => {
             onLoad={handleLoad}
             onError={handleError}
             className={`preview-iframe ${isLoaded ? 'loaded' : ''}`}
-            sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-            referrerPolicy="no-referrer-when-downgrade"
+            sandbox="allow-same-origin allow-scripts allow-forms"
           />
         )}
         
@@ -78,7 +82,7 @@ const LivePreview = ({ url, title }: LivePreviewProps) => {
                 <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />
               </svg>
             </div>
-            <span>Click to visit site</span>
+            <span>Click to open in desktop view</span>
           </div>
         </motion.div>
       </div>

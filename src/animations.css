@@ -37,23 +37,9 @@
   61%, 100% { opacity: 0; }
 }
 
-/* Pulse animation for status dots */
-@keyframes pulse {
-  0%, 100% { 
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% { 
-    transform: scale(1.15);
-    opacity: 0.8;
-  }
-}
+/* Pulse animation for status dots */@keyframes pulse {  0%, 100% {    transform: scale(1);    opacity: 1;  }  50% {    transform: scale(1.15);    opacity: 0.8;  }}/* Gentle glow animation */@keyframes gentleGlow {  0%, 100% {    box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);  }  50% {    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);  }}
 
-/* Subtle floating animation */
-@keyframes subtleFloat {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-4px); }
-}
+/* Subtle floating animation */@keyframes subtleFloat {  0%, 100% { transform: translateY(0px); }  50% { transform: translateY(-4px); }}
 
 /* Page slide in from bottom */
 @keyframes slideInFromBottom {
@@ -237,7 +223,7 @@
 }
 
 .border-glow:hover {
-  box-shadow: 0 0 20px rgba(107, 141, 214, 0.3);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
 }
 
 /* Icon animations */
@@ -256,7 +242,6 @@
 /* Hardware acceleration for smooth animations */
 .gpu-accelerated {
   will-change: transform, opacity;
-  transform: translateZ(0);
   backface-visibility: hidden;
 }
 
@@ -268,14 +253,5 @@
     transition-duration: 0.01ms !important;
   }
   
-  .fade-in,
-  .fade-in-delayed,
-  .fade-in-final,
-  .fade-in-late,
-  .slide-up,
-  .slide-up-delayed {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
+    .fade-in,  .fade-in-delayed,  .fade-in-final,  .fade-in-late,  .slide-up,  .slide-up-delayed {    animation: none;    opacity: 1;    transform: none;  }    /* Ensure page indicator maintains proper positioning */  .page-indicator {    transform: translateX(-50%) !important;  }
 } 

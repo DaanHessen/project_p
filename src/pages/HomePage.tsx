@@ -11,11 +11,11 @@ interface HomePageProps {
 }
 
 const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete }: HomePageProps) => {
-  const description = `2nd year student at HBO-ICT, specializing in software development. Passionate about building web applications and exploring new technologies. Feel free to contact me through email or social media!`
+  const description = `I'm Daan Hessen, 23 years old, with seven years of experience in the hospitality industry. While I gained valuable skills there, I discovered my true passion lies in technology. Two years ago, I started studying HBO-ICT at Hogeschool Utrecht, driven by my fascination with technology's rapid development and my curiosity about how things work. Currently focused on object-oriented programming through JavaScript, Java, and Python.`
 
-  const asciiArt = `    ____                   __  __                          
-   / __ \\____ _____ _____  / / / /__  _____________ _____ 
-  / / / / __ \`/ __ \`/ __ \\/ /_/ / _ \\/ ___/ ___/ _ \`/ __ \\
+  const asciiArt = `    ____                   __  __                       
+   / __ \\____ _____ _____  / / / /__  ______________  ____ 
+  / / / / __ \`/ __ \`/ __ \\/ /_/ / _ \\/ ___/ ___/ _ \\/ __ \\
  / /_/ / /_/ / /_/ / / / / __  /  __(__  |__  )  __/ / / /
 /_____/\\__,_/\\__,_/_/ /_/_/ /_/\\___/____/____/\\___/_/ /_/ 
                                                          `
@@ -29,8 +29,6 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
   const handleArrowClick = () => {
     if (currentPage === 1) {
       setCurrentPage(2)
-    } else if (currentPage === 2) {
-      setCurrentPage(3)
     } else {
       setCurrentPage(1)
     }
@@ -75,8 +73,6 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
               </pre>
             </motion.div>
 
-
-            
 
             
             <motion.div 

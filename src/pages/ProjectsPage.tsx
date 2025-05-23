@@ -37,11 +37,11 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
 
   return (
     <motion.div 
-      className={`page page-three page-transition`}
+      className={`page page-two page-transition`}
       initial={false}
       animate={{
-        y: currentPage === 3 ? '0vh' : '100vh',
-        scale: currentPage === 3 ? 1 : 0.98
+        y: currentPage === 2 ? '0vh' : '100vh',
+        scale: currentPage === 2 ? 1 : 0.98
       }}
       transition={{
         type: "spring",
@@ -56,8 +56,8 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
             <motion.div 
               className="ascii-title-section"
               initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: currentPage === 3 ? 1 : 0, y: currentPage === 3 ? 0 : 20, scale: currentPage === 3 ? 1 : 0.9 }}
-              transition={{ delay: currentPage === 3 ? 0.1 : 0, duration: 0.2 }}
+              animate={{ opacity: currentPage === 2 ? 1 : 0, y: currentPage === 2 ? 0 : 20, scale: currentPage === 2 ? 1 : 0.9 }}
+              transition={{ delay: currentPage === 2 ? 0.1 : 0, duration: 0.2 }}
             >
               <pre className="ascii-text">
 {projectsAsciiArt}
@@ -65,8 +65,8 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
               <motion.p 
                 className="ascii-description"
                 initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: currentPage === 3 ? 1 : 0, y: currentPage === 3 ? 0 : 15 }}
-                transition={{ delay: currentPage === 3 ? 0.15 : 0, duration: 0.2 }}
+                animate={{ opacity: currentPage === 2 ? 1 : 0, y: currentPage === 2 ? 0 : 15 }}
+                transition={{ delay: currentPage === 2 ? 0.15 : 0, duration: 0.2 }}
               >
                 View my projects, check the source code, or see what I've been working on. Also includes various school-related projects.
               </motion.p>
@@ -77,8 +77,8 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
             <motion.div 
               className="projects-grid"
               initial={{ opacity: 0 }}
-              animate={{ opacity: currentPage === 3 ? 1 : 0 }}
-              transition={{ delay: currentPage === 3 ? 0.2 : 0, duration: 0.2 }}
+              animate={{ opacity: currentPage === 2 ? 1 : 0 }}
+              transition={{ delay: currentPage === 2 ? 0.2 : 0, duration: 0.2 }}
             >
               {projects.map((project, index) => (
                 <motion.div
@@ -86,11 +86,11 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                   className="project-card"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ 
-                    opacity: currentPage === 3 ? 1 : 0, 
-                    y: currentPage === 3 ? 0 : 30 
+                    opacity: currentPage === 2 ? 1 : 0, 
+                    y: currentPage === 2 ? 0 : 30 
                   }}
                   transition={{ 
-                    delay: currentPage === 3 ? 0.25 + (index * 0.05) : 0, 
+                    delay: currentPage === 2 ? 0.25 + (index * 0.05) : 0, 
                     duration: 0.2 
                   }}
                   whileHover={{ 
@@ -158,7 +158,7 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
             <motion.div 
               className="loading-state"
               initial={{ opacity: 0 }}
-              animate={{ opacity: currentPage === 3 ? 1 : 0 }}
+              animate={{ opacity: currentPage === 2 ? 1 : 0 }}
               transition={{ delay: 0.2, duration: 0.2 }}
             >
               <div className="loading-spinner"></div>
