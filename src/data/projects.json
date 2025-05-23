@@ -1,0 +1,22 @@
+[
+  {
+    "id": "basebymonsees",
+    "title": "Base by Monsees",
+    "description": "Modern e-commerce platform for premium streetwear and lifestyle products. Built with performance and user experience in mind.",
+    "tech": ["React", "TypeScript", "Tailwind CSS", "Vercel"],
+    "image": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&crop=center",
+    "liveUrl": "https://basebymonsees.nl",
+    "codeUrl": "https://github.com/daanhessen/basebymonsees",
+    "featured": true
+  },
+  {
+    "id": "portfolio",
+    "title": "Personal Portfolio",
+    "description": "This very website you're viewing! A modern, responsive portfolio showcasing my projects and skills with smooth animations and typewriter effects.",
+    "tech": ["React", "TypeScript", "CSS3", "Vite"],
+    "image": "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=400&h=250&fit=crop&crop=center",
+    "liveUrl": "https://daanhessen.nl",
+    "codeUrl": "https://github.com/daanhessen/portfolio",
+    "featured": true
+  }
+] 

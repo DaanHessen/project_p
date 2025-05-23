@@ -1,0 +1,135 @@
+/* HomePage specific styles */
+
+.page-one {
+  z-index: 2;
+  background: transparent;
+}
+
+.page-one.slide-up {
+  transform: translateY(-100vh) scale(0.95);
+}
+
+.main-content {
+  position: relative;
+  animation: contentSlideUp 0.8s ease-out 0.1s both;
+}
+
+/* Typography specific to homepage */
+.typewriter.title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(107, 141, 214, 0.3);
+  letter-spacing: -0.02em;
+  font-family: 'JetBrains Mono', monospace;
+  min-height: 4rem; /* Prevent layout shift */
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: var(--text-comment);
+  margin-bottom: 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 400;
+  opacity: 0.8;
+  min-height: 1.5rem; /* Prevent layout shift */
+}
+
+.description {
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 400;
+  min-height: 3rem; /* Prevent layout shift */
+}
+
+/* Typewriter component styles */
+.typewriter {
+  position: relative;
+  display: inline-block;
+}
+
+.typewriter-text {
+  display: inline-block;
+}
+
+/* Cursor styles for typewriter effect */
+.cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.2em;
+  background-color: var(--cursor-color);
+  margin-left: 2px;
+  vertical-align: baseline;
+  animation: fastBlink 1s infinite;
+}
+
+.cursor-typing {
+  animation: fastTyping 0.08s infinite;
+}
+
+.cursor-idle {
+  animation: fastBlink 1.2s infinite;
+}
+
+@keyframes fastBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes fastTyping {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.3; }
+}
+
+/* Title-specific cursor styling */
+.typewriter.title .cursor {
+  background: var(--gradient-primary);
+  width: 4px;
+  height: 1.1em;
+  border-radius: 2px;
+  box-shadow: 0 0 15px rgba(107, 141, 214, 0.6);
+}
+
+/* Responsive adjustments for homepage */
+@media (max-width: 768px) {
+  .typewriter.title {
+    font-size: clamp(2rem, 8vw, 3rem);
+    margin-bottom: 1rem;
+    min-height: 3rem;
+  }
+  
+  .subtitle {
+    font-size: clamp(0.9rem, 4vw, 1.1rem);
+    margin-bottom: 1.5rem;
+    min-height: 1.2rem;
+  }
+  
+  .description {
+    font-size: clamp(0.85rem, 3.5vw, 1rem);
+    min-height: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .typewriter.title {
+    font-size: clamp(1.75rem, 9vw, 2.5rem);
+    min-height: 2.5rem;
+  }
+  
+  .subtitle {
+    font-size: clamp(0.8rem, 4.5vw, 1rem);
+    min-height: 1rem;
+  }
+  
+  .description {
+    min-height: 2rem;
+  }
+} 

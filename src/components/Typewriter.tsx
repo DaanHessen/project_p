@@ -1,78 +1,37 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 
-type TypewriterProps = {
+interface TypewriterProps {
   text: string
   speed?: number
-  delay?: number
-  className?: string
-  showCursor?: boolean
   onComplete?: () => void
+  className?: string
 }
 
-const Typewriter = ({ 
-  text, 
-  speed = 50, 
-  delay = 0, 
-  className = '', 
-  showCursor = true,
-  onComplete 
-}: TypewriterProps) => {
-  const [displayedText, setDisplayedText] = useState('')
-  const [isComplete, setIsComplete] = useState(false)
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-
-  const cleanup = useCallback(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current)
-      intervalRef.current = null
-    }
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
-    }
-  }, [])
+const Typewriter = ({ text, speed = 25, onComplete, className }: TypewriterProps) => {
+  const [displayText, setDisplayText] = useState('')
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isTyping, setIsTyping] = useState(true)
 
   useEffect(() => {
-    // Reset state when text changes
-    setDisplayedText('')
-    setIsComplete(false)
-    cleanup()
-    
-    if (!text) return
+    if (currentIndex < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayText(text.slice(0, currentIndex + 1))
+        setCurrentIndex(currentIndex + 1)
+      }, speed)
 
-    const startTyping = () => {
-      let currentIndex = 0
-      
-      intervalRef.current = setInterval(() => {
-        if (currentIndex < text.length) {
-          setDisplayedText(text.slice(0, currentIndex + 1))
-          currentIndex++
-        } else {
-          setIsComplete(true)
-          onComplete?.()
-          cleanup()
-        }
-      }, speed + Math.random() * 10)
+      return () => clearTimeout(timer)
+    } else {
+      setIsTyping(false)
+      if (onComplete) {
+        setTimeout(onComplete, 100)
+      }
     }
-
-    // Start typing after delay
-    timeoutRef.current = setTimeout(startTyping, delay)
-
-    // Cleanup on unmount or text change
-    return cleanup
-  }, [text, speed, delay, onComplete, cleanup])
+  }, [currentIndex, text, speed, onComplete])
 
   return (
-    <div className={`typewriter ${className}`} data-text={text}>
-      <span className="typewriter-text">
-        {displayedText}
-      </span>
-      {showCursor && (
-        <span 
-          className={`cursor ${isComplete ? 'cursor-idle' : 'cursor-typing'}`}
-        />
-      )}
+    <div className={`typewriter ${className || ''}`}>
+      <span className="typewriter-text">{displayText}</span>
+      <span className={`cursor ${isTyping ? 'cursor-typing' : 'cursor-idle'}`}></span>
     </div>
   )
 }
