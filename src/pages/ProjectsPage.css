@@ -16,9 +16,11 @@
   flex-direction: column;
   padding: 0 var(--space-xl);
   padding-top: 40px;
-  gap: var(--space-2xl);
-  /* Ensure no overflow on mobile */
+  gap: var(--space-lg); /* Reduced from 2xl for closer spacing */
   overflow-x: hidden;
+  /* Performance optimization */
+  transform: translateZ(0);
+  will-change: auto;
 }
 
 /* Header Section */
@@ -30,7 +32,7 @@
 
 /* ASCII Title Section */
 .ascii-title-section {
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-xs); /* Reduced from md for closer spacing */
   text-align: center;
   width: 100%;
   overflow-x: auto;
@@ -67,24 +69,30 @@
   font-variant-ligatures: none;
   opacity: 0.95;
   filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.3));
+  /* Improved mobile alignment */
+  text-align: center;
+  font-kerning: none;
+  font-variant-numeric: tabular-nums;
 }
 
-/* Project Showcase Layout - Enhanced */
+/* Project Showcase Layout - Enhanced for proper desktop alignment */
 .project-showcase {
   flex: 1;
   display: grid;
   grid-template-columns: auto 1fr auto;
-  align-items: center;
+  align-items: center; /* This ensures arrows and card are properly aligned */
+  justify-items: center;
   gap: var(--space-lg);
   position: relative;
   min-height: 0;
-  max-height: calc(100vh - 180px);
-  margin-top: -var(--space-md);
-  /* Ensure proper mobile layout */
+  max-height: calc(100vh - 160px); /* Adjusted for better mobile spacing */
+  margin-top: 0; /* Removed negative margin */
   width: 100%;
+  /* Performance optimization */
+  transform: translateZ(0);
 }
 
-/* Navigation Arrows - Improved */
+/* Navigation Arrows - Fixed desktop alignment */
 .nav-arrow {
   width: 54px;
   height: 54px;
@@ -100,9 +108,11 @@
   backdrop-filter: blur(12px);
   position: relative;
   z-index: 10;
-  align-self: center;
+  align-self: center; /* Key fix: ensures arrows align with card center */
   transform: translateY(0);
   box-shadow: var(--shadow-md);
+  /* Performance optimization */
+  will-change: transform, opacity;
 }
 
 .nav-arrow:disabled {
@@ -149,8 +159,10 @@
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
-  /* Ensure responsive sizing */
   min-width: 0;
+  /* Ensure full visibility on mobile */
+  height: fit-content;
+  overflow: visible;
 }
 
 /* Main Project Card - Enhanced Design */
@@ -170,10 +182,15 @@
   transition: var(--transition-slow);
   transform-style: preserve-3d;
   height: fit-content;
-  /* Ensure responsive sizing */
+  min-height: 400px;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Performance optimization */
+  will-change: transform, opacity;
 }
 
 .project-card::before {
@@ -432,32 +449,38 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Mobile Swipe Indicator - New */
+/* Enhanced Mobile Swipe Indicator - Made more prominent */
 .mobile-swipe-indicator {
-  display: none;
+  display: none; /* Hidden on desktop */
   position: absolute;
-  bottom: -40px;
+  bottom: -45px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
-  z-index: 3;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-family: 'JetBrains Mono', monospace;
+  z-index: 5;
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Performance optimization */
+  will-change: transform, opacity;
 }
 
 .swipe-text {
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.05em;
+  margin-bottom: var(--space-xs);
+  opacity: 0.8;
+  font-weight: 300;
 }
 
 .swipe-animation {
-  margin-top: var(--space-xs);
-  width: 30px;
-  height: 6px;
-  position: relative;
-  margin: var(--space-xs) auto 0;
-  background: rgba(59, 130, 246, 0.2);
-  border-radius: var(--radius-full);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 12px;
 }
 
 .swipe-dot {
@@ -465,10 +488,7 @@
   height: 6px;
   background: var(--accent-primary);
   border-radius: 50%;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
 }
 
 /* Loading State */
@@ -524,12 +544,10 @@
 @media (max-width: 1200px) {
   .projects-content {
     padding: 0 var(--space-lg);
-    padding-top: 35px;
-    gap: var(--space-xl);
   }
 
   .project-showcase {
-    max-height: calc(100vh - 160px);
+    gap: var(--space-md);
   }
 
   .project-card {
@@ -545,12 +563,11 @@
   .projects-content {
     padding: 0 var(--space-md);
     padding-top: 30px;
-    gap: var(--space-lg);
-    padding-bottom: 120px; /* Space for social media panel */
+    gap: var(--space-md);
+    max-height: 100vh; /* Ensure full viewport usage */
   }
 
   .project-showcase {
-    grid-template-columns: auto 1fr auto;
     gap: var(--space-sm);
     max-height: calc(100vh - 140px);
   }
@@ -574,7 +591,7 @@
   }
 
   .project-card-wrapper {
-    max-width: 900px;
+    max-width: 100%;
   }
 
   .project-card {
@@ -582,32 +599,49 @@
   }
 
   .project-meta {
-    gap: var(--space-lg);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
   }
 
   .project-counter {
-    font-size: var(--text-sm);
+    align-self: flex-end;
+  }
+  
+  /* Show swipe indicator on tablets */
+  .mobile-swipe-indicator {
+    display: block;
   }
 }
 
 @media (max-width: 768px) {
   .projects-content {
     padding: 0 var(--space-sm);
-    padding-top: 25px;
-    gap: var(--space-md);
-    padding-bottom: 140px; /* Increased space for social media panel */
+    padding-top: 20px;
+    gap: var(--space-sm);
+    padding-bottom: 120px; /* Space for social media panel */
+    max-height: 100vh;
+    overflow-y: visible; /* Allow content to be fully visible */
   }
 
   .ascii-text {
     font-size: clamp(0.4rem, 1vw, 0.6rem);
+    /* Enhanced mobile alignment */
+    text-align: center;
+    display: block;
+    width: 100%;
+    font-kerning: none;
+    text-rendering: geometricPrecision;
   }
 
   .project-showcase {
     gap: var(--space-xs);
-    max-height: calc(100vh - 120px);
-    /* Stack vertically on mobile if needed */
+    max-height: none; /* Remove max-height restriction on mobile */
+    min-height: calc(100vh - 200px); /* Ensure minimum usable space */
+    /* Stack vertically on mobile for better space usage */
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr auto;
+    align-items: stretch; /* Allow full height usage */
   }
 
   .nav-arrow {
@@ -624,25 +658,34 @@
     grid-row: 3;
     grid-column: 1;
     justify-self: start;
-    margin: 0 var(--space-sm) 0 0;
+    margin: var(--space-sm) var(--space-sm) 0 0;
   }
 
   .nav-arrow-next {
     grid-row: 3;
     grid-column: 1;
     justify-self: end;
-    margin: 0 0 0 var(--space-sm);
+    margin: var(--space-sm) 0 0 var(--space-sm);
   }
 
   .project-card-wrapper {
     grid-row: 2;
     grid-column: 1;
     max-width: 100%;
+    width: 100%;
+    /* Ensure cards are fully in viewport */
+    margin: 0;
+    padding: 0;
   }
 
   .project-card {
     padding: var(--space-lg);
-    margin: 0 auto;
+    margin: 0;
+    width: 100%;
+    /* Ensure full mobile visibility */
+    max-width: 100%;
+    box-sizing: border-box;
+    min-height: auto; /* Override desktop min-height for mobile */
   }
 
   .project-footer {
@@ -660,18 +703,22 @@
     flex: 1;
   }
 
-  /* Show mobile swipe indicator on tablets */
+  /* Enhanced mobile swipe indicator */
   .mobile-swipe-indicator {
     display: block;
+    bottom: -35px;
+    font-size: 0.7rem;
   }
 }
 
 @media (max-width: 480px) {
   .projects-content {
     padding: 0 var(--space-xs);
-    padding-top: 20px;
-    gap: var(--space-sm);
-    padding-bottom: 160px; /* More space for social media panel */
+    padding-top: 15px;
+    gap: var(--space-xs);
+    padding-bottom: 140px; /* More space for social media panel */
+    height: 100vh; /* Force full height usage */
+    max-height: none;
   }
 
   .ascii-text {
@@ -679,8 +726,10 @@
   }
 
   .project-showcase {
-    max-height: calc(100vh - 100px);
+    max-height: none;
     gap: var(--space-xs);
+    /* Optimize for small screens */
+    min-height: calc(100vh - 180px);
   }
 
   .nav-arrow {
@@ -696,6 +745,9 @@
   .project-card {
     padding: var(--space-md);
     border-radius: var(--radius-xl);
+    /* Ensure full width usage */
+    width: 100%;
+    margin: 0;
   }
 
   .project-title {
@@ -732,6 +784,8 @@
   .mobile-swipe-indicator {
     display: block;
     bottom: -30px;
+    font-size: 0.65rem;
+    padding: 6px 12px;
   }
 
   .project-meta {
@@ -749,19 +803,20 @@
 @media (max-width: 360px) {
   .projects-content {
     padding: 0 var(--space-xs);
-    padding-bottom: 180px; /* Even more space for social media panel */
+    padding-bottom: 160px; /* Maximum space for social media panel */
   }
 
   .project-showcase {
-    gap: 2px;
+    gap: 4px;
+    min-height: calc(100vh - 200px);
   }
 
   .nav-arrow-prev {
-    margin-right: 2px;
+    margin-right: 4px;
   }
 
   .nav-arrow-next {
-    margin-left: 2px;
+    margin-left: 4px;
   }
 
   .project-card {
@@ -784,6 +839,11 @@
   .action-button {
     font-size: 0.75rem;
     padding: var(--space-xs) var(--space-sm);
+  }
+  
+  .mobile-swipe-indicator {
+    font-size: 0.6rem;
+    padding: 4px 8px;
   }
 }
 

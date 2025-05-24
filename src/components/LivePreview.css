@@ -2,7 +2,7 @@
 
 .live-preview-container {
   width: 100%;
-  margin: var(--space-md) 0;
+  margin: 0;
   border-radius: var(--radius-xl);
   overflow: hidden;
   background: var(--bg-card);
@@ -26,6 +26,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   gap: var(--space-md);
   backdrop-filter: blur(10px);
+  margin: 0;
 }
 
 /* Enhanced Browser Controls */
@@ -94,6 +95,8 @@
   background: var(--bg-primary);
   cursor: pointer;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 /* Enhanced Preview Loading */
@@ -168,6 +171,8 @@
   transition: var(--transition-slow);
   background: var(--bg-primary);
   display: block;
+  margin: 0;
+  padding: 0;
 }
 
 .preview-iframe.loaded {

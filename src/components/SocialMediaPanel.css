@@ -2,7 +2,7 @@
 
 .social-media-panel {
   position: fixed !important;
-  bottom: max(var(--space-xl), env(safe-area-inset-bottom, 0px) + var(--space-lg)); /* Increased bottom margin */
+  bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-md)) !important; /* Reduced bottom margin */
   left: 50% !important;
   transform: translateX(-50%) !important;
   display: flex;
@@ -22,7 +22,7 @@
     var(--shadow-blue),
     var(--shadow-inset);
   width: auto;
-  max-width: calc(100vw - var(--space-2xl)); /* Prevent overflow */
+  max-width: calc(100vw - var(--space-lg)) !important; /* Reduced padding to prevent overflow */
   min-width: fit-content;
   will-change: transform, opacity;
   transform-origin: center bottom !important;
@@ -30,9 +30,11 @@
   margin: 0 !important;
   right: auto !important;
   translate: none !important;
-  /* Ensure always visible */
+  /* Ensure always visible and contained */
   visibility: visible !important;
   opacity: 1 !important;
+  /* Prevent any positioning issues */
+  inset: auto auto max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-md)) 50% !important;
 }
 
 /* Social Icons - Simplified and Optimized */
@@ -187,10 +189,11 @@
 /* Enhanced Responsive Design - Mobile First */
 @media (max-width: 1024px) {
   .social-media-panel {
-    bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-md));
+    bottom: max(var(--space-md), env(safe-area-inset-bottom, 0px) + var(--space-sm)) !important;
     padding: var(--space-sm) var(--space-md);
     gap: var(--space-sm);
-    max-width: calc(100vw - var(--space-xl));
+    max-width: calc(100vw - var(--space-lg)) !important;
+    inset: auto auto max(var(--space-md), env(safe-area-inset-bottom, 0px) + var(--space-sm)) 50% !important;
   }
   
   .social-icon,
@@ -212,37 +215,43 @@
 
 @media (max-width: 768px) {
   .social-media-panel {
-    bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-sm)); /* Increased spacing */
-    padding: var(--space-xs) var(--space-md);
-    gap: var(--space-sm);
-    max-width: calc(100vw - var(--space-lg));
+    bottom: max(var(--space-sm), env(safe-area-inset-bottom, 0px) + 8px) !important;
+    padding: 8px var(--space-sm);
+    gap: 8px;
+    max-width: calc(100vw - var(--space-md)) !important;
+    inset: auto auto max(var(--space-sm), env(safe-area-inset-bottom, 0px) + 8px) 50% !important;
+    /* Ensure it's always visible on screen */
+    min-height: 48px;
   }
   
   .social-icon,
   .scroll-arrow {
     width: 36px;
     height: 36px;
+    flex-shrink: 0; /* Prevent shrinking */
   }
   
   .scroll-arrow {
-    margin-left: var(--space-xs);
+    margin-left: 6px;
   }
 }
 
 @media (max-width: 480px) {
   .social-media-panel {
-    bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-sm)); /* Increased spacing */
-    padding: var(--space-xs) var(--space-sm);
-    gap: var(--space-xs);
-    max-width: calc(100vw - var(--space-md));
-    border-radius: var(--radius-2xl);
+    bottom: max(8px, env(safe-area-inset-bottom, 0px) + 4px) !important;
+    padding: 6px 8px;
+    gap: 6px;
+    max-width: calc(100vw - var(--space-sm)) !important;
+    inset: auto auto max(8px, env(safe-area-inset-bottom, 0px) + 4px) 50% !important;
+    min-height: 44px;
+    /* Force maximum compatibility */
+    border-radius: 22px;
   }
   
   .social-icon,
   .scroll-arrow {
-    width: 34px;
-    height: 34px;
-    border-radius: var(--radius-md);
+    width: 32px;
+    height: 32px;
   }
   
   .social-icon svg {
@@ -258,16 +267,19 @@
 
 @media (max-width: 360px) {
   .social-media-panel {
-    bottom: max(var(--space-md), env(safe-area-inset-bottom, 0px) + var(--space-xs)); /* Increased spacing */
-    padding: var(--space-xs);
-    gap: var(--space-xs);
-    max-width: calc(100vw - var(--space-sm));
+    bottom: max(6px, env(safe-area-inset-bottom, 0px) + 2px) !important;
+    padding: 4px 6px;
+    gap: 4px;
+    max-width: calc(100vw - 16px) !important; /* Minimal margins */
+    inset: auto auto max(6px, env(safe-area-inset-bottom, 0px) + 2px) 50% !important;
+    min-height: 40px;
+    border-radius: 20px;
   }
   
   .social-icon,
   .scroll-arrow {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
   }
   
   .social-icon svg {
@@ -280,19 +292,20 @@
     height: 16px;
   }
 
-  /* Keep essential icons visible - only hide coffee on very small screens */
   .social-icon.coffee {
-    display: none;
+    display: none; /* Hide coffee icon on very small screens to save space */
   }
 }
 
-/* Ultra-small screens */
 @media (max-width: 320px) {
   .social-media-panel {
-    bottom: max(var(--space-md), env(safe-area-inset-bottom, 0px) + var(--space-xs)); /* Increased spacing */
-    padding: 4px;
-    gap: 4px;
-    max-width: calc(100vw - 16px);
+    bottom: max(4px, env(safe-area-inset-bottom, 0px)) !important;
+    padding: 3px 4px;
+    gap: 3px;
+    max-width: calc(100vw - 12px) !important;
+    inset: auto auto max(4px, env(safe-area-inset-bottom, 0px)) 50% !important;
+    min-height: 36px;
+    border-radius: 18px;
   }
   
   .social-icon,
@@ -311,58 +324,57 @@
     height: 14px;
   }
 
-  /* Show only essential icons - keep more icons visible */
   .social-icon.coffee,
-  .social-icon.instagram {
-    display: none;
+  .social-icon.phone {
+    display: none; /* Hide additional icons on extremely small screens */
   }
 }
 
-/* Enhanced Performance and Accessibility */
+/* Ensure panel is always accessible and visible */
 @media screen {
   .social-media-panel {
-    /* Enhanced backdrop blur support */
-    -webkit-backdrop-filter: blur(30px);
-    backdrop-filter: blur(30px);
-    /* Fallback for older browsers */
-    background: rgba(26, 29, 41, 0.85);
+    /* Force visibility and proper positioning on all screens */
+    min-width: 280px !important;
+    max-width: min(400px, calc(100vw - 16px)) !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
   }
 }
 
-/* Force position and centering - highest specificity */
+/* Override any conflicting global styles */
 body .social-media-panel,
 html .social-media-panel,
+#root .social-media-panel,
 * .social-media-panel {
   position: fixed !important;
+  bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-md)) !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
-  right: auto !important;
-  margin: 0 !important;
+  z-index: 1000 !important;
 }
 
-/* GPU acceleration for smooth animations */
 .social-icon,
 .scroll-arrow {
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+  /* Ensure icons maintain their size and don't overflow */
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
 }
 
-/* Safe area support for devices with notches/home indicators */
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
+/* Viewport height fix for mobile browsers */
+@supports (-webkit-touch-callout: none) {
   .social-media-panel {
-    padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom));
+    bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-md)) !important;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .social-icon,
   .scroll-arrow {
-    transition: none;
+    transition: none !important;
   }
   
   .social-icon:hover,
   .scroll-arrow:hover {
-    transform: none;
+    transform: none !important;
   }
 } 

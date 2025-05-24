@@ -39,7 +39,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3xl);
+  gap: var(--space-xl);
   max-width: 950px;
   margin: 0 auto;
   text-align: center;
@@ -50,7 +50,7 @@
 
 /* ASCII Art Section */
 .ascii-art-section {
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-sm);
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
@@ -87,6 +87,13 @@
   font-variant-ligatures: none;
   opacity: 0.95;
   filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.3));
+  text-align: center;
+  font-kerning: none;
+  font-variant-numeric: tabular-nums;
+  text-indent: 0;
+  padding-left: 0;
+  transform: translateZ(0);
+  will-change: auto;
 }
 
 /* Hero Section */
@@ -166,6 +173,7 @@
 .description-section {
   max-width: 750px;
   position: relative;
+  margin-top: var(--space-sm);
 }
 
 .description-text {
@@ -187,7 +195,7 @@
 /* Enhanced Responsive Design */
 @media (max-width: 1024px) {
   .main-content {
-    gap: var(--space-2xl);
+    gap: var(--space-lg);
     padding: var(--space-lg) var(--space-md);
   }
   
@@ -198,18 +206,19 @@
   
   .description-section {
     max-width: 650px;
+    margin-top: var(--space-xs);
   }
   
   .description-text {
-    font-size: clamp(0.975rem, 1.85vw, 1.1rem);
-    line-height: 1.75;
+    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+    line-height: 1.7;
   }
 }
 
 @media (max-width: 768px) {
   .main-content {
-    gap: var(--space-xl);
-    padding: var(--space-md) var(--space-lg);
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-sm);
   }
   
   .hero-name {
@@ -223,19 +232,37 @@
   }
   
   .description-text {
-    font-size: clamp(0.925rem, 1.7vw, 1.05rem);
-    line-height: 1.7;
+    font-size: clamp(0.9rem, 1.7vw, 1.05rem);
+    line-height: 1.6;
   }
   
   .ascii-text {
-    font-size: clamp(0.45rem, 1.15vw, 0.7rem);
+    font-size: clamp(0.45rem, 1.1vw, 0.65rem);
+    display: block;
+    width: 100%;
+    text-align: center;
+    overflow-x: auto;
+    padding: 0;
+    margin: 0;
+    font-feature-settings: normal;
+    font-variant-ligatures: none;
+    font-kerning: none;
+    text-rendering: geometricPrecision;
+  }
+  
+  .ascii-art-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
   }
 }
 
 @media (max-width: 480px) {
   .main-content {
-    gap: var(--space-lg);
-    padding: var(--space-md) var(--space-md);
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-xs);
   }
   
   .hero-section {
@@ -253,8 +280,8 @@
   }
   
   .description-text {
-    font-size: clamp(0.9rem, 1.6vw, 1rem);
-    line-height: 1.65;
+    font-size: clamp(0.85rem, 1.6vw, 1rem);
+    line-height: 1.55;
   }
   
   .cursor {
@@ -263,15 +290,16 @@
   }
   
   .ascii-text {
-    font-size: clamp(0.4rem, 1.1vw, 0.65rem);
+    font-size: clamp(0.4rem, 1vw, 0.6rem);
+    letter-spacing: -0.01em;
+    word-spacing: 0;
   }
 }
 
-/* Extra small devices */
 @media (max-width: 360px) {
   .main-content {
-    gap: var(--space-md);
-    padding: var(--space-sm) var(--space-md);
+    padding: var(--space-xs);
+    gap: var(--space-xs);
   }
   
   .hero-name {
@@ -280,8 +308,8 @@
   }
   
   .description-text {
-    font-size: clamp(0.85rem, 1.5vw, 0.95rem);
-    line-height: 1.6;
+    font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+    line-height: 1.5;
   }
 }
 
@@ -292,4 +320,25 @@
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
+}
+
+/* Performance optimizations */
+.main-content,
+.ascii-art-section,
+.description-section {
+  transform: translateZ(0);
+  will-change: auto;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .ascii-text {
+    animation: none;
+  }
+  
+  .main-content * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 } 

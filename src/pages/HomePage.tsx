@@ -25,13 +25,13 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
   // Split ASCII art into lines for individual animation
   const asciiLines = asciiArt.split('\n')
 
-  // Calculate total ASCII animation duration
-  const totalAsciiDuration = (asciiLines.length * 0.1) + (asciiLines[0].length * 0.003) + 0.6
+  // Reduced total ASCII animation duration for faster transition
+  const totalAsciiDuration = (asciiLines.length * 0.08) + (asciiLines[0].length * 0.002) + 0.3
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setTitleComplete(true)
-      // Set typing complete immediately when ASCII animation finishes
+      // Reduced delay before showing description
       setTimeout(() => setTypingComplete(true), totalAsciiDuration * 1000)
     }, 100)
     return () => clearTimeout(timer)
@@ -80,16 +80,17 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
                 {asciiLines.map((line, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    initial={{ opacity: 0, y: 5, scale: 0.98 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ 
-                      duration: 0.6,
-                      delay: index * 0.1,
+                      duration: 0.4,
+                      delay: index * 0.08, // Reduced delay between lines
                       ease: [0.25, 0.46, 0.45, 0.94]
                     }}
                     style={{ 
                       display: 'block',
                       transformOrigin: 'center',
+                      fontKerning: 'none', // Improved character alignment
                     }}
                   >
                     {line.split('').map((char, charIndex) => (
@@ -98,11 +99,15 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{
-                          duration: 0.02,
-                          delay: (index * 0.1) + (charIndex * 0.003),
+                          duration: 0.015, // Faster character animation
+                          delay: (index * 0.08) + (charIndex * 0.002), // Reduced character delay
                           ease: "easeOut"
                         }}
-                        style={{ display: 'inline-block' }}
+                        style={{ 
+                          display: 'inline-block',
+                          fontKerning: 'none', // Prevent font kerning issues
+                          letterSpacing: 0 // Ensure consistent spacing
+                        }}
                       >
                         {char}
                       </motion.span>
@@ -114,11 +119,11 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
 
             <motion.div 
               className="description-section"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: typingComplete ? 1 : 0, y: typingComplete ? 0 : 30 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: typingComplete ? 1 : 0, y: typingComplete ? 0 : 20 }}
               transition={{ 
-                duration: 0.8, 
-                delay: 0,
+                duration: 0.6, 
+                delay: 0, // No additional delay
                 ease: "easeOut" 
               }}
             >

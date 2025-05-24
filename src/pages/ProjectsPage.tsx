@@ -305,19 +305,19 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                           </div>
                         </motion.div>
 
-                        {/* Mobile swipe indicator */}
+                        {/* Mobile swipe indicator - Enhanced visibility */}
                         <motion.div 
                           className="mobile-swipe-indicator"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: currentPage === 2 ? 1 : 0 }}
-                          transition={{ delay: 0.6, duration: 0.5 }}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: currentPage === 2 ? 1 : 0, y: currentPage === 2 ? 0 : 10 }}
+                          transition={{ delay: 0.8, duration: 0.6 }}
                         >
-                          <span className="swipe-text">Swipe left/right to navigate projects</span>
+                          <span className="swipe-text">← Swipe to navigate projects →</span>
                           <div className="swipe-animation">
                             <motion.div 
                               className="swipe-dot"
-                              animate={{ x: [-10, 10, -10] }}
-                              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                              animate={{ x: [-12, 12, -12] }}
+                              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                             />
                           </div>
                         </motion.div>
