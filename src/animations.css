@@ -33,13 +33,48 @@
 
 /* Typewriter cursor blink */
 @keyframes blink {
-  0%, 60% { opacity: 1; }
-  61%, 100% { opacity: 0; }
+  0%,
+  60% {
+    opacity: 1;
+  }
+  61%,
+  100% {
+    opacity: 0;
+  }
 }
 
-/* Pulse animation for status dots */@keyframes pulse {  0%, 100% {    transform: scale(1);    opacity: 1;  }  50% {    transform: scale(1.15);    opacity: 0.8;  }}/* Gentle glow animation */@keyframes gentleGlow {  0%, 100% {    box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);  }  50% {    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);  }}
+/* Pulse animation for status dots */
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+} /* Gentle glow animation */
+@keyframes gentleGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+  }
+}
 
-/* Subtle floating animation */@keyframes subtleFloat {  0%, 100% { transform: translateY(0px); }  50% { transform: translateY(-4px); }}
+/* Subtle floating animation */
+@keyframes subtleFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
 
 /* Page slide in from bottom */
 @keyframes slideInFromBottom {
@@ -67,8 +102,12 @@
 
 /* Loading spinner */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Social media panel float in */
@@ -85,15 +124,25 @@
 
 /* Button press animation */
 @keyframes buttonPress {
-  0% { transform: scale(1); }
-  50% { transform: scale(0.98); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Hover lift effect */
 @keyframes hoverLift {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-4px); }
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-4px);
+  }
 }
 
 /* ===========================================
@@ -252,6 +301,15 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
-    .fade-in,  .fade-in-delayed,  .fade-in-final,  .fade-in-late,  .slide-up,  .slide-up-delayed {    animation: none;    opacity: 1;    transform: none;  }
-} 
+
+  .fade-in,
+  .fade-in-delayed,
+  .fade-in-final,
+  .fade-in-late,
+  .slide-up,
+  .slide-up-delayed {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

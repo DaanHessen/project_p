@@ -1,33 +1,33 @@
-import './LivePreview.css'
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import "./LivePreview.css";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 interface LivePreviewProps {
-  url: string
-  title: string
+  url: string;
+  title: string;
 }
 
 const LivePreview = ({ url, title }: LivePreviewProps) => {
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [hasError, setHasError] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const handleClick = () => {
     // Open in a new window with desktop dimensions
     window.open(
-      url, 
-      '_blank', 
-      'width=1440,height=900,resizable=yes,scrollbars=yes,location=yes,menubar=no,toolbar=yes'
-    )
-  }
+      url,
+      "_blank",
+      "width=1440,height=900,resizable=yes,scrollbars=yes,location=yes,menubar=no,toolbar=yes",
+    );
+  };
 
   const handleLoad = () => {
-    setIsLoaded(true)
-  }
+    setIsLoaded(true);
+  };
 
   const handleError = () => {
-    setHasError(true)
-    setIsLoaded(true)
-  }
+    setHasError(true);
+    setIsLoaded(true);
+  };
 
   return (
     <div className="live-preview-container">
@@ -41,7 +41,7 @@ const LivePreview = ({ url, title }: LivePreviewProps) => {
           <span className="url-text">{url}</span>
         </div>
       </div>
-      
+
       <div className="preview-content" onClick={handleClick}>
         {!isLoaded && !hasError && (
           <div className="preview-loading">
@@ -49,12 +49,12 @@ const LivePreview = ({ url, title }: LivePreviewProps) => {
             <p>Loading preview...</p>
           </div>
         )}
-        
+
         {hasError ? (
           <div className="preview-error">
             <div className="error-icon">
               <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,17A1.5,1.5 0 0,1 10.5,15.5A1.5,1.5 0 0,1 12,14A1.5,1.5 0 0,1 13.5,15.5A1.5,1.5 0 0,1 12,17M12,10A1,1 0 0,1 13,11V13A1,1 0 0,1 12,14A1,1 0 0,1 11,13V11A1,1 0 0,1 12,10Z"/>
+                <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,17A1.5,1.5 0 0,1 10.5,15.5A1.5,1.5 0 0,1 12,14A1.5,1.5 0 0,1 13.5,15.5A1.5,1.5 0 0,1 12,17M12,10A1,1 0 0,1 13,11V13A1,1 0 0,1 12,14A1,1 0 0,1 11,13V11A1,1 0 0,1 12,10Z" />
               </svg>
             </div>
             <p>Preview unavailable</p>
@@ -66,12 +66,12 @@ const LivePreview = ({ url, title }: LivePreviewProps) => {
             title={`Preview of ${title}`}
             onLoad={handleLoad}
             onError={handleError}
-            className={`preview-iframe ${isLoaded ? 'loaded' : ''}`}
+            className={`preview-iframe ${isLoaded ? "loaded" : ""}`}
             sandbox="allow-same-origin allow-scripts allow-forms"
           />
         )}
-        
-        <motion.div 
+
+        <motion.div
           className="preview-overlay"
           whileHover={{ opacity: 1 }}
           initial={{ opacity: 0 }}
@@ -87,7 +87,7 @@ const LivePreview = ({ url, title }: LivePreviewProps) => {
         </motion.div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LivePreview 
+export default LivePreview;

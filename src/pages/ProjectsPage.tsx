@@ -1,184 +1,199 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
-import './ProjectsPage.css'
-import { motion, AnimatePresence } from 'framer-motion'
-import LivePreview from '../components/LivePreview'
-import SEOHead from '../components/SEOHead'
+import { useState, useEffect, useCallback, useRef } from "react";
+import "./ProjectsPage.css";
+import { motion, AnimatePresence } from "framer-motion";
+import LivePreview from "../components/LivePreview";
+import SEOHead from "../components/SEOHead";
 
 interface Project {
-  id: string
-  title: string
-  description: string
-  tech: string[]
-  image: string
-  liveUrl: string
-  codeUrl: string
+  id: string;
+  title: string;
+  description: string;
+  tech: string[];
+  image: string;
+  liveUrl: string;
+  codeUrl: string;
 }
 
 interface ProjectsPageProps {
-  currentPage: number
-  setCurrentPage: (page: number) => void
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
 }
 
 const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [currentProjectIndex, setCurrentProjectIndex] = useState(0)
-  const touchStartRef = useRef({ x: 0, y: 0 })
-  const touchEndRef = useRef({ x: 0, y: 0 })
-  const isDraggingRef = useRef(false)
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+  const touchStartRef = useRef({ x: 0, y: 0 });
+  const touchEndRef = useRef({ x: 0, y: 0 });
+  const isDraggingRef = useRef(false);
 
   const projectsAsciiArt = `██████╗ ██████╗  ██████╗      ██╗███████╗ ██████╗████████╗███████╗
 ██╔══██╗██╔══██╗██╔═══██╗     ██║██╔════╝██╔════╝╚══██╔══╝██╔════╝
 ██████╔╝██████╔╝██║   ██║     ██║█████╗  ██║        ██║   ███████╗
 ██╔═══╝ ██╔══██╗██║   ██║██   ██║██╔══╝  ██║        ██║   ╚════██║
 ██║     ██║  ██║╚██████╔╝╚█████╔╝███████╗╚██████╗   ██║   ███████║
-╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚════╝ ╚══════╝ ╚═════╝   ╚═╝   ╚══════╝`
+╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚════╝ ╚══════╝ ╚═════╝   ╚═╝   ╚══════╝`;
 
   useEffect(() => {
-    import('../data/projects.json')
-      .then(data => setProjects(data.default || data))
-      .catch(err => console.error('Error loading projects:', err))
-  }, [])
+    import("../data/projects.json")
+      .then((data) => setProjects(data.default || data))
+      .catch((err) => console.error("Error loading projects:", err));
+  }, []);
 
-  const navigateProject = useCallback((direction: 'prev' | 'next') => {
-    if (projects.length === 0) return
-    
-    setCurrentProjectIndex(prev => {
-      if (direction === 'next') {
-        return (prev + 1) % projects.length
-      } else {
-        return prev === 0 ? projects.length - 1 : prev - 1
-      }
-    })
-  }, [projects.length])
+  const navigateProject = useCallback(
+    (direction: "prev" | "next") => {
+      if (projects.length === 0) return;
+
+      setCurrentProjectIndex((prev) => {
+        if (direction === "next") {
+          return (prev + 1) % projects.length;
+        } else {
+          return prev === 0 ? projects.length - 1 : prev - 1;
+        }
+      });
+    },
+    [projects.length],
+  );
 
   // Enhanced touch handling for project navigation
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    if (currentPage !== 2) return
-    
-    const touch = e.touches[0]
-    touchStartRef.current = { x: touch.clientX, y: touch.clientY }
-    touchEndRef.current = { x: touch.clientX, y: touch.clientY }
-    isDraggingRef.current = false
-  }, [currentPage])
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      if (currentPage !== 2) return;
 
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (currentPage !== 2) return
-    
-    const touch = e.touches[0]
-    touchEndRef.current = { x: touch.clientX, y: touch.clientY }
-    
-    const deltaX = Math.abs(touch.clientX - touchStartRef.current.x)
-    const deltaY = Math.abs(touch.clientY - touchStartRef.current.y)
-    
-    // If horizontal swipe is detected, prevent page scrolling
-    if (deltaX > deltaY && deltaX > 20) {
-      e.preventDefault()
-      isDraggingRef.current = true
-    }
-  }, [currentPage])
+      const touch = e.touches[0];
+      touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+      touchEndRef.current = { x: touch.clientX, y: touch.clientY };
+      isDraggingRef.current = false;
+    },
+    [currentPage],
+  );
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    if (currentPage !== 2 || !isDraggingRef.current) return
-    
-    const deltaX = touchEndRef.current.x - touchStartRef.current.x
-    const deltaY = Math.abs(touchEndRef.current.y - touchStartRef.current.y)
-    
-    // Only navigate if horizontal swipe is dominant and significant
-    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > deltaY) {
-      e.preventDefault()
-      e.stopPropagation()
-      
-      if (deltaX > 0) {
-        navigateProject('prev')
-      } else {
-        navigateProject('next')
+  const handleTouchMove = useCallback(
+    (e: React.TouchEvent) => {
+      if (currentPage !== 2) return;
+
+      const touch = e.touches[0];
+      touchEndRef.current = { x: touch.clientX, y: touch.clientY };
+
+      const deltaX = Math.abs(touch.clientX - touchStartRef.current.x);
+      const deltaY = Math.abs(touch.clientY - touchStartRef.current.y);
+
+      // If horizontal swipe is detected, prevent page scrolling
+      if (deltaX > deltaY && deltaX > 20) {
+        e.preventDefault();
+        isDraggingRef.current = true;
       }
-    }
-    
-    isDraggingRef.current = false
-  }, [currentPage, navigateProject])
+    },
+    [currentPage],
+  );
+
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      if (currentPage !== 2 || !isDraggingRef.current) return;
+
+      const deltaX = touchEndRef.current.x - touchStartRef.current.x;
+      const deltaY = Math.abs(touchEndRef.current.y - touchStartRef.current.y);
+
+      // Only navigate if horizontal swipe is dominant and significant
+      if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > deltaY) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (deltaX > 0) {
+          navigateProject("prev");
+        } else {
+          navigateProject("next");
+        }
+      }
+
+      isDraggingRef.current = false;
+    },
+    [currentPage, navigateProject],
+  );
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (currentPage !== 2) return
-      
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault()
-        navigateProject('prev')
-      } else if (e.key === 'ArrowRight') {
-        e.preventDefault()
-        navigateProject('next')
-      }
-    }
+      if (currentPage !== 2) return;
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [currentPage, navigateProject])
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        navigateProject("prev");
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        navigateProject("next");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentPage, navigateProject]);
 
   return (
-    <motion.div 
+    <motion.div
       className={`page page-two page-transition`}
       initial={false}
       animate={{
-        y: currentPage === 2 ? '0vh' : '100vh',
-        scale: currentPage === 2 ? 1 : 0.95
+        y: currentPage === 2 ? "0vh" : "100vh",
+        scale: currentPage === 2 ? 1 : 0.95,
       }}
       transition={{
         type: "spring",
         stiffness: 200,
         damping: 30,
-        mass: 0.8
+        mass: 0.8,
       }}
     >
-      <SEOHead 
-        title={`Projects - ${projects[currentProjectIndex]?.title || 'Daan Hessen Portfolio'}`}
-        description={`Explore ${projects[currentProjectIndex]?.title || 'my projects'}: ${projects[currentProjectIndex]?.description || 'A collection of web applications and projects showcasing modern development technologies including React, TypeScript, and more.'}`}
-        canonical={`https://daanhessen.nl/projects${projects[currentProjectIndex] ? `/${projects[currentProjectIndex].id}` : ''}`}
+      <SEOHead
+        title={`Projects - ${projects[currentProjectIndex]?.title || "Daan Hessen Portfolio"}`}
+        description={`Explore ${projects[currentProjectIndex]?.title || "my projects"}: ${projects[currentProjectIndex]?.description || "A collection of web applications and projects showcasing modern development technologies including React, TypeScript, and more."}`}
+        canonical={`https://daanhessen.nl/projects${projects[currentProjectIndex] ? `/${projects[currentProjectIndex].id}` : ""}`}
         structuredData={{
           "@context": "https://schema.org",
           "@type": "CollectionPage",
-          "name": "Projects Portfolio",
-          "description": "Portfolio of web development projects by Daan Hessen",
-          "url": "https://daanhessen.nl/projects",
-          "author": {
+          name: "Projects Portfolio",
+          description: "Portfolio of web development projects by Daan Hessen",
+          url: "https://daanhessen.nl/projects",
+          author: {
             "@type": "Person",
-            "name": "Daan Hessen"
+            name: "Daan Hessen",
           },
-          "mainEntity": projects[currentProjectIndex] ? {
-            "@type": "CreativeWork",
-            "name": projects[currentProjectIndex].title,
-            "description": projects[currentProjectIndex].description,
-            "url": projects[currentProjectIndex].liveUrl,
-            "author": {
-              "@type": "Person",
-              "name": "Daan Hessen"
-            },
-            "programmingLanguage": projects[currentProjectIndex].tech,
-            "codeRepository": projects[currentProjectIndex].codeUrl
-          } : {
-            "@type": "ItemList",
-            "itemListElement": projects.map((project, index) => ({
-              "@type": "CreativeWork",
-              "position": index + 1,
-              "name": project.title,
-              "description": project.description,
-              "url": project.liveUrl
-            }))
-          }
+          mainEntity: projects[currentProjectIndex]
+            ? {
+                "@type": "CreativeWork",
+                name: projects[currentProjectIndex].title,
+                description: projects[currentProjectIndex].description,
+                url: projects[currentProjectIndex].liveUrl,
+                author: {
+                  "@type": "Person",
+                  name: "Daan Hessen",
+                },
+                programmingLanguage: projects[currentProjectIndex].tech,
+                codeRepository: projects[currentProjectIndex].codeUrl,
+              }
+            : {
+                "@type": "ItemList",
+                itemListElement: projects.map((project, index) => ({
+                  "@type": "CreativeWork",
+                  position: index + 1,
+                  name: project.title,
+                  description: project.description,
+                  url: project.liveUrl,
+                })),
+              },
         }}
       />
       <div className="content-container">
         <div className="projects-content">
-          <motion.div 
+          <motion.div
             className="projects-header"
             initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: currentPage === 2 ? 1 : 0, y: currentPage === 2 ? 0 : -20 }}
+            animate={{
+              opacity: currentPage === 2 ? 1 : 0,
+              y: currentPage === 2 ? 0 : -20,
+            }}
             transition={{ delay: currentPage === 2 ? 0.1 : 0, duration: 0.4 }}
           >
             <div className="ascii-title-section">
-              <pre className="ascii-text">
-{projectsAsciiArt}
-              </pre>
+              <pre className="ascii-text">{projectsAsciiArt}</pre>
             </div>
           </motion.div>
 
@@ -187,36 +202,48 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
               {/* Navigation arrows - positioned to match card height */}
               <motion.button
                 className="nav-arrow nav-arrow-prev"
-                onClick={() => navigateProject('prev')}
+                onClick={() => navigateProject("prev")}
                 whileHover={{ scale: 1.1, x: -2 }}
                 whileTap={{ scale: 0.9 }}
                 initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: currentPage === 2 ? 1 : 0, x: currentPage === 2 ? 0 : -20 }}
-                transition={{ delay: currentPage === 2 ? 0.2 : 0, duration: 0.3 }}
+                animate={{
+                  opacity: currentPage === 2 ? 1 : 0,
+                  x: currentPage === 2 ? 0 : -20,
+                }}
+                transition={{
+                  delay: currentPage === 2 ? 0.2 : 0,
+                  duration: 0.3,
+                }}
                 disabled={projects.length <= 1}
               >
                 <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M15.41 7.41L14 6L8 12L14 18L15.41 16.59L10.83 12Z"/>
+                  <path d="M15.41 7.41L14 6L8 12L14 18L15.41 16.59L10.83 12Z" />
                 </svg>
               </motion.button>
 
               <motion.button
                 className="nav-arrow nav-arrow-next"
-                onClick={() => navigateProject('next')}
+                onClick={() => navigateProject("next")}
                 whileHover={{ scale: 1.1, x: 2 }}
                 whileTap={{ scale: 0.9 }}
                 initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: currentPage === 2 ? 1 : 0, x: currentPage === 2 ? 0 : 20 }}
-                transition={{ delay: currentPage === 2 ? 0.2 : 0, duration: 0.3 }}
+                animate={{
+                  opacity: currentPage === 2 ? 1 : 0,
+                  x: currentPage === 2 ? 0 : 20,
+                }}
+                transition={{
+                  delay: currentPage === 2 ? 0.2 : 0,
+                  duration: 0.3,
+                }}
                 disabled={projects.length <= 1}
               >
                 <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8.59 16.59L10 18L16 12L10 6L8.59 7.41L13.17 12Z"/>
+                  <path d="M8.59 16.59L10 18L16 12L10 6L8.59 7.41L13.17 12Z" />
                 </svg>
               </motion.button>
 
               {/* Main project card with enhanced touch handling */}
-              <div 
+              <div
                 className="project-card-wrapper"
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
@@ -229,9 +256,9 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                     initial={{ opacity: 0, y: 20, scale: 0.98 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -20, scale: 0.98 }}
-                    transition={{ 
+                    transition={{
                       duration: 0.4,
-                      ease: [0.25, 0.46, 0.45, 0.94]
+                      ease: [0.25, 0.46, 0.45, 0.94],
                     }}
                   >
                     {projects[currentProjectIndex] && (
@@ -239,7 +266,7 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                         {/* Card Header - Improved alignment */}
                         <div className="project-header">
                           <div className="project-meta">
-                            <motion.h2 
+                            <motion.h2
                               className="project-title"
                               initial={{ opacity: 0, x: -20 }}
                               animate={{ opacity: 1, x: 0 }}
@@ -247,17 +274,18 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                             >
                               {projects[currentProjectIndex].title}
                             </motion.h2>
-                            <motion.div 
+                            <motion.div
                               className="project-counter"
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               transition={{ delay: 0.1, duration: 0.3 }}
                             >
-                              {String(currentProjectIndex + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+                              {String(currentProjectIndex + 1).padStart(2, "0")}{" "}
+                              / {String(projects.length).padStart(2, "0")}
                             </motion.div>
                           </div>
-                          
-                          <motion.p 
+
+                          <motion.p
                             className="project-description"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -268,16 +296,16 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                         </div>
 
                         {/* Live Preview - Enhanced */}
-                        <motion.div 
+                        <motion.div
                           className="project-preview"
                           initial={{ opacity: 0, scale: 0.98 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.15, duration: 0.4 }}
                         >
                           <div className="preview-container">
-                            <LivePreview 
-                              url={projects[currentProjectIndex].liveUrl} 
-                              title={projects[currentProjectIndex].title} 
+                            <LivePreview
+                              url={projects[currentProjectIndex].liveUrl}
+                              title={projects[currentProjectIndex].title}
                             />
                             <div className="preview-overlay">
                               <motion.a
@@ -298,7 +326,7 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                         </motion.div>
 
                         {/* Tech Stack & Actions - Improved layout */}
-                        <motion.div 
+                        <motion.div
                           className="project-footer"
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -307,25 +335,27 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                           <div className="tech-stack">
                             <span className="tech-label">Built with:</span>
                             <div className="tech-tags">
-                              {projects[currentProjectIndex].tech.map((tech, techIndex) => (
-                                <motion.span 
-                                  key={`${tech}-${techIndex}`}
-                                  className="tech-tag"
-                                  initial={{ opacity: 0, scale: 0.8 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  transition={{ 
-                                    delay: 0.25 + (techIndex * 0.03), 
-                                    duration: 0.3,
-                                    type: "spring",
-                                    stiffness: 200
-                                  }}
-                                >
-                                  {tech}
-                                </motion.span>
-                              ))}
+                              {projects[currentProjectIndex].tech.map(
+                                (tech, techIndex) => (
+                                  <motion.span
+                                    key={`${tech}-${techIndex}`}
+                                    className="tech-tag"
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{
+                                      delay: 0.25 + techIndex * 0.03,
+                                      duration: 0.3,
+                                      type: "spring",
+                                      stiffness: 200,
+                                    }}
+                                  >
+                                    {tech}
+                                  </motion.span>
+                                ),
+                              )}
                             </div>
                           </div>
-                          
+
                           <div className="project-actions">
                             <motion.a
                               href={projects[currentProjectIndex].codeUrl}
@@ -344,18 +374,27 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                         </motion.div>
 
                         {/* Mobile swipe indicator - Enhanced visibility */}
-                        <motion.div 
+                        <motion.div
                           className="mobile-swipe-indicator"
                           initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: currentPage === 2 ? 1 : 0, y: currentPage === 2 ? 0 : 10 }}
+                          animate={{
+                            opacity: currentPage === 2 ? 1 : 0,
+                            y: currentPage === 2 ? 0 : 10,
+                          }}
                           transition={{ delay: 0.8, duration: 0.6 }}
                         >
-                          <span className="swipe-text">← Swipe to navigate projects →</span>
+                          <span className="swipe-text">
+                            ← Swipe to navigate projects →
+                          </span>
                           <div className="swipe-animation">
-                            <motion.div 
+                            <motion.div
                               className="swipe-dot"
                               animate={{ x: [-12, 12, -12] }}
-                              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                              transition={{
+                                duration: 2.5,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                              }}
                             />
                           </div>
                         </motion.div>
@@ -366,7 +405,7 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
               </div>
             </div>
           ) : (
-            <motion.div 
+            <motion.div
               className="loading-state"
               initial={{ opacity: 0 }}
               animate={{ opacity: currentPage === 2 ? 1 : 0 }}
@@ -383,7 +422,7 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
         </div>
       </div>
     </motion.div>
-  )
-}
+  );
+};
 
-export default ProjectsPage 
+export default ProjectsPage;

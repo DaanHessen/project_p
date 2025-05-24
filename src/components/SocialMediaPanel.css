@@ -17,10 +17,7 @@
   border: 1px solid rgba(59, 130, 246, 0.25);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  box-shadow: 
-    var(--shadow-xl),
-    var(--shadow-blue),
-    var(--shadow-inset);
+  box-shadow: var(--shadow-xl), var(--shadow-blue), var(--shadow-inset);
   width: auto;
   max-width: calc(100vw - 2rem) !important;
   min-width: fit-content;
@@ -33,6 +30,8 @@
   /* Ensure always visible and contained */
   visibility: visible !important;
   opacity: 1 !important;
+  /* Ensure it stays within viewport bounds */
+  box-sizing: border-box !important;
 }
 
 /* Social Icons - Simplified and Optimized */
@@ -62,13 +61,17 @@
 }
 
 .social-icon::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 70%
+  );
   opacity: 0;
   transition: var(--transition-normal);
   border-radius: var(--radius-lg);
@@ -93,13 +96,17 @@
 .social-icon.linkedin:hover {
   color: #0077b5;
   background: rgba(0, 119, 181, 0.15);
-  box-shadow: var(--shadow-md), 0 8px 25px rgba(0, 119, 181, 0.4);
+  box-shadow:
+    var(--shadow-md),
+    0 8px 25px rgba(0, 119, 181, 0.4);
 }
 
 .social-icon.instagram:hover {
   color: #e4405f;
   background: rgba(228, 64, 95, 0.15);
-  box-shadow: var(--shadow-md), 0 8px 25px rgba(228, 64, 95, 0.4);
+  box-shadow:
+    var(--shadow-md),
+    0 8px 25px rgba(228, 64, 95, 0.4);
 }
 
 .social-icon.email:hover {
@@ -111,13 +118,17 @@
 .social-icon.phone:hover {
   color: var(--accent-green);
   background: rgba(16, 185, 129, 0.15);
-  box-shadow: var(--shadow-md), 0 8px 25px rgba(16, 185, 129, 0.4);
+  box-shadow:
+    var(--shadow-md),
+    0 8px 25px rgba(16, 185, 129, 0.4);
 }
 
 .social-icon.github:hover {
   color: var(--text-primary);
   background: rgba(255, 255, 255, 0.15);
-  box-shadow: var(--shadow-md), 0 8px 25px rgba(255, 255, 255, 0.25);
+  box-shadow:
+    var(--shadow-md),
+    0 8px 25px rgba(255, 255, 255, 0.25);
 }
 
 .social-icon.coffee:hover {
@@ -147,7 +158,7 @@
 }
 
 .scroll-arrow::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -187,24 +198,26 @@
 /* Enhanced Responsive Design - Mobile First */
 @media (max-width: 1024px) {
   .social-media-panel {
-    bottom: max(var(--space-md), env(safe-area-inset-bottom, 0px) + var(--space-sm)) !important;
+    bottom: max(
+      var(--space-md),
+      env(safe-area-inset-bottom, 0px) + var(--space-sm)
+    ) !important;
     padding: var(--space-sm) var(--space-md);
     gap: var(--space-sm);
     max-width: calc(100vw - var(--space-lg)) !important;
-    inset: auto auto max(var(--space-md), env(safe-area-inset-bottom, 0px) + var(--space-sm)) 50% !important;
   }
-  
+
   .social-icon,
   .scroll-arrow {
     width: 38px;
     height: 38px;
   }
-  
+
   .social-icon svg {
     width: 18px;
     height: 18px;
   }
-  
+
   .scroll-arrow svg {
     width: 20px;
     height: 20px;
@@ -213,22 +226,26 @@
 
 @media (max-width: 768px) {
   .social-media-panel {
-    bottom: max(var(--space-sm), env(safe-area-inset-bottom, 0px) + 8px) !important;
-    padding: 8px var(--space-sm);
+    bottom: max(12px, env(safe-area-inset-bottom, 0px) + 8px) !important;
+    padding: 8px 12px;
     gap: 8px;
-    max-width: calc(100vw - var(--space-md)) !important;
-    inset: auto auto max(var(--space-sm), env(safe-area-inset-bottom, 0px) + 8px) 50% !important;
+    max-width: calc(100vw - 16px) !important;
     /* Ensure it's always visible on screen */
     min-height: 48px;
+    /* More explicit positioning */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
-  
+
   .social-icon,
   .scroll-arrow {
     width: 36px;
     height: 36px;
     flex-shrink: 0; /* Prevent shrinking */
   }
-  
+
   .scroll-arrow {
     margin-left: 6px;
   }
@@ -236,27 +253,32 @@
 
 @media (max-width: 480px) {
   .social-media-panel {
-    bottom: max(8px, env(safe-area-inset-bottom, 0px) + 4px) !important;
-    padding: 6px 8px;
+    bottom: max(10px, env(safe-area-inset-bottom, 0px) + 6px) !important;
+    padding: 6px 10px;
     gap: 6px;
-    max-width: calc(100vw - var(--space-sm)) !important;
-    inset: auto auto max(8px, env(safe-area-inset-bottom, 0px) + 4px) 50% !important;
+    max-width: calc(100vw - 12px) !important;
     min-height: 44px;
     /* Force maximum compatibility */
     border-radius: 22px;
+    /* Ensure centering even with browser quirks */
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    right: auto !important;
   }
-  
+
   .social-icon,
   .scroll-arrow {
     width: 32px;
     height: 32px;
   }
-  
+
   .social-icon svg {
     width: 16px;
     height: 16px;
   }
-  
+
   .scroll-arrow svg {
     width: 18px;
     height: 18px;
@@ -265,26 +287,25 @@
 
 @media (max-width: 360px) {
   .social-media-panel {
-    bottom: max(6px, env(safe-area-inset-bottom, 0px) + 2px) !important;
-    padding: 4px 6px;
+    bottom: max(8px, env(safe-area-inset-bottom, 0px) + 4px) !important;
+    padding: 4px 8px;
     gap: 4px;
-    max-width: calc(100vw - 16px) !important; /* Minimal margins */
-    inset: auto auto max(6px, env(safe-area-inset-bottom, 0px) + 2px) 50% !important;
+    max-width: calc(100vw - 8px) !important; /* Minimal margins */
     min-height: 40px;
     border-radius: 20px;
   }
-  
+
   .social-icon,
   .scroll-arrow {
     width: 30px;
     height: 30px;
   }
-  
+
   .social-icon svg {
     width: 14px;
     height: 14px;
   }
-  
+
   .scroll-arrow svg {
     width: 16px;
     height: 16px;
@@ -297,26 +318,25 @@
 
 @media (max-width: 320px) {
   .social-media-panel {
-    bottom: max(4px, env(safe-area-inset-bottom, 0px)) !important;
-    padding: 3px 4px;
+    bottom: max(6px, env(safe-area-inset-bottom, 0px) + 2px) !important;
+    padding: 3px 6px;
     gap: 3px;
-    max-width: calc(100vw - 12px) !important;
-    inset: auto auto max(4px, env(safe-area-inset-bottom, 0px)) 50% !important;
+    max-width: calc(100vw - 6px) !important;
     min-height: 36px;
     border-radius: 18px;
   }
-  
+
   .social-icon,
   .scroll-arrow {
     width: 28px;
     height: 28px;
   }
-  
+
   .social-icon svg {
     width: 12px;
     height: 12px;
   }
-  
+
   .scroll-arrow svg {
     width: 14px;
     height: 14px;
@@ -332,10 +352,10 @@
 @media screen {
   .social-media-panel {
     /* Force visibility and proper positioning on all screens */
-    min-width: 280px !important;
-    max-width: min(400px, calc(100vw - 16px)) !important;
     white-space: nowrap !important;
     overflow: visible !important;
+    /* Prevent any layout shifts */
+    contain: layout !important;
   }
 }
 
@@ -345,10 +365,12 @@ html .social-media-panel,
 #root .social-media-panel,
 * .social-media-panel {
   position: fixed !important;
-  bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-md)) !important;
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px) + 0.75rem) !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   z-index: 1000 !important;
+  /* Ensure it's never affected by parent overflow */
+  contain: none !important;
 }
 
 .social-icon,
@@ -356,12 +378,37 @@ html .social-media-panel,
   /* Ensure icons maintain their size and don't overflow */
   flex-shrink: 0 !important;
   flex-grow: 0 !important;
+  /* Allow touch interaction */
+  touch-action: manipulation !important;
 }
 
 /* Viewport height fix for mobile browsers */
 @supports (-webkit-touch-callout: none) {
   .social-media-panel {
-    bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-md)) !important;
+    bottom: max(1rem, env(safe-area-inset-bottom, 0px) + 0.75rem) !important;
+  }
+
+  /* Dynamic viewport height support */
+  @media (max-width: 768px) {
+    .social-media-panel {
+      bottom: max(12px, env(safe-area-inset-bottom, 0px) + 8px) !important;
+    }
+  }
+}
+
+/* Ensure accessibility and interaction on mobile */
+@media (hover: none) and (pointer: coarse) {
+  .social-icon:hover,
+  .scroll-arrow:hover {
+    /* Reset hover effects on touch devices */
+    transform: none !important;
+  }
+
+  .social-icon:active,
+  .scroll-arrow:active {
+    /* Provide touch feedback */
+    transform: scale(0.95) !important;
+    opacity: 0.8 !important;
   }
 }
 
@@ -370,9 +417,9 @@ html .social-media-panel,
   .scroll-arrow {
     transition: none !important;
   }
-  
+
   .social-icon:hover,
   .scroll-arrow:hover {
     transform: none !important;
   }
-} 
+}

@@ -1,13 +1,13 @@
-import { Helmet } from 'react-helmet-async'
+import { Helmet } from "react-helmet-async";
 
 interface SEOHeadProps {
-  title?: string
-  description?: string
-  keywords?: string
-  ogImage?: string
-  ogType?: string
-  canonical?: string
-  structuredData?: object
+  title?: string;
+  description?: string;
+  keywords?: string;
+  ogImage?: string;
+  ogType?: string;
+  canonical?: string;
+  structuredData?: object;
 }
 
 const SEOHead = ({
@@ -17,7 +17,7 @@ const SEOHead = ({
   ogImage = "https://daanhessen.nl/og-image.jpg",
   ogType = "website",
   canonical = "https://daanhessen.nl",
-  structuredData
+  structuredData,
 }: SEOHeadProps) => {
   return (
     <Helmet>
@@ -25,22 +25,22 @@ const SEOHead = ({
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
-      
+
       {/* Open Graph Meta Tags */}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={canonical} />
       <meta property="og:image" content={ogImage} />
-      
+
       {/* Twitter Card Meta Tags */}
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
-      
+
       {/* Canonical URL */}
       <link rel="canonical" href={canonical} />
-      
+
       {/* Structured Data */}
       {structuredData && (
         <script type="application/ld+json">
@@ -48,7 +48,7 @@ const SEOHead = ({
         </script>
       )}
     </Helmet>
-  )
-}
+  );
+};
 
-export default SEOHead 
+export default SEOHead;

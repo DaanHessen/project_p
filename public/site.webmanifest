@@ -41,12 +41,7 @@
       "purpose": "any"
     }
   ],
-  "categories": [
-    "portfolio",
-    "developer",
-    "technology",
-    "education"
-  ],
+  "categories": ["portfolio", "developer", "technology", "education"],
   "screenshots": [
     {
       "src": "/screenshot-desktop.png",
@@ -61,4 +56,4 @@
       "form_factor": "narrow"
     }
   ]
-} 
+}
