@@ -536,7 +536,7 @@
 
   .ascii-text {
     font-size: clamp(0.35rem, 0.9vw, 0.45rem);
-    letter-spacing: 0.05px;
+    letter-spacing: 0;
     line-height: 1.0;
   }
 
@@ -592,7 +592,7 @@
 
   .ascii-text {
     font-size: clamp(0.3rem, 0.7vw, 0.35rem);
-    letter-spacing: 0.02px;
+    letter-spacing: 0;
     line-height: 1.0;
   }
 
@@ -627,8 +627,8 @@
 @media (min-width: 1024px) {
   .ascii-text {
     font-size: clamp(0.55rem, 1vw, 0.7rem);
-    letter-spacing: 0.15px;
-    line-height: 1.15;
+    letter-spacing: 0;
+    line-height: 1.0;
     /* Additional stability for desktop */
     transform: translateZ(0);
     will-change: auto;

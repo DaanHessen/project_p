@@ -61,14 +61,15 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
               <pre className="ascii-text">
 {projectsAsciiArt}
               </pre>
-              <motion.p 
+              {/* we removed the description because it was too ugly */}
+              {/* <motion.p 
                 className="ascii-description"
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: currentPage === 2 ? 1 : 0, y: currentPage === 2 ? 0 : 15 }}
                 transition={{ delay: currentPage === 2 ? 0.15 : 0, duration: 0.2 }}
               >
                 View my projects, check the source code, or see what I've been working on. Also includes various school-related projects.
-              </motion.p>
+              </motion.p> */}
             </motion.div>
           </div>
 
