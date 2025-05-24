@@ -2,7 +2,7 @@
 
 .social-media-panel {
   position: fixed !important;
-  bottom: max(var(--space-xl), env(safe-area-inset-bottom, 0px) + var(--space-md)); /* Safe area support */
+  bottom: max(var(--space-xl), env(safe-area-inset-bottom, 0px) + var(--space-lg)); /* Increased bottom margin */
   left: 50% !important;
   transform: translateX(-50%) !important;
   display: flex;
@@ -30,6 +30,9 @@
   margin: 0 !important;
   right: auto !important;
   translate: none !important;
+  /* Ensure always visible */
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Social Icons - Simplified and Optimized */
@@ -184,7 +187,7 @@
 /* Enhanced Responsive Design - Mobile First */
 @media (max-width: 1024px) {
   .social-media-panel {
-    bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-sm));
+    bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-md));
     padding: var(--space-sm) var(--space-md);
     gap: var(--space-sm);
     max-width: calc(100vw - var(--space-xl));
@@ -209,7 +212,7 @@
 
 @media (max-width: 768px) {
   .social-media-panel {
-    bottom: max(var(--space-md), env(safe-area-inset-bottom, 0px) + var(--space-xs));
+    bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-sm)); /* Increased spacing */
     padding: var(--space-xs) var(--space-md);
     gap: var(--space-sm);
     max-width: calc(100vw - var(--space-lg));
@@ -228,7 +231,7 @@
 
 @media (max-width: 480px) {
   .social-media-panel {
-    bottom: max(var(--space-md), env(safe-area-inset-bottom, 0px) + var(--space-xs));
+    bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-sm)); /* Increased spacing */
     padding: var(--space-xs) var(--space-sm);
     gap: var(--space-xs);
     max-width: calc(100vw - var(--space-md));
@@ -255,7 +258,7 @@
 
 @media (max-width: 360px) {
   .social-media-panel {
-    bottom: max(var(--space-sm), env(safe-area-inset-bottom, 0px));
+    bottom: max(var(--space-md), env(safe-area-inset-bottom, 0px) + var(--space-xs)); /* Increased spacing */
     padding: var(--space-xs);
     gap: var(--space-xs);
     max-width: calc(100vw - var(--space-sm));
@@ -277,9 +280,8 @@
     height: 16px;
   }
 
-  /* Hide less essential icons on very small screens to prevent overflow */
-  .social-icon.coffee,
-  .social-icon.instagram {
+  /* Keep essential icons visible - only hide coffee on very small screens */
+  .social-icon.coffee {
     display: none;
   }
 }
@@ -287,7 +289,7 @@
 /* Ultra-small screens */
 @media (max-width: 320px) {
   .social-media-panel {
-    bottom: max(var(--space-xs), env(safe-area-inset-bottom, 0px));
+    bottom: max(var(--space-md), env(safe-area-inset-bottom, 0px) + var(--space-xs)); /* Increased spacing */
     padding: 4px;
     gap: 4px;
     max-width: calc(100vw - 16px);
@@ -309,10 +311,9 @@
     height: 14px;
   }
 
-  /* Show only essential icons */
+  /* Show only essential icons - keep more icons visible */
   .social-icon.coffee,
-  .social-icon.instagram,
-  .social-icon.linkedin {
+  .social-icon.instagram {
     display: none;
   }
 }
