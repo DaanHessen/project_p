@@ -156,11 +156,7 @@
   -webkit-user-select: none;
   user-select: none;
   min-width: 0;
-  /* Enforce consistent height for cards */
-  height: calc(100vh - 160px); /* full available showcase height */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  /* Remove fixed height to allow content-driven sizing */
 }
 
 /* Main Project Card - Enhanced Design */
@@ -179,7 +175,6 @@
     0 0 0 1px rgba(255, 255, 255, 0.03);
   transition: var(--transition-slow);
   transform-style: preserve-3d;
-  height: 100%; /* fill wrapper height */
   min-height: 400px;
   width: 100%;
   max-width: 100%;
