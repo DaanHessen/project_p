@@ -2,7 +2,6 @@ import './globals.css'
 import HomePage from './pages/HomePage'
 import ProjectsPage from './pages/ProjectsPage'
 import { useState, useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
 
 function App() {
   const [titleComplete, setTitleComplete] = useState(false)
@@ -126,45 +125,6 @@ function App() {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
-
-      {/* Page Indicator */}
-      <motion.div 
-        className="page-indicator gpu-accelerated"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: titleComplete ? 1 : 0, y: titleComplete ? 0 : 20 }}
-        transition={{ 
-          delay: titleComplete ? 0.3 : 0, 
-          duration: 0.3,
-          type: "spring",
-          stiffness: 200,
-          damping: 25
-        }}
-      >
-        {[1, 2].map((page) => (
-          <motion.div
-            key={page}
-            className={`indicator-dot ${currentPage === page ? 'active' : ''}`}
-            whileHover={{ 
-              scale: currentPage === page ? 1 : 1.2,
-              transition: { duration: 0.2, type: "spring", stiffness: 400 }
-            }}
-            whileTap={{ 
-              scale: 0.9,
-              transition: { duration: 0.1 }
-            }}
-            onClick={() => setCurrentPage(page)}
-            animate={{
-              scale: currentPage === page ? 1 : 1,
-            }}
-            transition={{ 
-              duration: 0.25,
-              type: "spring",
-              stiffness: 300,
-              damping: 25
-            }}
-          />
-        ))}
-      </motion.div>
     </div>
   )
 }

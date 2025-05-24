@@ -1,7 +1,7 @@
 import SocialMediaPanel from '../components/SocialMediaPanel'
 import './HomePage.css'
 import { motion } from 'framer-motion'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 interface HomePageProps {
   currentPage: number
@@ -11,6 +11,8 @@ interface HomePageProps {
 }
 
 const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete }: HomePageProps) => {
+  const [typingComplete, setTypingComplete] = useState(false)
+  
   const description = `I'm Daan Hessen, 23 years old, with seven years of experience in the hospitality industry. While I gained valuable skills there, I discovered my true passion lies in technology. Two years ago, I started studying HBO-ICT at Hogeschool Utrecht, driven by my fascination with technology's rapid development and my curiosity about how things work. Currently focused on object-oriented programming through JavaScript, Java, and Python.`
 
   const asciiArt = `██████╗  █████╗  █████╗ ███╗   ██╗    ██╗  ██╗███████╗███████╗███████╗███████╗███╗   ██╗
@@ -20,11 +22,20 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
 ██████╔╝██║  ██║██║  ██║██║ ╚████║    ██║  ██║███████╗███████║███████║███████╗██║ ╚████║
 ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝    ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝`
 
-  // Immediately set title complete for faster loading
+  // Split ASCII art into lines for individual animation
+  const asciiLines = asciiArt.split('\n')
+
+  // Calculate total ASCII animation duration
+  const totalAsciiDuration = (asciiLines.length * 0.1) + (asciiLines[0].length * 0.003) + 0.6
+
   useEffect(() => {
-    const timer = setTimeout(() => setTitleComplete(true), 100)
+    const timer = setTimeout(() => {
+      setTitleComplete(true)
+      // Set typing complete right after ASCII animation finishes
+      setTimeout(() => setTypingComplete(true), totalAsciiDuration * 1000)
+    }, 100)
     return () => clearTimeout(timer)
-  }, [setTitleComplete])
+  }, [setTitleComplete, totalAsciiDuration])
 
   const handleArrowClick = () => {
     if (currentPage === 1) {
@@ -48,44 +59,90 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
         initial={false}
         animate={{
           y: currentPage >= 2 ? '-100vh' : '0vh',
-          scale: currentPage >= 2 ? 0.98 : 1
+          scale: currentPage >= 2 ? 0.95 : 1
         }}
         transition={{
           type: "spring",
           stiffness: 200,
-          damping: 25,
+          damping: 30,
           mass: 0.8
         }}
       >
         <div className="content-container">
           <div className="main-content">
             <motion.div 
-              className="ascii-art"
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ 
-                duration: 0.2, 
-                ease: "easeOut" 
-              }}
+              className="ascii-art-section"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
             >
               <pre className="ascii-text">
-{asciiArt}
+                {asciiLines.map((line, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ 
+                      duration: 0.6,
+                      delay: index * 0.1,
+                      ease: [0.25, 0.46, 0.45, 0.94]
+                    }}
+                    style={{ 
+                      display: 'block',
+                      transformOrigin: 'center',
+                    }}
+                  >
+                    {line.split('').map((char, charIndex) => (
+                      <motion.span
+                        key={charIndex}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{
+                          duration: 0.02,
+                          delay: (index * 0.1) + (charIndex * 0.003),
+                          ease: "easeOut"
+                        }}
+                        style={{ display: 'inline-block' }}
+                      >
+                        {char}
+                      </motion.span>
+                    ))}
+                  </motion.div>
+                ))}
               </pre>
             </motion.div>
 
-
-            
             <motion.div 
-              className="description"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              className="description-section"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: typingComplete ? 1 : 0, y: typingComplete ? 0 : 30 }}
               transition={{ 
-                duration: 0.2, 
+                duration: 0.8, 
                 delay: 0.2,
                 ease: "easeOut" 
               }}
             >
-              {description}
+              <p className="description-text">{description}</p>
+            </motion.div>
+
+            <motion.div 
+              className="cta-section"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: typingComplete ? 1 : 0, y: typingComplete ? 0 : 30 }}
+              transition={{ 
+                duration: 0.8, 
+                delay: 0.4,
+                ease: "easeOut" 
+              }}
+            >
+              <motion.button
+                className="cta-button"
+                onClick={() => setCurrentPage(2)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                View My Work
+              </motion.button>
             </motion.div>
           </div>
         </div>

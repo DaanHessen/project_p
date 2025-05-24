@@ -2,7 +2,7 @@
   {
     "id": "basebymonsees",
     "title": "Base by Monsees",
-    "description": "Website for a new streetfood bar, located at Biersteeg 10, Hilversum. It's been built with React, my first time using it. The website features a menu, a way to make reservations, and more.",
+    "description": "A modern, responsive website for a new streetfood bar located at Biersteeg 10, Hilversum. Features an interactive menu system, online reservation functionality, and seamless user experience. Built with React and TypeScript, showcasing modern web development practices.",
     "tech": ["React", "TypeScript", "Tailwind CSS", "Vercel"],
     "image": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&crop=center",
     "liveUrl": "https://basebymonsees.nl",
@@ -11,8 +11,8 @@
   {
     "id": "portfolio",
     "title": "Personal Portfolio",
-    "description": "The website you're currently viewing! My second project I've built using React.",
-    "tech": ["React", "Vite", "TypeScript", "Vercel"],
+    "description": "The website you're currently viewing! A sophisticated, animated portfolio showcasing modern web development skills. Features custom ASCII art animations, smooth page transitions, and a fully responsive design built with React, Vite, and TypeScript.",
+    "tech": ["React", "Vite", "TypeScript", "Framer Motion", "Vercel"],
     "image": "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=400&h=250&fit=crop&crop=center",
     "liveUrl": "https://daanhessen.nl",
     "codeUrl": "https://github.com/DaanHessen/project_p"

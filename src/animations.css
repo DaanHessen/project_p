@@ -253,5 +253,5 @@
     transition-duration: 0.01ms !important;
   }
   
-    .fade-in,  .fade-in-delayed,  .fade-in-final,  .fade-in-late,  .slide-up,  .slide-up-delayed {    animation: none;    opacity: 1;    transform: none;  }    /* Ensure page indicator maintains proper positioning */  .page-indicator {    transform: translateX(-50%) !important;  }
+    .fade-in,  .fade-in-delayed,  .fade-in-final,  .fade-in-late,  .slide-up,  .slide-up-delayed {    animation: none;    opacity: 1;    transform: none;  }
 } 
