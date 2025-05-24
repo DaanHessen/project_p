@@ -1,24 +1,30 @@
 /* Social Media Panel - Enhanced Mobile-First Design */
 
-.social-media-panel {
+.social-media-panel-wrapper {
   position: fixed !important;
   bottom: max(1rem, env(safe-area-inset-bottom, 0px) + 0.75rem) !important;
   left: 0 !important;
   right: 0 !important;
-  margin: 0 auto !important;
+  display: flex;
+  justify-content: center;
+  pointer-events: none; /* allow wrapper to pass pointer events to inner panel */
+  z-index: 1000 !important;
+}
+
+.social-media-panel {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  z-index: 1000;
   background: var(--gradient-card);
   padding: 0.5rem 1rem;
   border-radius: 9999px;
   border: 1px solid rgba(59, 130, 246, 0.25);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  box-shadow: 
+  box-shadow:
     var(--shadow-xl),
     var(--shadow-blue),
     var(--shadow-inset);
@@ -27,12 +33,9 @@
   min-width: fit-content;
   will-change: transform, opacity;
   transform-origin: center bottom !important;
-  /* Force centering - override any inherited styles */
-  margin: 0 !important;
-  right: auto !important;
-  /* Ensure always visible and contained */
   visibility: visible !important;
   opacity: 1 !important;
+  pointer-events: auto;
 }
 
 /* Social Icons - Simplified and Optimized */
@@ -344,12 +347,7 @@ body .social-media-panel,
 html .social-media-panel,
 #root .social-media-panel,
 * .social-media-panel {
-  position: fixed !important;
-  bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-md)) !important;
-  left: 0 !important;
-  right: 0 !important;
-  margin: 0 auto !important;
-  z-index: 1000 !important;
+  /* No positioning here; wrapper handles it */
 }
 
 .social-icon,

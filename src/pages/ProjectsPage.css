@@ -146,7 +146,7 @@
 
 /* Project Card Wrapper - Enhanced Touch */
 .project-card-wrapper {
-  grid-column: 1 / -1; /* Make it span all columns if grid is kept simple */
+  grid-column: 1 / -1;
   width: 100%;
   max-width: 1200px;
   justify-self: center;
@@ -156,9 +156,11 @@
   -webkit-user-select: none;
   user-select: none;
   min-width: 0;
-  /* Ensure full visibility on mobile */
-  height: fit-content;
-  overflow: visible;
+  /* Enforce consistent height for cards */
+  height: calc(100vh - 160px); /* full available showcase height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Main Project Card - Enhanced Design */
@@ -177,7 +179,7 @@
     0 0 0 1px rgba(255, 255, 255, 0.03);
   transition: var(--transition-slow);
   transform-style: preserve-3d;
-  height: fit-content;
+  height: 100%; /* fill wrapper height */
   min-height: 400px;
   width: 100%;
   max-width: 100%;
