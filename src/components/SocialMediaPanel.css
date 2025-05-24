@@ -24,10 +24,7 @@
   border: 1px solid rgba(59, 130, 246, 0.25);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  box-shadow:
-    var(--shadow-xl),
-    var(--shadow-blue),
-    var(--shadow-inset);
+  box-shadow: var(--shadow-xl), var(--shadow-blue), var(--shadow-inset);
   width: auto;
   max-width: calc(100vw - 2rem) !important;
   min-width: fit-content;
@@ -65,13 +62,17 @@
 }
 
 .social-icon::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 70%
+  );
   opacity: 0;
   transition: var(--transition-normal);
   border-radius: var(--radius-lg);
@@ -96,13 +97,17 @@
 .social-icon.linkedin:hover {
   color: #0077b5;
   background: rgba(0, 119, 181, 0.15);
-  box-shadow: var(--shadow-md), 0 8px 25px rgba(0, 119, 181, 0.4);
+  box-shadow:
+    var(--shadow-md),
+    0 8px 25px rgba(0, 119, 181, 0.4);
 }
 
 .social-icon.instagram:hover {
   color: #e4405f;
   background: rgba(228, 64, 95, 0.15);
-  box-shadow: var(--shadow-md), 0 8px 25px rgba(228, 64, 95, 0.4);
+  box-shadow:
+    var(--shadow-md),
+    0 8px 25px rgba(228, 64, 95, 0.4);
 }
 
 .social-icon.email:hover {
@@ -114,13 +119,17 @@
 .social-icon.phone:hover {
   color: var(--accent-green);
   background: rgba(16, 185, 129, 0.15);
-  box-shadow: var(--shadow-md), 0 8px 25px rgba(16, 185, 129, 0.4);
+  box-shadow:
+    var(--shadow-md),
+    0 8px 25px rgba(16, 185, 129, 0.4);
 }
 
 .social-icon.github:hover {
   color: var(--text-primary);
   background: rgba(255, 255, 255, 0.15);
-  box-shadow: var(--shadow-md), 0 8px 25px rgba(255, 255, 255, 0.25);
+  box-shadow:
+    var(--shadow-md),
+    0 8px 25px rgba(255, 255, 255, 0.25);
 }
 
 .social-icon.coffee:hover {
@@ -150,7 +159,7 @@
 }
 
 .scroll-arrow::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -190,24 +199,29 @@
 /* Enhanced Responsive Design - Mobile First */
 @media (max-width: 1024px) {
   .social-media-panel {
-    bottom: max(var(--space-md), env(safe-area-inset-bottom, 0px) + var(--space-sm)) !important;
+    bottom: max(
+      var(--space-md),
+      env(safe-area-inset-bottom, 0px) + var(--space-sm)
+    ) !important;
     padding: var(--space-sm) var(--space-md);
     gap: var(--space-sm);
     max-width: calc(100vw - var(--space-lg)) !important;
-    inset: auto auto max(var(--space-md), env(safe-area-inset-bottom, 0px) + var(--space-sm)) 50% !important;
+    inset: auto auto
+      max(var(--space-md), env(safe-area-inset-bottom, 0px) + var(--space-sm))
+      50% !important;
   }
-  
+
   .social-icon,
   .scroll-arrow {
     width: 38px;
     height: 38px;
   }
-  
+
   .social-icon svg {
     width: 18px;
     height: 18px;
   }
-  
+
   .scroll-arrow svg {
     width: 20px;
     height: 20px;
@@ -216,22 +230,26 @@
 
 @media (max-width: 768px) {
   .social-media-panel {
-    bottom: max(var(--space-sm), env(safe-area-inset-bottom, 0px) + 8px) !important;
+    bottom: max(
+      var(--space-sm),
+      env(safe-area-inset-bottom, 0px) + 8px
+    ) !important;
     padding: 8px var(--space-sm);
     gap: 8px;
     max-width: calc(100vw - var(--space-md)) !important;
-    inset: auto auto max(var(--space-sm), env(safe-area-inset-bottom, 0px) + 8px) 50% !important;
+    inset: auto auto
+      max(var(--space-sm), env(safe-area-inset-bottom, 0px) + 8px) 50% !important;
     /* Ensure it's always visible on screen */
     min-height: 48px;
   }
-  
+
   .social-icon,
   .scroll-arrow {
     width: 36px;
     height: 36px;
     flex-shrink: 0; /* Prevent shrinking */
   }
-  
+
   .scroll-arrow {
     margin-left: 6px;
   }
@@ -248,18 +266,18 @@
     /* Force maximum compatibility */
     border-radius: 22px;
   }
-  
+
   .social-icon,
   .scroll-arrow {
     width: 32px;
     height: 32px;
   }
-  
+
   .social-icon svg {
     width: 16px;
     height: 16px;
   }
-  
+
   .scroll-arrow svg {
     width: 18px;
     height: 18px;
@@ -276,18 +294,18 @@
     min-height: 40px;
     border-radius: 20px;
   }
-  
+
   .social-icon,
   .scroll-arrow {
     width: 30px;
     height: 30px;
   }
-  
+
   .social-icon svg {
     width: 14px;
     height: 14px;
   }
-  
+
   .scroll-arrow svg {
     width: 16px;
     height: 16px;
@@ -308,18 +326,18 @@
     min-height: 36px;
     border-radius: 18px;
   }
-  
+
   .social-icon,
   .scroll-arrow {
     width: 28px;
     height: 28px;
   }
-  
+
   .social-icon svg {
     width: 12px;
     height: 12px;
   }
-  
+
   .scroll-arrow svg {
     width: 14px;
     height: 14px;
@@ -360,7 +378,10 @@ html .social-media-panel,
 /* Viewport height fix for mobile browsers */
 @supports (-webkit-touch-callout: none) {
   .social-media-panel {
-    bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px) + var(--space-md)) !important;
+    bottom: max(
+      var(--space-lg),
+      env(safe-area-inset-bottom, 0px) + var(--space-md)
+    ) !important;
   }
 }
 
@@ -369,9 +390,9 @@ html .social-media-panel,
   .scroll-arrow {
     transition: none !important;
   }
-  
+
   .social-icon:hover,
   .scroll-arrow:hover {
     transform: none !important;
   }
-} 
+}

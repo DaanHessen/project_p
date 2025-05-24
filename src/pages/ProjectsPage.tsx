@@ -3,6 +3,7 @@ import "./ProjectsPage.css";
 import { motion, AnimatePresence } from "framer-motion";
 import LivePreview from "../components/LivePreview";
 import SEOHead from "../components/SEOHead";
+import { createProjectCardTitle, createProjectsTitle } from "../utils/asciiFont";
 
 interface Project {
   id: string;
@@ -26,12 +27,8 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
   const touchEndRef = useRef({ x: 0, y: 0 });
   const isDraggingRef = useRef(false);
 
-  const projectsAsciiArt = `██████╗ ██████╗  ██████╗      ██╗███████╗ ██████╗████████╗███████╗
-██╔══██╗██╔══██╗██╔═══██╗     ██║██╔════╝██╔════╝╚══██╔══╝██╔════╝
-██████╔╝██████╔╝██║   ██║     ██║█████╗  ██║        ██║   ███████╗
-██╔═══╝ ██╔══██╗██║   ██║██   ██║██╔══╝  ██║        ██║   ╚════██║
-██║     ██║  ██║╚██████╔╝╚█████╔╝███████╗╚██████╗   ██║   ███████║
-╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚════╝ ╚══════╝ ╚═════╝   ╚═╝   ╚══════╝`;
+  // Generate PROJECTS title using ANSI Shadow font
+  const projectsAsciiArt = createProjectsTitle();
 
   useEffect(() => {
     import("../data/projects.json")
@@ -77,8 +74,8 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
       const deltaX = Math.abs(touch.clientX - touchStartRef.current.x);
       const deltaY = Math.abs(touch.clientY - touchStartRef.current.y);
 
-      // If horizontal swipe is detected, prevent page scrolling
-      if (deltaX > deltaY && deltaX > 20) {
+      // Only prevent default if horizontal swipe is clearly dominant
+      if (deltaX > 30 && deltaX > deltaY * 2) {
         e.preventDefault();
         isDraggingRef.current = true;
       }
@@ -88,13 +85,13 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
 
   const handleTouchEnd = useCallback(
     (e: React.TouchEvent) => {
-      if (currentPage !== 2 || !isDraggingRef.current) return;
+      if (currentPage !== 2) return;
 
       const deltaX = touchEndRef.current.x - touchStartRef.current.x;
       const deltaY = Math.abs(touchEndRef.current.y - touchStartRef.current.y);
 
-      // Only navigate if horizontal swipe is dominant and significant
-      if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > deltaY) {
+      // Navigate if horizontal swipe is significant and more dominant than vertical
+      if (Math.abs(deltaX) > 80 && Math.abs(deltaX) > deltaY * 1.5) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -266,14 +263,21 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                         {/* Card Header - Improved alignment */}
                         <div className="project-header">
                           <div className="project-meta">
-                            <motion.h2
-                              className="project-title"
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.05, duration: 0.3 }}
-                            >
-                              {projects[currentProjectIndex].title}
-                            </motion.h2>
+                            <div className="ascii-title-container">
+                              <motion.pre
+                                className="project-title ascii-title"
+                                key={projects[currentProjectIndex].id}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{
+                                  delay: 0.05,
+                                  duration: 0.4,
+                                  ease: "easeOut",
+                                }}
+                              >
+                                {createProjectCardTitle(projects[currentProjectIndex].id)}
+                              </motion.pre>
+                            </div>
                             <motion.div
                               className="project-counter"
                               initial={{ opacity: 0 }}

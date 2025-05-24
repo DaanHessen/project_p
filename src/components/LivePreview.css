@@ -9,12 +9,14 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   transition: var(--transition-slow);
   box-shadow: var(--shadow-lg);
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .live-preview-container:hover {
   border-color: rgba(255, 255, 255, 0.12);
   box-shadow: var(--shadow-xl);
-  transform: translateY(-2px);
+  transform: translate3d(0, -2px, 0);
 }
 
 /* Enhanced Preview Header */
@@ -97,6 +99,8 @@
   overflow: hidden;
   margin: 0;
   padding: 0;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 /* Enhanced Preview Loading */
@@ -177,6 +181,8 @@
   display: block;
   margin: 0;
   padding: 0;
+  will-change: opacity;
+  transform: translateZ(0);
 }
 
 .preview-iframe.loaded {
@@ -198,6 +204,8 @@
   transition: var(--transition-normal);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  will-change: opacity;
+  transform: translateZ(0);
 }
 
 .overlay-content {
