@@ -33,21 +33,43 @@
 /* ASCII Art */
 .ascii-art {
   margin-bottom: 1.8rem;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Hide scrollbar but allow scrolling on mobile if needed */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* Prevent text selection to avoid glitches */
+  user-select: none;
+  -webkit-user-select: none;
+  /* Improve rendering performance */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.ascii-art::-webkit-scrollbar {
+  display: none;
 }
 
 .ascii-text {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(1rem, 3vw, 1.8rem);
+  font-family: 'Courier New', 'Monaco', 'Andale Mono', 'Lucida Console', 'JetBrains Mono', monospace;
+  font-size: clamp(0.4rem, 1.2vw, 0.8rem);
   color: var(--accent-primary);
   margin: 0;
-  line-height: 1;
+  line-height: 1.0;
   text-shadow: 
     0 0 20px rgba(59, 130, 246, 0.5),
     0 0 40px rgba(59, 130, 246, 0.3),
     0 0 60px rgba(59, 130, 246, 0.1);
-  letter-spacing: 1px;
-  font-weight: 600;
+  letter-spacing: 0;
+  font-weight: 400;
   filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.8));
+  white-space: pre;
+  overflow-x: auto;
+  overflow-y: hidden;
+  word-break: keep-all;
+  text-rendering: optimizeSpeed;
+  font-variant-ligatures: none;
 }
 
 /* Title - Enhanced elegance */
@@ -97,7 +119,9 @@
   }
   
   .ascii-text {
-    font-size: clamp(0.8rem, 4vw, 1.4rem);
+    font-size: clamp(0.35rem, 1vw, 0.55rem);
+    letter-spacing: 0;
+    line-height: 1.0;
   }
 }
 
@@ -107,8 +131,9 @@
   }
   
   .ascii-text {
-    font-size: clamp(0.6rem, 5vw, 1rem);
-    letter-spacing: 0.5px;
+    font-size: clamp(0.3rem, 0.8vw, 0.45rem);
+    letter-spacing: 0;
+    line-height: 1.0;
   }
   
   .title {
@@ -137,8 +162,9 @@
   }
   
   .ascii-text {
-    font-size: clamp(0.5rem, 6vw, 0.9rem);
-    letter-spacing: 0.3px;
+    font-size: clamp(0.25rem, 0.7vw, 0.35rem);
+    letter-spacing: 0;
+    line-height: 1.0;
   }
   
   .title {
@@ -152,6 +178,19 @@
   .description {
     font-size: clamp(0.85rem, 4vw, 1rem);
     line-height: 1.5;
+  }
+}
+
+/* Desktop optimizations for better ASCII rendering */
+@media (min-width: 1024px) {
+  .ascii-text {
+    font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+    letter-spacing: 0;
+    line-height: 1.0;
+    /* Additional stability for desktop */
+    transform: translateZ(0);
+    will-change: auto;
+    backface-visibility: hidden;
   }
 }
 

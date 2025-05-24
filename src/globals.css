@@ -79,7 +79,7 @@ body {
   -ms-user-select: none;
   user-select: none;
   /* Optimize touch performance */
-  touch-action: pan-y; /* Allow vertical panning for swipe gestures */
+  touch-action: manipulation; /* Allow all touch gestures for our custom handling */
   -webkit-overflow-scrolling: touch;
 }
 

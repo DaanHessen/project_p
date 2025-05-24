@@ -92,18 +92,41 @@
 .ascii-title-section {
   margin-bottom: 1.5rem;
   text-align: center;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Hide scrollbar but allow scrolling on mobile if needed */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* Prevent text selection to avoid glitches */
+  user-select: none;
+  -webkit-user-select: none;
+  /* Improve rendering performance */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.ascii-title-section::-webkit-scrollbar {
+  display: none;
 }
 
 .ascii-text {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
-  line-height: 1.2;
+  font-family: 'Courier New', 'Monaco', 'Andale Mono', 'Lucida Console', 'JetBrains Mono', monospace;
+  font-size: clamp(0.4rem, 1vw, 0.65rem);
+  line-height: 1.0;
   color: var(--accent-primary);
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-weight: 400;
+  letter-spacing: 0;
   text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
   margin: 0;
   white-space: pre;
+  overflow-x: auto;
+  overflow-y: hidden;
+  word-break: keep-all;
+  text-rendering: optimizeSpeed;
+  user-select: none;
+  -webkit-user-select: none;
+  font-variant-ligatures: none;
 }
 
 .ascii-description {
@@ -512,7 +535,9 @@
   }
 
   .ascii-text {
-    font-size: 0.55rem;
+    font-size: clamp(0.35rem, 0.9vw, 0.45rem);
+    letter-spacing: 0.05px;
+    line-height: 1.0;
   }
 
   .header-prompt {
@@ -566,7 +591,9 @@
   }
 
   .ascii-text {
-    font-size: 0.45rem;
+    font-size: clamp(0.3rem, 0.7vw, 0.35rem);
+    letter-spacing: 0.02px;
+    line-height: 1.0;
   }
 
   .ascii-description {
@@ -593,5 +620,18 @@
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+/* Desktop optimizations for better ASCII rendering */
+@media (min-width: 1024px) {
+  .ascii-text {
+    font-size: clamp(0.55rem, 1vw, 0.7rem);
+    letter-spacing: 0.15px;
+    line-height: 1.15;
+    /* Additional stability for desktop */
+    transform: translateZ(0);
+    will-change: auto;
+    backface-visibility: hidden;
   }
 } 

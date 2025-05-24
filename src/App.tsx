@@ -11,7 +11,7 @@ function App() {
   const scrollCooldown = 800 // ms
   const touchStartY = useRef(0)
   const touchEndY = useRef(0)
-  const minSwipeDistance = 50 // Minimum distance for a swipe to be registered
+  const minSwipeDistance = 30 // Reduced minimum distance for better responsiveness
 
   useEffect(() => {
     const handleScroll = (e: WheelEvent) => {
@@ -61,6 +61,8 @@ function App() {
     }
 
     const handleTouchStart = (e: TouchEvent) => {
+      // Reset end position to ensure clean start
+      touchEndY.current = 0
       touchStartY.current = e.touches[0].clientY
     }
 
