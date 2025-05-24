@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import './ProjectsPage.css'
 import { motion, AnimatePresence } from 'framer-motion'
 import LivePreview from '../components/LivePreview'
@@ -21,6 +21,9 @@ interface ProjectsPageProps {
 const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
   const [projects, setProjects] = useState<Project[]>([])
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0)
+  const touchStartRef = useRef({ x: 0, y: 0 })
+  const touchEndRef = useRef({ x: 0, y: 0 })
+  const isDraggingRef = useRef(false)
 
   const projectsAsciiArt = `██████╗ ██████╗  ██████╗      ██╗███████╗ ██████╗████████╗███████╗
 ██╔══██╗██╔══██╗██╔═══██╗     ██║██╔════╝██╔════╝╚══██╔══╝██╔════╝
@@ -46,6 +49,53 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
       }
     })
   }, [projects.length])
+
+  // Enhanced touch handling for project navigation
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (currentPage !== 2) return
+    
+    const touch = e.touches[0]
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY }
+    touchEndRef.current = { x: touch.clientX, y: touch.clientY }
+    isDraggingRef.current = false
+  }, [currentPage])
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (currentPage !== 2) return
+    
+    const touch = e.touches[0]
+    touchEndRef.current = { x: touch.clientX, y: touch.clientY }
+    
+    const deltaX = Math.abs(touch.clientX - touchStartRef.current.x)
+    const deltaY = Math.abs(touch.clientY - touchStartRef.current.y)
+    
+    // If horizontal swipe is detected, prevent page scrolling
+    if (deltaX > deltaY && deltaX > 20) {
+      e.preventDefault()
+      isDraggingRef.current = true
+    }
+  }, [currentPage])
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (currentPage !== 2 || !isDraggingRef.current) return
+    
+    const deltaX = touchEndRef.current.x - touchStartRef.current.x
+    const deltaY = Math.abs(touchEndRef.current.y - touchStartRef.current.y)
+    
+    // Only navigate if horizontal swipe is dominant and significant
+    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > deltaY) {
+      e.preventDefault()
+      e.stopPropagation()
+      
+      if (deltaX > 0) {
+        navigateProject('prev')
+      } else {
+        navigateProject('next')
+      }
+    }
+    
+    isDraggingRef.current = false
+  }, [currentPage, navigateProject])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -127,8 +177,13 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                 </svg>
               </motion.button>
 
-              {/* Main project card */}
-              <div className="project-card-wrapper">
+              {/* Main project card with enhanced touch handling */}
+              <div 
+                className="project-card-wrapper"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`project-${currentProjectIndex}`}
@@ -143,7 +198,7 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                   >
                     {projects[currentProjectIndex] && (
                       <>
-                        {/* Card Header */}
+                        {/* Card Header - Improved alignment */}
                         <div className="project-header">
                           <div className="project-meta">
                             <motion.h2 
@@ -174,7 +229,7 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                           </motion.p>
                         </div>
 
-                        {/* Live Preview - Prominent */}
+                        {/* Live Preview - Enhanced */}
                         <motion.div 
                           className="project-preview"
                           initial={{ opacity: 0, scale: 0.98 }}
@@ -204,7 +259,7 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                           </div>
                         </motion.div>
 
-                        {/* Tech Stack & Actions */}
+                        {/* Tech Stack & Actions - Improved layout */}
                         <motion.div 
                           className="project-footer"
                           initial={{ opacity: 0, y: 20 }}
@@ -247,6 +302,23 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                               </svg>
                               <span>Source Code</span>
                             </motion.a>
+                          </div>
+                        </motion.div>
+
+                        {/* Mobile swipe indicator */}
+                        <motion.div 
+                          className="mobile-swipe-indicator"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: currentPage === 2 ? 1 : 0 }}
+                          transition={{ delay: 1, duration: 0.5 }}
+                        >
+                          <span className="swipe-text">Swipe left/right to navigate projects</span>
+                          <div className="swipe-animation">
+                            <motion.div 
+                              className="swipe-dot"
+                              animate={{ x: [-10, 10, -10] }}
+                              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                            />
                           </div>
                         </motion.div>
                       </>

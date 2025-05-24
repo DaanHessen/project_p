@@ -6,42 +6,88 @@
 @import './animations.css';
 
 :root {
-  /* Core color palette with vibrant blue and brown accents */
+  /* Enhanced core color palette with more refined tones */
   --bg-primary: #0a0c14;
   --bg-secondary: #1a1d29;
   --bg-tertiary: #242938;
-  --text-primary: #f0f2f5;
-  --text-secondary: #c9d1d9;
-  --text-tertiary: #8b95a8;
-  --text-comment: #7c8591;
+  --bg-card: #1f2333;
+  --bg-elevated: #252a3b;
+  
+  /* Refined text colors with better contrast */
+  --text-primary: #f5f7fa;
+  --text-secondary: #d0d6e1;
+  --text-tertiary: #9ca3b4;
+  --text-muted: #7c8591;
+  --text-comment: #6b7280;
+  
+  /* Enhanced accent colors */
   --accent-primary: #3b82f6;
   --accent-secondary: #60a5fa;
+  --accent-tertiary: #93c5fd;
   --accent-warm: #f59e0b;
   --accent-brown: #d2b48c;
   --accent-brown-dark: #a0845c;
   --accent-green: #10b981;
   --accent-red: #ef4444;
   --accent-cyan: #06b6d4;
+  --accent-purple: #8b5cf6;
   --cursor-color: #3b82f6;
   
-  /* Shadows and effects */
+  /* Enhanced shadows and effects for better depth */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.19), 0 6px 10px rgba(0, 0, 0, 0.23);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.4), 0 15px 12px rgba(0, 0, 0, 0.22);
   --shadow-primary: 0 8px 32px rgba(0, 0, 0, 0.4);
   --shadow-blue: 0 8px 32px rgba(59, 130, 246, 0.25);
+  --shadow-blue-glow: 0 0 20px rgba(59, 130, 246, 0.4);
   --shadow-warm: 0 4px 16px rgba(245, 158, 11, 0.3);
   --shadow-brown: 0 4px 16px rgba(210, 180, 140, 0.2);
   --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.15);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.1);
   
-  /* Gradients */
+  /* Enhanced gradients with more sophisticated color combinations */
   --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   --gradient-secondary: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
-  --gradient-text: linear-gradient(135deg, #f0f2f5 0%, #3b82f6 50%, #60a5fa 100%);
+  --gradient-text: linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
   --gradient-warm: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
   --gradient-brown: linear-gradient(135deg, #d2b48c 0%, #a0845c 100%);
+  --gradient-card: linear-gradient(145deg, rgba(31, 35, 51, 0.8), rgba(26, 29, 41, 0.6));
+  --gradient-border: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+  --gradient-bg-subtle: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.025) 0%, transparent 70%);
   
-  /* Typography - Using JetBrains Mono as primary for hacker/typewriter feel */
+  /* Enhanced spacing scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  
+  /* Enhanced border radius scale */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+  
+  /* Enhanced typography with better scales */
   font-family: 'JetBrains Mono', 'Space Grotesk', monospace, -apple-system, BlinkMacSystemFont, sans-serif;
-  line-height: 1.6;
+  line-height: 1.65;
   font-weight: 400;
+  letter-spacing: 0.01em;
+  
+  /* Enhanced font sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
   
   color-scheme: dark;
   color: var(--text-primary);
@@ -54,6 +100,12 @@
   
   /* Enable font ligatures for coding feel */
   font-feature-settings: "liga" 1, "calt" 1;
+  
+  /* Enhanced transitions */
+  --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Global reset and base styles */
