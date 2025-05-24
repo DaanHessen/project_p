@@ -1,16 +1,14 @@
-import SocialMediaPanel from '../components/SocialMediaPanel'
+import SEOHead from '../components/SEOHead'
 import './HomePage.css'
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 
 interface HomePageProps {
   currentPage: number
-  setCurrentPage: (page: number) => void
-  titleComplete: boolean
   setTitleComplete: (complete: boolean) => void
 }
 
-const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete }: HomePageProps) => {
+const HomePage = ({ currentPage, setTitleComplete }: HomePageProps) => {
   const [typingComplete, setTypingComplete] = useState(false)
   
   const description = `I'm Daan Hessen, 23 years old, with seven years of experience in the hospitality industry. While I gained valuable skills there, I discovered my true passion lies in technology. Two years ago, I started studying HBO-ICT at Hogeschool Utrecht, driven by my fascination with technology's rapid development and my curiosity about how things work. Currently focused on object-oriented programming through JavaScript, Java, and Python.`
@@ -22,11 +20,29 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
 ██████╔╝██║  ██║██║  ██║██║ ╚████║    ██║  ██║███████╗███████║███████║███████╗██║ ╚████║
 ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝    ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝`
 
-  // Split ASCII art into lines for individual animation
-  const asciiLines = asciiArt.split('\n')
+  // Memoize ASCII lines to prevent recalculation
+  const asciiLines = useMemo(() => asciiArt.split('\n'), [asciiArt])
 
-  // Reduced total ASCII animation duration for faster transition
-  const totalAsciiDuration = (asciiLines.length * 0.08) + (asciiLines[0].length * 0.002) + 0.3
+  // Simplified animation duration
+  const totalAsciiDuration = 1.5 // Fixed duration instead of calculation
+
+  // SEO structured data
+  const homePageStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "mainEntity": {
+      "@type": "Person",
+      "name": "Daan Hessen",
+      "description": description,
+      "url": "https://daanhessen.nl",
+      "image": "https://daanhessen.nl/og-image.jpg",
+      "jobTitle": "Full Stack Developer",
+      "worksFor": {
+        "@type": "EducationalOrganization",
+        "name": "Hogeschool Utrecht"
+      }
+    }
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -37,22 +53,14 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
     return () => clearTimeout(timer)
   }, [setTitleComplete, totalAsciiDuration])
 
-  const handleArrowClick = () => {
-    if (currentPage === 1) {
-      setCurrentPage(2)
-    } else {
-      setCurrentPage(1)
-    }
-  }
-
   return (
     <>
-      {titleComplete && (
-        <SocialMediaPanel 
-          currentPage={currentPage}
-          onArrowClick={handleArrowClick}
-        />
-      )}
+      <SEOHead
+        title="Daan Hessen - Full Stack Developer & HBO-ICT Student | Portfolio"
+        description="Daan Hessen - 23-year-old Full Stack Developer and HBO-ICT student at Hogeschool Utrecht. Specialized in React, TypeScript, JavaScript, Java, and Python. View my portfolio of modern web applications and projects."
+        canonical="https://daanhessen.nl"
+        structuredData={homePageStructuredData}
+      />
 
       <motion.div 
         className={`page page-one page-transition ${currentPage >= 2 ? 'page-slide-up' : ''}`}
@@ -80,38 +88,19 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
                 {asciiLines.map((line, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, y: 5, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ 
                       duration: 0.4,
-                      delay: index * 0.08, // Reduced delay between lines
-                      ease: [0.25, 0.46, 0.45, 0.94]
+                      delay: index * 0.1,
+                      ease: "easeOut"
                     }}
                     style={{ 
                       display: 'block',
-                      transformOrigin: 'center',
-                      fontKerning: 'none', // Improved character alignment
+                      fontKerning: 'none'
                     }}
                   >
-                    {line.split('').map((char, charIndex) => (
-                      <motion.span
-                        key={charIndex}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{
-                          duration: 0.015, // Faster character animation
-                          delay: (index * 0.08) + (charIndex * 0.002), // Reduced character delay
-                          ease: "easeOut"
-                        }}
-                        style={{ 
-                          display: 'inline-block',
-                          fontKerning: 'none', // Prevent font kerning issues
-                          letterSpacing: 0 // Ensure consistent spacing
-                        }}
-                      >
-                        {char}
-                      </motion.span>
-                    ))}
+                    {line}
                   </motion.div>
                 ))}
               </pre>
@@ -123,7 +112,6 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
               animate={{ opacity: typingComplete ? 1 : 0, y: typingComplete ? 0 : 20 }}
               transition={{ 
                 duration: 0.6, 
-                delay: 0, // No additional delay
                 ease: "easeOut" 
               }}
             >

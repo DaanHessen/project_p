@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import './ProjectsPage.css'
 import { motion, AnimatePresence } from 'framer-motion'
 import LivePreview from '../components/LivePreview'
+import SEOHead from '../components/SEOHead'
 
 interface Project {
   id: string
@@ -129,6 +130,43 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
         mass: 0.8
       }}
     >
+      <SEOHead 
+        title={`Projects - ${projects[currentProjectIndex]?.title || 'Daan Hessen Portfolio'}`}
+        description={`Explore ${projects[currentProjectIndex]?.title || 'my projects'}: ${projects[currentProjectIndex]?.description || 'A collection of web applications and projects showcasing modern development technologies including React, TypeScript, and more.'}`}
+        canonical={`https://daanhessen.nl/projects${projects[currentProjectIndex] ? `/${projects[currentProjectIndex].id}` : ''}`}
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "Projects Portfolio",
+          "description": "Portfolio of web development projects by Daan Hessen",
+          "url": "https://daanhessen.nl/projects",
+          "author": {
+            "@type": "Person",
+            "name": "Daan Hessen"
+          },
+          "mainEntity": projects[currentProjectIndex] ? {
+            "@type": "CreativeWork",
+            "name": projects[currentProjectIndex].title,
+            "description": projects[currentProjectIndex].description,
+            "url": projects[currentProjectIndex].liveUrl,
+            "author": {
+              "@type": "Person",
+              "name": "Daan Hessen"
+            },
+            "programmingLanguage": projects[currentProjectIndex].tech,
+            "codeRepository": projects[currentProjectIndex].codeUrl
+          } : {
+            "@type": "ItemList",
+            "itemListElement": projects.map((project, index) => ({
+              "@type": "CreativeWork",
+              "position": index + 1,
+              "name": project.title,
+              "description": project.description,
+              "url": project.liveUrl
+            }))
+          }
+        }}
+      />
       <div className="content-container">
         <div className="projects-content">
           <motion.div 

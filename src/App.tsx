@@ -1,105 +1,94 @@
 import './globals.css'
 import HomePage from './pages/HomePage'
 import ProjectsPage from './pages/ProjectsPage'
-import { useState, useEffect, useRef } from 'react'
+import SocialMediaPanel from './components/SocialMediaPanel'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
 function App() {
   const [titleComplete, setTitleComplete] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const lastScrollTime = useRef(0)
-  const scrollCooldown = 600 // Reduced for better responsiveness
+  const scrollCooldown = 500 // Reduced cooldown for better responsiveness
   const touchStartY = useRef(0)
-  const touchEndY = useRef(0)
   const touchStartX = useRef(0)
-  const minSwipeDistance = 40 // Increased for more deliberate gestures
+  const minSwipeDistance = 50 // More deliberate gestures
   const isHandlingTouch = useRef(false)
-  const touchStartTime = useRef(0)
+
+  // Memoized navigation function to prevent recreating on every render
+  const handlePageNavigation = useCallback((direction: 'up' | 'down') => {
+    const now = Date.now()
+    if (now - lastScrollTime.current < scrollCooldown) {
+      return
+    }
+    
+    lastScrollTime.current = now
+    
+    if (direction === 'down' && currentPage === 1) {
+      setCurrentPage(2)
+    } else if (direction === 'up' && currentPage === 2) {
+      setCurrentPage(1)
+    }
+  }, [currentPage, scrollCooldown])
+
+  const handleArrowClick = useCallback(() => {
+    if (currentPage === 1) {
+      setCurrentPage(2)
+    } else {
+      setCurrentPage(1)
+    }
+  }, [currentPage])
 
   useEffect(() => {
     const handleScroll = (e: WheelEvent) => {
       e.preventDefault()
-      
-      const now = Date.now()
-      if (now - lastScrollTime.current < scrollCooldown) {
-        return
-      }
-      
-      lastScrollTime.current = now
-      
-      if (e.deltaY > 0) {
-        // Scrolling down
-        if (currentPage === 1) {
-          setCurrentPage(2)
-        }
-      } else if (e.deltaY < 0) {
-        // Scrolling up - FIXED: Allow going back from projects page
-        if (currentPage === 2) {
-          setCurrentPage(1)
-        }
-      }
+      handlePageNavigation(e.deltaY > 0 ? 'down' : 'up')
     }
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      const now = Date.now()
-      if (now - lastScrollTime.current < scrollCooldown) {
-        return
-      }
-      
       if (e.key === 'ArrowDown' || e.key === ' ') {
         e.preventDefault()
-        lastScrollTime.current = now
-        if (currentPage === 1) {
-          setCurrentPage(2)
-        }
+        handlePageNavigation('down')
       } else if (e.key === 'ArrowUp' || e.key === 'Escape') {
         e.preventDefault()
-        lastScrollTime.current = now
-        if (currentPage === 2) {
-          setCurrentPage(1)
-        }
+        handlePageNavigation('up')
       }
     }
 
     const handleTouchStart = (e: TouchEvent) => {
-      // Get the target element
       const target = e.target as Element
       
-      // Allow project navigation to handle horizontal swipes
-      if (currentPage === 2 && (
-        target.closest('.project-card-wrapper') || 
-        target.closest('.project-card') ||
-        target.closest('.nav-arrow')
-      )) {
+      // Don't interfere with social media panel or project navigation
+      if (target.closest('.social-media-panel') || 
+          target.closest('.project-card-wrapper') || 
+          target.closest('.nav-arrow')) {
         return
       }
       
-      touchEndY.current = 0
-      touchStartY.current = e.touches[0].clientY
-      touchStartX.current = e.touches[0].clientX
-      touchStartTime.current = Date.now()
+      const touch = e.touches[0]
+      touchStartY.current = touch.clientY
+      touchStartX.current = touch.clientX
       isHandlingTouch.current = false
     }
 
     const handleTouchMove = (e: TouchEvent) => {
       const target = e.target as Element
       
-      // Don't interfere with project navigation
-      if (currentPage === 2 && (
-        target.closest('.project-card-wrapper') || 
-        target.closest('.project-card') ||
-        target.closest('.nav-arrow')
-      )) {
+      // Don't interfere with UI elements
+      if (target.closest('.social-media-panel') || 
+          target.closest('.project-card-wrapper') || 
+          target.closest('.nav-arrow')) {
         return
       }
+      
+      if (!touchStartY.current) return
       
       const touch = e.touches[0]
       const deltaY = Math.abs(touch.clientY - touchStartY.current)
       const deltaX = Math.abs(touch.clientX - touchStartX.current)
       
-      // Only handle if it's primarily a vertical swipe and significant
-      if (deltaY > deltaX && deltaY > 30) {
+      // Mark as handling if it's primarily vertical and significant
+      if (deltaY > deltaX && deltaY > 20) {
         isHandlingTouch.current = true
-        // Prevent default scrolling when we're handling the gesture
         e.preventDefault()
       }
     }
@@ -107,55 +96,45 @@ function App() {
     const handleTouchEnd = (e: TouchEvent) => {
       const target = e.changedTouches[0].target as Element
       
-      // Don't interfere with project navigation
-      if (currentPage === 2 && (
-        target.closest('.project-card-wrapper') || 
-        target.closest('.project-card') ||
-        target.closest('.nav-arrow')
-      )) {
+      // Don't interfere with UI elements
+      if (target.closest('.social-media-panel') || 
+          target.closest('.project-card-wrapper') || 
+          target.closest('.nav-arrow')) {
         return
       }
       
-      if (!touchStartY.current || !isHandlingTouch.current) return
-      
-      touchEndY.current = e.changedTouches[0].clientY
-      const swipeDistance = touchStartY.current - touchEndY.current
-      const swipeDistanceX = Math.abs(e.changedTouches[0].clientX - touchStartX.current)
-      const touchDuration = Date.now() - touchStartTime.current
-      
-      const now = Date.now()
-      if (now - lastScrollTime.current < scrollCooldown) {
+      if (!touchStartY.current || !isHandlingTouch.current) {
+        // Reset values
+        touchStartY.current = 0
+        touchStartX.current = 0
+        isHandlingTouch.current = false
         return
       }
-
-      // Only navigate if vertical swipe is dominant, significant, and not too fast
-      if (Math.abs(swipeDistance) > minSwipeDistance && 
-          Math.abs(swipeDistance) > swipeDistanceX &&
-          touchDuration > 100) { // Prevent accidental swipes
+      
+      const touch = e.changedTouches[0]
+      const swipeDistanceY = touchStartY.current - touch.clientY
+      const swipeDistanceX = Math.abs(touch.clientX - touchStartX.current)
+      
+      // Only navigate if vertical swipe is dominant and significant
+      if (Math.abs(swipeDistanceY) > minSwipeDistance && 
+          Math.abs(swipeDistanceY) > swipeDistanceX) {
         
-        lastScrollTime.current = now
-        
-        if (swipeDistance > 0) {
-          // Swiped up - go to next page
-          if (currentPage === 1) {
-            setCurrentPage(2)
-          }
+        if (swipeDistanceY > 0) {
+          // Swiped up - go to projects
+          handlePageNavigation('down')
         } else {
-          // Swiped down - go to previous page (FIXED: Allow going back)
-          if (currentPage === 2) {
-            setCurrentPage(1)
-          }
+          // Swiped down - go to home
+          handlePageNavigation('up')
         }
       }
       
-      // Reset touch values
+      // Reset values
       touchStartY.current = 0
-      touchEndY.current = 0
       touchStartX.current = 0
-      touchStartTime.current = 0
       isHandlingTouch.current = false
     }
 
+    // Use passive: false only where needed for preventDefault
     window.addEventListener('wheel', handleScroll, { passive: false })
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('touchstart', handleTouchStart, { passive: true })
@@ -169,14 +148,12 @@ function App() {
       window.removeEventListener('touchmove', handleTouchMove)
       window.removeEventListener('touchend', handleTouchEnd)
     }
-  }, [currentPage, scrollCooldown])
+  }, [handlePageNavigation])
 
   return (
     <div className="app-container">
       <HomePage 
         currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        titleComplete={titleComplete}
         setTitleComplete={setTitleComplete}
       />
       
@@ -184,6 +161,14 @@ function App() {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
+      
+      {/* Always render social media panel */}
+      {titleComplete && (
+        <SocialMediaPanel 
+          currentPage={currentPage}
+          onArrowClick={handleArrowClick}
+        />
+      )}
     </div>
   )
 }
