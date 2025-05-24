@@ -31,7 +31,7 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
   useEffect(() => {
     const timer = setTimeout(() => {
       setTitleComplete(true)
-      // Set typing complete right after ASCII animation finishes
+      // Set typing complete immediately when ASCII animation finishes
       setTimeout(() => setTypingComplete(true), totalAsciiDuration * 1000)
     }, 100)
     return () => clearTimeout(timer)
@@ -118,31 +118,11 @@ const HomePage = ({ currentPage, setCurrentPage, titleComplete, setTitleComplete
               animate={{ opacity: typingComplete ? 1 : 0, y: typingComplete ? 0 : 30 }}
               transition={{ 
                 duration: 0.8, 
-                delay: 0.2,
+                delay: 0,
                 ease: "easeOut" 
               }}
             >
               <p className="description-text">{description}</p>
-            </motion.div>
-
-            <motion.div 
-              className="cta-section"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: typingComplete ? 1 : 0, y: typingComplete ? 0 : 30 }}
-              transition={{ 
-                duration: 0.8, 
-                delay: 0.4,
-                ease: "easeOut" 
-              }}
-            >
-              <motion.button
-                className="cta-button"
-                onClick={() => setCurrentPage(2)}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                View My Work
-              </motion.button>
             </motion.div>
           </div>
         </div>

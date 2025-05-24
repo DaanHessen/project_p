@@ -92,6 +92,7 @@
   position: relative;
   z-index: 10;
   align-self: center;
+  transform: translateY(-20px);
 }
 
 .nav-arrow:disabled {
@@ -183,7 +184,7 @@
 .project-meta {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 1rem;
   gap: 2rem;
 }
@@ -222,6 +223,7 @@
   margin: 0;
   font-family: 'Space Grotesk', sans-serif;
   opacity: 0.9;
+  text-align: left;
 }
 
 /* Project Preview */
@@ -293,7 +295,7 @@
 .project-footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-top: 2rem;
   gap: 2rem;
   position: relative;
@@ -303,6 +305,9 @@
 /* Tech Stack */
 .tech-stack {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .tech-label {
@@ -342,6 +347,7 @@
 .project-actions {
   display: flex;
   gap: 1rem;
+  align-items: flex-start;
 }
 
 .action-button {
@@ -488,7 +494,7 @@
   }
   
   .project-counter {
-    align-self: flex-end;
+    align-self: flex-start;
   }
 }
 
