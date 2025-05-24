@@ -81,20 +81,19 @@
 .project-showcase {
   flex: 1;
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center; /* This ensures arrows and card are properly aligned */
+  grid-template-columns: 1fr; /* Simplified as arrows are now absolute */
+  align-items: center;
   justify-items: center;
   gap: var(--space-lg);
-  position: relative;
+  position: relative; /* Ensure this is relative for absolute children */
   min-height: 0;
-  max-height: calc(100vh - 160px); /* Adjusted for better mobile spacing */
-  margin-top: 0; /* Removed negative margin */
+  max-height: calc(100vh - 160px);
+  margin-top: 0;
   width: 100%;
-  /* Performance optimization */
   transform: translateZ(0);
 }
 
-/* Navigation Arrows - Fixed desktop alignment */
+/* Navigation Arrows - Absolute Positioning */
 .nav-arrow {
   width: 54px;
   height: 54px;
@@ -108,12 +107,11 @@
   justify-content: center;
   transition: var(--transition-spring);
   backdrop-filter: blur(12px);
-  position: relative;
+  position: absolute; /* Changed from relative/default */
+  top: 50%;
+  transform: translateY(-50%); /* Vertical centering */
   z-index: 10;
-  align-self: center; /* Key fix: ensures arrows align with card center */
-  transform: translateY(0);
   box-shadow: var(--shadow-md);
-  /* Performance optimization */
   will-change: transform, opacity;
 }
 
@@ -139,20 +137,16 @@
 }
 
 .nav-arrow-prev {
-  grid-column: 1;
-  justify-self: end;
-  margin-right: var(--space-sm);
+  left: var(--space-md); /* Position from left */
 }
 
 .nav-arrow-next {
-  grid-column: 3;
-  justify-self: start;
-  margin-left: var(--space-sm);
+  right: var(--space-md); /* Position from right */
 }
 
 /* Project Card Wrapper - Enhanced Touch */
 .project-card-wrapper {
-  grid-column: 2;
+  grid-column: 1 / -1; /* Make it span all columns if grid is kept simple */
   width: 100%;
   max-width: 1200px;
   justify-self: center;

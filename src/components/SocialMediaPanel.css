@@ -29,7 +29,6 @@
   /* Force centering - override any inherited styles */
   margin: 0 !important;
   right: auto !important;
-  translate: none !important;
   /* Ensure always visible and contained */
   visibility: visible !important;
   opacity: 1 !important;
