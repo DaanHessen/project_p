@@ -1,7 +1,7 @@
 import SEOHead from "../components/SEOHead";
 import "./HomePage.css";
 import { motion } from "framer-motion";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 interface HomePageProps {
   currentPage: number;
@@ -9,8 +9,6 @@ interface HomePageProps {
 }
 
 const HomePage = ({ currentPage, setTitleComplete }: HomePageProps) => {
-  const [typingComplete, setTypingComplete] = useState(false);
-
   const description = `I'm Daan Hessen, 23 years old, with seven years of experience in the hospitality industry. While I gained valuable skills there, I discovered my true passion lies in technology. Two years ago, I started studying HBO-ICT at Hogeschool Utrecht, driven by my fascination with technology's rapid development and my curiosity about how things work. Currently focused on object-oriented programming through JavaScript, Java, and Python.`;
 
   const asciiArt = `██████╗  █████╗  █████╗ ███╗   ██╗    ██╗  ██╗███████╗███████╗███████╗███████╗███╗   ██╗
@@ -22,9 +20,6 @@ const HomePage = ({ currentPage, setTitleComplete }: HomePageProps) => {
 
   // Memoize ASCII lines to prevent recalculation
   const asciiLines = useMemo(() => asciiArt.split("\n"), [asciiArt]);
-
-  // Simplified animation duration
-  const totalAsciiDuration = 1.5; // Fixed duration instead of calculation
 
   // SEO structured data
   const homePageStructuredData = {
@@ -45,13 +40,8 @@ const HomePage = ({ currentPage, setTitleComplete }: HomePageProps) => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setTitleComplete(true);
-      // Reduced delay before showing description
-      setTimeout(() => setTypingComplete(true), totalAsciiDuration * 1000);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [setTitleComplete, totalAsciiDuration]);
+    setTitleComplete(true);
+  }, [setTitleComplete]);
 
   return (
     <>
@@ -67,13 +57,10 @@ const HomePage = ({ currentPage, setTitleComplete }: HomePageProps) => {
         initial={false}
         animate={{
           y: currentPage >= 2 ? "-100vh" : "0vh",
-          scale: currentPage >= 2 ? 0.95 : 1,
         }}
         transition={{
-          type: "spring",
-          stiffness: 200,
-          damping: 30,
-          mass: 0.8,
+          duration: 0.5,
+          ease: "easeInOut",
         }}
       >
         <div className="content-container">
@@ -109,12 +96,10 @@ const HomePage = ({ currentPage, setTitleComplete }: HomePageProps) => {
             <motion.div
               className="description-section"
               initial={{ opacity: 0, y: 20 }}
-              animate={{
-                opacity: typingComplete ? 1 : 0,
-                y: typingComplete ? 0 : 20,
-              }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.6,
+                delay: 0.8, // Delay to allow ASCII art animation to complete first
                 ease: "easeOut",
               }}
             >

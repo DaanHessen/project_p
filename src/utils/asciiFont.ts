@@ -1,4 +1,4 @@
-import figlet from 'figlet';
+import figlet from "figlet";
 
 // Pre-generated ASCII art for common cases to ensure they work
 const preGeneratedAscii = {
@@ -8,7 +8,7 @@ const preGeneratedAscii = {
 ██╔═══╝ ██╔══██╗██║   ██║██   ██║██╔══╝  ██║        ██║   ╚════██║
 ██║     ██║  ██║╚██████╔╝╚█████╔╝███████╗╚██████╗   ██║   ███████║
 ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚════╝ ╚══════╝ ╚═════╝   ╚═╝   ╚══════╝`,
-  
+
   BASE: `██████╗  █████╗ ███████╗███████╗
 ██╔══██╗██╔══██╗██╔════╝██╔════╝
 ██████╔╝███████║███████╗█████╗  
@@ -21,7 +21,7 @@ const preGeneratedAscii = {
 ██████╔╝██║   ██║██████╔╝   ██║   █████╗  ██║   ██║██║     ██║██║   ██║
 ██╔═══╝ ██║   ██║██╔══██╗   ██║   ██╔══╝  ██║   ██║██║     ██║██║   ██║
 ██║     ╚██████╔╝██║  ██║   ██║   ██║     ╚██████╔╝███████╗██║╚██████╔╝
-╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝      ╚═════╝ ╚══════╝╚═╝ ╚═════╝`
+╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝      ╚═════╝ ╚══════╝╚═╝ ╚═════╝`,
 };
 
 /**
@@ -38,12 +38,12 @@ export const textToAnsiShadow = (text: string): Promise<string> => {
       return;
     }
 
-    figlet.text(text, { font: 'ANSI Shadow' }, (err, result) => {
+    figlet.text(text, { font: "ANSI Shadow" }, (err, result) => {
       if (err) {
         reject(err);
         return;
       }
-      resolve(result || '');
+      resolve(result || "");
     });
   });
 };
@@ -61,10 +61,10 @@ export const textToAnsiShadowSync = (text: string): string => {
   }
 
   try {
-    const result = figlet.textSync(text, { font: 'ANSI Shadow' });
+    const result = figlet.textSync(text, { font: "ANSI Shadow" });
     return result;
   } catch (error) {
-    console.error('Error converting text to ANSI Shadow:', error);
+    console.error("Error converting text to ANSI Shadow:", error);
     return text; // Fallback to original text
   }
 };
@@ -77,27 +77,27 @@ export const textToAnsiShadowSync = (text: string): string => {
 export const createProjectCardTitle = (projectId: string): string => {
   // Handle special cases for better display
   let displayText: string;
-  
+
   switch (projectId.toLowerCase()) {
-    case 'basebymonsees':
+    case "basebymonsees":
       // Shorter version for better fitting
-      displayText = 'BASE';
+      displayText = "BASE";
       break;
-    case 'portfolio':
-      displayText = 'PORTFOLIO';
+    case "portfolio":
+      displayText = "PORTFOLIO";
       break;
     default:
       // General processing for other project IDs
       displayText = projectId
-        .replace(/([a-z])([A-Z])/g, '$1 $2') // Add space before capitals
-        .replace(/[-_]/g, ' ') // Replace hyphens and underscores with spaces
+        .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space before capitals
+        .replace(/[-_]/g, " ") // Replace hyphens and underscores with spaces
         .toUpperCase(); // Convert to uppercase for better ASCII art
   }
 
   // If the text is too long, try to abbreviate or split it
   if (displayText.length > 15) {
     // For very long names, try to use just the first significant word
-    const words = displayText.split(' ');
+    const words = displayText.split(" ");
     if (words.length > 1 && words[0].length >= 4) {
       displayText = words[0];
     }
@@ -111,5 +111,5 @@ export const createProjectCardTitle = (projectId: string): string => {
  * @returns The ASCII art string for "PROJECTS"
  */
 export const createProjectsTitle = (): string => {
-  return textToAnsiShadowSync('PROJECTS');
-}; 
+  return textToAnsiShadowSync("PROJECTS");
+};

@@ -1,14 +1,14 @@
 import "./globals.css";
 import HomePage from "./pages/HomePage";
 import ProjectsPage from "./pages/ProjectsPage";
-import SocialMediaPanel from "./components/SocialMediaPanel";
+import PixelSocialMedia from "./components/PixelSocialMedia";
 import { useState, useEffect, useRef, useCallback } from "react";
 
 function App() {
   const [titleComplete, setTitleComplete] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const lastScrollTime = useRef(0);
-  const scrollCooldown = 500; // Reduced cooldown for better responsiveness
+  const scrollCooldown = 300; // Reduced cooldown for better responsiveness and coordination
   const touchStartY = useRef(0);
   const touchStartX = useRef(0);
   const minSwipeDistance = 50; // More deliberate gestures
@@ -43,8 +43,39 @@ function App() {
 
   useEffect(() => {
     const handleScroll = (e: WheelEvent) => {
-      e.preventDefault();
-      handlePageNavigation(e.deltaY > 0 ? "down" : "up");
+      // Get absolute values for comparison
+      const absDeltaX = Math.abs(e.deltaX);
+      const absDeltaY = Math.abs(e.deltaY);
+      const target = e.target as Element;
+
+      // Check if we're inside a project area
+      const isInProjectArea =
+        target.closest(".project-card-wrapper") ||
+        target.closest(".project-showcase");
+
+      // Check if this is a horizontal gesture (trackpad two-finger swipe left/right)
+      if (absDeltaX > absDeltaY * 1.5 && absDeltaX > 20) {
+        // Horizontal trackpad gesture detected
+        if (isInProjectArea && currentPage === 2) {
+          // When in project area on projects page, let ProjectsPage handle it
+          // We don't prevent default here to allow ProjectsPage wheel handler to run
+          return;
+        } else {
+          // Outside project area or not on projects page - handle page navigation
+          e.preventDefault();
+          if (e.deltaX > 0) {
+            // Swiped left (go to projects page)
+            handlePageNavigation("down");
+          } else {
+            // Swiped right (go to home page)
+            handlePageNavigation("up");
+          }
+        }
+      } else if (absDeltaY > 15) {
+        // Traditional vertical scroll or trackpad up/down - always handle page navigation
+        e.preventDefault();
+        handlePageNavigation(e.deltaY > 0 ? "down" : "up");
+      }
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -60,10 +91,10 @@ function App() {
     const handleTouchStart = (e: TouchEvent) => {
       const target = e.target as Element;
 
-      // Don't interfere with social media panel or project navigation
+      // Don't interfere with pixel social media or navigation arrows
+      // BUT DO allow page navigation from within project cards when swiping vertically
       if (
-        target.closest(".social-media-panel") ||
-        target.closest(".project-card-wrapper") ||
+        target.closest(".pixel-social-container") ||
         target.closest(".nav-arrow")
       ) {
         return;
@@ -78,10 +109,10 @@ function App() {
     const handleTouchMove = (e: TouchEvent) => {
       const target = e.target as Element;
 
-      // Don't interfere with UI elements
+      // Don't interfere with pixel social media or navigation arrows
+      // BUT DO allow page navigation from within project cards when swiping vertically
       if (
-        target.closest(".social-media-panel") ||
-        target.closest(".project-card-wrapper") ||
+        target.closest(".pixel-social-container") ||
         target.closest(".nav-arrow")
       ) {
         return;
@@ -93,20 +124,32 @@ function App() {
       const deltaY = Math.abs(touch.clientY - touchStartY.current);
       const deltaX = Math.abs(touch.clientX - touchStartX.current);
 
-      // Mark as handling if it's primarily vertical and significant
-      if (deltaY > deltaX && deltaY > 20) {
-        isHandlingTouch.current = true;
-        e.preventDefault();
+      // Check if we're inside a project card
+      const isInProjectCard = target.closest(".project-card-wrapper");
+
+      if (isInProjectCard) {
+        // Inside project card: only handle if it's a clear vertical gesture
+        // This allows horizontal swipes to be handled by the project navigation
+        if (deltaY > deltaX * 2 && deltaY > 30) {
+          isHandlingTouch.current = true;
+          e.preventDefault();
+        }
+      } else {
+        // Outside project card: handle vertical gestures normally
+        if (deltaY > deltaX && deltaY > 20) {
+          isHandlingTouch.current = true;
+          e.preventDefault();
+        }
       }
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
       const target = e.changedTouches[0].target as Element;
 
-      // Don't interfere with UI elements
+      // Don't interfere with pixel social media or navigation arrows
+      // BUT DO allow page navigation from within project cards when swiping vertically
       if (
-        target.closest(".social-media-panel") ||
-        target.closest(".project-card-wrapper") ||
+        target.closest(".pixel-social-container") ||
         target.closest(".nav-arrow")
       ) {
         return;
@@ -124,17 +167,41 @@ function App() {
       const swipeDistanceY = touchStartY.current - touch.clientY;
       const swipeDistanceX = Math.abs(touch.clientX - touchStartX.current);
 
-      // Only navigate if vertical swipe is dominant and significant
-      if (
-        Math.abs(swipeDistanceY) > minSwipeDistance &&
-        Math.abs(swipeDistanceY) > swipeDistanceX
-      ) {
-        if (swipeDistanceY > 0) {
-          // Swiped up - go to projects
-          handlePageNavigation("down");
-        } else {
-          // Swiped down - go to home
-          handlePageNavigation("up");
+      // Check if we're inside a project card
+      const isInProjectCard = target.closest(".project-card-wrapper");
+
+      if (isInProjectCard) {
+        // Inside project card: require a more deliberate vertical swipe
+        // This prevents conflict with horizontal project navigation
+        if (
+          Math.abs(swipeDistanceY) > 80 &&
+          Math.abs(swipeDistanceY) > swipeDistanceX * 2
+        ) {
+          if (swipeDistanceY > 0) {
+            // Swiped up - go to projects (if on home) or stay
+            if (currentPage === 1) {
+              handlePageNavigation("down");
+            }
+          } else {
+            // Swiped down - go to home (if on projects) or stay
+            if (currentPage === 2) {
+              handlePageNavigation("up");
+            }
+          }
+        }
+      } else {
+        // Outside project card: normal navigation thresholds
+        if (
+          Math.abs(swipeDistanceY) > minSwipeDistance &&
+          Math.abs(swipeDistanceY) > swipeDistanceX
+        ) {
+          if (swipeDistanceY > 0) {
+            // Swiped up - go to projects
+            handlePageNavigation("down");
+          } else {
+            // Swiped down - go to home
+            handlePageNavigation("up");
+          }
         }
       }
 
@@ -158,7 +225,7 @@ function App() {
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [handlePageNavigation]);
+  }, [handlePageNavigation, currentPage]);
 
   return (
     <div className="app-container">
@@ -166,9 +233,9 @@ function App() {
 
       <ProjectsPage currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
-      {/* Always render social media panel */}
+      {/* Render pixel social media only on homepage */}
       {titleComplete && (
-        <SocialMediaPanel
+        <PixelSocialMedia
           currentPage={currentPage}
           onArrowClick={handleArrowClick}
         />

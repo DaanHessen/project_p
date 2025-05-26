@@ -168,6 +168,13 @@ body {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   will-change: auto;
+  /* Prevent iOS Safari bouncing */
+  overscroll-behavior: none;
+  /* Improve mobile scrolling */
+  -webkit-overflow-scrolling: touch;
+  /* Ensure full viewport utilization */
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for modern browsers */
 }
 
 body::-webkit-scrollbar {
@@ -203,6 +210,10 @@ body::-webkit-scrollbar {
   will-change: auto;
   /* Optimize rendering */
   contain: layout style paint;
+  /* Enhanced mobile touch handling - allow both vertical and horizontal pan */
+  touch-action: pan-x pan-y;
+  /* Prevent iOS Safari bouncing */
+  overscroll-behavior: none;
 }
 
 .page {

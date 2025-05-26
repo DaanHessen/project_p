@@ -3,7 +3,10 @@ import "./ProjectsPage.css";
 import { motion, AnimatePresence } from "framer-motion";
 import LivePreview from "../components/LivePreview";
 import SEOHead from "../components/SEOHead";
-import { createProjectCardTitle, createProjectsTitle } from "../utils/asciiFont";
+import {
+  createProjectCardTitle,
+  createProjectsTitle,
+} from "../utils/asciiFont";
 
 interface Project {
   id: string;
@@ -26,6 +29,8 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
   const touchStartRef = useRef({ x: 0, y: 0 });
   const touchEndRef = useRef({ x: 0, y: 0 });
   const isDraggingRef = useRef(false);
+  const lastProjectNavTimeRef = useRef<number>(0);
+  const projectNavCooldown = 300; // ms
 
   // Generate PROJECTS title using ANSI Shadow font
   const projectsAsciiArt = createProjectsTitle();
@@ -74,8 +79,9 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
       const deltaX = Math.abs(touch.clientX - touchStartRef.current.x);
       const deltaY = Math.abs(touch.clientY - touchStartRef.current.y);
 
-      // Only prevent default if horizontal swipe is clearly dominant
-      if (deltaX > 30 && deltaX > deltaY * 2) {
+      // Only prevent default if horizontal swipe is clearly dominant and significant
+      // This allows the App-level vertical swipe handling to work
+      if (deltaX > 50 && deltaX > deltaY * 1.5) {
         e.preventDefault();
         isDraggingRef.current = true;
       }
@@ -91,7 +97,8 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
       const deltaY = Math.abs(touchEndRef.current.y - touchStartRef.current.y);
 
       // Navigate if horizontal swipe is significant and more dominant than vertical
-      if (Math.abs(deltaX) > 80 && Math.abs(deltaX) > deltaY * 1.5) {
+      // Use higher thresholds to avoid conflicts with page navigation
+      if (Math.abs(deltaX) > 100 && Math.abs(deltaX) > deltaY * 2) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -120,8 +127,48 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
       }
     };
 
+    const handleWheel = (e: WheelEvent) => {
+      if (currentPage !== 2) return;
+
+      const target = e.target as Element;
+      // Only handle wheel events when inside the project showcase area
+      const isInProjectArea =
+        target.closest(".project-showcase") ||
+        target.closest(".project-card-wrapper");
+
+      if (!isInProjectArea) return;
+
+      const absDeltaX = Math.abs(e.deltaX);
+      const absDeltaY = Math.abs(e.deltaY);
+
+      // Only handle horizontal wheel events for project navigation
+      // This allows vertical scrolling to be handled by App component for page navigation
+      if (absDeltaX > absDeltaY * 1.5 && absDeltaX > 25) {
+        const now = Date.now();
+        if (now - lastProjectNavTimeRef.current < projectNavCooldown) {
+          return;
+        }
+        lastProjectNavTimeRef.current = now;
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (e.deltaX > 0) {
+          // Horizontal swipe left - next project
+          navigateProject("next");
+        } else {
+          // Horizontal swipe right - previous project
+          navigateProject("prev");
+        }
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("wheel", handleWheel);
+    };
   }, [currentPage, navigateProject]);
 
   return (
@@ -130,13 +177,10 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
       initial={false}
       animate={{
         y: currentPage === 2 ? "0vh" : "100vh",
-        scale: currentPage === 2 ? 1 : 0.95,
       }}
       transition={{
-        type: "spring",
-        stiffness: 200,
-        damping: 30,
-        mass: 0.8,
+        duration: 0.5,
+        ease: "easeInOut",
       }}
     >
       <SEOHead
@@ -275,7 +319,9 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                                   ease: "easeOut",
                                 }}
                               >
-                                {createProjectCardTitle(projects[currentProjectIndex].id)}
+                                {createProjectCardTitle(
+                                  projects[currentProjectIndex].id,
+                                )}
                               </motion.pre>
                             </div>
                             <motion.div
