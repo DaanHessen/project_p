@@ -22,7 +22,7 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
       url: "https://linkedin.com/in/daanhessen",
       className: "linkedin",
       icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="pixel-svg">
+        <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
         </svg>
       ),
@@ -32,7 +32,7 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
       url: "https://instagram.com/daanhessen",
       className: "instagram",
       icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="pixel-svg">
+        <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
         </svg>
       ),
@@ -42,18 +42,8 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
       url: "mailto:daan@daanhessen.nl",
       className: "email",
       icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="pixel-svg">
+        <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-        </svg>
-      ),
-    },
-    {
-      name: "Phone",
-      url: "tel:+31612345678",
-      className: "phone",
-      icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="pixel-svg">
-          <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
         </svg>
       ),
     },
@@ -62,7 +52,7 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
       url: "https://github.com/DaanHessen",
       className: "github",
       icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="pixel-svg">
+        <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
         </svg>
       ),
@@ -72,7 +62,7 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
       url: "https://buymeacoffee.com/daanhessen",
       className: "coffee",
       icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="pixel-svg">
+        <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M18.5 3H6c-1.1 0-2 .9-2 2v5.71c0 3.83 2.95 7.18 6.78 7.29 3.96.12 7.22-3.06 7.22-7v-1h.5c1.93 0 3.5-1.57 3.5-3.5S20.43 3 18.5 3zM16 5v3H6V5h10zm2.5 3H18V5h.5c.83 0 1.5.67 1.5 1.5S19.33 8 18.5 8zM4 19h16v2H4z" />
         </svg>
       ),
@@ -81,7 +71,7 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
 
   return (
     <motion.div
-      className="pixel-social-container"
+      className="social-container"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
@@ -90,9 +80,9 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
         ease: "easeOut",
       }}
     >
-      {/* Social Media Grid */}
+      {/* Social Media Row */}
       <motion.div
-        className="pixel-social-grid"
+        className="social-row"
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{
@@ -107,7 +97,7 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`pixel-social-icon ${link.className}`}
+            className={`social-icon ${link.className}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -116,27 +106,26 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
               ease: "easeOut",
             }}
             whileHover={{
-              scale: 1.05,
-              y: -2,
+              scale: 1.1,
+              y: -3,
               transition: { duration: 0.2 },
             }}
             whileTap={{ scale: 0.95 }}
           >
-            <div className="pixel-icon-wrapper">{link.icon}</div>
-            <span className="pixel-label">{link.name}</span>
+            {link.icon}
           </motion.a>
         ))}
       </motion.div>
 
       {/* Scroll Arrow */}
       <motion.button
-        className="pixel-scroll-arrow"
+        className="scroll-arrow"
         onClick={onArrowClick}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{
           duration: 0.5,
-          delay: 2.2, // Appear after all social icons
+          delay: 2.1, // Appear after all social icons
           ease: "easeOut",
         }}
         whileHover={{
@@ -146,10 +135,10 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
         }}
         whileTap={{ scale: 0.95 }}
       >
-        <svg viewBox="0 0 24 24" fill="currentColor" className="arrow-svg">
+        <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M7.41 8.84L12 13.42l4.59-4.58L18 10.25l-6 6-6-6z" />
         </svg>
-        <span className="arrow-label">Explore Projects</span>
+        <span>Explore Projects</span>
       </motion.button>
     </motion.div>
   );
