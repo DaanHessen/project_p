@@ -1,4 +1,4 @@
-/* Brutalist-Minimalist Social Media Component - Cohesive Design */
+/* Enhanced Brutalist-Minimalist Social Media Component */
 
 .pixel-social-container {
   position: fixed;
@@ -16,7 +16,7 @@
   background: transparent;
 }
 
-/* Geometric Info Block - Matching Site Colors */
+/* Enhanced Geometric Info Block */
 .info-section {
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@
   pointer-events: auto;
   background: var(--bg-secondary);
   border: 2px solid var(--accent-primary);
-  border-radius: 0;
+  border-radius: var(--radius-lg);
   padding: 1.5rem 2.5rem;
   margin-bottom: 1rem;
   position: relative;
@@ -49,7 +49,7 @@
   bottom: -3px;
   background: var(--bg-primary);
   z-index: -1;
-  border-radius: 0;
+  border-radius: var(--radius-lg);
 }
 
 .info-point {
@@ -99,7 +99,7 @@
   text-transform: none;
 }
 
-/* Geometric Social Grid - Site Colors */
+/* Enhanced Geometric Social Grid */
 .social-section {
   display: flex;
   flex-direction: column;
@@ -117,7 +117,7 @@
   border: 2px solid var(--accent-primary);
   position: relative;
   box-shadow: 0 -4px 0px var(--accent-primary);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
@@ -177,7 +177,7 @@
   border-color: var(--accent-primary);
 }
 
-/* Platform-specific accent colors on hover */
+/* Enhanced platform-specific accent colors on hover */
 .social-link.linkedin:hover::before {
   background: #0077b5;
 }
@@ -198,33 +198,31 @@
 }
 
 .social-link.github:hover::before {
-  background: var(--text-secondary);
+  background: #24292f;
 }
 
 .social-link.coffee:hover::before {
-  background: var(--accent-warm);
+  background: #ffdd00;
 }
 
 .social-link.cv:hover::before {
-  background: var(--accent-secondary);
+  background: var(--accent-purple);
 }
 
-/* Responsive Design */
+/* Enhanced responsive design */
 @media (max-width: 768px) {
   .info-section {
     padding: 1.25rem 2rem;
-    transform: translateX(-1rem);
-    box-shadow: 4px 4px 0px var(--accent-primary);
+    margin-bottom: 0.75rem;
+    border-radius: var(--radius-md);
   }
 
   .info-section:hover {
-    transform: translateX(-1rem) translateY(-2px);
-    box-shadow: 6px 6px 0px var(--accent-primary);
+    transform: translateX(-1.25rem) translateY(-2px);
   }
 
   .info-point {
-    gap: 0.75rem;
-    padding: 0.4rem 0;
+    padding: 0.375rem 0;
   }
 
   .info-bullet {
@@ -238,43 +236,41 @@
   }
 
   .social-link {
-    width: 3rem;
-    height: 3rem;
+    width: 3.25rem;
+    height: 3.25rem;
   }
 
   .social-link svg {
-    width: 1.1rem;
-    height: 1.1rem;
+    width: 1.125rem;
+    height: 1.125rem;
   }
 }
 
 @media (max-width: 480px) {
   .pixel-social-container {
-    padding: 0.75rem;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .info-section {
     padding: 1rem 1.5rem;
-    transform: translateX(-0.5rem);
-    box-shadow: 3px 3px 0px var(--accent-primary);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+    transform: translateX(-1rem);
+    border-radius: var(--radius-sm);
   }
 
   .info-section:hover {
-    transform: translateX(-0.5rem) translateY(-1px);
-    box-shadow: 4px 4px 0px var(--accent-primary);
+    transform: translateX(-1rem) translateY(-2px);
   }
 
   .info-point {
-    gap: 0.5rem;
-    padding: 0.3rem 0;
+    padding: 0.25rem 0;
   }
 
   .info-bullet {
     width: 1rem;
     height: 1rem;
     font-size: 0.75rem;
-    border-width: 1px;
+    border-radius: var(--radius-xs);
   }
 
   .info-text {
@@ -282,18 +278,17 @@
   }
 
   .social-grid {
-    border-width: 1px;
-    box-shadow: 0 -3px 0px var(--accent-primary);
+    grid-template-columns: repeat(6, 1fr);
+    border-radius: var(--radius-md);
   }
 
   .social-link {
-    width: 2.75rem;
-    height: 2.75rem;
-    border-width: 0.5px;
+    width: 3rem;
+    height: 3rem;
   }
 
   .social-link:last-child {
-    border-right: 0.5px solid var(--bg-tertiary);
+    border-right: 1px solid var(--bg-tertiary);
   }
 
   .social-link svg {
@@ -302,50 +297,63 @@
   }
 }
 
-/* Performance optimizations */
+/* Enhanced accessibility and performance */
 .pixel-social-container,
-.info-section,
-.social-grid {
-  will-change: transform;
+.social-link,
+.info-section {
+  will-change: transform, opacity;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
-/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   .social-link,
-  .info-point,
+  .social-link::before,
   .info-section {
-    transition: none !important;
+    transition: none;
+    animation: none;
   }
 
   .social-link:hover {
-    transform: none !important;
+    transform: none;
   }
 
   .info-section:hover {
-    transform: translateX(-1.5rem) !important;
+    transform: translateX(-1.5rem);
   }
 }
 
-/* High contrast mode */
+/* Enhanced high contrast support */
 @media (prefers-contrast: high) {
   .info-section {
+    border-color: var(--text-primary);
     background: var(--bg-primary);
-    border: 3px solid var(--text-primary);
   }
 
   .social-grid {
-    background: var(--bg-primary);
-    border: 3px solid var(--text-primary);
+    border-color: var(--text-primary);
   }
 
   .social-link {
-    border: 2px solid var(--text-primary);
+    border-color: var(--text-primary);
   }
 
   .info-text {
     color: var(--text-primary);
   }
+}
+
+/* Focus states for better accessibility */
+.social-link:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  z-index: 10;
+}
+
+.info-section:focus-within {
+  border-color: var(--accent-secondary);
+  box-shadow: 8px 8px 0px var(--accent-secondary);
 }
 
 /* Print styles */
