@@ -4,14 +4,9 @@ import "./PixelSocialMedia.css";
 
 interface PixelSocialMediaProps {
   currentPage: number;
-  onArrowClick: () => void;
 }
 
-const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
-  currentPage,
-  onArrowClick,
-}) => {
-  // Only show on homepage (page 1)
+const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({ currentPage }) => {
   if (currentPage !== 1) {
     return null;
   }
@@ -67,80 +62,67 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
         </svg>
       ),
     },
+    {
+     name: "CV",
+     url: "https://daanhessen.nl/cv.pdf",
+     className: "cv",
+     icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+        </svg>
+      ),
+    },
   ];
 
   return (
-    <motion.div
-      className="social-container"
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        duration: 0.6,
-        delay: 1.2, // Delay to allow ASCII art animation to complete
-        ease: "easeOut",
-      }}
-    >
-      {/* Social Media Row */}
+    <div className="pixel-social-container">
       <motion.div
-        className="social-row"
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{
-          duration: 0.5,
-          delay: 1.4,
-          ease: "easeOut",
-        }}
-      >
-        {socialLinks.map((link, index) => (
-          <motion.a
-            key={link.name}
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`social-icon ${link.className}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.4,
-              delay: 1.6 + index * 0.1,
-              ease: "easeOut",
-            }}
-            whileHover={{
-              scale: 1.1,
-              y: -3,
-              transition: { duration: 0.2 },
-            }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {link.icon}
-          </motion.a>
-        ))}
-      </motion.div>
-
-      {/* Scroll Arrow */}
-      <motion.button
-        className="scroll-arrow"
-        onClick={onArrowClick}
-        initial={{ opacity: 0, y: 20 }}
+        className="social-section"
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{
-          duration: 0.5,
-          delay: 2.1, // Appear after all social icons
+          duration: 0.25,
+          delay: 0.7,
           ease: "easeOut",
         }}
-        whileHover={{
-          scale: 1.05,
-          y: -2,
-          transition: { duration: 0.2 },
-        }}
-        whileTap={{ scale: 0.95 }}
       >
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M7.41 8.84L12 13.42l4.59-4.58L18 10.25l-6 6-6-6z" />
-        </svg>
-        <span>Explore Projects</span>
-      </motion.button>
-    </motion.div>
+        <motion.div
+          className="social-grid"
+          initial={{ scale: 0.98 }}
+          animate={{ scale: 1 }}
+          transition={{
+            duration: 0.2,
+            delay: 0.8,
+            ease: "easeOut",
+          }}
+        >
+          {socialLinks.map((link, index) => (
+            <motion.a
+              key={link.name}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`social-link ${link.className}`}
+              initial={{ opacity: 0, scale: 0.95, y: 5 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{
+                duration: 0.15,
+                delay: 0.9 + index * 0.03,
+                ease: "easeOut",
+              }}
+              whileHover={{
+                scale: 1.05,
+                y: -1,
+                transition: { duration: 0.1 },
+              }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {link.icon}
+            </motion.a>
+          ))}
+        </motion.div>
+      </motion.div>
+    </div>
   );
 };
 

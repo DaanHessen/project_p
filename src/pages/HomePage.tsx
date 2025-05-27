@@ -9,8 +9,6 @@ interface HomePageProps {
 }
 
 const HomePage = ({ currentPage, setTitleComplete }: HomePageProps) => {
-  const description = `I'm Daan Hessen, 23 years old, with seven years of experience in the hospitality industry. While I gained valuable skills there, I discovered my true passion lies in technology. Two years ago, I started studying HBO-ICT at Hogeschool Utrecht, driven by my fascination with technology's rapid development and my curiosity about how things work. Currently focused on object-oriented programming through JavaScript, Java, and Python.`;
-
   const asciiArt = `██████╗  █████╗  █████╗ ███╗   ██╗    ██╗  ██╗███████╗███████╗███████╗███████╗███╗   ██╗
 ██╔══██╗██╔══██╗██╔══██╗████╗  ██║    ██║  ██║██╔════╝██╔════╝██╔════╝██╔════╝████╗  ██║
 ██║  ██║███████║███████║██╔██╗ ██║    ███████║█████╗  ███████╗███████╗█████╗  ██╔██╗ ██║
@@ -28,7 +26,8 @@ const HomePage = ({ currentPage, setTitleComplete }: HomePageProps) => {
     mainEntity: {
       "@type": "Person",
       name: "Daan Hessen",
-      description: description,
+      description:
+        "23-year-old Full Stack Developer and HBO-ICT student at Hogeschool Utrecht, passionate about modern web technologies",
       url: "https://daanhessen.nl",
       image: "https://daanhessen.nl/og-image.jpg",
       jobTitle: "Full Stack Developer",
@@ -47,7 +46,7 @@ const HomePage = ({ currentPage, setTitleComplete }: HomePageProps) => {
     <>
       <SEOHead
         title="Daan Hessen - Full Stack Developer & HBO-ICT Student | Portfolio"
-        description="Daan Hessen - 23-year-old Full Stack Developer and HBO-ICT student at Hogeschool Utrecht. Specialized in React, TypeScript, JavaScript, Java, and Python. View my portfolio of modern web applications and projects."
+        description="23-year-old Full Stack Developer and HBO-ICT student at Hogeschool Utrecht, passionate about modern web technologies including React, TypeScript, JavaScript, Java, and Python."
         canonical="https://daanhessen.nl"
         structuredData={homePageStructuredData}
       />
@@ -91,19 +90,6 @@ const HomePage = ({ currentPage, setTitleComplete }: HomePageProps) => {
                   </motion.div>
                 ))}
               </pre>
-            </motion.div>
-
-            <motion.div
-              className="description-section"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.6,
-                delay: 0.8, // Delay to allow ASCII art animation to complete first
-                ease: "easeOut",
-              }}
-            >
-              <p className="description-text">{description}</p>
             </motion.div>
           </div>
         </div>

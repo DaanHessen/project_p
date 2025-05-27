@@ -33,14 +33,6 @@ function App() {
     [currentPage, scrollCooldown],
   );
 
-  const handleArrowClick = useCallback(() => {
-    if (currentPage === 1) {
-      setCurrentPage(2);
-    } else {
-      setCurrentPage(1);
-    }
-  }, [currentPage]);
-
   useEffect(() => {
     const handleScroll = (e: WheelEvent) => {
       // Get absolute values for comparison
@@ -234,12 +226,7 @@ function App() {
       <ProjectsPage currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
       {/* Render pixel social media only on homepage */}
-      {titleComplete && (
-        <PixelSocialMedia
-          currentPage={currentPage}
-          onArrowClick={handleArrowClick}
-        />
-      )}
+      {titleComplete && <PixelSocialMedia currentPage={currentPage} />}
     </div>
   );
 }
