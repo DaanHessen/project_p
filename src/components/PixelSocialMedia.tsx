@@ -4,12 +4,23 @@ import "./PixelSocialMedia.css";
 
 interface PixelSocialMediaProps {
   currentPage: number;
+  setCurrentPage?: (page: number) => void;
 }
 
-const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({ currentPage }) => {
+const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
+  currentPage,
+  setCurrentPage,
+}) => {
   if (currentPage !== 1) {
     return null;
   }
+
+  const handleCVClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (setCurrentPage) {
+      setCurrentPage(3);
+    }
+  };
 
   const socialLinks = [
     {
@@ -64,8 +75,9 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({ currentPage }) => {
     },
     {
       name: "CV",
-      url: "https://daanhessen.nl/cv.pdf",
+      url: "#",
       className: "cv",
+      onClick: handleCVClick,
       icon: (
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
@@ -100,9 +112,10 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({ currentPage }) => {
             <motion.a
               key={link.name}
               href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
+              target={link.name === "CV" ? undefined : "_blank"}
+              rel={link.name === "CV" ? undefined : "noopener noreferrer"}
               className={`social-link ${link.className}`}
+              onClick={link.onClick}
               initial={{ opacity: 0, scale: 0.95, y: 5 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{

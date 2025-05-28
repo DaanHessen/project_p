@@ -1,6 +1,7 @@
 import "./globals.css";
 import HomePage from "./pages/HomePage";
 import ProjectsPage from "./pages/ProjectsPage";
+import CVPage from "./pages/CVPage";
 import PixelSocialMedia from "./components/PixelSocialMedia";
 import { useState, useEffect, useRef, useCallback } from "react";
 
@@ -28,6 +29,8 @@ function App() {
         setCurrentPage(2);
       } else if (direction === "up" && currentPage === 2) {
         setCurrentPage(1);
+      } else if (direction === "up" && currentPage === 3) {
+        setCurrentPage(1);
       }
     },
     [currentPage, scrollCooldown],
@@ -35,6 +38,11 @@ function App() {
 
   useEffect(() => {
     const handleScroll = (e: WheelEvent) => {
+      // Don't handle scroll on CV page - let it scroll naturally
+      if (currentPage === 3) {
+        return;
+      }
+
       // Get absolute values for comparison
       const absDeltaX = Math.abs(e.deltaX);
       const absDeltaY = Math.abs(e.deltaY);
@@ -81,6 +89,11 @@ function App() {
     };
 
     const handleTouchStart = (e: TouchEvent) => {
+      // Don't handle touch on CV page - let it scroll naturally
+      if (currentPage === 3) {
+        return;
+      }
+
       const target = e.target as Element;
 
       // Don't interfere with pixel social media or navigation arrows
@@ -99,6 +112,11 @@ function App() {
     };
 
     const handleTouchMove = (e: TouchEvent) => {
+      // Don't handle touch on CV page - let it scroll naturally
+      if (currentPage === 3) {
+        return;
+      }
+
       const target = e.target as Element;
 
       // Don't interfere with pixel social media or navigation arrows
@@ -136,6 +154,11 @@ function App() {
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
+      // Don't handle touch on CV page - let it scroll naturally
+      if (currentPage === 3) {
+        return;
+      }
+
       const target = e.changedTouches[0].target as Element;
 
       // Don't interfere with pixel social media or navigation arrows
@@ -225,8 +248,15 @@ function App() {
 
       <ProjectsPage currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
+      <CVPage currentPage={currentPage} setCurrentPage={setCurrentPage} />
+
       {/* Render pixel social media only on homepage */}
-      {titleComplete && <PixelSocialMedia currentPage={currentPage} />}
+      {titleComplete && (
+        <PixelSocialMedia
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
     </div>
   );
 }

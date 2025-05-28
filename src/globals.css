@@ -12,6 +12,7 @@
   --bg-tertiary: #242938;
   --bg-card: #1f2333;
   --bg-elevated: #252a3b;
+  --bg-overlay: rgba(10, 12, 20, 0.95);
 
   /* Refined text colors with better contrast */
   --text-primary: #f5f7fa;
@@ -184,6 +185,7 @@ body::-webkit-scrollbar {
 #root {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   /* Performance optimization */
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
@@ -194,6 +196,7 @@ body::-webkit-scrollbar {
 .app-container {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
   overflow-y: auto;
   background: var(--bg-primary);
@@ -219,6 +222,7 @@ body::-webkit-scrollbar {
 .page {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   position: absolute;
   top: 0;
   left: 0;
@@ -244,6 +248,8 @@ body::-webkit-scrollbar {
   /* Performance optimization */
   transform: translateZ(0);
   will-change: auto;
+  /* Better mobile spacing */
+  min-height: 0;
 }
 
 /* Hide all scrollbars globally */
@@ -321,6 +327,17 @@ iframe::-webkit-scrollbar {
   }
 }
 
+/* Enhanced mobile landscape support */
+@media (max-height: 500px) and (orientation: landscape) {
+  .content-container {
+    padding: 0.5rem;
+  }
+
+  .page {
+    min-height: 100vh;
+  }
+}
+
 /* Performance optimization for reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -347,5 +364,22 @@ iframe::-webkit-scrollbar {
   /* Reduce visual effects on lower-resolution displays */
   .page-one::after {
     display: none;
+  }
+}
+
+/* Enhanced high contrast support */
+@media (prefers-contrast: high) {
+  :root {
+    --bg-primary: #000000;
+    --bg-secondary: #1a1a1a;
+    --text-primary: #ffffff;
+    --accent-primary: #4a9eff;
+  }
+}
+
+/* Dark mode support (already default, but explicit) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
   }
 }
