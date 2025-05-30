@@ -341,7 +341,10 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.05, duration: 0.2 }}
                           >
-                            {projects[currentProjectIndex].description}
+                            {projects[currentProjectIndex].description.length >
+                            60
+                              ? `${projects[currentProjectIndex].description.substring(0, 60)}...`
+                              : projects[currentProjectIndex].description}
                           </motion.p>
                         </div>
 
@@ -423,30 +426,26 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                           </div>
                         </motion.div>
 
-                        {/* Mobile swipe indicator - Enhanced visibility */}
+                        {/* Simple navigation dots */}
                         <motion.div
-                          className="mobile-swipe-indicator"
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{
-                            opacity: currentPage === 2 ? 1 : 0,
-                            y: currentPage === 2 ? 0 : 10,
-                          }}
-                          transition={{ delay: 0.8, duration: 0.6 }}
+                          className="project-navigation"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.3, duration: 0.3 }}
                         >
-                          <span className="swipe-text">
-                            ← Swipe to navigate projects →
-                          </span>
-                          <div className="swipe-animation">
-                            <motion.div
-                              className="swipe-dot"
-                              animate={{ x: [-12, 12, -12] }}
-                              transition={{
-                                duration: 2.5,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                              }}
-                            />
+                          <div className="nav-dots">
+                            {projects.map((_, index) => (
+                              <button
+                                key={index}
+                                className={`nav-dot ${index === currentProjectIndex ? "active" : ""}`}
+                                onClick={() => setCurrentProjectIndex(index)}
+                                aria-label={`Go to project ${index + 1}`}
+                              />
+                            ))}
                           </div>
+                          <span className="nav-hint">
+                            Swipe or tap to navigate
+                          </span>
                         </motion.div>
                       </>
                     )}
