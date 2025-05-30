@@ -246,7 +246,7 @@ function App() {
     <div className="app-container">
       <HomePage currentPage={currentPage} setTitleComplete={setTitleComplete} />
 
-      <ProjectsPage currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <ProjectsPage currentPage={currentPage} />
 
       <CVPage currentPage={currentPage} setCurrentPage={setCurrentPage} />
 

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@hackernoon/pixel-icon-library": "^1.0.5",
+    "@neondatabase/serverless": "^1.0.0",
     "@types/figlet": "^1.7.0",
     "@use-gesture/react": "^10.3.1",
     "figlet": "^1.8.1",
