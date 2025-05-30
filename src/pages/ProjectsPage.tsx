@@ -200,24 +200,10 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
 
   // Parse technologies string
   const parseTechnologies = (techString: string): string[] => {
-    if (!techString) return [];
     return techString
       .split(",")
       .map((tech) => tech.trim())
       .filter((tech) => tech.length > 0);
-  };
-
-  // Format date
-  const formatDate = (dateString: string): string => {
-    try {
-      return new Date(dateString).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      });
-    } catch {
-      return dateString;
-    }
   };
 
   // SEO structured data
@@ -408,8 +394,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
                         {/* Project Meta */}
                         <div className="project-meta">
                           <span className="project-date">
-                            Added{" "}
-                            {formatDate(projects[currentProjectIndex].addedat)}
+                            Status: {projects[currentProjectIndex].status || 'Unknown'}
                           </span>
                           {projects[currentProjectIndex].link && (
                             <button

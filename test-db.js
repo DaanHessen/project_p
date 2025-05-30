@@ -1,4 +1,4 @@
-import { fetchProjects } from "./src/utils/database.js";
+import { fetchProjects } from './dist/assets/index-mLAdyof-.js';
 
 async function testDatabase() {
   try {
