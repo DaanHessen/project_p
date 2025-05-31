@@ -27,10 +27,10 @@ const HomePage = ({ currentPage, setTitleComplete }: HomePageProps) => {
       "@type": "Person",
       name: "Daan Hessen",
       description:
-        "23-year-old Full Stack Developer and HBO-ICT student at Hogeschool Utrecht, passionate about modern web technologies",
+        "23-year-old HBO-ICT student at Hogeschool Utrecht",
       url: "https://daanhessen.nl",
       image: "https://daanhessen.nl/og-image.jpg",
-      jobTitle: "Full Stack Developer",
+      jobTitle: "HBO-ICT Student",
       worksFor: {
         "@type": "EducationalOrganization",
         name: "Hogeschool Utrecht",
@@ -45,8 +45,8 @@ const HomePage = ({ currentPage, setTitleComplete }: HomePageProps) => {
   return (
     <>
       <SEOHead
-        title="Daan Hessen - Full Stack Developer & HBO-ICT Student | Portfolio"
-        description="23-year-old Full Stack Developer and HBO-ICT student at Hogeschool Utrecht, passionate about modern web technologies including React, TypeScript, JavaScript, Java, and Python."
+        title="Home - Daan Hessen"
+        description="23-year-old HBO-ICT student at Hogeschool Utrecht."
         canonical="https://daanhessen.nl"
         structuredData={homePageStructuredData}
       />
@@ -90,6 +90,39 @@ const HomePage = ({ currentPage, setTitleComplete }: HomePageProps) => {
                   </motion.div>
                 ))}
               </pre>
+            </motion.div>
+
+            <motion.div
+              className="hero-section"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+            >
+              <p className="hero-subtitle">
+                Full Stack Developer & HBO-ICT Student
+              </p>
+              
+              <motion.div
+                className="nav-hint"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 1.2 }}
+              >
+                <span className="nav-text">Scroll down to see my projects</span>
+                <motion.div
+                  className="nav-arrow"
+                  animate={{ y: [0, 5, 0] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="m6 9 6 6 6-6"/>
+                  </svg>
+                </motion.div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
