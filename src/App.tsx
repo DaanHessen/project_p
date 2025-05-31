@@ -25,11 +25,16 @@ function App() {
 
       lastScrollTime.current = now;
 
+      console.log(`📱 Page Navigation: ${direction} from page ${currentPage}`);
+
       if (direction === "down" && currentPage === 1) {
+        console.log("✅ Navigating to projects page (2)");
         setCurrentPage(2);
       } else if (direction === "up" && currentPage === 2) {
+        console.log("✅ Navigating to home page (1)");
         setCurrentPage(1);
       } else if (direction === "up" && currentPage === 3) {
+        console.log("✅ Navigating to home page (1) from CV");
         setCurrentPage(1);
       }
     },

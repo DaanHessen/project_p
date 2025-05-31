@@ -1,4 +1,6 @@
 import { neon } from "@neondatabase/serverless";
+// Import local projects data as fallback
+import localProjectsData from "../data/projects.json";
 
 // Database connection
 const sql = neon(
@@ -27,33 +29,71 @@ export async function getTableStructure(): Promise<ColumnInfo[]> {
   }
 }
 
-// Project interface - will be updated based on actual database structure
+// Project interface based on actual database structure
 export interface Project {
   id: number;
   name: string;
   description: string;
   link: string;
   technologies: string;
-  status: string;
-  addedAt?: string; // Making this optional until we confirm the actual column name
+  dateadded: string;
+  image_url?: string;
+  github_url?: string;
+}
+
+// Interface for local projects.json structure
+interface LocalProject {
+  id: string;
+  title: string;
+  description: string;
+  tech: string[];
+  image: string;
+  liveUrl: string;
+  codeUrl?: string;
+}
+
+// Transform local project data to match database Project interface
+function transformLocalProject(
+  localProject: LocalProject,
+  index: number,
+): Project {
+  return {
+    id: index + 1, // Convert string id to number
+    name: localProject.title, // title -> name
+    description: localProject.description,
+    link: localProject.liveUrl, // liveUrl -> link
+    technologies: localProject.tech.join(", "), // array -> comma-separated string
+    dateadded: new Date().toISOString(), // Add current date as placeholder
+    image_url: localProject.image,
+    github_url: localProject.codeUrl,
+  };
 }
 
 // Fetch all projects from the database
 export async function fetchProjects(): Promise<Project[]> {
   try {
-    // First, let's try to get the table structure to see available columns
-    const structure = await getTableStructure();
-    console.log("Table structure:", structure);
-
     const projects = await sql`
-      SELECT id, name, description, link, technologies, status
+      SELECT id, name, description, link, technologies, dateadded, image_url, github_url
       FROM projects
-      ORDER BY id DESC
+      ORDER BY dateadded DESC
     `;
     return projects as Project[];
   } catch (error) {
-    console.error("Error fetching projects:", error);
-    return [];
+    console.warn(
+      "Database connection failed, using local fallback data:",
+      error,
+    );
+
+    // Fallback to local data
+    try {
+      const transformedProjects = localProjectsData.map((project, index) =>
+        transformLocalProject(project as LocalProject, index),
+      );
+      return transformedProjects;
+    } catch (localError) {
+      console.error("Failed to load local projects:", localError);
+      return [];
+    }
   }
 }
 
@@ -61,7 +101,7 @@ export async function fetchProjects(): Promise<Project[]> {
 export async function fetchProjectById(id: number): Promise<Project | null> {
   try {
     const projects = await sql`
-      SELECT id, name, description, link, technologies, status
+      SELECT id, name, description, link, technologies, dateadded, image_url, github_url
       FROM projects
       WHERE id = ${id}
       LIMIT 1

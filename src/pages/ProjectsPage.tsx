@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchProjects, Project } from "../utils/database";
 import SEOHead from "../components/SEOHead";
@@ -11,65 +11,39 @@ interface ProjectsPageProps {
 const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-  const [previewLoaded, setPreviewLoaded] = useState<{
-    [key: number]: boolean;
-  }>({});
-  const [showOpenButton, setShowOpenButton] = useState<{
-    [key: number]: boolean;
-  }>({});
-  const iframeRefs = useRef<{ [key: number]: HTMLIFrameElement | null }>({});
-  const lastScrollTime = useRef(0);
-  const scrollCooldown = 300;
-  const touchStartX = useRef(0);
-  const touchStartY = useRef(0);
-  const isHandlingTouch = useRef(false);
 
-  // Load projects on component mount
+  // Load projects when page becomes active
   useEffect(() => {
-    const loadProjects = async () => {
-      try {
-        const projectsData = await fetchProjects();
-        setProjects(projectsData);
-
-        // Preload all project previews
-        projectsData.forEach((project, index) => {
-          if (project.link && project.link.startsWith("http")) {
-            // Create a hidden iframe to preload the content
-            const iframe = document.createElement("iframe");
-            iframe.src = project.link;
-            iframe.style.display = "none";
-            iframe.onload = () => {
-              setPreviewLoaded((prev) => ({ ...prev, [index]: true }));
-              document.body.removeChild(iframe);
-            };
-            iframe.onerror = () => {
-              console.warn(`Failed to preload project: ${project.name}`);
-              document.body.removeChild(iframe);
-            };
-            document.body.appendChild(iframe);
-          }
-        });
-      } catch (error) {
-        console.error("Error loading projects:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (currentPage === 2) {
       loadProjects();
     }
   }, [currentPage]);
 
+  const loadProjects = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const projectsData = await fetchProjects();
+
+      if (Array.isArray(projectsData) && projectsData.length > 0) {
+        setProjects(projectsData);
+      } else {
+        setError("No projects found");
+      }
+    } catch (error) {
+      console.error("Error loading projects:", error);
+      setError("Failed to load projects");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Navigation functions
   const navigateToProject = useCallback(
     (direction: "next" | "prev") => {
-      const now = Date.now();
-      if (now - lastScrollTime.current < scrollCooldown) return;
-
-      lastScrollTime.current = now;
-
       if (direction === "next" && currentProjectIndex < projects.length - 1) {
         setCurrentProjectIndex((prev) => prev + 1);
       } else if (direction === "prev" && currentProjectIndex > 0) {
@@ -79,131 +53,62 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
     [currentProjectIndex, projects.length],
   );
 
-  // Wheel event handler for project navigation
+  // Keyboard navigation
   useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
+    const handleKeyPress = (e: KeyboardEvent) => {
       if (currentPage !== 2) return;
 
-      const target = e.target as Element;
-      const isInProjectArea =
-        target.closest(".project-showcase") ||
-        target.closest(".project-card-wrapper");
-
-      if (isInProjectArea) {
-        const absDeltaX = Math.abs(e.deltaX);
-        const absDeltaY = Math.abs(e.deltaY);
-
-        // Handle horizontal scrolling for project navigation
-        if (absDeltaX > absDeltaY * 1.5 && absDeltaX > 25) {
-          e.preventDefault();
-          e.stopPropagation();
-
-          if (e.deltaX > 0) {
-            navigateToProject("next");
-          } else {
-            navigateToProject("prev");
-          }
-        }
+      if (e.key === "ArrowLeft") {
+        navigateToProject("prev");
+      } else if (e.key === "ArrowRight") {
+        navigateToProject("next");
       }
     };
 
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => window.removeEventListener("wheel", handleWheel);
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
   }, [currentPage, navigateToProject]);
 
-  // Touch event handlers for mobile navigation
-  useEffect(() => {
-    const handleTouchStart = (e: TouchEvent) => {
-      if (currentPage !== 2) return;
-
-      const target = e.target as Element;
-      const isInProjectArea =
-        target.closest(".project-showcase") ||
-        target.closest(".project-card-wrapper");
-
-      if (isInProjectArea) {
-        const touch = e.touches[0];
-        touchStartX.current = touch.clientX;
-        touchStartY.current = touch.clientY;
-        isHandlingTouch.current = false;
-      }
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (currentPage !== 2 || !touchStartX.current) return;
-
-      const target = e.target as Element;
-      const isInProjectArea =
-        target.closest(".project-showcase") ||
-        target.closest(".project-card-wrapper");
-
-      if (isInProjectArea) {
-        const touch = e.touches[0];
-        const deltaX = Math.abs(touch.clientX - touchStartX.current);
-        const deltaY = Math.abs(touch.clientY - touchStartY.current);
-
-        if (deltaX > deltaY * 1.5 && deltaX > 30) {
-          isHandlingTouch.current = true;
-          e.preventDefault();
-        }
-      }
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (currentPage !== 2 || !isHandlingTouch.current) {
-        touchStartX.current = 0;
-        touchStartY.current = 0;
-        isHandlingTouch.current = false;
-        return;
-      }
-
-      const touch = e.changedTouches[0];
-      const swipeDistanceX = touchStartX.current - touch.clientX;
-      const swipeDistanceY = Math.abs(touch.clientY - touchStartY.current);
-
-      if (
-        Math.abs(swipeDistanceX) > 50 &&
-        Math.abs(swipeDistanceX) > swipeDistanceY
-      ) {
-        if (swipeDistanceX > 0) {
-          navigateToProject("next");
-        } else {
-          navigateToProject("prev");
-        }
-      }
-
-      touchStartX.current = 0;
-      touchStartY.current = 0;
-      isHandlingTouch.current = false;
-    };
-
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-    window.addEventListener("touchend", handleTouchEnd, { passive: true });
-
-    return () => {
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("touchend", handleTouchEnd);
-    };
-  }, [currentPage, navigateToProject]);
-
-  // Handle iframe loading
-  const handleIframeLoad = (projectIndex: number) => {
-    setPreviewLoaded((prev) => ({ ...prev, [projectIndex]: true }));
-  };
-
-  // Handle project opening
+  // Open project in new tab
   const openProject = (link: string) => {
     window.open(link, "_blank", "noopener,noreferrer");
   };
 
   // Parse technologies string
   const parseTechnologies = (techString: string): string[] => {
+    if (!techString) return [];
     return techString
       .split(",")
       .map((tech) => tech.trim())
       .filter((tech) => tech.length > 0);
+  };
+
+  // Format date
+  const formatDate = (dateString: string): string => {
+    try {
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    } catch {
+      return dateString;
+    }
+  };
+
+  // Check if URL is safe for iframe (avoid self-reference and known issues)
+  const isSafeForIframe = (url: string): boolean => {
+    if (!url) return false;
+
+    // Don't embed the current site
+    const currentDomain = window.location.hostname;
+    if (url.includes(currentDomain)) {
+      return false;
+    }
+
+    // Don't embed known problematic domains
+    const problematicDomains = ["daanhessen.nl", "localhost"];
+    return !problematicDomains.some((domain) => url.includes(domain));
   };
 
   // SEO structured data
@@ -229,6 +134,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
     },
   };
 
+  // Don't render if not on projects page
   if (currentPage !== 2) {
     return null;
   }
@@ -262,7 +168,11 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
           >
             <h1 className="projects-title">Projects</h1>
             <p className="projects-subtitle">
-              {loading ? "Loading..." : `${projects.length} projects`}
+              {loading
+                ? "Loading..."
+                : error
+                  ? "Error loading projects"
+                  : `${projects.length} project${projects.length !== 1 ? "s" : ""}`}
             </p>
           </motion.div>
 
@@ -279,8 +189,29 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
             </motion.div>
           )}
 
+          {/* Error State */}
+          {!loading && error && (
+            <motion.div
+              className="error-state"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+            >
+              <div className="error-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z" />
+                </svg>
+              </div>
+              <h2>Failed to Load Projects</h2>
+              <p>{error}</p>
+              <button className="retry-btn" onClick={loadProjects}>
+                Retry
+              </button>
+            </motion.div>
+          )}
+
           {/* Projects Showcase */}
-          {!loading && projects.length > 0 && (
+          {!loading && !error && projects.length > 0 && (
             <div className="project-showcase">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -294,71 +225,47 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
                   {projects[currentProjectIndex] && (
                     <div className="project-card">
                       {/* Project Preview */}
-                      <div
-                        className="project-preview"
-                        onMouseEnter={() =>
-                          setShowOpenButton((prev) => ({
-                            ...prev,
-                            [currentProjectIndex]: true,
-                          }))
-                        }
-                        onMouseLeave={() =>
-                          setShowOpenButton((prev) => ({
-                            ...prev,
-                            [currentProjectIndex]: false,
-                          }))
-                        }
-                      >
-                        {projects[currentProjectIndex].link &&
-                        projects[currentProjectIndex].link.startsWith(
-                          "http",
-                        ) ? (
-                          <>
+                      <div className="project-preview">
+                        {isSafeForIframe(projects[currentProjectIndex].link) ? (
+                          <div className="iframe-container">
                             <iframe
-                              ref={(el) =>
-                                (iframeRefs.current[currentProjectIndex] = el)
-                              }
                               src={projects[currentProjectIndex].link}
                               title={`Preview of ${projects[currentProjectIndex].name}`}
-                              className={`project-iframe ${previewLoaded[currentProjectIndex] ? "loaded" : ""}`}
-                              onLoad={() =>
-                                handleIframeLoad(currentProjectIndex)
-                              }
+                              className="project-iframe"
                               sandbox="allow-same-origin allow-scripts allow-forms"
+                              loading="lazy"
                             />
-                            {!previewLoaded[currentProjectIndex] && (
-                              <div className="iframe-loading">
-                                <div className="loading-spinner"></div>
-                                <p>Loading preview...</p>
-                              </div>
-                            )}
-                            {showOpenButton[currentProjectIndex] && (
-                              <motion.button
-                                className="open-project-btn"
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.8 }}
-                                onClick={() =>
-                                  openProject(
-                                    projects[currentProjectIndex].link,
-                                  )
-                                }
-                              >
+                            <div
+                              className="iframe-overlay"
+                              onClick={() =>
+                                openProject(projects[currentProjectIndex].link)
+                              }
+                            >
+                              <div className="overlay-content">
                                 <svg viewBox="0 0 24 24" fill="currentColor">
                                   <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />
                                 </svg>
-                                Open Website
-                              </motion.button>
-                            )}
-                          </>
+                                <span>View Live Site</span>
+                              </div>
+                            </div>
+                          </div>
                         ) : (
                           <div className="no-preview">
                             <div className="no-preview-icon">
                               <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
+                                <path d="M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />
                               </svg>
                             </div>
-                            <p>Preview not available</p>
+                            <h3>{projects[currentProjectIndex].name}</h3>
+                            <p>Click to view this project</p>
+                            <button
+                              className="preview-fallback-btn"
+                              onClick={() =>
+                                openProject(projects[currentProjectIndex].link)
+                              }
+                            >
+                              View Project
+                            </button>
                           </div>
                         )}
                       </div>
@@ -394,21 +301,43 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
                         {/* Project Meta */}
                         <div className="project-meta">
                           <span className="project-date">
-                            Status: {projects[currentProjectIndex].status || 'Unknown'}
+                            Added{" "}
+                            {formatDate(
+                              projects[currentProjectIndex].dateadded,
+                            )}
                           </span>
-                          {projects[currentProjectIndex].link && (
-                            <button
-                              className="project-link-btn"
-                              onClick={() =>
-                                openProject(projects[currentProjectIndex].link)
-                              }
-                            >
-                              Visit Project
-                              <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />
-                              </svg>
-                            </button>
-                          )}
+                          <div className="project-actions">
+                            {projects[currentProjectIndex].link && (
+                              <button
+                                className="project-link-btn primary"
+                                onClick={() =>
+                                  openProject(
+                                    projects[currentProjectIndex].link,
+                                  )
+                                }
+                              >
+                                View Live Site
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                  <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />
+                                </svg>
+                              </button>
+                            )}
+                            {projects[currentProjectIndex].github_url && (
+                              <button
+                                className="project-link-btn secondary"
+                                onClick={() =>
+                                  openProject(
+                                    projects[currentProjectIndex].github_url!,
+                                  )
+                                }
+                              >
+                                View Code
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                  <path d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
+                                </svg>
+                              </button>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -423,6 +352,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
                     className={`nav-arrow nav-prev ${currentProjectIndex === 0 ? "disabled" : ""}`}
                     onClick={() => navigateToProject("prev")}
                     disabled={currentProjectIndex === 0}
+                    aria-label="Previous project"
                   >
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
@@ -430,11 +360,12 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
                   </button>
 
                   <div className="project-indicators">
-                    {projects.map((_, index) => (
+                    {projects.map((project, index) => (
                       <button
-                        key={index}
+                        key={project.id}
                         className={`indicator ${index === currentProjectIndex ? "active" : ""}`}
                         onClick={() => setCurrentProjectIndex(index)}
+                        aria-label={`Go to project ${index + 1}: ${project.name}`}
                       />
                     ))}
                   </div>
@@ -443,6 +374,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
                     className={`nav-arrow nav-next ${currentProjectIndex === projects.length - 1 ? "disabled" : ""}`}
                     onClick={() => navigateToProject("next")}
                     disabled={currentProjectIndex === projects.length - 1}
+                    aria-label="Next project"
                   >
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
@@ -454,7 +386,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
           )}
 
           {/* Empty State */}
-          {!loading && projects.length === 0 && (
+          {!loading && !error && projects.length === 0 && (
             <motion.div
               className="empty-state"
               initial={{ opacity: 0, y: 20 }}
@@ -463,7 +395,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
             >
               <div className="empty-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6Z" />
+                  <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
                 </svg>
               </div>
               <h2>No Projects Found</h2>
