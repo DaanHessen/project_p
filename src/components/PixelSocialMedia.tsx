@@ -1,5 +1,5 @@
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import "./PixelSocialMedia.css";
 
 interface PixelSocialMediaProps {
@@ -8,7 +8,6 @@ interface PixelSocialMediaProps {
 }
 
 const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
-  currentPage,
   setCurrentPage,
 }) => {
   const handleCVClick = (e: React.MouseEvent) => {
@@ -83,68 +82,60 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
   ];
 
   return (
-    <AnimatePresence>
-      {currentPage === 1 && (
+    <motion.div
+      className="pixel-social-container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+    >
+      <motion.div
+        className="social-section"
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.25,
+          delay: 0.7,
+          ease: "easeOut",
+        }}
+      >
         <motion.div
-          className="pixel-social-container"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, y: 15 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          className="social-grid"
+          initial={{ scale: 0.98 }}
+          animate={{ scale: 1 }}
+          transition={{
+            duration: 0.2,
+            delay: 0.8,
+            ease: "easeOut",
+          }}
         >
-          <motion.div
-            className="social-section"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 15 }}
-            transition={{
-              duration: 0.25,
-              delay: 0.7,
-              ease: "easeOut",
-            }}
-          >
-            <motion.div
-              className="social-grid"
-              initial={{ scale: 0.98 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
+          {socialLinks.map((link, index) => (
+            <motion.a
+              key={link.name}
+              href={link.url}
+              target={link.name === "CV" ? undefined : "_blank"}
+              rel={link.name === "CV" ? undefined : "noopener noreferrer"}
+              className={`social-link ${link.className}`}
+              onClick={link.onClick}
+              initial={{ opacity: 0, scale: 0.95, y: 5 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{
-                duration: 0.2,
-                delay: 0.8,
+                duration: 0.15,
+                delay: 0.9 + index * 0.03,
                 ease: "easeOut",
               }}
+              whileHover={{
+                scale: 1.05,
+                y: -1,
+                transition: { duration: 0.1 },
+              }}
+              whileTap={{ scale: 0.98 }}
             >
-              {socialLinks.map((link, index) => (
-                <motion.a
-                  key={link.name}
-                  href={link.url}
-                  target={link.name === "CV" ? undefined : "_blank"}
-                  rel={link.name === "CV" ? undefined : "noopener noreferrer"}
-                  className={`social-link ${link.className}`}
-                  onClick={link.onClick}
-                  initial={{ opacity: 0, scale: 0.95, y: 5 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                  transition={{
-                    duration: 0.15,
-                    delay: 0.9 + index * 0.03,
-                    ease: "easeOut",
-                  }}
-                  whileHover={{
-                    scale: 1.05,
-                    y: -1,
-                    transition: { duration: 0.1 },
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  {link.icon}
-                </motion.a>
-              ))}
-            </motion.div>
-          </motion.div>
+              {link.icon}
+            </motion.a>
+          ))}
         </motion.div>
-      )}
-    </AnimatePresence>
+      </motion.div>
+    </motion.div>
   );
 };
 

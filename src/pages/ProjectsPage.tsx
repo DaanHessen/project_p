@@ -6,7 +6,7 @@ interface ProjectsPageProps {
   onNavigateUp?: () => void;
 }
 
-const ProjectsPage = ({ currentPage, onNavigateUp }: ProjectsPageProps) => {
+const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
   const { contentFadeVariants, transitionSettings } = useGlobalAnimations();
 
   if (currentPage !== 2) {
@@ -61,36 +61,8 @@ const ProjectsPage = ({ currentPage, onNavigateUp }: ProjectsPageProps) => {
               lineHeight: "1.6",
             }}
           >
-            This page is under construction. Check back soon for an interactive portfolio showcase.
+            Still working on this page. Meanwhile, you can check some of my projects out on my GitHub.
           </motion.p>
-
-          {onNavigateUp && (
-            <motion.button
-              onClick={onNavigateUp}
-              variants={contentFadeVariants}
-              initial="initial"
-              animate="animate"
-              transition={{
-                ...transitionSettings.content,
-                delay: 0.5,
-              }}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              style={{
-                padding: "1rem 2rem",
-                backgroundColor: "var(--accent-primary)",
-                color: "white",
-                border: "none",
-                borderRadius: "8px",
-                fontSize: "1rem",
-                fontWeight: "500",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-              }}
-            >
-              Back to Home
-            </motion.button>
-          )}
 
           <motion.div
             variants={contentFadeVariants}

@@ -171,28 +171,45 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-sm);
-  margin-top: var(--space-xl);
+  margin: 0;
+  position: fixed;
+  bottom: 85px;
+  left: 0;
+  right: 0;
+  transform: none;
   opacity: 0.7;
   transition: var(--transition-normal);
+  z-index: 1001;
+  pointer-events: none;
+  will-change: auto;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .nav-hint:hover {
   opacity: 1;
 }
 
-.nav-text {
+.page-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "JetBrains Mono", monospace;
   font-size: var(--text-sm);
   color: var(--text-muted);
-  font-family: "JetBrains Mono", monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 500;
 }
 
-.nav-arrow {
+.page-current {
   color: var(--accent-primary);
-  opacity: 0.8;
-  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.3));
+  font-weight: 600;
+}
+
+.page-separator {
+  opacity: 0.5;
+}
+
+.page-total {
+  opacity: 0.7;
 }
 
 /* Page transition styles */

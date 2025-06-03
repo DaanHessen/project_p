@@ -1,14 +1,10 @@
 import SEOHead from "../components/SEOHead";
 import "./HomePage.css";
 import { motion } from "framer-motion";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import useGlobalAnimations from "../utils/useGlobalAnimations";
 
-interface HomePageProps {
-  setTitleComplete: (complete: boolean) => void;
-}
-
-const HomePage = ({ setTitleComplete }: HomePageProps) => {
+const HomePage = () => {
   const { contentFadeVariants, transitionSettings } = useGlobalAnimations();
 
   const asciiArt = `██████╗  █████╗  █████╗ ███╗   ██╗    ██╗  ██╗███████╗███████╗███████╗███████╗███╗   ██╗
@@ -39,10 +35,6 @@ const HomePage = ({ setTitleComplete }: HomePageProps) => {
     },
   };
 
-  useEffect(() => {
-    setTitleComplete(true);
-  }, [setTitleComplete]);
-
   return (
     <>
       <SEOHead
@@ -71,7 +63,7 @@ const HomePage = ({ setTitleComplete }: HomePageProps) => {
                     animate="animate"
                     transition={{
                       ...transitionSettings.fast,
-                      delay: index * 0.05, // Faster stagger
+                      delay: index * 0.05,
                     }}
                     style={{
                       display: "block",
@@ -94,38 +86,6 @@ const HomePage = ({ setTitleComplete }: HomePageProps) => {
                 delay: 0.3,
               }}
             >
-              <motion.div
-                className="nav-hint"
-                variants={contentFadeVariants}
-                initial="initial"
-                animate="animate"
-                transition={{
-                  ...transitionSettings.content,
-                  delay: 0.5,
-                }}
-              >
-                <span className="nav-text">Scroll down to see projects</span>
-                <motion.div
-                  className="nav-arrow"
-                  animate={{ y: [0, 5, 0] }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </motion.div>
-              </motion.div>
             </motion.div>
           </div>
         </div>
