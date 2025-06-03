@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import "./CVPage.css";
+import useGlobalAnimations from "../utils/useGlobalAnimations";
 
 interface CVPageProps {
   currentPage: number;
@@ -8,6 +9,8 @@ interface CVPageProps {
 }
 
 const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
+  const { contentFadeVariants, transitionSettings } = useGlobalAnimations();
+
   const handleBackClick = () => {
     setCurrentPage(1);
   };
@@ -70,23 +73,18 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
   ];
 
   return (
-    <motion.div
-      className="page page-three cv-page"
-      initial={{ transform: "translateY(100vh)" }}
-      animate={{ transform: "translateY(0)" }}
-      exit={{ transform: "translateY(100vh)" }}
-      transition={{
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      }}
-    >
+    <div className="page page-three cv-page">
       <div className="cv-content">
         {/* Header with Back Button */}
         <motion.div
           className="cv-header"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
+          variants={contentFadeVariants}
+          initial="initial"
+          animate="animate"
+          transition={{
+            ...transitionSettings.content,
+            delay: 0.1,
+          }}
         >
           <button
             onClick={handleBackClick}
@@ -103,9 +101,13 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
         {/* CV Container */}
         <motion.div
           className="cv-container"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          variants={contentFadeVariants}
+          initial="initial"
+          animate="animate"
+          transition={{
+            ...transitionSettings.content,
+            delay: 0.2,
+          }}
         >
           {/* Personal Info Section */}
           <div className="cv-section personal-info">
@@ -304,7 +306,7 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
           </div>
         </motion.div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

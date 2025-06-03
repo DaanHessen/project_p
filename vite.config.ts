@@ -39,10 +39,6 @@ export default defineConfig({
       },
     }),
   ],
-  // Environment variables configuration
-  define: {
-    'import.meta.env.VITE_DATABASE_URL': JSON.stringify(process.env.VITE_DATABASE_URL || process.env.DATABASE_URL || 'postgres://neondb_owner:npg_qXvF9DJkE8jS@ep-royal-meadow-abrmk6ta-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require'),
-  },
   build: {
     // Optimize for SEO and performance
     minify: "terser",

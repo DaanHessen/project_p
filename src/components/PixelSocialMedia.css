@@ -1,4 +1,4 @@
-/* Enhanced Brutalist-Minimalist Social Media Component */
+/* Pixel Social Media Component */
 
 .pixel-social-container {
   position: fixed;
@@ -15,7 +15,6 @@
   background: transparent;
 }
 
-/* Enhanced Geometric Social Grid */
 .social-section {
   display: flex;
   flex-direction: column;
@@ -47,18 +46,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 3.75rem;
-  height: 3.75rem;
-  background: var(--bg-primary);
-  border: 1px solid var(--bg-tertiary);
-  border-right: none;
-  border-bottom: none;
+  width: 48px;
+  height: 48px;
+  /* border-radius: var(--radius-lg); */
+  background: var(--gradient-card);
+  /* border: 1px solid rgba(59, 130, 246, 0.2); */
   color: var(--text-secondary);
   text-decoration: none;
-  transition: var(--transition-fast);
-  cursor: pointer;
+  transition: var(--transition-normal);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
+  transform: translateZ(0);
 }
 
 .social-link:last-child {
@@ -94,12 +94,12 @@
   transform: scale(1.1);
 }
 
-.social-link:hover {
+/* .social-link:hover {
   transform: translateY(-1px);
   border-color: var(--accent-primary);
-}
+} */
 
-/* Enhanced platform-specific accent colors on hover */
+/* Platform-specific colors */
 .social-link.linkedin:hover::before {
   background: #0077b5;
 }
@@ -131,7 +131,7 @@
   background: var(--accent-purple);
 }
 
-/* Enhanced Responsive Design */
+/* Responsive Design */
 @media (max-width: 1024px) {
   .social-link {
     width: 3.5rem;
@@ -160,18 +160,6 @@
   }
 }
 
-@media (max-width: 640px) {
-  .social-link {
-    width: 3rem;
-    height: 3rem;
-  }
-
-  .social-link svg {
-    width: 1.1rem;
-    height: 1.1rem;
-  }
-}
-
 @media (max-width: 480px) {
   .pixel-social-container {
     padding-bottom: env(safe-area-inset-bottom, 0);
@@ -189,10 +177,6 @@
   .social-link {
     width: 2.75rem;
     height: 2.75rem;
-  }
-
-  .social-link:last-child {
-    border-right: 1px solid var(--bg-tertiary);
   }
 
   .social-link svg {
@@ -213,47 +197,14 @@
   }
 }
 
-/* Enhanced mobile landscape support */
-@media (max-height: 500px) and (orientation: landscape) {
-  .pixel-social-container {
-    position: fixed;
-    bottom: 0;
-    padding-bottom: 0;
-  }
-
-  .social-link {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
-
-  .social-link svg {
-    width: 0.9rem;
-    height: 0.9rem;
-  }
-}
-
-/* Performance optimizations */
-.pixel-social-container,
-.social-section,
-.social-grid,
-.social-link {
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  will-change: auto;
-}
-
+/* Accessibility & Preferences */
 @media (prefers-reduced-motion: reduce) {
   .social-link,
   .social-grid {
     transition: none !important;
-    animation: none !important;
   }
 
-  .social-link:hover {
-    transform: none;
-  }
-
+  .social-link:hover,
   .social-grid:hover {
     transform: none;
   }
@@ -274,14 +225,12 @@
   }
 }
 
-/* Enhanced focus states for accessibility */
 .social-link:focus-visible {
   outline: 2px solid var(--accent-primary);
   outline-offset: 2px;
   z-index: 10;
 }
 
-/* Print styles */
 @media print {
   .pixel-social-container {
     display: none;
