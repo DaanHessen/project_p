@@ -12,8 +12,8 @@ interface SEOHeadProps {
 
 const SEOHead = ({
   title = "Daan Hessen - Full Stack Developer & HBO-ICT Student | Portfolio",
-  description = "Daan Hessen - 23-year-old Full Stack Developer and HBO-ICT student at Hogeschool Utrecht. Specialized in React, TypeScript, JavaScript, Java, and Python. View my portfolio of modern web applications and projects.",
-  keywords = "Daan Hessen, Full Stack Developer, Web Developer, React Developer, TypeScript, JavaScript, Java, Python, HBO-ICT, Hogeschool Utrecht, Portfolio, Frontend Developer, Backend Developer, Software Engineer, Netherlands",
+  description = "Daan Hessen - 23-year-old Full Stack Developer and HBO-ICT student at Hogeschool Utrecht. View my portfolio of modern web applications.",
+  keywords = "Daan Hessen, HBO-ICT, Hogeschool Utrecht, Portfolio, Frontend Developer, Backend Developer, Software Engineer, Netherlands",
   ogImage = "https://daanhessen.nl/og-image.jpg",
   ogType = "website",
   canonical = "https://daanhessen.nl",
