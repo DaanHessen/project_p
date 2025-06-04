@@ -71,35 +71,34 @@
 .projects-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-primary); /* Fallback color for non-webkit browsers */
   margin: 0 0 var(--space-sm) 0;
   font-family: "Space Grotesk", sans-serif;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   
-  /* Enhanced gradient text with stronger fallbacks */
-  background: var(--gradient-text);
-  background: -webkit-linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
-  background: -moz-linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
-  background: linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
+  /* Enhanced font rendering for consistency */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-kerning: auto;
   
-  /* Webkit gradient text with stronger compatibility */
+  /* Simple, reliable gradient text that works everywhere */
+  background: linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
   
-  /* Enhanced fallback for browsers that don't support background-clip: text */
-  @supports not (-webkit-background-clip: text) {
-    background: none !important;
-    color: var(--accent-primary) !important;
-    -webkit-text-fill-color: var(--accent-primary) !important;
-  }
+  /* Ensure it works in production builds */
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
   
-  /* Additional fallback for very old browsers */
-  @supports not (background-clip: text) {
-    background: none !important;
-    color: var(--accent-primary) !important;
+  /* Fallback for browsers that don't support gradient text */
+  @supports not (-webkit-background-clip: text) {
+    background: none;
+    color: var(--accent-primary);
+    -webkit-text-fill-color: var(--accent-primary);
   }
 }
 
@@ -628,7 +627,6 @@
 .project-detail-title {
   font-size: var(--text-3xl);
   font-weight: 800;
-  color: var(--text-primary); /* Fallback color for non-webkit browsers */
   margin: 0;
   font-family: "Space Grotesk", sans-serif;
   letter-spacing: 0.02em;
@@ -636,29 +634,29 @@
   flex: 1;
   min-width: 0;
   
-  /* Enhanced gradient text with stronger fallbacks */
-  background: var(--gradient-text);
-  background: -webkit-linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
-  background: -moz-linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
-  background: linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
+  /* Enhanced font rendering for consistency */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-kerning: auto;
   
-  /* Webkit gradient text with stronger compatibility */
+  /* Simple, reliable gradient text that works everywhere */
+  background: linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
   
-  /* Enhanced fallback for browsers that don't support background-clip: text */
-  @supports not (-webkit-background-clip: text) {
-    background: none !important;
-    color: var(--accent-primary) !important;
-    -webkit-text-fill-color: var(--accent-primary) !important;
-  }
+  /* Ensure it works in production builds */
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
   
-  /* Additional fallback for very old browsers */
-  @supports not (background-clip: text) {
-    background: none !important;
-    color: var(--accent-primary) !important;
+  /* Fallback for browsers that don't support gradient text */
+  @supports not (-webkit-background-clip: text) {
+    background: none;
+    color: var(--accent-primary);
+    -webkit-text-fill-color: var(--accent-primary);
   }
 }
 
@@ -1261,55 +1259,29 @@
 
 /* Light mode gradient text adjustments */
 [data-theme="light"] .projects-title {
-  /* Enhanced light mode gradient text with stronger fallbacks */
-  background: var(--gradient-text);
-  background: -webkit-linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #60a5fa 100%);
-  background: -moz-linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #60a5fa 100%);
+  /* Simple, reliable gradient text for light mode */
   background: linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #60a5fa 100%);
-  
-  /* Webkit gradient text with stronger compatibility */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
   
-  /* Enhanced fallback for browsers that don't support background-clip: text */
-  @supports not (-webkit-background-clip: text) {
-    background: none !important;
-    color: var(--accent-primary) !important;
-    -webkit-text-fill-color: var(--accent-primary) !important;
-  }
-  
-  /* Additional fallback for very old browsers */
-  @supports not (background-clip: text) {
-    background: none !important;
-    color: var(--accent-primary) !important;
-  }
+  /* Ensure it works in production builds */
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
 }
 
 [data-theme="light"] .project-detail-title {
-  /* Enhanced light mode gradient text with stronger fallbacks */
-  background: var(--gradient-text);
-  background: -webkit-linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #60a5fa 100%);
-  background: -moz-linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #60a5fa 100%);
+  /* Simple, reliable gradient text for light mode */
   background: linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #60a5fa 100%);
-  
-  /* Webkit gradient text with stronger compatibility */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
   
-  /* Enhanced fallback for browsers that don't support background-clip: text */
-  @supports not (-webkit-background-clip: text) {
-    background: none !important;
-    color: var(--accent-primary) !important;
-    -webkit-text-fill-color: var(--accent-primary) !important;
-  }
-  
-  /* Additional fallback for very old browsers */
-  @supports not (background-clip: text) {
-    background: none !important;
-    color: var(--accent-primary) !important;
-  }
+  /* Ensure it works in production builds */
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
 }

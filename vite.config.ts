@@ -39,9 +39,7 @@ export default defineConfig({
       },
     }),
   ],
-  css: {
-    postcss: './postcss.config.js',
-  },
+
   build: {
     // Optimize for SEO and performance
     minify: "terser",
@@ -57,6 +55,19 @@ export default defineConfig({
     sourcemap: false,
     // Optimize chunk size
     chunkSizeWarningLimit: 600,
+    // Ensure CSS consistency across environments
+    cssCodeSplit: true,
+    cssMinify: true,
+  },
+  
+  // CSS processing configuration
+  css: {
+    devSourcemap: true,
+    preprocessorOptions: {
+      css: {
+        charset: false,
+      },
+    },
   },
   // Optimize dependencies
   optimizeDeps: {
