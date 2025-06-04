@@ -175,8 +175,6 @@ export async function initializeCVTables(): Promise<void> {
   }
 }
 
-
-
 export async function fetchCVProfile(): Promise<CVProfile | null> {
   try {
     const result = await sql`

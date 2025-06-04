@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = 'dark' | 'light';
+type Theme = "dark" | "light";
 
 interface ThemeContextType {
   theme: Theme;
@@ -12,7 +12,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context;
 };
@@ -23,21 +23,30 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    // Check localStorage first, default to dark
-    const savedTheme = localStorage.getItem('portfolio-theme') as Theme;
-    return savedTheme || 'dark';
+    const savedTheme = localStorage.getItem("portfolio-theme") as Theme;
+    return savedTheme || "dark";
   });
 
   useEffect(() => {
+    // Add transition class before theme change
+    document.documentElement.classList.add("theme-transitioning");
+
     // Apply theme to document root
-    document.documentElement.setAttribute('data-theme', theme);
-    
+    document.documentElement.setAttribute("data-theme", theme);
+
     // Save to localStorage
-    localStorage.setItem('portfolio-theme', theme);
+    localStorage.setItem("portfolio-theme", theme);
+
+    // Remove transition class after animation completes
+    const timer = setTimeout(() => {
+      document.documentElement.classList.remove("theme-transitioning");
+    }, 300);
+
+    return () => clearTimeout(timer);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
+    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
   };
 
   return (
@@ -45,4 +54,4 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       {children}
     </ThemeContext.Provider>
   );
-}; 
+};

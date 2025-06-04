@@ -117,8 +117,6 @@
   font-weight: 300;
 }
 
-
-
 /* Contact Section */
 .contact-section {
   padding: var(--space-lg) var(--space-lg);
@@ -243,7 +241,7 @@
   flex-shrink: 0;
 }
 
-.back-button {
+.scroll-to-top-button {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
@@ -259,13 +257,13 @@
   justify-content: center;
 }
 
-.back-button:hover {
+.scroll-to-top-button:hover {
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
   border-color: var(--accent-primary);
 }
 
-.back-button svg {
+.scroll-to-top-button svg {
   width: 0.875rem;
   height: 0.875rem;
 }
@@ -356,7 +354,7 @@
 
 .section-content p {
   color: var(--text-secondary);
-  font-size: var(--text-base);
+  font-size: var(--text-lg);
   margin: 0;
   text-align: justify;
 }
@@ -396,7 +394,7 @@
 }
 
 .job-title {
-  font-size: var(--text-lg);
+  font-size: var(--text-xl);
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 var(--space-xs) 0;
@@ -406,7 +404,7 @@
 }
 
 .company-name {
-  font-size: var(--text-base);
+  font-size: var(--text-lg);
   color: var(--text-tertiary);
   margin: 0 0 var(--space-md) 0;
   font-family: "Lora", serif;
@@ -415,7 +413,7 @@
 
 .job-description {
   color: var(--text-secondary);
-  font-size: var(--text-base);
+  font-size: var(--text-lg);
   margin: 0 0 var(--space-md) 0;
   line-height: 1.6;
   text-align: justify;
@@ -432,7 +430,7 @@
 
 .job-highlights li {
   color: var(--text-tertiary);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   padding-left: var(--space-md);
   position: relative;
   line-height: 1.5;
@@ -528,7 +526,7 @@
 @media (max-width: 1200px) {
   .cv-sidebar {
     width: 320px;
-}
+  }
 
   .cv-content {
     padding: var(--space-2xl);
@@ -539,17 +537,17 @@
   .cv-sidebar {
     width: 300px;
   }
-  
+
   .cv-content {
     padding: var(--space-xl);
   }
-  
+
   .experience-header,
   .education-header {
     flex-direction: column;
     gap: var(--space-md);
   }
-  
+
   .experience-years,
   .education-years {
     min-width: auto;
@@ -561,7 +559,7 @@
   .cv-layout {
     flex-direction: column;
   }
-  
+
   .cv-sidebar {
     width: 100%;
     height: auto;
@@ -570,7 +568,7 @@
     overflow: visible;
     position: relative;
   }
-  
+
   /* Mobile Profile - Compact Header */
   .profile-section {
     padding: var(--space-md) var(--space-lg);
@@ -580,88 +578,88 @@
     text-align: left;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
-  
+
   .profile-photo {
     width: 60px;
     height: 60px;
     margin: 0;
     flex-shrink: 0;
   }
-  
+
   .profile-initials {
     font-size: 1.25rem;
   }
-  
+
   .profile-info {
     margin: 0;
     flex: 1;
   }
-  
+
   .profile-name {
     font-size: 1rem;
     margin-bottom: 2px;
   }
-  
+
   .profile-title {
     font-size: 0.75rem;
   }
-  
+
   .profile-logo {
     display: none;
   }
-  
+
   /* Mobile Contact - Horizontal Grid */
   .contact-section {
     padding: var(--space-md) var(--space-lg);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
-  
+
   .section-title {
     font-size: var(--text-sm);
     margin-bottom: var(--space-sm);
   }
-  
+
   .contact-items {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-xs) var(--space-md);
   }
-  
+
   .contact-item {
     font-size: 0.7rem;
     gap: var(--space-xs);
   }
-  
+
   .contact-icon {
     width: 12px;
     height: 12px;
   }
-  
+
   /* Mobile Skills - Compact Grid */
   .skills-section {
     padding: var(--space-md) var(--space-lg);
     overflow: visible;
   }
-  
+
   .skills-list {
     gap: var(--space-sm);
   }
-  
+
   .skill-category {
     margin-bottom: var(--space-sm);
   }
-  
+
   .skill-category h4 {
     font-size: 0.7rem;
     margin-bottom: 4px;
   }
-  
+
   .skill-category ul {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-xs);
   }
-  
+
   .skill-category li {
     font-size: 0.65rem;
     padding: 2px var(--space-xs);
@@ -670,46 +668,46 @@
     padding-left: var(--space-xs);
     line-height: 1.2;
   }
-  
+
   .skill-category li::before {
     display: none;
   }
-  
+
   /* Mobile Footer - Compact */
   .sidebar-footer {
     padding: var(--space-md) var(--space-lg);
     flex-direction: row;
     gap: var(--space-sm);
   }
-  
-  .back-button,
+
+  .scroll-to-top-button,
   .download-btn {
     font-size: 0.7rem;
     padding: var(--space-xs);
   }
-  
-  .back-button svg,
+
+  .scroll-to-top-button svg,
   .download-btn svg {
     width: 0.75rem;
     height: 0.75rem;
   }
-  
+
   /* Mobile Main Content */
   .cv-main-content {
     flex: 1;
     height: auto;
     min-height: 60vh;
   }
-  
+
   .cv-content {
     padding: var(--space-lg);
   }
-  
+
   .section-heading {
     font-size: var(--text-base);
     margin-bottom: var(--space-lg);
   }
-  
+
   /* Mobile Experience/Education - Stacked Layout */
   .experience-header,
   .education-header {
@@ -717,7 +715,7 @@
     gap: var(--space-xs);
     margin-bottom: var(--space-sm);
   }
-  
+
   .experience-years,
   .education-years {
     font-size: 0.75rem;
@@ -731,34 +729,34 @@
     color: var(--accent-primary);
     font-weight: 700;
   }
-  
+
   .job-title,
   .degree-title {
     font-size: var(--text-base);
     margin-bottom: var(--space-xs);
   }
-  
+
   .company-name,
   .institution-name {
     font-size: var(--text-sm);
     margin-bottom: var(--space-sm);
   }
-  
+
   .job-description,
   .education-description {
     font-size: var(--text-sm);
     margin-bottom: var(--space-sm);
   }
-  
+
   .job-highlights li {
     font-size: 0.8rem;
     padding-left: var(--space-sm);
   }
-  
+
   .education-highlights {
     gap: var(--space-xs);
   }
-  
+
   .highlight-tag {
     font-size: 0.65rem;
     padding: 2px var(--space-xs);
@@ -779,7 +777,7 @@
     padding: var(--space-md);
     flex-direction: column;
   }
-  
+
   .cv-content {
     padding: var(--space-md);
   }
@@ -796,7 +794,7 @@
   .cv-main-content,
   .contact-item,
   .skill-category li,
-  .back-button,
+  .scroll-to-top-button,
   .download-btn {
     transition: none !important;
   }

@@ -136,6 +136,30 @@
   background: var(--accent-green);
 }
 
+/* Theme toggle specific styling */
+.theme-toggle-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  z-index: 2;
+  position: relative;
+}
+
+.theme-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: "Space Grotesk", sans-serif;
+  transition: var(--transition-fast);
+}
+
+.social-link.theme-toggle:hover .theme-label {
+  color: white;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .social-link {
