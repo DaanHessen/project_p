@@ -39,6 +39,9 @@ export default defineConfig({
       },
     }),
   ],
+  css: {
+    postcss: './postcss.config.js',
+  },
   build: {
     // Optimize for SEO and performance
     minify: "terser",

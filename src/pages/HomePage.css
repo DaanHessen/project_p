@@ -26,26 +26,29 @@
   left: 0;
   right: 0;
   bottom: 0;
-  /* Fallback for older browsers */
+  /* Enhanced cross-browser dot pattern */
+  background: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-image: 
     radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  /* Modern syntax with better compatibility */
-  background-image: 
-    radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
   background-repeat: repeat;
+  background-position: 0 0;
   pointer-events: none;
   z-index: 1;
+  opacity: 1;
+  will-change: auto;
 }
 
-/* Light mode dots */
+/* Light mode dots with enhanced compatibility */
 [data-theme="light"] .page-one::after {
-  /* Fallback for older browsers */
+  /* Enhanced cross-browser dot pattern for light mode */
+  background: 
+    radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+    radial-gradient(circle at center, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
   background-image: 
     radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
-  /* Modern syntax with better compatibility */
-  background-image: 
-    radial-gradient(circle at center, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
 }
 
 /* Main Content */
