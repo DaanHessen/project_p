@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import "./CVPage.css";
 import useGlobalAnimations from "../utils/useGlobalAnimations";
@@ -9,29 +9,12 @@ interface CVPageProps {
 }
 
 const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
+  const mainContentRef = useRef<HTMLDivElement>(null);
   const { contentFadeVariants, transitionSettings } = useGlobalAnimations();
 
   const shouldShow = currentPage === 3;
-  const [activeSection, setActiveSection] = useState("summary");
   const [scrollDisabled, setScrollDisabled] = useState(false);
-  
-  // Particle decoration setup
-  const [particles, setParticles] = useState<{ x: number; y: number; size: number; opacity: number }[]>([]);
-  
-  // Generate particles for decoration
-  useEffect(() => {
-    if (shouldShow) {
-      const newParticles = Array(50).fill(0).map(() => ({
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 3 + 1,
-        opacity: Math.random() * 0.15 + 0.05
-      }));
-      setParticles(newParticles);
-    }
-  }, [shouldShow]);
 
-  // Disable scrolling temporarily when arriving at CV page
   useEffect(() => {
     if (currentPage === 3) {
       setScrollDisabled(true);
@@ -43,366 +26,17 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
   }, [currentPage]);
 
   const handleDownloadPDF = () => {
-    // I wanna do something cool here where it'll export the page itself instead of just uploading a pdf version too, so I never
-    // have to change both of them and I can just change the page. 
-    alert("PDF download feature coming soon");
+    alert("PDF download functionality coming soon!");
   };
 
   const handleBackClick = () => {
     setCurrentPage(1);
   };
 
-  const cvSections = [
-    { id: "summary", label: "Summary", icon: "📄" },
-    { id: "education", label: "Education", icon: "🎓" },
-    { id: "experience", label: "Experience", icon: "💼" },
-    { id: "skills", label: "Skills", icon: "⚡" },
-    { id: "personal", label: "Personal", icon: "👤" },
-  ];
-
-  const renderActiveSection = () => {
-    switch (activeSection) {
-      case "summary":
-        return (
-          <div className="cv-section-content">
-            <h2 className="cv-section-title">Professional Summary</h2>
-            <div className="summary-card">
-              <div className="summary-header">
-                <div className="summary-avatar">DH</div>
-                <div className="summary-info">
-                  <h3>Daan Hessen</h3>
-                  <p>HBO-ICT Student & Software Developer</p>
-                </div>
-              </div>
-              <div className="summary-text">
-                <p>
-                  23-year-old HBO-ICT student specializing in Software Development at 
-                  University of Applied Sciences Utrecht. Experienced in hospitality 
-                  with international work experience. Passionate about programming 
-                  and modern web technologies.
-                </p>
-              </div>
-              <div className="summary-stats">
-                <div className="stat-item">
-                  <span className="stat-number">2+</span>
-                  <span className="stat-label">Years in ICT</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">5+</span>
-                  <span className="stat-label">Years Experience</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">3</span>
-                  <span className="stat-label">Languages</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      
-      case "education":
-        return (
-          <div className="cv-section-content">
-            <h2 className="cv-section-title">Education</h2>
-            <div className="education-timeline">
-              <div className="timeline-item active">
-                <div className="timeline-dot"></div>
-                <div className="timeline-content">
-                  <div className="timeline-header">
-                    <h3>HBO-ICT Software Development</h3>
-                    <span className="timeline-period">2023 - Present</span>
-                  </div>
-                  <p className="timeline-subtitle">University of Applied Sciences Utrecht</p>
-                  <p className="timeline-description">
-                    Currently in second year, specializing in Software Development. 
-                    Focus on modern programming languages, software architecture, 
-                    and development methodologies.
-                  </p>
-                  <div className="timeline-skills">
-                    <span className="skill-tag">Java</span>
-                    <span className="skill-tag">JavaScript</span>
-                    <span className="skill-tag">Web Development</span>
-                    <span className="skill-tag">Software Architecture</span>
-                  </div>
-                </div>
-              </div>
-              <div className="timeline-item">
-                <div className="timeline-dot"></div>
-                <div className="timeline-content">
-                  <div className="timeline-header">
-                    <h3>HBO Creative Business</h3>
-                    <span className="timeline-period">2020 - 2022</span>
-                  </div>
-                  <p className="timeline-subtitle">University of Applied Sciences Amsterdam</p>
-                  <p className="timeline-description">
-                    Initial studies before discovering passion for software development 
-                    and transitioning to ICT focus.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      
-      case "experience":
-        return (
-          <div className="cv-section-content">
-            <h2 className="cv-section-title">Work Experience</h2>
-            <div className="experience-grid">
-              <div className="experience-card current">
-                <div className="experience-header">
-                  <div className="experience-company">Brasserie Monsees</div>
-                  <div className="experience-period">2022 - Present</div>
-                </div>
-                <h3 className="experience-title">Bartender</h3>
-                <p className="experience-location">Hilversum, Netherlands</p>
-                <p className="experience-description">
-                  Customer service, beverage preparation, and restaurant operations 
-                  in upscale dining environment. Managing busy periods and maintaining 
-                  high service standards.
-                </p>
-                <div className="experience-skills">
-                  <span>Customer Service</span>
-                  <span>Team Leadership</span>
-                  <span>Multitasking</span>
-                </div>
-              </div>
-              
-              <div className="experience-card">
-                <div className="experience-header">
-                  <div className="experience-company">Ambrosius Stube</div>
-                  <div className="experience-period">2022</div>
-                </div>
-                <h3 className="experience-title">International Bartender</h3>
-                <p className="experience-location">Lech, Austria</p>
-                <p className="experience-description">
-                  International hospitality experience in alpine resort setting 
-                  during high season. Developed cultural adaptability and language skills.
-                </p>
-                <div className="experience-skills">
-                  <span>International Experience</span>
-                  <span>Language Skills</span>
-                  <span>Cultural Adaptability</span>
-                </div>
-              </div>
-              
-              <div className="experience-card">
-                <div className="experience-header">
-                  <div className="experience-company">Oh Lobo</div>
-                  <div className="experience-period">2019 - 2020</div>
-                </div>
-                <h3 className="experience-title">Server & Bartender</h3>
-                <p className="experience-location">Hilversum, Netherlands</p>
-                <p className="experience-description">
-                  Progressive role from server to bartender, developing customer 
-                  relations and hospitality management skills.
-                </p>
-              </div>
-              
-              <div className="experience-card">
-                <div className="experience-header">
-                  <div className="experience-company">Sijgje Hilversum</div>
-                  <div className="experience-period">2017 - 2019</div>
-                </div>
-                <h3 className="experience-title">Server</h3>
-                <p className="experience-location">Hilversum, Netherlands</p>
-                <p className="experience-description">
-                  First professional role, developing foundational hospitality 
-                  and teamwork skills in fast-paced environment.
-                </p>
-              </div>
-            </div>
-          </div>
-        );
-      
-      case "skills":
-        return (
-          <div className="cv-section-content">
-            <h2 className="cv-section-title">Skills & Expertise</h2>
-            <div className="skills-container">
-              <div className="skills-category">
-                <h3>Programming Languages</h3>
-                <div className="skills-list">
-                  <div className="skill-item advanced">
-                    <span className="skill-name">Java</span>
-                    <div className="skill-level">
-                      <div className="skill-bar" style={{width: '85%'}}></div>
-                    </div>
-                    <span className="skill-percentage">Advanced</span>
-                  </div>
-                  <div className="skill-item advanced">
-                    <span className="skill-name">JavaScript</span>
-                    <div className="skill-level">
-                      <div className="skill-bar" style={{width: '80%'}}></div>
-                    </div>
-                    <span className="skill-percentage">Advanced</span>
-                  </div>
-                  <div className="skill-item intermediate">
-                    <span className="skill-name">TypeScript</span>
-                    <div className="skill-level">
-                      <div className="skill-bar" style={{width: '70%'}}></div>
-                    </div>
-                    <span className="skill-percentage">Intermediate</span>
-                  </div>
-                  <div className="skill-item intermediate">
-                    <span className="skill-name">Python</span>
-                    <div className="skill-level">
-                      <div className="skill-bar" style={{width: '65%'}}></div>
-                    </div>
-                    <span className="skill-percentage">Intermediate</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="skills-category">
-                <h3>Languages</h3>
-                <div className="language-skills">
-                  <div className="language-item">
-                    <div className="language-flag">🇳🇱</div>
-                    <div className="language-info">
-                      <span className="language-name">Dutch</span>
-                      <span className="language-level native">Native</span>
-                    </div>
-                  </div>
-                  <div className="language-item">
-                    <div className="language-flag">🇬🇧</div>
-                    <div className="language-info">
-                      <span className="language-name">English</span>
-                      <span className="language-level fluent">Fluent</span>
-                    </div>
-                  </div>
-                  <div className="language-item">
-                    <div className="language-flag">🇩🇪</div>
-                    <div className="language-info">
-                      <span className="language-name">German</span>
-                      <span className="language-level intermediate">Intermediate</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="skills-category">
-                <h3>Personal Skills</h3>
-                <div className="personal-skills">
-                  <div className="personal-skill">Team Collaboration</div>
-                  <div className="personal-skill">Customer Service</div>
-                  <div className="personal-skill">International Experience</div>
-                  <div className="personal-skill">Problem Solving</div>
-                  <div className="personal-skill">Leadership</div>
-                  <div className="personal-skill">Communication</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      
-      case "personal":
-        return (
-          <div className="cv-section-content">
-            <h2 className="cv-section-title">Personal Information</h2>
-            <div className="personal-info-container">
-              <div className="contact-section">
-                <h3>Contact Information</h3>
-                <div className="contact-grid">
-                  <div className="contact-item">
-                    <div className="contact-icon">📍</div>
-                    <div className="contact-details">
-                      <span className="contact-label">Location</span>
-                      <span className="contact-value">Hilversum, Netherlands</span>
-                    </div>
-                  </div>
-                  <div className="contact-item">
-                    <div className="contact-icon">📞</div>
-                    <div className="contact-details">
-                      <span className="contact-label">Phone</span>
-                      <span className="contact-value">+31 647 072 045</span>
-                    </div>
-                  </div>
-                  <div className="contact-item">
-                    <div className="contact-icon">✉️</div>
-                    <div className="contact-details">
-                      <span className="contact-label">Email</span>
-                      <span className="contact-value">daan2002@gmail.com</span>
-                    </div>
-                  </div>
-                  <div className="contact-item">
-                    <div className="contact-icon">🌐</div>
-                    <div className="contact-details">
-                      <span className="contact-label">Website</span>
-                      <span className="contact-value">daanhessen.nl</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="details-section">
-                <h3>Personal Details</h3>
-                <div className="details-grid">
-                  <div className="detail-item">
-                    <span className="detail-label">Date of Birth</span>
-                    <span className="detail-value">September 4, 2002</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">Nationality</span>
-                    <span className="detail-value">Dutch</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">Age</span>
-                    <span className="detail-value">21 years old</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="social-section">
-                <h3>Professional Links</h3>
-                <div className="social-links">
-                  <a href="https://linkedin.com/in/daanhessen" target="_blank" rel="noopener noreferrer" className="social-link linkedin">
-                    <div className="social-icon">💼</div>
-                    <span>LinkedIn Profile</span>
-                  </a>
-                  <a href="https://github.com/DaanHessen" target="_blank" rel="noopener noreferrer" className="social-link github">
-                    <div className="social-icon">💻</div>
-                    <span>GitHub Profile</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      
-      default:
-        return null;
-    }
-  };
-
-  // Create particle decoration elements
-  const renderParticles = useCallback(() => {
-    return particles.map((particle, index) => (
-      <div 
-        key={index}
-        style={{
-          position: 'absolute',
-          top: `${particle.y}%`,
-          left: `${particle.x}%`,
-          width: `${particle.size}px`,
-          height: `${particle.size}px`,
-          borderRadius: '50%',
-          background: 'rgba(59, 130, 246, 0.4)',
-          boxShadow: '0 0 10px rgba(59, 130, 246, 0.2)',
-          opacity: particle.opacity,
-          zIndex: 1,
-          pointerEvents: 'none'
-        }}
-      />
-    ));
-  }, [particles]);
-
   return (
     <div className="page page-three cv-page">
-      {/* Particle decorations */}
-      {shouldShow && renderParticles()}
-      
       <div className="cv-layout">
+        {/* Professional Sidebar */}
         <motion.div
           className="cv-sidebar"
           variants={contentFadeVariants}
@@ -414,44 +48,102 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
             delay: 0.1,
           }}
         >
-          <div className="sidebar-header">
-            <div className="sidebar-title-section">
-              <h2 className="sidebar-title">Curriculum Vitae</h2>
-              <button 
-                className="back-button"
-                onClick={handleBackClick}
-                aria-label="Go back"
-              >
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.42-1.41L7.83 13H20v-2z"/>
-                </svg>
-                Back
-              </button>
+          {/* Profile Section */}
+          <div className="profile-section">
+            <div className="profile-photo">
+              <div className="profile-initials">DH</div>
+            </div>
+            <div className="profile-info">
+              <h1 className="profile-name">DAAN HESSEN</h1>
+              <p className="profile-title">SOFTWARE DEVELOPER</p>
+            </div>
+            <div className="profile-logo">
+              <div className="logo-initials">D<br/>H</div>
             </div>
           </div>
-          
-          <nav className="sidebar-nav">
-            {cvSections.map((section, index) => (
-              <motion.button
-                key={section.id}
-                className={`sidebar-nav-item ${activeSection === section.id ? 'active' : ''}`}
-                onClick={() => setActiveSection(section.id)}
-                initial={{ opacity: 0, x: -20 }}
-                animate={shouldShow ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-                transition={{
-                  delay: shouldShow ? 0.2 + index * 0.1 : 0,
-                  duration: 0.3,
-                }}
-                whileHover={{ x: 4 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <span className="nav-icon">{section.icon}</span>
-                <span className="nav-label">{section.label}</span>
-              </motion.button>
-            ))}
-          </nav>
 
+          {/* Contact Section */}
+          <div className="contact-section">
+            <h3 className="section-title">CONTACT</h3>
+            <div className="contact-items">
+              <div className="contact-item">
+                <svg className="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z" />
+                </svg>
+                <span>+31 647 072 045</span>
+              </div>
+              <div className="contact-item">
+                <svg className="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" />
+                </svg>
+                <span>daan2002@gmail.com</span>
+              </div>
+              <div className="contact-item">
+                <svg className="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z" />
+                </svg>
+                <span>Hilversum, Netherlands</span>
+              </div>
+              <div className="contact-item">
+                <svg className="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16.36,14C16.44,13.3 16.5,12.66 16.5,12S16.44,10.7 16.36,10H19.74C19.9,10.64 20,11.31 20,12S19.9,13.36 19.74,14M14.59,19.56C15.19,18.45 15.65,17.25 15.97,16H18.92C17.96,17.65 16.43,18.93 14.59,19.56M14.34,14H9.66C9.56,13.32 9.5,12.66 9.5,12S9.56,10.68 9.66,10H14.34C14.43,10.68 14.5,11.32 14.5,12S14.43,13.32 14.34,14M12,19.96C11.17,18.76 10.5,17.43 10.09,16H13.91C13.5,17.43 12.83,18.76 12,19.96M8,8H5.08C6.03,6.34 7.57,5.06 9.4,4.44C8.8,5.55 8.35,6.75 8,8M5.08,16H8C8.35,17.25 8.8,18.45 9.4,19.56C7.57,18.93 6.03,17.65 5.08,16M4.26,14C4.1,13.36 4,12.69 4,12S4.1,10.64 4.26,10H7.64C7.56,10.7 7.5,11.34 7.5,12S7.56,13.3 7.64,14M12,4.03C12.83,5.23 13.5,6.57 13.91,8H10.09C10.5,6.57 11.17,5.23 12,4.03M18.92,8H15.97C15.65,6.75 15.19,5.55 14.59,4.44C16.43,5.07 17.96,6.34 18.92,8M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                </svg>
+                <span>daanhessen.nl</span>
+              </div>
+              <div className="contact-item">
+                <svg className="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3H19M18.5,18.5V13.2A3.26,3.26 0 0,0 15.24,9.94C14.39,9.94 13.4,10.46 12.92,11.24V10.13H10.13V18.5H12.92V13.57C12.92,12.8 13.54,12.17 14.31,12.17A1.4,1.4 0 0,1 15.71,13.57V18.5H18.5M6.88,8.56A1.68,1.68 0 0,0 8.56,6.88C8.56,5.95 7.81,5.19 6.88,5.19A1.69,1.69 0 0,0 5.19,6.88C5.19,7.81 5.95,8.56 6.88,8.56M8.27,18.5V10.13H5.5V18.5H8.27Z" />
+                </svg>
+                <span>linkedin.com/in/daanhessen</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Skills Section */}
+          <div className="skills-section">
+            <h3 className="section-title">SKILLS</h3>
+            <div className="skills-list">
+              <div className="skill-category">
+                <h4>Programming Languages</h4>
+                <ul>
+                  <li>Java</li>
+                  <li>JavaScript</li>
+                  <li>TypeScript</li>
+                  <li>Python</li>
+                </ul>
+              </div>
+              <div className="skill-category">
+                <h4>Web Technologies</h4>
+                <ul>
+                  <li>React</li>
+                  <li>HTML/CSS</li>
+                  <li>Node.js</li>
+                  <li>REST APIs</li>
+                </ul>
+              </div>
+              <div className="skill-category">
+                <h4>Languages</h4>
+                <ul>
+                  <li>Dutch (Native)</li>
+                  <li>English (Fluent)</li>
+                  <li>German (Intermediate)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation & Download */}
           <div className="sidebar-footer">
+            <button 
+              className="back-button"
+              onClick={handleBackClick}
+              aria-label="Go back"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.42-1.41L7.83 13H20v-2z"/>
+              </svg>
+              Back to Portfolio
+            </button>
             <motion.button
               onClick={handleDownloadPDF}
               className="download-btn"
@@ -469,8 +161,10 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
           </div>
         </motion.div>
 
+        {/* Main Content Area */}
         <motion.div
           className={`cv-main-content ${scrollDisabled ? 'scroll-disabled' : ''}`}
+          ref={mainContentRef}
           variants={contentFadeVariants}
           initial="initial"
           animate={shouldShow ? "animate" : "exit"}
@@ -480,15 +174,143 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
             delay: 0.2,
           }}
         >
-          <motion.div
-            key={activeSection}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            {renderActiveSection()}
-          </motion.div>
+          <div className="cv-content">
+            {/* Professional Summary */}
+            <section className="cv-section">
+              <h2 className="section-heading">PROFESSIONAL SUMMARY</h2>
+              <div className="section-content">
+                <p>
+                  Passionate HBO-ICT student specializing in Software Development with hands-on experience 
+                  in modern programming languages and web technologies. Currently in my second year at 
+                  University of Applied Sciences Utrecht, combining academic knowledge with practical 
+                  application. Strong background in hospitality with international work experience, 
+                  bringing excellent communication skills and cultural awareness to technical projects.
+                </p>
+              </div>
+            </section>
+
+            {/* Work Experience */}
+            <section className="cv-section">
+              <h2 className="section-heading">WORK EXPERIENCE</h2>
+              <div className="section-content">
+                <div className="experience-entry">
+                  <div className="experience-header">
+                    <div className="experience-years">2022<br/>2024</div>
+                    <div className="experience-details">
+                      <h3 className="job-title">BARTENDER</h3>
+                      <h4 className="company-name">Brasserie Monsees / Hilversum</h4>
+                      <p className="job-description">
+                        Provided exceptional customer service in an upscale dining environment. 
+                        Managed high-volume service periods while maintaining quality standards. 
+                        Collaborated with kitchen and service teams to ensure seamless operations.
+                      </p>
+                      <ul className="job-highlights">
+                        <li>Handled customer relations and complaint resolution</li>
+                        <li>Managed inventory and point-of-sale systems</li>
+                        <li>Trained new staff members on service protocols</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="experience-entry">
+                  <div className="experience-header">
+                    <div className="experience-years">2022</div>
+                    <div className="experience-details">
+                      <h3 className="job-title">INTERNATIONAL BARTENDER</h3>
+                      <h4 className="company-name">Ambrosius Stube / Lech, Austria</h4>
+                      <p className="job-description">
+                        Seasonal position in alpine resort setting, serving international clientele. 
+                        Developed cultural sensitivity and multilingual communication skills.
+                      </p>
+                      <ul className="job-highlights">
+                        <li>Served diverse international customers</li>
+                        <li>Adapted to high-pressure seasonal environment</li>
+                        <li>Enhanced German language proficiency</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="experience-entry">
+                  <div className="experience-header">
+                    <div className="experience-years">2019<br/>2020</div>
+                    <div className="experience-details">
+                      <h3 className="job-title">SERVER & BARTENDER</h3>
+                      <h4 className="company-name">Oh Lobo / Hilversum</h4>
+                      <p className="job-description">
+                        Entry-level position developing foundational hospitality skills and 
+                        customer service excellence in fast-paced environment.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Education */}
+            <section className="cv-section">
+              <h2 className="section-heading">EDUCATION</h2>
+              <div className="section-content">
+                <div className="education-entry">
+                  <div className="education-header">
+                    <div className="education-years">2023<br/>Present</div>
+                    <div className="education-details">
+                      <h3 className="degree-title">HBO-ICT SOFTWARE DEVELOPMENT</h3>
+                      <h4 className="institution-name">University of Applied Sciences Utrecht</h4>
+                      <p className="education-description">
+                        Currently in second year of Bachelor's program focusing on software 
+                        development, programming methodologies, and modern software architecture. 
+                        Hands-on experience with various programming languages and development frameworks.
+                      </p>
+                      <div className="education-highlights">
+                        <span className="highlight-tag">Object-Oriented Programming</span>
+                        <span className="highlight-tag">Web Development</span>
+                        <span className="highlight-tag">Database Design</span>
+                        <span className="highlight-tag">Software Architecture</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="education-entry">
+                  <div className="education-header">
+                    <div className="education-years">2020<br/>2022</div>
+                    <div className="education-details">
+                      <h3 className="degree-title">HBO CREATIVE BUSINESS</h3>
+                      <h4 className="institution-name">University of Applied Sciences Amsterdam</h4>
+                      <p className="education-description">
+                        Initial studies in business and creative industries before transitioning 
+                        to technical focus. Developed foundational business acumen and project 
+                        management skills.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Projects & Achievements */}
+            <section className="cv-section">
+              <h2 className="section-heading">PROJECTS & ACHIEVEMENTS</h2>
+              <div className="section-content">
+                <div className="project-entry">
+                  <h3 className="project-title">Personal Portfolio Website</h3>
+                  <p className="project-description">
+                    Developed and deployed a modern, responsive portfolio website using React, 
+                    TypeScript, and Framer Motion. Features smooth animations, mobile optimization, 
+                    and professional CV presentation.
+                  </p>
+                  <div className="project-tech">
+                    <span className="tech-tag">React</span>
+                    <span className="tech-tag">TypeScript</span>
+                    <span className="tech-tag">Framer Motion</span>
+                    <span className="tech-tag">CSS3</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
         </motion.div>
       </div>
     </div>
@@ -496,3 +318,4 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
 };
 
 export default CVPage;
+

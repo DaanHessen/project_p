@@ -36,10 +36,9 @@ function App() {
 
   // Simple scroll navigation - only for pages 1 and 2
   useScrollNavigation({
-    totalPages: 2, // Only Home and Projects pages
+    totalPages: 3, // Home, Projects, and CV pages
     currentPage,
     onPageChange: setCurrentPage,
-    disabled: currentPage === 3, // Disable when on CV page
     excludeSelectors: [
       ".pixel-social-container",
       ".cv-content",
@@ -68,7 +67,7 @@ function App() {
         />
       </div>
 
-      {/* Page 3: CV - Only accessible via social media button */}
+      {/* Page 3: CV - Scroll accessible */}
       <div 
         className={`page-wrapper ${currentPage === 3 ? 'active' : ''}`}
         style={{ zIndex: currentPage === 3 ? 10 : 1 }}

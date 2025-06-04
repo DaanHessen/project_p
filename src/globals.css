@@ -1,5 +1,5 @@
 /* Import modern fonts */
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap");
 
 /* Import animations */
@@ -54,7 +54,7 @@
   );
   --gradient-bg-subtle: radial-gradient(
     circle at 50% 50%,
-    rgba(59, 130, 246, 0.025) 0%,
+    rgba(59, 130, 246, 0.08) 0%,
     transparent 70%
   );
 
@@ -96,9 +96,8 @@
 
   /* Typography settings */
   font-family:
-    "JetBrains Mono",
+    "Lora",
     "Space Grotesk",
-    monospace,
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
@@ -215,7 +214,10 @@ body::-webkit-scrollbar {
   height: 100%;
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease, z-index 0s linear 0.8s;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease,
+    z-index 0s linear 0.8s;
   pointer-events: none;
   will-change: opacity, transform;
   backface-visibility: hidden;
@@ -225,7 +227,10 @@ body::-webkit-scrollbar {
 .page-wrapper.active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.8s ease, transform 0.8s ease, z-index 0s linear 0s;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease,
+    z-index 0s linear 0s;
   pointer-events: auto;
 }
 

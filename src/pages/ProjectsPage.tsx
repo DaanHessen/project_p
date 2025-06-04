@@ -9,9 +9,7 @@ interface ProjectsPageProps {
 const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
   const { contentFadeVariants, transitionSettings } = useGlobalAnimations();
 
-  if (currentPage !== 2) {
-    return null;
-  }
+  const shouldShow = currentPage === 2;
 
   return (
     <div className="page page-projects">
@@ -20,7 +18,8 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
           className="main-content"
           variants={contentFadeVariants}
           initial="initial"
-          animate="animate"
+          animate={shouldShow ? "animate" : "exit"}
+          exit="exit"
           transition={{
             ...transitionSettings.content,
             delay: 0.2,
@@ -29,7 +28,8 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
           <motion.h1
             variants={contentFadeVariants}
             initial="initial"
-            animate="animate"
+            animate={shouldShow ? "animate" : "exit"}
+            exit="exit"
             transition={{
               ...transitionSettings.content,
               delay: 0.3,
@@ -42,13 +42,14 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
               fontFamily: "JetBrains Mono, monospace",
             }}
           >
-            Projects Coming Soon
+            Projects
           </motion.h1>
-          
+
           <motion.p
             variants={contentFadeVariants}
             initial="initial"
-            animate="animate"
+            animate={shouldShow ? "animate" : "exit"}
+            exit="exit"
             transition={{
               ...transitionSettings.content,
               delay: 0.4,
@@ -61,13 +62,15 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
               lineHeight: "1.6",
             }}
           >
-            Still working on this page. Meanwhile, you can check some of my projects out on my GitHub.
+            Still working on this page. Meanwhile, you can check some of my
+            projects out on my GitHub.
           </motion.p>
 
           <motion.div
             variants={contentFadeVariants}
             initial="initial"
-            animate="animate"
+            animate={shouldShow ? "animate" : "exit"}
+            exit="exit"
             transition={{
               ...transitionSettings.content,
               delay: 0.6,
@@ -76,11 +79,7 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
               marginTop: "3rem",
               opacity: 0.7,
             }}
-          >
-            <span style={{ fontSize: "0.9rem", color: "var(--text-muted)" }}>
-              Scroll up to return home
-            </span>
-          </motion.div>
+          ></motion.div>
         </motion.div>
       </div>
     </div>
