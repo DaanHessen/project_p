@@ -71,15 +71,28 @@
 .projects-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary); /* Fallback color for non-webkit browsers */
   margin: 0 0 var(--space-sm) 0;
   font-family: "Space Grotesk", sans-serif;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  
+  /* Gradient text with proper fallbacks */
   background: var(--gradient-text);
+  background: -webkit-linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
+  background: -moz-linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
+  background: linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
+  
+  /* Webkit gradient text */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  
+  /* Fallback for browsers that don't support background-clip: text */
+  @supports not (-webkit-background-clip: text) {
+    background: none;
+    color: var(--accent-primary);
+  }
 }
 
 .projects-subtitle {
@@ -607,17 +620,30 @@
 .project-detail-title {
   font-size: var(--text-3xl);
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--text-primary); /* Fallback color for non-webkit browsers */
   margin: 0;
   font-family: "Space Grotesk", sans-serif;
   letter-spacing: 0.02em;
-  background: var(--gradient-text);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   line-height: 1.2;
   flex: 1;
   min-width: 0;
+  
+  /* Gradient text with proper fallbacks */
+  background: var(--gradient-text);
+  background: -webkit-linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
+  background: -moz-linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
+  background: linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
+  
+  /* Webkit gradient text */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  /* Fallback for browsers that don't support background-clip: text */
+  @supports not (-webkit-background-clip: text) {
+    background: none;
+    color: var(--accent-primary);
+  }
 }
 
 .project-detail-description {
@@ -1216,3 +1242,42 @@
 }
 
 /* No Preview Available */
+
+/* Light mode gradient text adjustments */
+[data-theme="light"] .projects-title {
+  /* Light mode gradient text with proper fallbacks */
+  background: var(--gradient-text);
+  background: -webkit-linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #60a5fa 100%);
+  background: -moz-linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #60a5fa 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #60a5fa 100%);
+  
+  /* Webkit gradient text */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  /* Fallback for browsers that don't support background-clip: text */
+  @supports not (-webkit-background-clip: text) {
+    background: none;
+    color: var(--accent-primary);
+  }
+}
+
+[data-theme="light"] .project-detail-title {
+  /* Light mode gradient text with proper fallbacks */
+  background: var(--gradient-text);
+  background: -webkit-linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #60a5fa 100%);
+  background: -moz-linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #60a5fa 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #60a5fa 100%);
+  
+  /* Webkit gradient text */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  /* Fallback for browsers that don't support background-clip: text */
+  @supports not (-webkit-background-clip: text) {
+    background: none;
+    color: var(--accent-primary);
+  }
+}
