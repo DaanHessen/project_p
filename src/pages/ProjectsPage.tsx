@@ -75,15 +75,9 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
               ? // Loading Skeletons
                 Array.from({ length: 6 }).map((_, index) => (
                   <div key={index} className="project-item skeleton">
-                    <div className="project-item-header">
+                    <div className="project-item-row">
                       <div className="skeleton-title"></div>
                       <div className="skeleton-status"></div>
-                    </div>
-                    <div className="skeleton-description"></div>
-                    <div className="skeleton-tags">
-                      {Array.from({ length: 3 }).map((_, i) => (
-                        <div key={i} className="skeleton-tag"></div>
-                      ))}
                     </div>
                   </div>
                 ))
@@ -97,35 +91,19 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                     transition={{ delay: index * 0.1 }}
                     whileHover={{ x: 4 }}
                   >
-                    <div className="project-item-header">
-                      <h3 className="project-item-title">{project.Name}</h3>
+                    <div className="project-item-row">
+                      <div className="project-item-content">
+                        <h3 className="project-item-title">{project.Name}</h3>
+                        <p className="project-item-description">
+                          {project.OneLiner || project.Description}
+                        </p>
+                      </div>
                       <span
                         className={`project-status ${project.Status.toLowerCase().replace(" ", "-")}`}
                       >
                         {project.Status}
                       </span>
                     </div>
-                    <p className="project-item-description">
-                      {project.Description.length > 100
-                        ? `${project.Description.substring(0, 100)}...`
-                        : project.Description}
-                    </p>
-                    {project.Technologies && (
-                      <div className="project-item-tags">
-                        {project.Technologies.split(",")
-                          .slice(0, 3)
-                          .map((tech, techIndex) => (
-                            <span key={techIndex} className="project-tag">
-                              {tech.trim()}
-                            </span>
-                          ))}
-                        {project.Technologies.split(",").length > 3 && (
-                          <span className="project-tag more">
-                            +{project.Technologies.split(",").length - 3}
-                          </span>
-                        )}
-                      </div>
-                    )}
                   </motion.div>
                 ))}
           </div>
@@ -197,17 +175,7 @@ const ProjectsPage = ({ currentPage }: ProjectsPageProps) => {
                   </div>
                 )}
 
-                {selectedProject.Link && (
-                  <button
-                    className="visit-website-btn"
-                    onClick={handleVisitWebsite}
-                  >
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />
-                    </svg>
-                    Visit Website
-                  </button>
-                )}
+
               </div>
 
               {/* Live Preview */}

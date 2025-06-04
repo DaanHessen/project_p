@@ -28,6 +28,7 @@ export interface Project {
   id: number;
   Name: string;
   Description: string;
+  OneLiner: string;
   Link: string;
   Technologies: string;
   Status: string;
@@ -80,7 +81,7 @@ export async function fetchProjects(): Promise<Project[]> {
     console.log("🔍 Fetching projects from database...");
 
     const result = await sql`
-      SELECT id, "Name", "Description", "Link", "Technologies", "Status", "AddedAt" 
+      SELECT id, "Name", "Description", "OneLiner", "Link", "Technologies", "Status", "AddedAt" 
       FROM "Projects" 
       ORDER BY id DESC
     `;
@@ -96,7 +97,7 @@ export async function fetchProjects(): Promise<Project[]> {
 export async function getProjectById(id: number): Promise<Project | null> {
   try {
     const result = await sql`
-      SELECT id, "Name", "Description", "Link", "Technologies", "Status", "AddedAt" 
+      SELECT id, "Name", "Description", "OneLiner", "Link", "Technologies", "Status", "AddedAt" 
       FROM "Projects" 
       WHERE id = ${id}
     `;

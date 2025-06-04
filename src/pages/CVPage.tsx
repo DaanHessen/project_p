@@ -104,13 +104,7 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage }) => {
                 {cvData.profile?.Title || "SOFTWARE DEVELOPER"}
               </p>
             </div>
-            <div className="profile-logo">
-              <div className="logo-initials">
-                {cvData.profile?.Name?.split(" ")
-                  .map((n) => n[0])
-                  .join("") || "DH"}
-              </div>
-            </div>
+
           </div>
 
           {/* Contact Section */}

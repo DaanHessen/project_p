@@ -110,6 +110,40 @@
   --text-tertiary: #64748b;
   --text-muted: #94a3b8;
 
+  /* Accent colors - keep same for consistency */
+  --accent-primary: #3b82f6;
+  --accent-secondary: #60a5fa;
+  --accent-green: #10b981;
+  --accent-red: #ef4444;
+  --accent-warm: #f59e0b;
+  --accent-purple: #8b5cf6;
+
+  /* Shadows for light mode */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.16);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12), 0 6px 10px rgba(0, 0, 0, 0.15);
+  --shadow-blue: 0 8px 32px rgba(59, 130, 246, 0.15);
+  --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.08);
+
+  /* Gradients for light mode */
+  --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --gradient-text: linear-gradient(
+    135deg,
+    #1e293b 0%,
+    #3b82f6 50%,
+    #60a5fa 100%
+  );
+  --gradient-card: linear-gradient(
+    145deg,
+    rgba(248, 250, 252, 0.8),
+    rgba(241, 245, 249, 0.6)
+  );
+  --gradient-bg-subtle: radial-gradient(
+    circle at 50% 50%,
+    rgba(59, 130, 246, 0.04) 0%,
+    transparent 70%
+  );
+
   /* Color scheme */
   color-scheme: light;
 
