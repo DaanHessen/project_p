@@ -203,10 +203,6 @@
   line-height: 1.4;
   margin: 0;
   font-family: "Lora", serif;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
 }
 
 .project-status {
@@ -266,7 +262,6 @@
 .project-info {
   padding: var(--space-3xl);
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background: linear-gradient(
     135deg,
     rgba(59, 130, 246, 0.02) 0%,

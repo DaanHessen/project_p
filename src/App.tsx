@@ -2,7 +2,7 @@ import "./globals.css";
 import HomePage from "./pages/HomePage";
 import ProjectsPage from "./pages/ProjectsPage";
 import CVPage from "./pages/CVPage";
-import PixelSocialMedia from "./components/PixelSocialMedia";
+import SocialMedia from "./components/SocialMedia";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useScrollNavigation } from "./utils/useScrollNavigation";
@@ -91,7 +91,7 @@ function App() {
             </motion.div>
 
             {/* Pixel social media - Synchronized with page indicator */}
-            <PixelSocialMedia
+            <SocialMedia
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
             />

@@ -36,6 +36,15 @@
   z-index: 1;
 }
 
+/* Light mode dots */
+[data-theme="light"] .page-one::after {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(0, 0, 0, 0.08) 1px,
+    transparent 0
+  );
+}
+
 /* Main Content */
 .main-content {
   display: flex;

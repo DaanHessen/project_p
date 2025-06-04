@@ -30,6 +30,7 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage }) => {
     version: "1.0",
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [isPDFLoading, setIsPDFLoading] = useState(false);
 
   useEffect(() => {
     if (currentPage === 3) {
@@ -68,7 +69,7 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage }) => {
   }, [shouldShow]);
 
   const handleDownloadPDF = async () => {
-    await exportCVToPDF();
+    await exportCVToPDF(setIsPDFLoading);
   };
 
   return (
@@ -217,18 +218,34 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage }) => {
             <motion.button
               onClick={handleDownloadPDF}
               className="download-btn"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              disabled={isPDFLoading}
+              whileHover={{ scale: isPDFLoading ? 1 : 1.02 }}
+              whileTap={{ scale: isPDFLoading ? 1 : 0.98 }}
               initial={{ opacity: 0, y: 20 }}
               animate={
                 shouldShow ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
               }
               transition={{ delay: shouldShow ? 0.8 : 0 }}
             >
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-              </svg>
-              Download PDF
+              {isPDFLoading ? (
+                <>
+                  <svg 
+                    viewBox="0 0 24 24" 
+                    fill="currentColor"
+                    style={{ animation: 'spin 1s linear infinite' }}
+                  >
+                    <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                  </svg>
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+                  </svg>
+                  Download PDF
+                </>
+              )}
             </motion.button>
           </div>
         </motion.div>

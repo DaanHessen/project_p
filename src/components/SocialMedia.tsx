@@ -1,14 +1,14 @@
 import React from "react";
 import { motion } from "framer-motion";
-import "./PixelSocialMedia.css";
+import "./SocialMedia.css";
 import { useTheme } from "../utils/themeContext";
 
-interface PixelSocialMediaProps {
+interface SocialMediaProps {
   currentPage: number;
   setCurrentPage?: (page: number) => void;
 }
 
-const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
+const SocialMedia: React.FC<SocialMediaProps> = ({
   setCurrentPage,
 }) => {
   const { theme, toggleTheme } = useTheme();
@@ -169,4 +169,4 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
   );
 };
 
-export default PixelSocialMedia;
+export default SocialMedia;

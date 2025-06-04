@@ -298,6 +298,11 @@
   height: 1rem;
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* Main Content Area */
 .cv-main-content {
   flex: 1;

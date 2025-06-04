@@ -3,244 +3,205 @@
  * This provides better formatting and reliability than html2canvas + jsPDF
  */
 
-export const exportCVToPDF = async (): Promise<void> => {
-  try {
-    // Create a new window for PDF generation
-    const printWindow = window.open('', '_blank');
-    
-    if (!printWindow) {
-      throw new Error('Popup blocked. Please allow popups for this site.');
-    }
+import jsPDF from "jspdf";
+import { toPng } from "html-to-image";
 
-    // Get the CV content
-    const cvSidebar = document.querySelector('.cv-sidebar');
-    const cvMainContent = document.querySelector('.cv-main-content');
-    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+export const exportCVToPDF = async (setLoading?: (loading: boolean) => void): Promise<void> => {
+  if (setLoading) setLoading(true);
+  
+  try {
+    // Get the CV elements
+    const cvSidebar = document.querySelector('.cv-sidebar') as HTMLElement;
+    const cvMainContent = document.querySelector('.cv-main-content') as HTMLElement;
     
     if (!cvSidebar || !cvMainContent) {
-      throw new Error('CV content not found');
+      throw new Error('CV content not found. Please ensure you are on the CV page.');
     }
 
-    // Clone the content
-    const sidebarClone = cvSidebar.cloneNode(true) as HTMLElement;
-    const mainContentClone = cvMainContent.cloneNode(true) as HTMLElement;
+    // Create a temporary container for PDF generation
+    const tempContainer = document.createElement('div');
+    tempContainer.style.cssText = `
+      position: fixed;
+      top: -10000px;
+      left: -10000px;
+      width: 210mm;
+      min-height: 297mm;
+      background: white;
+      color: #333;
+      font-family: "Lora", "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      z-index: -1;
+      display: flex;
+    `;
 
-    // Remove interactive elements from clones
-    const removeElements = (container: HTMLElement, selectors: string[]) => {
-      selectors.forEach(selector => {
-        const elements = container.querySelectorAll(selector);
-        elements.forEach(el => el.remove());
-      });
+    // Clone and style sidebar
+    const sidebarClone = cvSidebar.cloneNode(true) as HTMLElement;
+    sidebarClone.style.cssText = `
+      width: 35%;
+      background: #f8f9fa;
+      padding: 1.5rem;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    `;
+
+    // Clone and style main content
+    const mainContentClone = cvMainContent.cloneNode(true) as HTMLElement;
+    mainContentClone.style.cssText = `
+      flex: 1;
+      background: white;
+      padding: 1.5rem 2rem;
+      color: #333;
+    `;
+
+    // Clean up cloned content
+    const cleanElement = (element: HTMLElement) => {
+      // Remove interactive elements
+      const buttonsToRemove = element.querySelectorAll('button, .download-btn, .scroll-to-top-button');
+      buttonsToRemove.forEach(btn => btn.remove());
+      
+             // Fix colors for PDF
+       const allElements = element.querySelectorAll('*');
+              allElements.forEach((el) => {
+         const htmlEl = el as HTMLElement;
+         const computed = getComputedStyle(htmlEl);
+         
+         // Set text colors
+         if (computed.color.includes('var(--text-primary)') || computed.color.includes('rgb(245, 247, 250)')) {
+           htmlEl.style.color = '#333 !important';
+         }
+         if (computed.color.includes('var(--text-secondary)') || computed.color.includes('rgb(208, 214, 225)')) {
+           htmlEl.style.color = '#666 !important';
+         }
+         if (computed.color.includes('var(--accent-primary)') || computed.color.includes('rgb(59, 130, 246)')) {
+           htmlEl.style.color = '#3b82f6 !important';
+         }
+         
+         // Fix backgrounds
+         if (htmlEl.classList.contains('profile-initials') || htmlEl.classList.contains('logo-initials')) {
+           htmlEl.style.background = '#3b82f6 !important';
+           htmlEl.style.color = 'white !important';
+         }
+         
+         // Fix section headers
+         if (htmlEl.tagName === 'H2' && htmlEl.textContent) {
+           htmlEl.style.color = '#333 !important';
+           htmlEl.style.borderBottom = '2px solid #3b82f6 !important';
+         }
+         
+         // Fix job titles and other accented elements
+         if (htmlEl.classList.contains('job-title') || htmlEl.classList.contains('degree-title') || htmlEl.classList.contains('section-title')) {
+           htmlEl.style.color = '#3b82f6 !important';
+         }
+         
+         // Fix year badges
+         if (htmlEl.classList.contains('experience-years') || htmlEl.classList.contains('education-years')) {
+           htmlEl.style.background = '#3b82f6 !important';
+           htmlEl.style.color = 'white !important';
+         }
+       });
     };
 
-    removeElements(sidebarClone, ['.scroll-to-top-button', 'button', '.download-btn']);
-    removeElements(mainContentClone, ['.scroll-to-top-button', 'button', '.download-btn']);
+    cleanElement(sidebarClone);
+    cleanElement(mainContentClone);
 
-    // Generate the HTML for the print window
-    const printHTML = `
-<!DOCTYPE html>
-<html lang="en" data-theme="${currentTheme}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daan Hessen - CV</title>
-    <style>
-        ${getComputedStylesAsString()}
-        
-        /* PDF-specific styles */
-        @page {
-            margin: 0;
-            size: A4;
-        }
-        
-        @media print {
-            body {
-                margin: 0 !important;
-                padding: 0 !important;
-                overflow: visible !important;
-                font-size: 14px !important;
-            }
-            
-            .cv-pdf-container {
-                display: flex !important;
-                width: 100% !important;
-                min-height: 100vh !important;
-                background: white !important;
-                color: #333 !important;
-                page-break-inside: avoid;
-            }
-            
-            .cv-sidebar-pdf {
-                width: 35% !important;
-                background: #f8f9fa !important;
-                padding: 1.5rem !important;
-                color: #333 !important;
-                page-break-inside: avoid;
-            }
-            
-            .cv-main-pdf {
-                flex: 1 !important;
-                padding: 1.5rem 2rem !important;
-                background: white !important;
-                color: #333 !important;
-            }
-            
-            .profile-initials {
-                background: #3b82f6 !important;
-                color: white !important;
-            }
-            
-            .contact-icon {
-                color: #3b82f6 !important;
-            }
-            
-            .cv-section h2 {
-                color: #333 !important;
-                border-bottom: 2px solid #3b82f6 !important;
-            }
-            
-            .job-title, .degree-title {
-                color: #3b82f6 !important;
-            }
-            
-            .experience-years, .education-years {
-                background: #3b82f6 !important;
-                color: white !important;
-            }
-            
-            .skill-category h4 {
-                color: #3b82f6 !important;
-            }
-            
-            /* Ensure proper text colors for PDF */
-            * {
-                color: #333 !important;
-            }
-            
-            h1, h2, h3, h4, h5, h6 {
-                color: #333 !important;
-            }
-            
-            .section-title {
-                color: #3b82f6 !important;
-            }
-        }
-        
-        /* Screen styles for preview */
-        @media screen {
-            body {
-                margin: 0;
-                padding: 20px;
-                font-family: "Lora", "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
-                line-height: 1.6;
-                background: #f5f5f5;
-            }
-            
-            .cv-pdf-container {
-                max-width: 210mm;
-                margin: 0 auto;
-                background: white;
-                box-shadow: 0 0 20px rgba(0,0,0,0.1);
-                display: flex;
-                min-height: 297mm;
-            }
-            
-            .cv-sidebar-pdf {
-                width: 35%;
-                background: #f8f9fa;
-                padding: 1.5rem;
-            }
-            
-            .cv-main-pdf {
-                flex: 1;
-                padding: 1.5rem 2rem;
-            }
-            
-            .print-button {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #3b82f6;
-                color: white;
-                border: none;
-                padding: 12px 24px;
-                border-radius: 8px;
-                cursor: pointer;
-                font-weight: 600;
-                z-index: 1000;
-            }
-            
-            .print-button:hover {
-                background: #2563eb;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="cv-pdf-container">
-        <div class="cv-sidebar-pdf">
-            ${sidebarClone.innerHTML}
-        </div>
-        <div class="cv-main-pdf">
-            ${mainContentClone.innerHTML}
-        </div>
-    </div>
-    
-    <button class="print-button" onclick="window.print()">Print / Save as PDF</button>
-    
-    <script>
-        // Auto-print when page loads
-        window.onload = function() {
-            // Small delay to ensure styles are loaded
-            setTimeout(() => {
-                window.print();
-            }, 500);
-        };
-        
-        // Close window after printing
-        window.onafterprint = function() {
-            setTimeout(() => {
-                window.close();
-            }, 1000);
-        };
-    </script>
-</body>
-</html>`;
+    tempContainer.appendChild(sidebarClone);
+    tempContainer.appendChild(mainContentClone);
+    document.body.appendChild(tempContainer);
 
-    // Write the HTML to the new window
-    printWindow.document.write(printHTML);
-    printWindow.document.close();
+    // Wait for fonts and images to load
+    await document.fonts.ready;
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    // Generate PNG from the temp container
+    const dataUrl = await toPng(tempContainer, {
+      quality: 1.0,
+      pixelRatio: 2,
+      backgroundColor: 'white',
+      width: tempContainer.offsetWidth,
+      height: Math.max(tempContainer.offsetHeight, 1123), // A4 height at 96 DPI
+    });
+
+    // Create PDF
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+    });
+
+    // Calculate dimensions
+    const imgWidth = 210; // A4 width in mm
+    const imgHeight = 297; // A4 height in mm
+
+    // Add image to PDF
+    pdf.addImage(dataUrl, 'PNG', 0, 0, imgWidth, imgHeight);
+
+    // Generate filename with current date
+    const now = new Date();
+    const timestamp = now.toISOString().split('T')[0]; // YYYY-MM-DD format
+    const filename = `Daan_Hessen_CV_${timestamp}.pdf`;
+
+    // Download the PDF
+    pdf.save(filename);
+
+    // Clean up
+    document.body.removeChild(tempContainer);
+
+    // Show success message
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #10b981;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      z-index: 10000;
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    `;
+    toast.textContent = `✅ CV downloaded as ${filename}`;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      if (document.body.contains(toast)) {
+        document.body.removeChild(toast);
+      }
+    }, 3000);
 
   } catch (error) {
-    console.error("Error generating PDF:", error);
+    console.error('Error generating PDF:', error);
     
-    // Fallback: Use browser's print functionality on current page
-    if (confirm("PDF generation failed. Would you like to use the browser's print function instead?")) {
-      window.print();
-    }
+    // Show error message
+    const errorToast = document.createElement('div');
+    errorToast.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #ef4444;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      z-index: 10000;
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    `;
+    errorToast.textContent = '❌ Failed to generate PDF. Please try again.';
+    document.body.appendChild(errorToast);
+
+    setTimeout(() => {
+      if (document.body.contains(errorToast)) {
+        document.body.removeChild(errorToast);
+      }
+    }, 5000);
+    
+  } finally {
+    if (setLoading) setLoading(false);
   }
 };
 
-/**
- * Extract computed styles from the current page for PDF generation
- */
-function getComputedStylesAsString(): string {
-  const styles: string[] = [];
-  
-  // Get all stylesheets
-  for (let i = 0; i < document.styleSheets.length; i++) {
-    try {
-      const styleSheet = document.styleSheets[i] as CSSStyleSheet;
-      if (styleSheet.cssRules) {
-        for (let j = 0; j < styleSheet.cssRules.length; j++) {
-          styles.push(styleSheet.cssRules[j].cssText);
-        }
-      }
-    } catch (e) {
-      // Cross-origin stylesheets may throw errors
-      console.warn('Could not access stylesheet:', e);
-    }
-  }
-  
-  return styles.join('\n');
-}
+
