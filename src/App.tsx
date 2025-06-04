@@ -6,6 +6,7 @@ import PixelSocialMedia from "./components/PixelSocialMedia";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useScrollNavigation } from "./utils/useScrollNavigation";
+import { ThemeProvider } from "./utils/themeContext";
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,7 +48,8 @@ function App() {
   });
 
   return (
-    <div className="app-container">
+    <ThemeProvider>
+      <div className="app-container">
       {/* Page 1: Homepage */}
       <div 
         className={`page-wrapper ${currentPage === 1 ? 'active' : ''}`}
@@ -102,6 +104,7 @@ function App() {
         </>
       )}
     </div>
+    </ThemeProvider>
   );
 }
 
