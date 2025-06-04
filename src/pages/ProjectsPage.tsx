@@ -119,6 +119,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false); // Track if we've loaded data before
   const [previewHovered, setPreviewHovered] = useState(false);
+  const [iframeError, setIframeError] = useState(false);
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -170,6 +171,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
     if (selectedProject?.id !== project.id) {
       setSelectedProject(project);
       setPreviewHovered(false);
+      setIframeError(false); // Reset iframe error when switching projects
     }
   };
 
@@ -218,6 +220,15 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
       default:
         return "#ef4444"; // Red for anything else
     }
+  };
+
+  // Handle iframe loading errors
+  const handleIframeError = () => {
+    setIframeError(true);
+  };
+
+  const handleIframeLoad = () => {
+    setIframeError(false);
   };
 
   if (!shouldShow) return null;
@@ -431,13 +442,48 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ currentPage }) => {
                           onMouseLeave={() => setPreviewHovered(false)}
                         >
                           {selectedProject.Link ? (
-                            <iframe
-                              src={selectedProject.Link}
-                              title={`${selectedProject.Name} Preview`}
-                              className="preview-iframe"
-                              loading="lazy"
-                              sandbox="allow-scripts allow-same-origin"
-                            />
+                            iframeError ? (
+                              <div className="iframe-error-display">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                                <p>
+                                  <strong>Preview blocked by website</strong>
+                                </p>
+                                <p>
+                                  This site prevents iframe embedding. Click "Visit
+                                  Website" to view it directly.
+                                </p>
+                                <button
+                                  className="retry-iframe-button"
+                                  onClick={() => {
+                                    setIframeError(false);
+                                    // Force iframe reload by changing src
+                                    setTimeout(() => {
+                                      const iframe = document.querySelector(
+                                        ".preview-iframe",
+                                      ) as HTMLIFrameElement;
+                                      if (iframe && selectedProject.Link) {
+                                        iframe.src = selectedProject.Link;
+                                      }
+                                    }, 100);
+                                  }}
+                                >
+                                  Retry Preview
+                                </button>
+                              </div>
+                            ) : (
+                              <iframe
+                                src={selectedProject.Link}
+                                title={`${selectedProject.Name} Preview`}
+                                className="preview-iframe"
+                                loading="lazy"
+                                sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-storage-access-by-user-activation"
+                                referrerPolicy="no-referrer-when-downgrade"
+                                onError={handleIframeError}
+                                onLoad={handleIframeLoad}
+                              />
+                            )
                           ) : (
                             <div className="no-preview-available">
                               <svg viewBox="0 0 24 24" fill="currentColor">
