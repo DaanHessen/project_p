@@ -30,6 +30,8 @@ export interface Project {
   Description: string;
   OneLiner: string;
   Link: string;
+  GithubFE: string | null; // Frontend repository link
+  GithubBE: string | null; // Backend repository link
   Technologies: string;
   Status: string;
   AddedAt: string;
@@ -81,7 +83,7 @@ export async function fetchProjects(): Promise<Project[]> {
     console.log("🔍 Fetching projects from database...");
 
     const result = await sql`
-      SELECT id, "Name", "Description", "OneLiner", "Link", "Technologies", "Status", "AddedAt" 
+      SELECT id, "Name", "Description", "OneLiner", "Link", "GithubFE", "GithubBE", "Technologies", "Status", "AddedAt" 
       FROM "Projects" 
       ORDER BY id DESC
     `;
@@ -97,7 +99,7 @@ export async function fetchProjects(): Promise<Project[]> {
 export async function getProjectById(id: number): Promise<Project | null> {
   try {
     const result = await sql`
-      SELECT id, "Name", "Description", "OneLiner", "Link", "Technologies", "Status", "AddedAt" 
+      SELECT id, "Name", "Description", "OneLiner", "Link", "GithubFE", "GithubBE", "Technologies", "Status", "AddedAt" 
       FROM "Projects" 
       WHERE id = ${id}
     `;
@@ -110,71 +112,71 @@ export async function getProjectById(id: number): Promise<Project | null> {
 }
 
 // CV Database Functions
-export async function initializeCVTables(): Promise<void> {
-  try {
-    console.log("🔧 Initializing CV tables...");
+// export async function initializeCVTables(): Promise<void> {
+//   try {
+//     console.log("🔧 Initializing CV tables...");
 
-    // Create CVProfile table
-    await sql`
-      CREATE TABLE IF NOT EXISTS "CVProfile" (
-        id SERIAL PRIMARY KEY,
-        "Name" VARCHAR(255) NOT NULL,
-        "Title" VARCHAR(255) NOT NULL,
-        "Email" VARCHAR(255) NOT NULL,
-        "Phone" VARCHAR(50),
-        "Location" VARCHAR(255),
-        "Website" VARCHAR(255),
-        "LinkedIn" VARCHAR(255),
-        "Summary" TEXT
-      )
-    `;
+//     // Create CVProfile table
+//     await sql`
+//       CREATE TABLE IF NOT EXISTS "CVProfile" (
+//         id SERIAL PRIMARY KEY,
+//         "Name" VARCHAR(255) NOT NULL,
+//         "Title" VARCHAR(255) NOT NULL,
+//         "Email" VARCHAR(255) NOT NULL,
+//         "Phone" VARCHAR(50),
+//         "Location" VARCHAR(255),
+//         "Website" VARCHAR(255),
+//         "LinkedIn" VARCHAR(255),
+//         "Summary" TEXT
+//       )
+//     `;
 
-    // Create CVExperience table
-    await sql`
-      CREATE TABLE IF NOT EXISTS "CVExperience" (
-        id SERIAL PRIMARY KEY,
-        "JobTitle" VARCHAR(255) NOT NULL,
-        "Company" VARCHAR(255) NOT NULL,
-        "Location" VARCHAR(255),
-        "StartYear" VARCHAR(10) NOT NULL,
-        "EndYear" VARCHAR(10),
-        "Description" TEXT,
-        "Highlights" TEXT,
-        "IsCurrent" BOOLEAN DEFAULT false,
-        "SortOrder" INTEGER DEFAULT 0
-      )
-    `;
+//     // Create CVExperience table
+//     await sql`
+//       CREATE TABLE IF NOT EXISTS "CVExperience" (
+//         id SERIAL PRIMARY KEY,
+//         "JobTitle" VARCHAR(255) NOT NULL,
+//         "Company" VARCHAR(255) NOT NULL,
+//         "Location" VARCHAR(255),
+//         "StartYear" VARCHAR(10) NOT NULL,
+//         "EndYear" VARCHAR(10),
+//         "Description" TEXT,
+//         "Highlights" TEXT,
+//         "IsCurrent" BOOLEAN DEFAULT false,
+//         "SortOrder" INTEGER DEFAULT 0
+//       )
+//     `;
 
-    // Create CVEducation table
-    await sql`
-      CREATE TABLE IF NOT EXISTS "CVEducation" (
-        id SERIAL PRIMARY KEY,
-        "Degree" VARCHAR(255) NOT NULL,
-        "Institution" VARCHAR(255) NOT NULL,
-        "StartYear" VARCHAR(10) NOT NULL,
-        "EndYear" VARCHAR(10),
-        "Description" TEXT,
-        "Highlights" TEXT,
-        "IsCurrent" BOOLEAN DEFAULT false,
-        "SortOrder" INTEGER DEFAULT 0
-      )
-    `;
+//     // Create CVEducation table
+//     await sql`
+//       CREATE TABLE IF NOT EXISTS "CVEducation" (
+//         id SERIAL PRIMARY KEY,
+//         "Degree" VARCHAR(255) NOT NULL,
+//         "Institution" VARCHAR(255) NOT NULL,
+//         "StartYear" VARCHAR(10) NOT NULL,
+//         "EndYear" VARCHAR(10),
+//         "Description" TEXT,
+//         "Highlights" TEXT,
+//         "IsCurrent" BOOLEAN DEFAULT false,
+//         "SortOrder" INTEGER DEFAULT 0
+//       )
+//     `;
 
-    // Create CVSkills table
-    await sql`
-      CREATE TABLE IF NOT EXISTS "CVSkills" (
-        id SERIAL PRIMARY KEY,
-        "Category" VARCHAR(255) NOT NULL,
-        "Skills" TEXT NOT NULL,
-        "SortOrder" INTEGER DEFAULT 0
-      )
-    `;
+//     // Create CVSkills table
+//     await sql`
+//       CREATE TABLE IF NOT EXISTS "CVSkills" (
+//         id SERIAL PRIMARY KEY,
+//         "Category" VARCHAR(255) NOT NULL,
+//         "Skills" TEXT NOT NULL,
+//         "SortOrder" INTEGER DEFAULT 0
+//       )
+//     `;
 
-    console.log("✅ CV tables initialized successfully");
-  } catch (error) {
-    console.error("❌ Error initializing CV tables:", error);
-  }
-}
+//     console.log("✅ CV tables initialized successfully");
+//   } catch (error) {
+//     console.error("❌ Error initializing CV tables:", error);
+//   }
+// }
 
 export async function fetchCVProfile(): Promise<CVProfile | null> {
   try {

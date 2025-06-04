@@ -11,22 +11,6 @@ import { ThemeProvider } from "./utils/themeContext";
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [homePageKey, setHomePageKey] = useState(0); // Force HomePage re-render
-  const [isReady, setIsReady] = useState(false);
-
-  // Wait for everything to load before starting animations
-  useEffect(() => {
-    const handleLoad = () => {
-      // Wait a bit more to ensure everything is truly ready
-      setTimeout(() => setIsReady(true), 100);
-    };
-
-    if (document.readyState === "complete") {
-      handleLoad();
-    } else {
-      window.addEventListener("load", handleLoad);
-      return () => window.removeEventListener("load", handleLoad);
-    }
-  }, []);
 
   // Reset HomePage animations when returning to it
   useEffect(() => {
@@ -74,29 +58,25 @@ function App() {
           <CVPage currentPage={currentPage} />
         </div>
 
-        {isReady && (
-          <>
-            {/* Page Indicator - Synchronized with social media */}
-            <motion.div
-              className="nav-hint"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 0.7, y: 0 }}
-              transition={{ duration: 0.25, delay: 0.7 }}
-            >
-              <div className="page-indicator">
-                <span className="page-current">{currentPage}</span>
-                <span className="page-separator">/</span>
-                <span className="page-total">3</span>
-              </div>
-            </motion.div>
+        {/* Page Indicator - Always visible */}
+        <motion.div
+          className="nav-hint"
+          initial={{ opacity: 0.7, y: 0 }}
+          animate={{ opacity: 0.7, y: 0 }}
+          transition={{ duration: 0 }}
+        >
+          <div className="page-indicator">
+            <span className="page-current">{currentPage}</span>
+            <span className="page-separator">/</span>
+            <span className="page-total">3</span>
+          </div>
+        </motion.div>
 
-            {/* Pixel social media - Synchronized with page indicator */}
-            <SocialMedia
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          </>
-        )}
+        {/* Pixel social media - Always visible */}
+        <SocialMedia
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       </div>
     </ThemeProvider>
   );

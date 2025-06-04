@@ -236,9 +236,10 @@
   position: relative;
   z-index: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Changed to column for stacking */
   gap: var(--space-sm);
   flex-shrink: 0;
+  min-height: 120px; /* Increased to accommodate both buttons */
 }
 
 .scroll-to-top-button {
@@ -299,8 +300,12 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Main Content Area */
@@ -527,6 +532,298 @@
   letter-spacing: 0.05em;
 }
 
+/* ===========================================
+   CV SKELETON LOADING STYLES
+   =========================================== */
+
+/* Contact Section Skeletons */
+.skeleton-contact-icon {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  flex-shrink: 0;
+}
+
+.skeleton-contact-text {
+  height: 12px;
+  width: 120px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 3px;
+  animation-delay: 0.1s;
+}
+
+/* Skills Section Skeletons */
+.skeleton-skill-title {
+  height: 14px;
+  width: 80px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 3px;
+  margin-bottom: var(--space-xs);
+}
+
+.skeleton-skill-item {
+  height: 11px;
+  width: 90px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 3px;
+  margin-bottom: var(--space-xs);
+}
+
+/* Main Content Skeletons */
+.skeleton-summary {
+  height: 80px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 6px;
+}
+
+.skeleton-year {
+  height: 32px;
+  width: 60px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 4px;
+}
+
+.skeleton-job-title {
+  height: 22px;
+  width: 60%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 4px;
+  margin-bottom: var(--space-xs);
+}
+
+.skeleton-company {
+  height: 18px;
+  width: 50%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 4px;
+  margin-bottom: var(--space-sm);
+}
+
+.skeleton-description {
+  height: 60px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 4px;
+  margin-bottom: var(--space-sm);
+}
+
+.skeleton-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.skeleton-highlight {
+  height: 14px;
+  width: 85%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 3px;
+}
+
+.skeleton-degree {
+  height: 22px;
+  width: 70%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 4px;
+  margin-bottom: var(--space-xs);
+}
+
+.skeleton-institution {
+  height: 18px;
+  width: 60%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 4px;
+  margin-bottom: var(--space-sm);
+}
+
+.skeleton-edu-description {
+  height: 50px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 4px;
+  margin-bottom: var(--space-sm);
+}
+
+.skeleton-edu-highlights {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.skeleton-edu-tag {
+  height: 20px;
+  width: 70px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 10px;
+}
+
+/* Skeleton Animation Delays */
+.contact-item:nth-child(1) .skeleton-contact-icon {
+  animation-delay: 0.1s;
+}
+.contact-item:nth-child(2) .skeleton-contact-icon {
+  animation-delay: 0.2s;
+}
+.contact-item:nth-child(3) .skeleton-contact-icon {
+  animation-delay: 0.3s;
+}
+.contact-item:nth-child(4) .skeleton-contact-icon {
+  animation-delay: 0.4s;
+}
+.contact-item:nth-child(5) .skeleton-contact-icon {
+  animation-delay: 0.5s;
+}
+
+.contact-item:nth-child(1) .skeleton-contact-text {
+  animation-delay: 0.15s;
+}
+.contact-item:nth-child(2) .skeleton-contact-text {
+  animation-delay: 0.25s;
+}
+.contact-item:nth-child(3) .skeleton-contact-text {
+  animation-delay: 0.35s;
+}
+.contact-item:nth-child(4) .skeleton-contact-text {
+  animation-delay: 0.45s;
+}
+.contact-item:nth-child(5) .skeleton-contact-text {
+  animation-delay: 0.55s;
+}
+
+.skill-category:nth-child(1) .skeleton-skill-title {
+  animation-delay: 0.6s;
+}
+.skill-category:nth-child(2) .skeleton-skill-title {
+  animation-delay: 0.7s;
+}
+.skill-category:nth-child(3) .skeleton-skill-title {
+  animation-delay: 0.8s;
+}
+
+.skeleton-edu-tag:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.skeleton-edu-tag:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.skeleton-edu-tag:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Shimmer Animation - matches ProjectsPage */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ===========================================
+   END CV SKELETON STYLES
+   =========================================== */
+
 /* Responsive Design */
 @media (max-width: 1200px) {
   .cv-sidebar {
@@ -680,9 +977,8 @@
 
   /* Mobile Footer - Compact */
   .sidebar-footer {
-    padding: var(--space-md) var(--space-lg);
-    flex-direction: row;
-    gap: var(--space-sm);
+    padding: var(--space-md);
+    flex-direction: column;
   }
 
   .scroll-to-top-button,
@@ -800,7 +1096,102 @@
   .contact-item,
   .skill-category li,
   .scroll-to-top-button,
-  .download-btn {
+  .download-btn,
+  .skeleton-contact-icon,
+  .skeleton-contact-text,
+  .skeleton-skill-title,
+  .skeleton-skill-item,
+  .skeleton-summary,
+  .skeleton-year,
+  .skeleton-job-title,
+  .skeleton-company,
+  .skeleton-description,
+  .skeleton-highlight,
+  .skeleton-degree,
+  .skeleton-institution,
+  .skeleton-edu-description,
+  .skeleton-edu-tag {
     transition: none !important;
+    animation: none !important;
   }
+}
+
+/* Skeleton Improvements for CV */
+.cv-sidebar .contact-section .contact-items .contact-item svg,
+.cv-sidebar .skills-section .skills-list .skill-category {
+  /* Ensure skeleton items maintain exact spacing */
+  margin-bottom: var(--space-xs);
+}
+
+.cv-content .cv-section {
+  margin-bottom: var(--space-xl);
+}
+
+.cv-content .cv-section .section-heading {
+  margin-bottom: var(--space-lg);
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+.experience-entry,
+.education-entry {
+  margin-bottom: var(--space-lg);
+}
+
+.experience-header,
+.education-header {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.experience-years,
+.education-years {
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.experience-details,
+.education-details {
+  flex: 1;
+}
+
+.job-title,
+.degree-title {
+  margin: 0 0 var(--space-xs) 0;
+  font-size: var(--text-lg);
+}
+
+.company-location,
+.institution-name {
+  margin: 0 0 var(--space-sm) 0;
+  font-size: var(--text-base);
+}
+
+.job-description,
+.education-description {
+  margin: 0 0 var(--space-sm) 0;
+  line-height: 1.6;
+}
+
+.experience-highlights,
+.education-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.highlight-item {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.highlight-tag {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  margin-right: var(--space-xs);
+  margin-bottom: var(--space-xs);
 }

@@ -28,26 +28,30 @@ const useGlobalAnimations = () => {
           ...prev,
           isTransitioning: false,
         }));
-      }, 500); // Simple 500ms transition
+      }, 300); // Reduced from 500ms to 300ms
     },
     [pageState.currentPage, pageState.isTransitioning],
   );
 
   // Simple content fade variants for page content
   const contentFadeVariants = {
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: 0 }, // Removed y offset to prevent shifts
     animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 },
+    exit: { opacity: 0, y: 0 }, // Removed y offset to prevent shifts
   };
 
-  // Simple transition settings
+  // Reduced transition settings
   const transitionSettings = {
     content: {
-      duration: 0.4,
+      duration: 0.3, // Reduced from 0.4 to 0.3
       ease: "easeOut",
     },
     fast: {
-      duration: 0.2,
+      duration: 0.15, // Reduced from 0.2 to 0.15
+      ease: "easeOut",
+    },
+    page: {
+      duration: 0.4,
       ease: "easeOut",
     },
   };

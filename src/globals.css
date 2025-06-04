@@ -6,6 +6,38 @@
 @import "./animations.css";
 
 /* ===========================================
+   CRITICAL CSS - PREVENT FOUC
+   =========================================== */
+
+/* Immediate layout stabilization */
+html {
+  overflow: hidden;
+  background: #0a0c14;
+  color: #f5f7fa;
+}
+
+html[data-theme="light"] {
+  background: #ffffff;
+  color: #1e293b;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: inherit;
+  color: inherit;
+  overflow: hidden;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: inherit;
+  color: inherit;
+}
+
+/* ===========================================
    CSS CUSTOM PROPERTIES (GLOBAL VARIABLES)
    =========================================== */
 
@@ -146,40 +178,19 @@
 
   /* Color scheme */
   color-scheme: light;
-
-  /* Typography settings */
-  font-family:
-    "Lora",
-    "Space Grotesk",
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
-  line-height: 1.65;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-feature-settings:
-    "liga" 1,
-    "calt" 1;
 }
 
 /* ===========================================
-   THEME TRANSITIONS
+   THEME TRANSITIONS - SIMPLIFIED
    =========================================== */
 
-/* Smooth theme transitions */
-.theme-transitioning,
-.theme-transitioning *,
-.theme-transitioning *:before,
-.theme-transitioning *:after {
+/* Safe theme transitions - only color properties */
+.theme-transitioning * {
   transition:
-    background-color 0.3s ease,
-    color 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease !important;
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease !important;
   transition-delay: 0s !important;
 }
 
@@ -201,7 +212,7 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   background: var(--bg-primary);
-  overflow-y: auto;
+  overflow: hidden; /* Changed from overflow-y: auto to prevent initial scroll */
   scrollbar-width: none;
   -ms-overflow-style: none;
   -webkit-user-select: none;
@@ -213,6 +224,22 @@ body {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   overscroll-behavior: none;
+
+  /* Typography settings */
+  font-family:
+    "Lora",
+    "Space Grotesk",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  line-height: 1.65;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  font-feature-settings:
+    "liga" 1,
+    "calt" 1;
 }
 
 body::-webkit-scrollbar {
@@ -226,6 +253,7 @@ body::-webkit-scrollbar {
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  overflow: hidden; /* Prevent any scrolling on root */
 }
 
 /* Hide all scrollbars globally */
@@ -257,7 +285,7 @@ body::-webkit-scrollbar {
 }
 
 /* ===========================================
-   APP LAYOUT SYSTEM
+   APP LAYOUT SYSTEM - STABILIZED
    =========================================== */
 
 .app-container {
@@ -265,7 +293,7 @@ body::-webkit-scrollbar {
   min-height: 100vh;
   min-height: 100dvh;
   position: relative;
-  overflow: hidden; /* Prevent scrollbars during transitions */
+  overflow: hidden;
   background: var(--bg-primary);
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
@@ -283,13 +311,10 @@ body::-webkit-scrollbar {
   width: 100%;
   height: 100%;
   opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s ease,
-    z-index 0s linear 0.8s;
+  transform: translateY(0);
+  transition: opacity 0.3s ease;
   pointer-events: none;
-  will-change: opacity, transform;
+  will-change: opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -297,10 +322,7 @@ body::-webkit-scrollbar {
 .page-wrapper.active {
   opacity: 1;
   transform: translateY(0);
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s ease,
-    z-index 0s linear 0s;
+  transition: opacity 0.3s ease;
   pointer-events: auto;
 }
 
