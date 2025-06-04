@@ -1,15 +1,18 @@
 import React from "react";
 import { motion } from "framer-motion";
-import "./PixelSocialMedia.css";
+import "./SocialMedia.css";
+import { useTheme } from "../utils/themeContext";
 
-interface PixelSocialMediaProps {
+interface SocialMediaProps {
   currentPage: number;
   setCurrentPage?: (page: number) => void;
 }
 
-const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
+const SocialMedia: React.FC<SocialMediaProps> = ({
   setCurrentPage,
 }) => {
+  const { theme, toggleTheme } = useTheme();
+
   const handleCVClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (setCurrentPage) {
@@ -34,7 +37,7 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
       className: "instagram",
       icon: (
         <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.40s-.644-1.44-1.439-1.40z" />
         </svg>
       ),
     },
@@ -79,6 +82,31 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
         </svg>
       ),
     },
+    {
+      name: `Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`,
+      url: "#",
+      className: "theme-toggle",
+      onClick: (e: React.MouseEvent) => {
+        e.preventDefault();
+        toggleTheme();
+      },
+      icon: (
+        <div className="theme-toggle-icon">
+          {theme === "dark" ? (
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.75,4.09L15.22,6.03L16.13,9.09L13.5,7.28L10.87,9.09L11.78,6.03L9.25,4.09L12.44,4L13.5,1L14.56,4L17.75,4.09M21.25,11L19.61,12.25L20.2,14.23L18.5,13.06L16.8,14.23L17.39,12.25L15.75,11L17.81,10.95L18.5,9L19.19,10.95L21.25,11M18.97,15.95C19.8,15.87 20.69,17.05 20.16,17.8C19.84,18.25 19.5,18.67 19.08,19.07C15.17,23 8.84,23 4.94,19.07C1.03,15.17 1.03,8.83 4.94,4.93C5.34,4.53 5.76,4.17 6.21,3.85C6.96,3.32 8.14,4.21 8.06,5.04C7.79,7.9 8.75,10.87 10.95,13.06C13.14,15.26 16.1,16.22 18.97,15.95M17.33,17.97C14.5,17.81 11.7,16.64 9.53,14.5C7.36,12.31 6.2,9.5 6.04,6.68C3.23,9.82 3.34,14.4 6.35,17.41C9.37,20.43 14,20.54 17.33,17.97Z" />
+            </svg>
+          )}
+          <span className="theme-label">
+            {theme === "dark" ? "Light" : "Dark"}
+          </span>
+        </div>
+      ),
+    },
   ];
 
   return (
@@ -116,6 +144,7 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
               rel={link.name === "CV" ? undefined : "noopener noreferrer"}
               className={`social-link ${link.className}`}
               onClick={link.onClick}
+              data-tooltip={link.name}
               initial={{ opacity: 0, scale: 0.95, y: 5 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{
@@ -130,6 +159,7 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
               }}
               whileTap={{ scale: 0.98 }}
             >
+              <div className="hover-bg"></div>
               {link.icon}
             </motion.a>
           ))}
@@ -139,4 +169,4 @@ const PixelSocialMedia: React.FC<PixelSocialMediaProps> = ({
   );
 };
 
-export default PixelSocialMedia;
+export default SocialMedia;

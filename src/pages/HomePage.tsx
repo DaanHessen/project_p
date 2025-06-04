@@ -14,10 +14,8 @@ const HomePage = () => {
 ██████╔╝██║  ██║██║  ██║██║ ╚████║    ██║  ██║███████╗███████║███████║███████╗██║ ╚████║
 ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝    ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝`;
 
-  // Memoize ASCII lines to prevent recalculation
   const asciiLines = useMemo(() => asciiArt.split("\n"), [asciiArt]);
 
-  // SEO structured data
   const homePageStructuredData = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
@@ -85,8 +83,7 @@ const HomePage = () => {
                 ...transitionSettings.content,
                 delay: 0.3,
               }}
-            >
-            </motion.div>
+            ></motion.div>
           </div>
         </div>
       </div>

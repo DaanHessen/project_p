@@ -34,7 +34,7 @@ export const useScrollNavigation = ({
 
       if (Math.abs(e.deltaY) > 10) {
         e.preventDefault();
-        
+
         if (e.deltaY > 0 && currentPage < totalPages) {
           // Scroll down = next page
           lastScrollTime.current = now;

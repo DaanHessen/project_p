@@ -26,7 +26,7 @@
 
 .social-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   gap: 0;
   padding: 0;
   background: var(--bg-primary);
@@ -66,7 +66,7 @@
   border-right: 1px solid var(--bg-tertiary);
 }
 
-.social-link::before {
+.social-link .hover-bg {
   content: "";
   position: absolute;
   top: 0;
@@ -78,7 +78,7 @@
   z-index: 1;
 }
 
-.social-link:hover::before {
+.social-link:hover .hover-bg {
   left: 0;
 }
 
@@ -130,6 +130,129 @@
 
 .social-link.cv:hover::before {
   background: var(--accent-purple);
+}
+
+.social-link.theme-toggle:hover::before {
+  background: var(--accent-green);
+}
+
+/* Theme toggle specific styling */
+.theme-toggle-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  z-index: 2;
+  position: relative;
+}
+
+.theme-toggle-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  transition: all 0.2s ease !important;
+  color: var(--text-secondary);
+}
+
+.theme-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: "Space Grotesk", sans-serif;
+  transition: all 0.2s ease !important;
+  color: var(--text-tertiary);
+}
+
+.social-link.theme-toggle {
+  background: var(--gradient-card);
+  color: var(--text-secondary);
+  transition: all 0.2s ease !important;
+}
+
+.social-link.theme-toggle:hover .theme-label {
+  color: white;
+}
+
+.social-link.theme-toggle:hover .theme-toggle-icon svg {
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Ensure theme toggle button maintains visibility during transitions */
+.theme-transitioning .social-link.theme-toggle,
+.theme-transitioning .social-link.theme-toggle .theme-toggle-icon,
+.theme-transitioning .social-link.theme-toggle .theme-toggle-icon svg,
+.theme-transitioning .social-link.theme-toggle .theme-label {
+  transition: all 0.15s ease !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  /* border-radius: var(--radius-lg); */
+  background: var(--gradient-card);
+  /* border: 1px solid rgba(59, 130, 246, 0.2); */
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: var(--transition-normal);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+/* Tooltip styling */
+.social-link::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: "Space Grotesk", sans-serif;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.social-link::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--bg-elevated);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.social-link:hover::after,
+.social-link:hover::before {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Responsive Design */
