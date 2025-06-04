@@ -117,38 +117,7 @@
   font-weight: 300;
 }
 
-.theme-toggle {
-  position: absolute;
-  top: var(--space-md);
-  right: var(--space-md);
-  background: transparent;
-  border: 1px solid var(--text-tertiary);
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: var(--transition-fast);
-  font-size: 1rem;
-}
 
-  .theme-toggle:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: var(--accent-primary);
-  }
-
-  /* Mobile theme toggle adjustments */
-  @media (max-width: 768px) {
-    .theme-toggle {
-      top: var(--space-sm);
-      right: var(--space-sm);
-      width: 28px;
-      height: 28px;
-      font-size: 0.8rem;
-    }
-  }
 
 /* Contact Section */
 .contact-section {

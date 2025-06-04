@@ -2,19 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import "./CVPage.css";
 import useGlobalAnimations from "../utils/useGlobalAnimations";
-import { useTheme } from "../utils/themeContext";
+
 import {
-  fetchCVProfile,
-  fetchCVExperience,
-  fetchCVEducation,
-  fetchCVSkills,
   initializeCVTables,
-  insertInitialCVData,
-  type CVProfile,
-  type CVExperience,
-  type CVEducation,
-  type CVSkill,
 } from "../utils/database";
+import { exportCVToPDF } from "../utils/pdfExport";
+import { loadCVDataWithFallback, scheduleAutoBackup, type CVBackupData } from "../utils/dataBackup";
 
 interface CVPageProps {
   currentPage: number;
@@ -24,20 +17,17 @@ interface CVPageProps {
 const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const { contentFadeVariants, transitionSettings } = useGlobalAnimations();
-  const { theme, toggleTheme } = useTheme();
+
 
   const shouldShow = currentPage === 3;
   const [scrollDisabled, setScrollDisabled] = useState(false);
-  const [cvData, setCvData] = useState<{
-    profile: CVProfile | null;
-    experience: CVExperience[];
-    education: CVEducation[];
-    skills: CVSkill[];
-  }>({
+  const [cvData, setCvData] = useState<CVBackupData>({
     profile: null,
     experience: [],
     education: [],
     skills: [],
+    exportDate: '',
+    version: '1.0'
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -56,24 +46,15 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
       try {
         setIsLoading(true);
         
-        // Initialize tables and insert data if needed
+        // Initialize tables if needed
         await initializeCVTables();
-        await insertInitialCVData();
         
-        // Fetch all CV data
-        const [profile, experience, education, skills] = await Promise.all([
-          fetchCVProfile(),
-          fetchCVExperience(),
-          fetchCVEducation(),
-          fetchCVSkills(),
-        ]);
-
-        setCvData({
-          profile,
-          experience,
-          education,
-          skills,
-        });
+        // Load CV data with fallback system
+        const data = await loadCVDataWithFallback();
+        setCvData(data);
+        
+        // Schedule auto-backup
+        scheduleAutoBackup();
       } catch (error) {
         console.error("Error loading CV data:", error);
       } finally {
@@ -86,8 +67,8 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
     }
   }, [shouldShow]);
 
-  const handleDownloadPDF = () => {
-    alert("PDF download functionality coming soon!");
+  const handleDownloadPDF = async () => {
+    await exportCVToPDF();
   };
 
   const handleBackClick = () => {
@@ -125,13 +106,7 @@ const CVPage: React.FC<CVPageProps> = ({ currentPage, setCurrentPage }) => {
                 {cvData.profile?.Name?.split(' ').map(n => n[0]).join('').split('').join('<br/>') || 'D<br/>H'}
               </div>
             </div>
-            <button 
-              className="theme-toggle"
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-            >
-              {theme === 'dark' ? '☀️' : '🌙'}
-            </button>
+
           </div>
 
           {/* Contact Section */}

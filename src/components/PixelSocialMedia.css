@@ -26,7 +26,7 @@
 
 .social-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   gap: 0;
   padding: 0;
   background: var(--bg-primary);
@@ -130,6 +130,10 @@
 
 .social-link.cv:hover::before {
   background: var(--accent-purple);
+}
+
+.social-link.theme-toggle:hover::before {
+  background: var(--accent-green);
 }
 
 /* Responsive Design */
