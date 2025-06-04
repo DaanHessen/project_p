@@ -40,7 +40,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     // Remove transition class after animation completes
     const timer = setTimeout(() => {
       document.documentElement.classList.remove("theme-transitioning");
-    }, 300);
+    }, 200);
 
     return () => clearTimeout(timer);
   }, [theme]);

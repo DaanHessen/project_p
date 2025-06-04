@@ -8,9 +8,7 @@ interface SocialMediaProps {
   setCurrentPage?: (page: number) => void;
 }
 
-const SocialMedia: React.FC<SocialMediaProps> = ({
-  setCurrentPage,
-}) => {
+const SocialMedia: React.FC<SocialMediaProps> = ({ setCurrentPage }) => {
   const { theme, toggleTheme } = useTheme();
 
   const handleCVClick = (e: React.MouseEvent) => {
