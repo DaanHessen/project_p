@@ -97,8 +97,9 @@
   margin: 0;
   white-space: pre;
   user-select: none;
-  opacity: 0.95;
-  filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.3));
+  opacity: 1;
+  /* filter removed to prevent flicker */
+  /* filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.3)); */
   text-align: center;
   font-kerning: none;
   /* Hardware acceleration for smooth text rendering */

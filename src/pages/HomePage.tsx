@@ -45,34 +45,25 @@ const HomePage = () => {
       <div className="page page-one">
         <div className="content-container">
           <div className="main-content">
-            <motion.div
-              className="ascii-art-section"
-              variants={contentFadeVariants}
-              initial="initial"
-              animate="animate"
-              transition={transitionSettings.content}
-            >
+            <div className="ascii-art-section">
               <pre className="ascii-text">
                 {asciiLines.map((line, index) => (
                   <motion.div
                     key={index}
-                    variants={contentFadeVariants}
-                    initial="initial"
-                    animate="animate"
+                    initial={{ y: 12 }}
+                    animate={{ y: 0 }}
                     transition={{
-                      ...transitionSettings.fast,
+                      duration: 0.3,
                       delay: index * 0.05,
+                      ease: [0.25, 0.1, 0.25, 1],
                     }}
-                    style={{
-                      display: "block",
-                      fontKerning: "none",
-                    }}
+                    style={{ display: "block", fontKerning: "none" }}
                   >
                     {line}
                   </motion.div>
                 ))}
               </pre>
-            </motion.div>
+            </div>
 
             <motion.div
               className="hero-section"
