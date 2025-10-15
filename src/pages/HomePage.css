@@ -1,16 +1,12 @@
-/* Home Page - Minimal & Refined Design */
-
 .page-one {
   background: var(--bg-primary);
   position: relative;
   overflow: hidden;
-  /* Add hardware acceleration to prevent flickering */
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
-/* Background effects */
 .page-one::before {
   content: "";
   position: absolute;
@@ -21,7 +17,6 @@
   background: var(--gradient-bg-subtle);
   pointer-events: none;
   z-index: 0;
-  /* Prevent flickering on background */
   transform: translateZ(0);
   will-change: auto;
 }
@@ -33,7 +28,6 @@
   left: 0;
   right: 0;
   bottom: 0;
-  /* Simple, reliable dot pattern that works everywhere */
   background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
   background-repeat: repeat;
@@ -41,12 +35,10 @@
   pointer-events: none;
   z-index: 1;
   opacity: 1;
-  /* Prevent flickering on background pattern */
   transform: translateZ(0);
   will-change: auto;
 }
 
-/* Main Content */
 .main-content {
   display: flex;
   flex-direction: column;
@@ -61,7 +53,6 @@
   padding: var(--space-xl) var(--space-md);
 }
 
-/* ASCII Art Section */
 .ascii-art-section {
   margin-bottom: var(--space-sm);
   width: 100%;
@@ -71,7 +62,6 @@
   -ms-overflow-style: none;
   user-select: none;
   position: relative;
-  /* Prevent flickering during animations */
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -98,11 +88,9 @@
   white-space: pre;
   user-select: none;
   opacity: 1;
-  /* filter removed to prevent flicker */
   /* filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.3)); */
   text-align: center;
   font-kerning: none;
-  /* Hardware acceleration for smooth text rendering */
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -110,7 +98,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Hero Section */
 .hero-section {
   display: flex;
   flex-direction: column;
@@ -131,7 +118,6 @@
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
-/* Typewriter styles */
 .typewriter {
   display: inline-flex;
   align-items: center;
@@ -186,7 +172,6 @@
   line-height: 1.4;
 }
 
-/* Navigation Hint */
 .nav-hint {
   display: flex;
   flex-direction: column;
@@ -233,12 +218,10 @@
   opacity: 0.7;
 }
 
-/* Page transition styles */
 .page-slide-up {
   transform: translateY(-100vh);
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
   .main-content {
     padding: var(--space-lg) var(--space-md);
@@ -324,7 +307,6 @@
   }
 }
 
-/* Common responsive adjustments */
 .hero-name,
 .hero-subtitle,
 .ascii-text {

@@ -1,10 +1,3 @@
-/* Fonts and animations now imported via JavaScript imports for consistency across dev/prod */
-
-/* ===========================================
-   CRITICAL CSS - PREVENT FOUC
-   =========================================== */
-
-/* Immediate layout stabilization - Dark mode only */
 html {
   overflow: hidden;
   background: #0a0c14;
@@ -18,7 +11,6 @@ body {
   color: #f5f7fa;
   overflow: hidden;
   
-  /* CRITICAL: Font rendering consistency fixes */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -35,12 +27,7 @@ body {
   color: #f5f7fa;
 }
 
-/* ===========================================
-   CSS CUSTOM PROPERTIES (GLOBAL VARIABLES)
-   =========================================== */
-
 :root {
-  /* Dark theme colors */
   --bg-primary: #0a0c14;
   --bg-secondary: #1a1d29;
   --bg-tertiary: #242938;
@@ -48,13 +35,11 @@ body {
   --bg-elevated: #252a3b;
   --bg-overlay: rgba(10, 12, 20, 0.95);
 
-  /* Text colors */
   --text-primary: #f5f7fa;
   --text-secondary: #d0d6e1;
   --text-tertiary: #9ca3b4;
   --text-muted: #7c8591;
 
-  /* Accent colors */
   --accent-primary: #3b82f6;
   --accent-secondary: #60a5fa;
   --accent-green: #10b981;
@@ -62,14 +47,12 @@ body {
   --accent-warm: #f59e0b;
   --accent-purple: #8b5cf6;
 
-  /* Shadows */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
   --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.19), 0 6px 10px rgba(0, 0, 0, 0.23);
   --shadow-blue: 0 8px 32px rgba(59, 130, 246, 0.25);
   --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.15);
 
-  /* Enhanced gradients - simplified and reliable */
   --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   --gradient-text: linear-gradient(135deg, #f5f7fa 0%, #3b82f6 50%, #60a5fa 100%);
   --gradient-card: linear-gradient(
@@ -83,7 +66,6 @@ body {
     transparent 70%
   );
 
-  /* Spacing */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space-md: 1rem;
@@ -92,14 +74,12 @@ body {
   --space-2xl: 3rem;
   --space-3xl: 4rem;
 
-  /* Border radius */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-full: 9999px;
 
-  /* Typography */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
@@ -109,26 +89,14 @@ body {
   --text-3xl: 1.875rem;
   --text-4xl: 2.25rem;
 
-  /* Transitions */
   --transition-fast: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Color scheme */
   color-scheme: dark;
   color: var(--text-primary);
   background-color: var(--bg-primary);
 }
-
-/* ===========================================
-   FONTS NOW LOADED VIA HTML LINK TAGS
-   =========================================== */
-
-/* Fonts are now loaded via HTML <link> tags for better dev/prod consistency */
-
-/* ===========================================
-   GLOBAL RESET & BASE STYLES
-   =========================================== */
 
 * {
   box-sizing: border-box;
@@ -136,7 +104,6 @@ body {
   padding: 0;
   -webkit-tap-highlight-color: transparent;
   
-  /* CRITICAL: Consistent font rendering across all elements */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -160,7 +127,6 @@ body {
   backface-visibility: hidden;
   overscroll-behavior: none;
 
-  /* Typography settings with enhanced consistency */
   font-family:
     "Lora",
     "Space Grotesk",
@@ -199,7 +165,6 @@ body::-webkit-scrollbar {
   overflow: hidden;
 }
 
-/* Hide all scrollbars globally */
 *::-webkit-scrollbar {
   display: none;
 }
@@ -209,7 +174,6 @@ body::-webkit-scrollbar {
   -ms-overflow-style: none;
 }
 
-/* Selection colors */
 ::selection {
   background: rgba(59, 130, 246, 0.3);
   color: var(--text-primary);
@@ -220,16 +184,11 @@ body::-webkit-scrollbar {
   color: var(--text-primary);
 }
 
-/* Focus styles for accessibility */
 *:focus-visible {
   outline: 2px solid var(--accent-primary);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
-
-/* ===========================================
-   APP LAYOUT SYSTEM - STABILIZED
-   =========================================== */
 
 .app-container {
   width: 100%;
@@ -275,10 +234,6 @@ body::-webkit-scrollbar {
   min-height: 0;
 }
 
-/* ===========================================
-   RESPONSIVE DESIGN
-   =========================================== */
-
 @media (max-width: 1024px) {
   .content-container {
     padding: 1.5rem;
@@ -323,10 +278,6 @@ body::-webkit-scrollbar {
   }
 }
 
-/* ===========================================
-   ACCESSIBILITY & PREFERENCE SUPPORT
-   =========================================== */
-
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -358,7 +309,6 @@ body::-webkit-scrollbar {
   }
 }
 
-/* Loading animation */
 @keyframes pulse {
   0%,
   100% {

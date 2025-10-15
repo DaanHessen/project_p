@@ -1,12 +1,3 @@
-/* 
-  ANIMATIONS.CSS - Essential animations used throughout the site
-*/
-
-/* ===========================================
-   CORE KEYFRAME ANIMATIONS
-   =========================================== */
-
-/* Fast fade-in with subtle slide up */
 @keyframes fastFadeIn {
   from {
     opacity: 0;
@@ -18,7 +9,6 @@
   }
 }
 
-/* Content slide up for sections */
 @keyframes contentSlideUp {
   from {
     opacity: 0;
@@ -30,7 +20,6 @@
   }
 }
 
-/* Page slide in from bottom */
 @keyframes slideInFromBottom {
   from {
     transform: translateY(100vh);
@@ -42,7 +31,6 @@
   }
 }
 
-/* Loading spinner bounce */
 @keyframes loadingBounce {
   0%,
   80%,
@@ -54,7 +42,6 @@
   }
 }
 
-/* Social media panel float in */
 @keyframes floatIn {
   from {
     opacity: 0;
@@ -66,7 +53,6 @@
   }
 }
 
-/* Subtle floating animation */
 @keyframes subtleFloat {
   0%,
   100% {
@@ -77,11 +63,6 @@
   }
 }
 
-/* ===========================================
-   UTILITY ANIMATION CLASSES
-   =========================================== */
-
-/* Primary fade-in sequence */
 .fade-in {
   animation: fastFadeIn 0.3s ease-out 0.1s both;
 }
@@ -98,7 +79,6 @@
   animation: fastFadeIn 0.3s ease-out 0.4s both;
 }
 
-/* Content animations */
 .slide-up {
   animation: contentSlideUp 0.4s ease-out both;
 }
@@ -107,7 +87,6 @@
   animation: contentSlideUp 0.4s ease-out 0.2s both;
 }
 
-/* Floating animations */
 .float {
   animation: subtleFloat 3s ease-in-out infinite;
 }
@@ -116,11 +95,6 @@
   animation: subtleFloat 3s ease-in-out infinite 1.5s;
 }
 
-/* ===========================================
-   PAGE TRANSITION ANIMATIONS
-   =========================================== */
-
-/* Page system transitions */
 .page-transition {
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   will-change: transform;
@@ -135,17 +109,11 @@
   animation: slideInFromBottom 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* ===========================================
-   PERFORMANCE OPTIMIZATIONS
-   =========================================== */
-
-/* Hardware acceleration for smooth animations */
 .gpu-accelerated {
   will-change: transform, opacity;
   backface-visibility: hidden;
 }
 
-/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

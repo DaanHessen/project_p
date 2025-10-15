@@ -11,9 +11,9 @@ interface SEOHeadProps {
 }
 
 const SEOHead = ({
-  title = "Daan Hessen - Full Stack Developer & HBO-ICT Student | Portfolio",
-  description = "Daan Hessen - 23-year-old Full Stack Developer and HBO-ICT student at Hogeschool Utrecht. View my portfolio of modern web applications.",
-  keywords = "Daan Hessen, HBO-ICT, Hogeschool Utrecht, Portfolio, Frontend Developer, Backend Developer, Software Engineer, Netherlands",
+  title = "Daan Hessen - Developer & HBO-ICT Student | Portfolio",
+  description = "Student and developer (don't have much to say, just take a look...)",
+  keywords = "Daan Hessen, HBO-ICT, Hogeschool Utrecht, Portfolio, Frontend Developer, Backend Developer, Netherlands, Dutch, English, German",
   ogImage = "https://daanhessen.nl/og-image.jpg",
   ogType = "website",
   canonical = "https://daanhessen.nl",
@@ -21,27 +21,22 @@ const SEOHead = ({
 }: SEOHeadProps) => {
   return (
     <Helmet>
-      {/* Primary SEO Meta Tags */}
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
 
-      {/* Open Graph Meta Tags */}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={canonical} />
       <meta property="og:image" content={ogImage} />
 
-      {/* Twitter Card Meta Tags */}
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
 
-      {/* Canonical URL */}
       <link rel="canonical" href={canonical} />
 
-      {/* Structured Data */}
       {structuredData && (
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
