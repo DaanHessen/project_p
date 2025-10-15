@@ -35,12 +35,13 @@
   box-shadow: 0 -4px 0px var(--accent-primary);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: var(--transition-fast);
+  /* No transition here to avoid snapping after mount animation */
 }
 
 .social-grid:hover {
   transform: translateY(-2px);
   box-shadow: 0 -6px 0px var(--accent-primary);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .social-link {
@@ -54,8 +55,10 @@
   /* border: 1px solid rgba(59, 130, 246, 0.2); */
   color: var(--text-secondary);
   text-decoration: none;
-  transition: var(--transition-normal);
-  backdrop-filter: blur(10px);
+  /* Removed CSS transition; motion handles animation */
+  /* transition: var(--transition-normal); */
+  /* backdrop-filter removed to prevent flickering */
+  /* backdrop-filter: blur(10px); */
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;

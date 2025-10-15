@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+// animation removed to prevent flickering
 import "./SocialMedia.css";
 
 const SocialMedia: React.FC = () => {
@@ -57,60 +58,33 @@ const SocialMedia: React.FC = () => {
   ];
 
   return (
-    <motion.div
+    <motion.div 
       className="pixel-social-container"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
+      initial={{ y: 50 }}
+      animate={{ y: 0 }}
+      transition={{ 
+        duration: 0.8, 
+        ease: [0.16, 1, 0.3, 1],
+        delay: 0.4
+      }}
     >
-      <motion.div
-        className="social-section"
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 0.25,
-          delay: 0.7,
-          ease: "easeOut",
-        }}
-      >
-        <motion.div
-          className="social-grid"
-          initial={{ scale: 0.98 }}
-          animate={{ scale: 1 }}
-          transition={{
-            duration: 0.2,
-            delay: 0.8,
-            ease: "easeOut",
-          }}
-        >
-          {socialLinks.map((link, index) => (
-            <motion.a
+      <div className="social-section">
+        <div className="social-grid">
+          {socialLinks.map((link) => (
+            <a
               key={link.name}
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
               className={`social-link ${link.className}`}
               data-tooltip={link.name}
-              initial={{ opacity: 0, scale: 0.95, y: 5 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{
-                duration: 0.15,
-                delay: 0.9 + index * 0.03,
-                ease: "easeOut",
-              }}
-              whileHover={{
-                scale: 1.05,
-                y: -1,
-                transition: { duration: 0.1 },
-              }}
-              whileTap={{ scale: 0.98 }}
             >
               <div className="hover-bg"></div>
               {link.icon}
-            </motion.a>
+            </a>
           ))}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </motion.div>
   );
 };
