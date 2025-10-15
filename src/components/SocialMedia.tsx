@@ -7,7 +7,7 @@ const SocialMedia: React.FC = () => {
   const socialLinks = [
     {
       name: "LinkedIn",
-      url: "https://linkedin.com/in/daanhessen",
+      url: "https://www.linkedin.com/in/daan-hessen-552789236/",
       className: "linkedin",
       icon: (
         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -17,7 +17,7 @@ const SocialMedia: React.FC = () => {
     },
     {
       name: "Instagram",
-      url: "https://instagram.com/daanhessen",
+      url: "https://www.instagram.com/daanhessen_/",
       className: "instagram",
       icon: (
         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -27,7 +27,7 @@ const SocialMedia: React.FC = () => {
     },
     {
       name: "Email",
-      url: "mailto:daan@daanhessen.nl",
+      url: "mailto:daanh2002@gmail.com",
       className: "email",
       icon: (
         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -46,7 +46,7 @@ const SocialMedia: React.FC = () => {
       ),
     },
     {
-      name: "Coffee",
+      name: "Buy Me a Coffee (yeah I Know)",
       url: "https://buymeacoffee.com/daanhessen",
       className: "coffee",
       icon: (
@@ -68,7 +68,6 @@ const SocialMedia: React.FC = () => {
       }}
     >
       <div className="social-section">
-        {/* Tooltip container - renders above the grid */}
         <div className="tooltip-container">
           {socialLinks.map((link, index) => (
             <div 
