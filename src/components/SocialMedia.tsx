@@ -60,28 +60,47 @@ const SocialMedia: React.FC = () => {
   return (
     <motion.div 
       className="pixel-social-container"
-      initial={{ y: 50 }}
+      initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ 
-        duration: 0.8, 
-        ease: [0.16, 1, 0.3, 1],
-        delay: 0.4
+        duration: 0.5,
+        ease: [0.34, 1.56, 0.64, 1],
       }}
     >
       <div className="social-section">
-        <div className="social-grid">
-          {socialLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`social-link ${link.className}`}
+        {/* Tooltip container - renders above the grid */}
+        <div className="tooltip-container">
+          {socialLinks.map((link, index) => (
+            <div 
+              key={link.name} 
+              className="tooltip-item" 
               data-tooltip={link.name}
-            >
-              <div className="hover-bg"></div>
-              {link.icon}
-            </a>
+              style={{ left: `calc((100% / 5) * ${index} + (100% / 5 / 2))` }}
+            />
+          ))}
+        </div>
+        
+        <div className="social-grid">
+          {socialLinks.map((link, index) => (
+            <div key={link.name} className="social-link-wrapper">
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`social-link ${link.className}`}
+                onMouseEnter={() => {
+                  const tooltip = document.querySelectorAll('.tooltip-item')[index];
+                  tooltip?.classList.add('active');
+                }}
+                onMouseLeave={() => {
+                  const tooltip = document.querySelectorAll('.tooltip-item')[index];
+                  tooltip?.classList.remove('active');
+                }}
+              >
+                <div className="hover-bg"></div>
+                {link.icon}
+              </a>
+            </div>
           ))}
         </div>
       </div>
