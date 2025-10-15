@@ -26,7 +26,7 @@
 
 .social-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 0;
   padding: 0;
   background: var(--bg-primary);
@@ -130,63 +130,6 @@
 
 .social-link.cv:hover::before {
   background: var(--accent-purple);
-}
-
-.social-link.theme-toggle:hover::before {
-  background: var(--accent-green);
-}
-
-/* Theme toggle specific styling */
-.theme-toggle-icon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  z-index: 2;
-  position: relative;
-}
-
-.theme-toggle-icon svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  transition: all 0.2s ease !important;
-  color: var(--text-secondary);
-}
-
-.theme-label {
-  font-size: 0.6rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-family: "Space Grotesk", sans-serif;
-  transition: all 0.2s ease !important;
-  color: var(--text-tertiary);
-}
-
-.social-link.theme-toggle {
-  background: var(--gradient-card);
-  color: var(--text-secondary);
-  transition: all 0.2s ease !important;
-}
-
-.social-link.theme-toggle:hover .theme-label {
-  color: white;
-}
-
-.social-link.theme-toggle:hover .theme-toggle-icon svg {
-  color: white;
-  transform: scale(1.05);
-}
-
-/* Ensure theme toggle button maintains visibility during transitions */
-.theme-transitioning .social-link.theme-toggle,
-.theme-transitioning .social-link.theme-toggle .theme-toggle-icon,
-.theme-transitioning .social-link.theme-toggle .theme-toggle-icon svg,
-.theme-transitioning .social-link.theme-toggle .theme-label {
-  transition: all 0.15s ease !important;
-  opacity: 1 !important;
-  visibility: visible !important;
 }
 
 .social-link {

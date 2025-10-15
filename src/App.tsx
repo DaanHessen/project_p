@@ -1,84 +1,13 @@
 import "./globals.css";
 import HomePage from "./pages/HomePage";
-import ProjectsPage from "./pages/ProjectsPage";
-import CVPage from "./pages/CVPage";
 import SocialMedia from "./components/SocialMedia";
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-import { useScrollNavigation } from "./utils/useScrollNavigation";
-import { ThemeProvider } from "./utils/themeContext";
 
 function App() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [homePageKey, setHomePageKey] = useState(0); // Force HomePage re-render
-
-  // Reset HomePage animations when returning to it
-  useEffect(() => {
-    if (currentPage === 1) {
-      setHomePageKey((prev) => prev + 1); // Force re-render
-    }
-  }, [currentPage]);
-
-  // Simple scroll navigation - only for pages 1 and 2
-  useScrollNavigation({
-    totalPages: 3, // Home, Projects, and CV pages
-    currentPage,
-    onPageChange: setCurrentPage,
-    excludeSelectors: [
-      ".pixel-social-container",
-      ".cv-content",
-      ".cv-container",
-    ],
-  });
-
   return (
-    <ThemeProvider>
-      <div className="app-container">
-        {/* Page 1: Homepage */}
-        <div
-          className={`page-wrapper ${currentPage === 1 ? "active" : ""}`}
-          style={{ zIndex: currentPage === 1 ? 10 : 1 }}
-        >
-          <HomePage key={homePageKey} />
-        </div>
-
-        {/* Page 2: Projects */}
-        <div
-          className={`page-wrapper ${currentPage === 2 ? "active" : ""}`}
-          style={{ zIndex: currentPage === 2 ? 10 : 1 }}
-        >
-          <ProjectsPage currentPage={currentPage} />
-        </div>
-
-        {/* Page 3: CV - Scroll accessible */}
-        <div
-          className={`page-wrapper ${currentPage === 3 ? "active" : ""}`}
-          style={{ zIndex: currentPage === 3 ? 10 : 1 }}
-        >
-          <CVPage currentPage={currentPage} />
-        </div>
-
-        {/* Page Indicator - Always visible */}
-        <motion.div
-          className="nav-hint"
-          initial={{ opacity: 0.7, y: 0 }}
-          animate={{ opacity: 0.7, y: 0 }}
-          transition={{ duration: 0 }}
-        >
-          <div className="page-indicator">
-            <span className="page-current">{currentPage}</span>
-            <span className="page-separator">/</span>
-            <span className="page-total">3</span>
-          </div>
-        </motion.div>
-
-        {/* Pixel social media - Always visible */}
-        <SocialMedia
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
-      </div>
-    </ThemeProvider>
+    <div className="app-container">
+      <HomePage />
+      <SocialMedia />
+    </div>
   );
 }
 

@@ -4,6 +4,10 @@
   background: var(--bg-primary);
   position: relative;
   overflow: hidden;
+  /* Add hardware acceleration to prevent flickering */
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* Background effects */
@@ -17,6 +21,9 @@
   background: var(--gradient-bg-subtle);
   pointer-events: none;
   z-index: 0;
+  /* Prevent flickering on background */
+  transform: translateZ(0);
+  will-change: auto;
 }
 
 .page-one::after {
@@ -34,12 +41,9 @@
   pointer-events: none;
   z-index: 1;
   opacity: 1;
-}
-
-/* Light mode dots */
-[data-theme="light"] .page-one::after {
-  /* Simple, reliable dot pattern for light mode */
-  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+  /* Prevent flickering on background pattern */
+  transform: translateZ(0);
+  will-change: auto;
 }
 
 /* Main Content */
@@ -67,6 +71,11 @@
   -ms-overflow-style: none;
   user-select: none;
   position: relative;
+  /* Prevent flickering during animations */
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: auto;
 }
 
 .ascii-art-section::-webkit-scrollbar {
@@ -92,7 +101,12 @@
   filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.3));
   text-align: center;
   font-kerning: none;
+  /* Hardware acceleration for smooth text rendering */
   transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Hero Section */

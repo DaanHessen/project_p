@@ -34,25 +34,26 @@ const useGlobalAnimations = () => {
   );
 
   // Simple content fade variants for page content
+  // Using hardware-accelerated properties only (opacity and transform)
   const contentFadeVariants = {
-    initial: { opacity: 0, y: 0 }, // Removed y offset to prevent shifts
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: 0 }, // Removed y offset to prevent shifts
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
   };
 
-  // Reduced transition settings
+  // Optimized transition settings for smooth animations
   const transitionSettings = {
     content: {
-      duration: 0.3, // Reduced from 0.4 to 0.3
-      ease: "easeOut",
+      duration: 0.4,
+      ease: [0.25, 0.1, 0.25, 1], // Custom cubic bezier for smoother animation
     },
     fast: {
-      duration: 0.15, // Reduced from 0.2 to 0.15
-      ease: "easeOut",
+      duration: 0.2,
+      ease: [0.25, 0.1, 0.25, 1],
     },
     page: {
-      duration: 0.4,
-      ease: "easeOut",
+      duration: 0.5,
+      ease: [0.25, 0.1, 0.25, 1],
     },
   };
 
