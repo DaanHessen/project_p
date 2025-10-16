@@ -1,5 +1,8 @@
 .page-one {
-  background: var(--bg-primary);
+  background-color: var(--bg-primary);
+  background-image: var(--gradient-bg-subtle);
+  background-repeat: no-repeat;
+  background-position: center;
   position: relative;
   overflow: hidden;
   transform: translateZ(0);
@@ -10,34 +13,35 @@
 .page-one::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: var(--gradient-bg-subtle);
   pointer-events: none;
   z-index: 0;
-  transform: translateZ(0);
-  will-change: auto;
 }
 
 .page-one::after {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 20px 20px;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px
+  );
+  background-size: 18px 18px;
   background-repeat: repeat;
   background-position: 0 0;
+  opacity: 0.32;
+  transition: opacity 0.8s ease;
   pointer-events: none;
   z-index: 1;
-  opacity: 1;
-  transform: translateZ(0);
-  will-change: auto;
 }
+
+.page-one--vanta::after {
+  opacity: 0.12;
+}
+
+/* Vanta attaches a canvas to .page-one and pushes children forward */
 
 .main-content {
   display: flex;

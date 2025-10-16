@@ -3,6 +3,7 @@ import "./HomePage.css";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import useGlobalAnimations from "../utils/useGlobalAnimations";
+import useVantaDots from "../utils/useVantaDots";
 
 const HomePage = () => {
   const { contentFadeVariants, transitionSettings } = useGlobalAnimations();
@@ -15,6 +16,24 @@ const HomePage = () => {
 ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝    ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝`;
 
   const asciiLines = useMemo(() => asciiArt.split("\n"), [asciiArt]);
+
+  const vantaOptions = useMemo(
+    () => ({
+      color: 0x3b82f6,
+      color2: 0x2563eb,
+      size: 1.25,
+      spacing: 12.0,
+      showLines: false,
+      backgroundAlpha: 0.0,
+      backgroundColor: 0x0a0c14,
+      speed: 1.2,
+    }),
+    []
+  );
+
+  const { containerRef, isActive: isVantaActive } = useVantaDots(vantaOptions, {
+    respectReducedMotion: false,
+  });
 
   const homePageStructuredData = {
     "@context": "https://schema.org",
@@ -42,7 +61,10 @@ const HomePage = () => {
         structuredData={homePageStructuredData}
       />
 
-      <div className="page page-one">
+      <div
+        ref={containerRef}
+        className={`page page-one${isVantaActive ? " page-one--vanta" : ""}`}
+      >
         <div className="content-container">
           <div className="main-content">
             <div className="ascii-art-section">
