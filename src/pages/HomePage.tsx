@@ -21,12 +21,12 @@ const HomePage = () => {
     () => ({
       color: 0x3b82f6,
       color2: 0x2563eb,
-      size: 1.6,
-      spacing: 22.0,
+      size: 1.15,
+      spacing: 6.0,
       showLines: false,
       backgroundAlpha: 0.0,
       backgroundColor: 0x0a0c14,
-      speed: 1.2,
+      speed: 2.0,
     }),
     []
   );

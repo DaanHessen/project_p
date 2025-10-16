@@ -20,25 +20,22 @@ type VantaInstance = {
 
 type VantaDotsInstance = VantaInstance & {
   camera?: {
-    position: {
-      x: number;
-      y: number;
-      z: number;
+    position: { x: number; y: number; z: number } & {
+      set?: (x: number, y: number, z: number) => unknown;
     };
     tx?: number;
     ty?: number;
     tz?: number;
   };
   starField?: {
-    position?: {
-      x: number;
-      y: number;
-      z: number;
+    position: { x: number; y: number; z: number } & {
+      set?: (x: number, y: number, z: number) => unknown;
     };
-    scale?: {
-      set: (x: number, y: number, z: number) => void;
+    scale: { x: number; y: number; z: number } & {
+      set?: (x: number, y: number, z: number) => unknown;
     };
   };
+  options?: { spacing?: number };
 };
 
 const prefersReducedMotion = () => {
@@ -46,16 +43,29 @@ const prefersReducedMotion = () => {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 };
 
-const adjustDotsLayout = (effect: VantaDotsInstance) => {
-  if (!effect?.starField?.scale || !effect.camera) return;
+const adjustDotsLayout = (
+  effect: VantaDotsInstance,
+  element?: HTMLElement | null
+) => {
+  if (!effect?.starField || !effect.camera) return;
 
-  effect.starField.scale.set(1.6, 1, 2.4);
-  effect.starField.position?.set?.(0, 40, -80);
+  const spacing =
+    (effect as unknown as { options?: { spacing?: number } }).options
+      ?.spacing ?? 20;
+  const rect = element?.getBoundingClientRect();
+  const width = rect?.width ?? window.innerWidth;
+  const height = rect?.height ?? window.innerHeight;
+  const baseSpan = spacing * 60;
+  const scaleX = Math.max(2.6, (width / baseSpan) * 2.2);
+  const scaleZ = Math.max(3.2, (height / baseSpan) * 2.6);
 
-  effect.camera.position.y = 120;
-  effect.camera.position.z = 200;
-  effect.camera.ty = 90;
-  effect.camera.tz = 280;
+  effect.starField.scale.set?.(scaleX, 1, scaleZ);
+  effect.starField.position.set?.(0, scaleZ * 32, -scaleZ * 75);
+
+  effect.camera.position.y = scaleZ * 44;
+  effect.camera.position.z = scaleZ * 68;
+  effect.camera.ty = effect.camera.position.y * 0.75;
+  effect.camera.tz = effect.camera.position.z + scaleZ * 28;
 };
 
 const useVantaDots = (
@@ -72,6 +82,15 @@ const useVantaDots = (
     if (respectReducedMotion && prefersReducedMotion()) return;
 
     let cancelled = false;
+
+    const handleResize = () => {
+      if (effectRef.current && containerRef.current) {
+        adjustDotsLayout(
+          effectRef.current as VantaDotsInstance,
+          containerRef.current
+        );
+      }
+    };
 
     const init = async () => {
       try {
@@ -96,28 +115,31 @@ const useVantaDots = (
           backgroundColor: 0x0a0c14,
           color: 0x3b82f6,
           color2: 0x1d4ed8,
-          spacing: 22.0,
-          size: 1.6,
+          spacing: 6.0,
+          size: 1.15,
           showLines: false,
           ...options,
         }) as VantaDotsInstance;
 
-        adjustDotsLayout(effect);
+        adjustDotsLayout(effect, containerRef.current);
         effectRef.current = effect;
 
         setIsActive(true);
+        handleResize();
       } catch (error) {
         console.error("Failed to initialize Vanta DOTS", error);
       }
     };
 
     init();
+    window.addEventListener("resize", handleResize);
 
     return () => {
       cancelled = true;
       effectRef.current?.destroy?.();
       effectRef.current = null;
       setIsActive(false);
+      window.removeEventListener("resize", handleResize);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [respectReducedMotion]);
@@ -126,7 +148,7 @@ const useVantaDots = (
     if (!effectRef.current) return;
     const effect = effectRef.current as VantaDotsInstance;
     effect.setOptions?.(options);
-    adjustDotsLayout(effect);
+    adjustDotsLayout(effect, containerRef.current);
   }, [options]);
 
   return { containerRef, isActive };
