@@ -19,14 +19,14 @@ const HomePage = () => {
 
   const vantaOptions = useMemo(
     () => ({
-      color: 0x3b82f6,
-      color2: 0x2563eb,
-      size: 1.15,
-      spacing: 6.0,
+      color: 0x64b5ff,
+      color2: 0x3b82f6,
+      size: 1.5,
+      spacing: 3.8,
       showLines: false,
       backgroundAlpha: 0.0,
       backgroundColor: 0x0a0c14,
-      speed: 2.0,
+      speed: 50.2,
     }),
     []
   );

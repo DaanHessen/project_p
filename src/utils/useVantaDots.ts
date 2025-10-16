@@ -56,16 +56,40 @@ const adjustDotsLayout = (
   const width = rect?.width ?? window.innerWidth;
   const height = rect?.height ?? window.innerHeight;
   const baseSpan = spacing * 60;
-  const scaleX = Math.max(2.6, (width / baseSpan) * 2.2);
-  const scaleZ = Math.max(3.2, (height / baseSpan) * 2.6);
+  const widthFactor = Math.max(1, width / baseSpan);
+  const heightFactor = Math.max(1, height / baseSpan);
+
+  const scaleX = 3.3 + widthFactor * 1.8;
+  const scaleZ = 3.8 + heightFactor * 2.0;
 
   effect.starField.scale.set?.(scaleX, 1, scaleZ);
-  effect.starField.position.set?.(0, scaleZ * 32, -scaleZ * 75);
+  effect.starField.position.set?.(0, -spacing * 6, -spacing * 22 * scaleZ);
 
-  effect.camera.position.y = scaleZ * 44;
-  effect.camera.position.z = scaleZ * 68;
-  effect.camera.ty = effect.camera.position.y * 0.75;
-  effect.camera.tz = effect.camera.position.z + scaleZ * 28;
+  const material = (effect.starField as unknown as { material?: unknown })
+    ?.material as any;
+  if (material) {
+    const colorHex =
+      (effect as unknown as { options?: { color?: number } }).options
+        ?.color ?? 0x3b82f6;
+    material.color = new THREE.Color(colorHex);
+    const baseSize =
+      (effect as unknown as { options?: { size?: number } }).options?.size ??
+      1.0;
+    material.size = baseSize * 1.25;
+    material.transparent = true;
+    material.opacity = 0.94;
+    material.blending = THREE.AdditiveBlending;
+    material.depthWrite = false;
+    material.needsUpdate = true;
+  }
+
+  const cameraY = 175 + heightFactor * 34;
+  const cameraZ = 255 + heightFactor * 54;
+  effect.camera.position.y = cameraY;
+  effect.camera.position.z = cameraZ;
+  effect.camera.tx = 0;
+  effect.camera.ty = cameraY * 0.6;
+  effect.camera.tz = cameraZ + scaleZ * 18;
 };
 
 const useVantaDots = (
@@ -105,8 +129,8 @@ const useVantaDots = (
         const effect = DOTS({
           el: containerRef.current,
           THREE,
-          mouseControls: true,
-          touchControls: true,
+          mouseControls: false,
+          touchControls: false,
           gyroControls: false,
           minHeight: 200.0,
           minWidth: 200.0,
@@ -115,8 +139,8 @@ const useVantaDots = (
           backgroundColor: 0x0a0c14,
           color: 0x3b82f6,
           color2: 0x1d4ed8,
-          spacing: 6.0,
-          size: 1.15,
+          spacing: 4.5,
+          size: 1.25,
           showLines: false,
           ...options,
         }) as VantaDotsInstance;

@@ -46,7 +46,7 @@ const SocialMedia: React.FC = () => {
       ),
     },
     {
-      name: "Buy Me a Coffee (yeah I Know)",
+      name: "Buy Me A Coffee (yeah I know)",
       url: "https://buymeacoffee.com/daanhessen",
       className: "coffee",
       icon: (
