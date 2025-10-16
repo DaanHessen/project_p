@@ -59,11 +59,11 @@ const adjustDotsLayout = (
   const widthFactor = Math.max(1, width / baseSpan);
   const heightFactor = Math.max(1, height / baseSpan);
 
-  const scaleX = 3.3 + widthFactor * 1.8;
-  const scaleZ = 3.8 + heightFactor * 2.0;
+  const scaleX = 3.4 + widthFactor * 1.9;
+  const scaleZ = 4.8 + heightFactor * 2.4;
 
   effect.starField.scale.set?.(scaleX, 1, scaleZ);
-  effect.starField.position.set?.(0, -spacing * 6, -spacing * 22 * scaleZ);
+  effect.starField.position.set?.(0, -spacing * 32, -spacing * 34 * scaleZ);
 
   const material = (effect.starField as unknown as { material?: unknown })
     ?.material as any;
@@ -75,21 +75,21 @@ const adjustDotsLayout = (
     const baseSize =
       (effect as unknown as { options?: { size?: number } }).options?.size ??
       1.0;
-    material.size = baseSize * 1.25;
+    material.size = baseSize * 1.2;
     material.transparent = true;
-    material.opacity = 0.94;
+    material.opacity = 0.96;
     material.blending = THREE.AdditiveBlending;
     material.depthWrite = false;
     material.needsUpdate = true;
   }
 
-  const cameraY = 175 + heightFactor * 34;
-  const cameraZ = 255 + heightFactor * 54;
+  const cameraY = 180 + heightFactor * 30;
+  const cameraZ = 260 + heightFactor * 55;
   effect.camera.position.y = cameraY;
   effect.camera.position.z = cameraZ;
   effect.camera.tx = 0;
-  effect.camera.ty = cameraY * 0.6;
-  effect.camera.tz = cameraZ + scaleZ * 18;
+  effect.camera.ty = cameraY * 0.58;
+  effect.camera.tz = cameraZ + scaleZ * 22;
 };
 
 const useVantaDots = (
