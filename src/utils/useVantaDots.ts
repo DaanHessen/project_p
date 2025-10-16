@@ -47,21 +47,15 @@ const prefersReducedMotion = () => {
 };
 
 const adjustDotsLayout = (effect: VantaDotsInstance) => {
-  if (!effect) return;
+  if (!effect?.starField?.scale || !effect.camera) return;
 
-  if (effect.starField?.position) {
-    effect.starField.position.y = 60;
-    effect.starField.position.z = -80;
-  }
+  effect.starField.scale.set(1.6, 1, 2.4);
+  effect.starField.position?.set?.(0, 40, -80);
 
-  effect.starField?.scale?.set(3.4, 1, 3.4);
-
-  if (effect.camera) {
-    effect.camera.position.y = 140;
-    effect.camera.position.z = 160;
-    effect.camera.ty = 110;
-    effect.camera.tz = 280;
-  }
+  effect.camera.position.y = 120;
+  effect.camera.position.z = 200;
+  effect.camera.ty = 90;
+  effect.camera.tz = 280;
 };
 
 const useVantaDots = (
@@ -102,8 +96,8 @@ const useVantaDots = (
           backgroundColor: 0x0a0c14,
           color: 0x3b82f6,
           color2: 0x1d4ed8,
-          spacing: 12.0,
-          size: 1.25,
+          spacing: 22.0,
+          size: 1.6,
           showLines: false,
           ...options,
         }) as VantaDotsInstance;
