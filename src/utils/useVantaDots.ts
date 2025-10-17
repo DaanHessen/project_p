@@ -101,8 +101,20 @@ const adjustDotsLayout = (
   effect.camera.position.y = cameraY;
   effect.camera.position.z = cameraZ;
   effect.camera.tx = 0;
-  effect.camera.ty = cameraY * 0.58;
-  effect.camera.tz = cameraZ + scaleZ * 20;
+  effect.camera.ty = cameraY;
+  effect.camera.tz = cameraZ;
+  effect.camera.lookAt?.(0, 0, 0);
+
+  const effectWithTime = effect as {
+    t?: number;
+    t2?: number;
+  };
+  if (typeof effectWithTime.t === "number") {
+    effectWithTime.t = Math.max(effectWithTime.t, 600);
+  }
+  if (typeof effectWithTime.t2 === "number") {
+    effectWithTime.t2 = Math.max(effectWithTime.t2, 600);
+  }
 };
 
 const useVantaDots = (
