@@ -55,22 +55,24 @@ const adjustDotsLayout = (
   const rect = element?.getBoundingClientRect();
   const width = rect?.width ?? window.innerWidth;
   const height = rect?.height ?? window.innerHeight;
-  const baseSpan = spacing * 60;
+  const baseSpan = spacing * 80;
   const widthFactor = Math.max(1, width / baseSpan);
   const heightFactor = Math.max(1, height / baseSpan);
 
-  const scaleX = 4.2 + widthFactor * 2.6;
-  const scaleZ = 6.1 + heightFactor * 2.9;
+  const scaleX = 4.9 + widthFactor * 2.6;
+  const scaleZ = 5.6 + heightFactor * 2.8;
 
   effect.starField.scale.set?.(scaleX, 1, scaleZ);
-  effect.starField.position.set?.(0, -spacing * 30, -spacing * 32 * scaleZ);
+  const verticalShift = spacing * (22 + heightFactor * 4.8);
+  const depthShift = spacing * (34 + heightFactor * 7.2);
+  effect.starField.position.set?.(0, -verticalShift, -depthShift);
 
   const material = effect.starField.material as any;
   if (material) {
     const baseSize =
       typeof options.size === "number" ? options.size : 1.0;
     if (typeof baseSize === "number") {
-      material.size = baseSize * 2.2;
+      material.size = baseSize * 2.6;
     }
 
     const primaryColor =
@@ -96,24 +98,24 @@ const adjustDotsLayout = (
     material.needsUpdate = true;
   }
 
-  const cameraY = 190 + heightFactor * 36;
-  const cameraZ = 280 + heightFactor * 60;
+  const cameraY = 190 + heightFactor * 30;
+  const cameraZ = depthShift + 260;
   effect.camera.position.y = cameraY;
   effect.camera.position.z = cameraZ;
   effect.camera.tx = 0;
-  effect.camera.ty = cameraY;
-  effect.camera.tz = cameraZ;
-  effect.camera.lookAt?.(0, 0, 0);
+  effect.camera.ty = cameraY * 0.72;
+  effect.camera.tz = cameraZ + scaleZ * 4;
+  const cameraLookAt = (effect.camera as { lookAt?: (x: number, y: number, z: number) => void }).lookAt;
+  if (typeof cameraLookAt === "function") {
+    cameraLookAt.call(effect.camera, 0, -verticalShift * 0.18, 0);
+  }
 
-  const effectWithTime = effect as {
-    t?: number;
-    t2?: number;
-  };
+  const effectWithTime = effect as { t?: number; t2?: number };
   if (typeof effectWithTime.t === "number") {
-    effectWithTime.t = Math.max(effectWithTime.t, 600);
+    effectWithTime.t = Math.max(effectWithTime.t, 900);
   }
   if (typeof effectWithTime.t2 === "number") {
-    effectWithTime.t2 = Math.max(effectWithTime.t2, 600);
+    effectWithTime.t2 = Math.max(effectWithTime.t2, 900);
   }
 };
 
