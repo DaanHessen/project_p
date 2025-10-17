@@ -1,6 +1,4 @@
 import React from "react";
-import { motion } from "framer-motion";
-// animation removed to prevent flickering
 import "./SocialMedia.css";
 
 const SocialMedia: React.FC = () => {
@@ -58,15 +56,7 @@ const SocialMedia: React.FC = () => {
   ];
 
   return (
-    <motion.div 
-      className="pixel-social-container"
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      transition={{ 
-        duration: 0.5,
-        ease: [0.34, 1.56, 0.64, 1],
-      }}
-    >
+    <div className="pixel-social-container">
       <div className="social-section">
         <div className="tooltip-container">
           {socialLinks.map((link, index) => (
@@ -103,7 +93,7 @@ const SocialMedia: React.FC = () => {
           ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

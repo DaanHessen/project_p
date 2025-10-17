@@ -34,8 +34,9 @@ type VantaDotsInstance = VantaInstance & {
     scale: { x: number; y: number; z: number } & {
       set?: (x: number, y: number, z: number) => unknown;
     };
+    material?: unknown;
   };
-  options?: { spacing?: number };
+  options?: { spacing?: number; color?: number; color2?: number; size?: number };
 };
 
 const prefersReducedMotion = () => {
@@ -45,13 +46,12 @@ const prefersReducedMotion = () => {
 
 const adjustDotsLayout = (
   effect: VantaDotsInstance,
-  element?: HTMLElement | null
+  element: HTMLElement | null | undefined,
 ) => {
   if (!effect?.starField || !effect.camera) return;
 
-  const spacing =
-    (effect as unknown as { options?: { spacing?: number } }).options
-      ?.spacing ?? 20;
+  const options = effect.options ?? {};
+  const spacing = typeof options.spacing === "number" ? options.spacing : 20;
   const rect = element?.getBoundingClientRect();
   const width = rect?.width ?? window.innerWidth;
   const height = rect?.height ?? window.innerHeight;
@@ -59,37 +59,50 @@ const adjustDotsLayout = (
   const widthFactor = Math.max(1, width / baseSpan);
   const heightFactor = Math.max(1, height / baseSpan);
 
-  const scaleX = 3.4 + widthFactor * 1.9;
-  const scaleZ = 4.8 + heightFactor * 2.4;
+  const scaleX = 4.2 + widthFactor * 2.6;
+  const scaleZ = 6.1 + heightFactor * 2.9;
 
   effect.starField.scale.set?.(scaleX, 1, scaleZ);
-  effect.starField.position.set?.(0, -spacing * 32, -spacing * 34 * scaleZ);
+  effect.starField.position.set?.(0, -spacing * 30, -spacing * 32 * scaleZ);
 
-  const material = (effect.starField as unknown as { material?: unknown })
-    ?.material as any;
+  const material = effect.starField.material as any;
   if (material) {
-    const colorHex =
-      (effect as unknown as { options?: { color?: number } }).options
-        ?.color ?? 0x3b82f6;
-    material.color = new THREE.Color(colorHex);
     const baseSize =
-      (effect as unknown as { options?: { size?: number } }).options?.size ??
-      1.0;
-    material.size = baseSize * 1.2;
+      typeof options.size === "number" ? options.size : 1.0;
+    if (typeof baseSize === "number") {
+      material.size = baseSize * 2.2;
+    }
+
+    const primaryColor =
+      typeof options.color === "number" ? options.color : 0x3b82f6;
+    const secondaryColor =
+      typeof options.color2 === "number" ? options.color2 : 0x60a5fa;
+    const mixedColor = new THREE.Color(primaryColor).lerp(
+      new THREE.Color(secondaryColor),
+      0.25,
+    );
+
+    if (material.color instanceof THREE.Color) {
+      material.color.copy(mixedColor);
+    } else if (material.color && typeof material.color === "object" && "set" in material.color) {
+      (material.color.set as (color: unknown) => void)?.(mixedColor);
+    }
+
     material.transparent = true;
-    material.opacity = 0.96;
-    material.blending = THREE.AdditiveBlending;
+    material.opacity = 0.9;
     material.depthWrite = false;
+    material.blending = THREE.AdditiveBlending;
+    material.fog = true;
     material.needsUpdate = true;
   }
 
-  const cameraY = 180 + heightFactor * 30;
-  const cameraZ = 260 + heightFactor * 55;
+  const cameraY = 190 + heightFactor * 36;
+  const cameraZ = 280 + heightFactor * 60;
   effect.camera.position.y = cameraY;
   effect.camera.position.z = cameraZ;
   effect.camera.tx = 0;
   effect.camera.ty = cameraY * 0.58;
-  effect.camera.tz = cameraZ + scaleZ * 22;
+  effect.camera.tz = cameraZ + scaleZ * 20;
 };
 
 const useVantaDots = (
@@ -111,7 +124,7 @@ const useVantaDots = (
       if (effectRef.current && containerRef.current) {
         adjustDotsLayout(
           effectRef.current as VantaDotsInstance,
-          containerRef.current
+          containerRef.current,
         );
       }
     };

@@ -1,12 +1,9 @@
 import SEOHead from "../components/SEOHead";
 import "./HomePage.css";
-import { motion } from "framer-motion";
 import { useMemo } from "react";
-import useGlobalAnimations from "../utils/useGlobalAnimations";
 import useVantaDots from "../utils/useVantaDots";
 
 const HomePage = () => {
-  const { contentFadeVariants, transitionSettings } = useGlobalAnimations();
 
   const asciiArt = `██████╗  █████╗  █████╗ ███╗   ██╗    ██╗  ██╗███████╗███████╗███████╗███████╗███╗   ██╗
 ██╔══██╗██╔══██╗██╔══██╗████╗  ██║    ██║  ██║██╔════╝██╔════╝██╔════╝██╔════╝████╗  ██║
@@ -19,16 +16,17 @@ const HomePage = () => {
 
   const vantaOptions = useMemo(
     () => ({
-      color: 0x82cfff,
-      color2: 0x4c9bfd,
-      size: 1.45,
-      spacing: 4.0,
+      color: 0x8bc7ff,
+      color2: 0x3b82f6,
+      size: 2.2,
+      spacing: 3.2,
       showLines: false,
       backgroundAlpha: 0.0,
       backgroundColor: 0x0a0c14,
-      speed: 3.0,
+      speed: 2.4,
+      mouseEase: true,
     }),
-    []
+    [],
   );
 
   const { containerRef, isActive: isVantaActive } = useVantaDots(vantaOptions, {
@@ -70,33 +68,14 @@ const HomePage = () => {
             <div className="ascii-art-section">
               <pre className="ascii-text">
                 {asciiLines.map((line, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ y: 12 }}
-                    animate={{ y: 0 }}
-                    transition={{
-                      duration: 0.3,
-                      delay: index * 0.05,
-                      ease: [0.25, 0.1, 0.25, 1],
-                    }}
-                    style={{ display: "block", fontKerning: "none" }}
-                  >
+                  <span key={index} className="ascii-line">
                     {line}
-                  </motion.div>
+                  </span>
                 ))}
               </pre>
             </div>
 
-            <motion.div
-              className="hero-section"
-              variants={contentFadeVariants}
-              initial="initial"
-              animate="animate"
-              transition={{
-                ...transitionSettings.content,
-                delay: 0.3,
-              }}
-            ></motion.div>
+            <div className="hero-section"></div>
           </div>
         </div>
       </div>
