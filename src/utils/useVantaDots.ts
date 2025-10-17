@@ -102,9 +102,9 @@ const adjustDotsLayout = (
   const cameraZ = depthShift + 260;
   effect.camera.position.y = cameraY;
   effect.camera.position.z = cameraZ;
-  effect.camera.tx = 0;
-  effect.camera.ty = cameraY * 0.72;
-  effect.camera.tz = cameraZ + scaleZ * 4;
+  effect.camera.tx = effect.camera.position.x;
+  effect.camera.ty = effect.camera.position.y;
+  effect.camera.tz = effect.camera.position.z;
   const cameraLookAt = (effect.camera as { lookAt?: (x: number, y: number, z: number) => void }).lookAt;
   if (typeof cameraLookAt === "function") {
     cameraLookAt.call(effect.camera, 0, -verticalShift * 0.18, 0);
@@ -112,10 +112,10 @@ const adjustDotsLayout = (
 
   const effectWithTime = effect as { t?: number; t2?: number };
   if (typeof effectWithTime.t === "number") {
-    effectWithTime.t = Math.max(effectWithTime.t, 900);
+    effectWithTime.t = 1800;
   }
   if (typeof effectWithTime.t2 === "number") {
-    effectWithTime.t2 = Math.max(effectWithTime.t2, 900);
+    effectWithTime.t2 = 1800;
   }
 };
 
