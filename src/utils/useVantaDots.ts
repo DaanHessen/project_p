@@ -44,6 +44,24 @@ const prefersReducedMotion = () => {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 };
 
+const fadeInCanvas = (canvas: HTMLCanvasElement | null | undefined) => {
+  if (!canvas) return;
+  if (canvas.dataset.vantaFadeApplied === "true") {
+    canvas.style.opacity = "1";
+    return;
+  }
+
+  canvas.style.opacity = "0";
+  canvas.style.transition = "opacity 0.9s ease";
+  canvas.dataset.vantaFadeApplied = "true";
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      canvas.style.opacity = "1";
+    });
+  });
+};
+
 const adjustDotsLayout = (
   effect: VantaDotsInstance,
   element: HTMLElement | null | undefined,
@@ -72,7 +90,7 @@ const adjustDotsLayout = (
     const baseSize =
       typeof options.size === "number" ? options.size : 1.0;
     if (typeof baseSize === "number") {
-      material.size = baseSize * 2.6;
+      material.size = baseSize * 2.0;
     }
 
     const primaryColor =
@@ -173,6 +191,8 @@ const useVantaDots = (
         }) as VantaDotsInstance;
 
         adjustDotsLayout(effect, containerRef.current);
+        const canvas = containerRef.current.querySelector("canvas");
+        fadeInCanvas(canvas as HTMLCanvasElement | null);
         effectRef.current = effect;
 
         setIsActive(true);
@@ -200,6 +220,7 @@ const useVantaDots = (
     const effect = effectRef.current as VantaDotsInstance;
     effect.setOptions?.(options);
     adjustDotsLayout(effect, containerRef.current);
+    fadeInCanvas(containerRef.current?.querySelector("canvas") as HTMLCanvasElement | null);
   }, [options]);
 
   return { containerRef, isActive };
