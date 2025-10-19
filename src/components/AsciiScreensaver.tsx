@@ -36,25 +36,24 @@ type State = {
   baseGrid: BaseCell[][];
   noise: CellNoise[][];
   blobs: CloudBlob[];
+  revealDelays: number[][];
 };
 
 const CELL_SIZE = 14;
 const FRAME_INTERVAL = 1000 / 22;
 const WRAP_MARGIN = 8;
+const REVEAL_DURATION = 1000;
+const REVEAL_FADE = 520;
 
-const BACKDROP_CHARACTERS = ["s", ";", ":"] as const;
 const ASCII_PALETTE = [" ", "`", ".", ":", ";", "~", "+", "=", "*", "#", "%", "@"] as const;
 
 const randomBetween = (min: number, max: number) => min + Math.random() * (max - min);
-const randomChoice = <T,>(collection: readonly T[]) =>
-  collection[Math.floor(Math.random() * collection.length)];
-
 const clamp = (value: number, min: number, max: number) =>
   Math.min(max, Math.max(min, value));
 
 const pickShadeCharacter = (intensity: number, noise: CellNoise, palette: readonly string[]) => {
   const adjusted = clamp(intensity + noise.jitter, 0, 1);
-  const paletteSize = ASCII_PALETTE.length;
+  const paletteSize = palette.length;
   const scaled = adjusted * (paletteSize - 1);
   const biased = scaled + noise.paletteBias * 0.6;
   const index = Math.max(0, Math.min(paletteSize - 1, Math.round(biased)));
@@ -64,8 +63,8 @@ const pickShadeCharacter = (intensity: number, noise: CellNoise, palette: readon
 const createBaseGrid = (columns: number, rows: number): BaseCell[][] =>
   Array.from({ length: rows }, () =>
     Array.from({ length: columns }, () => ({
-      char: randomChoice(BACKDROP_CHARACTERS),
-      alpha: randomBetween(0.05, 0.09),
+      char: " ",
+      alpha: 0,
     })),
   );
 
@@ -80,6 +79,29 @@ const createNoiseField = (columns: number, rows: number): CellNoise[][] =>
         }) satisfies CellNoise,
     ),
   );
+
+const createRevealDelays = (columns: number, rows: number): number[][] => {
+  const total = columns * rows;
+  const indices = Array.from({ length: total }, (_, idx) => idx);
+
+  for (let i = indices.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+
+  const step = REVEAL_DURATION / Math.max(total, 1);
+  const delays = Array.from({ length: rows }, () => Array(columns).fill(0));
+
+  indices.forEach((index, order) => {
+    const row = Math.floor(index / columns);
+    const col = index % columns;
+    const baseDelay = order * step;
+    const jitter = randomBetween(-step * 0.35, step * 0.35);
+    delays[row][col] = Math.max(0, baseDelay + jitter);
+  });
+
+  return delays;
+};
 
 const createBlob = (columns: number, rows: number, bias?: { x: number; y: number }): CloudBlob => {
   const radius = randomBetween(30, 56);
@@ -177,6 +199,7 @@ const drawFrame = (
   state: State,
   now: number,
   characterLUT: string[],
+  revealElapsed: number,
 ) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   ctx.textAlign = "center";
@@ -208,6 +231,13 @@ const drawFrame = (
     const verticalGradient = 0.14 + (1 - row / state.rows) * 0.06;
     for (let col = 0; col < state.columns; col += 1) {
       const cellNoise = state.noise[row][col];
+      const revealDelay = state.revealDelays[row][col];
+      const revealProgressRaw = (revealElapsed - revealDelay) / REVEAL_FADE;
+      const revealProgress = clamp(revealProgressRaw, 0, 1);
+      if (revealProgress <= 0) {
+        continue;
+      }
+      const easedReveal = revealProgress * revealProgress * (3 - 2 * revealProgress);
       let brightness = verticalGradient + cellNoise.jitter * 0.12;
 
       state.blobs.forEach((blob) => {
@@ -233,12 +263,12 @@ const drawFrame = (
         brightness += influence;
       });
 
-      brightness = clamp(brightness, 0, 1);
+      brightness = clamp(brightness * easedReveal, 0, 1);
 
       const char = pickShadeCharacter(brightness, cellNoise, characterLUT);
-      const alpha = 0.1 + brightness * 0.56;
+      const alpha = (0.1 + brightness * 0.56) * easedReveal;
 
-      ctx.fillStyle = `rgba(168, 183, 205, ${alpha})`;
+      ctx.fillStyle = `rgba(186, 194, 209, ${alpha})`;
       const x = state.gridOffsetX + col * CELL_SIZE + CELL_SIZE / 2;
       const y = state.gridOffsetY + row * CELL_SIZE + CELL_SIZE / 2;
       ctx.fillText(char, x, y);
@@ -253,6 +283,7 @@ const AsciiScreensaver = () => {
   const stateRef = useRef<State | null>(null);
   const lastTimestampRef = useRef<number>(performance.now());
   const lastDrawRef = useRef<number>(performance.now());
+  const revealStartRef = useRef<number>(performance.now());
 
   useEffect(() => {
     const baseCanvas = baseCanvasRef.current;
@@ -299,6 +330,7 @@ const AsciiScreensaver = () => {
       drawBackdrop(baseCtx, baseGrid, columns, rows, gridOffsetX, gridOffsetY);
 
       const noise = createNoiseField(columns, rows);
+      const revealDelays = createRevealDelays(columns, rows);
       const blobCount = width < 640 ? 2 : width < 1024 ? 3 : width < 1600 ? 4 : 5;
       const blobs = Array.from({ length: blobCount }, (_, index) =>
         index === 0
@@ -314,8 +346,10 @@ const AsciiScreensaver = () => {
         baseGrid,
         noise,
         blobs,
+        revealDelays,
       };
 
+      revealStartRef.current = performance.now();
       lastTimestampRef.current = performance.now();
       lastDrawRef.current = performance.now();
     };
@@ -343,15 +377,19 @@ const AsciiScreensaver = () => {
       const delta = Math.min(now - lastTimestampRef.current, 120);
       lastTimestampRef.current = now;
 
+      const revealElapsed = Math.max(0, now - revealStartRef.current);
+      const movementFactor = clamp(revealElapsed / REVEAL_DURATION, 0, 1);
+      const effectiveDelta = delta * movementFactor;
+
       state.blobs = state.blobs.map((blob) => {
         const aliveBlob =
           blob.life <= 0 ? createBlob(state.columns, state.rows) : blob;
-        const updated = updateBlob(aliveBlob, delta, state.columns, state.rows, now);
+        const updated = updateBlob(aliveBlob, effectiveDelta, state.columns, state.rows, now);
         return updated.life <= 0 ? resetBlob(state.columns, state.rows) : updated;
       });
 
       if (now - lastDrawRef.current >= FRAME_INTERVAL) {
-        drawFrame(overlayCtx, state, now, characterLUT);
+        drawFrame(overlayCtx, state, now, characterLUT, revealElapsed);
         lastDrawRef.current = now;
       }
 

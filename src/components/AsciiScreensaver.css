@@ -68,7 +68,7 @@
       transparent 1px,
       transparent 16px
     ),
-    radial-gradient(circle at 50% 45%, rgba(230, 238, 255, 0.06), transparent 68%);
+  radial-gradient(circle at 50% 45%, rgba(230, 238, 255, 0.06), transparent 68%);
   mix-blend-mode: soft-light;
   animation: textureDrift 42s linear infinite;
   opacity: 0.78;
