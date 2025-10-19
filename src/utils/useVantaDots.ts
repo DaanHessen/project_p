@@ -52,7 +52,8 @@ const fadeInCanvas = (canvas: HTMLCanvasElement | null | undefined) => {
   }
 
   canvas.style.opacity = "0";
-  canvas.style.transition = "opacity 0.9s ease";
+  canvas.style.transition = "opacity 1.4s ease";
+  canvas.style.willChange = "opacity";
   canvas.dataset.vantaFadeApplied = "true";
 
   requestAnimationFrame(() => {
@@ -60,6 +61,67 @@ const fadeInCanvas = (canvas: HTMLCanvasElement | null | undefined) => {
       canvas.style.opacity = "1";
     });
   });
+};
+
+const applyRendererFade = (effect: VantaDotsInstance) => {
+  const canvas =
+    (effect as unknown as { renderer?: { domElement?: HTMLCanvasElement } })
+      .renderer?.domElement ?? null;
+  fadeInCanvas(canvas);
+};
+
+const ensureDepthFadeShader = (
+  material: THREE.PointsMaterial,
+  distance: number,
+) => {
+  const pointsMaterial = material as THREE.PointsMaterial & {
+    userData: {
+      vantaDepthFade?:
+        | {
+            range: { value: number };
+            strength: { value: number };
+          }
+        | undefined;
+      vantaDepthFadeCompiled?: boolean;
+    };
+  };
+
+  pointsMaterial.userData = pointsMaterial.userData ?? {};
+  if (!pointsMaterial.userData.vantaDepthFade) {
+    pointsMaterial.userData.vantaDepthFade = {
+      range: { value: distance },
+      strength: { value: 0.65 },
+    };
+  }
+
+  const fadeUniforms = pointsMaterial.userData.vantaDepthFade;
+  fadeUniforms.range.value = Math.max(distance, 180) * 1.25;
+  fadeUniforms.strength.value = 0.75;
+
+  if (!pointsMaterial.userData.vantaDepthFadeCompiled) {
+    pointsMaterial.onBeforeCompile = (shader) => {
+      shader.uniforms.uFadeRange = fadeUniforms.range;
+      shader.uniforms.uFadeStrength = fadeUniforms.strength;
+      shader.fragmentShader = shader.fragmentShader.replace(
+        "void main() {",
+        `
+uniform float uFadeRange;
+uniform float uFadeStrength;
+void main() {
+`
+      );
+      shader.fragmentShader = shader.fragmentShader.replace(
+        "gl_FragColor = vec4( color, alpha );",
+        `
+float depthRatio = clamp((gl_FragCoord.z / gl_FragCoord.w) / uFadeRange, 0.0, 1.0);
+float fadeFactor = mix(1.0, 1.0 - uFadeStrength, depthRatio);
+gl_FragColor = vec4( color, alpha * fadeFactor );
+`
+      );
+    };
+    pointsMaterial.userData.vantaDepthFadeCompiled = true;
+    pointsMaterial.needsUpdate = true;
+  }
 };
 
 const adjustDotsLayout = (
@@ -85,13 +147,11 @@ const adjustDotsLayout = (
   const depthShift = spacing * (34 + heightFactor * 7.2);
   effect.starField.position.set?.(0, -verticalShift, -depthShift);
 
-  const material = effect.starField.material as any;
+  const material = effect.starField.material as THREE.PointsMaterial | undefined;
   if (material) {
     const baseSize =
       typeof options.size === "number" ? options.size : 1.0;
-    if (typeof baseSize === "number") {
-      material.size = baseSize * 2.0;
-    }
+    material.size = baseSize * 1.4;
 
     const primaryColor =
       typeof options.color === "number" ? options.color : 0x3b82f6;
@@ -104,16 +164,20 @@ const adjustDotsLayout = (
 
     if (material.color instanceof THREE.Color) {
       material.color.copy(mixedColor);
-    } else if (material.color && typeof material.color === "object" && "set" in material.color) {
-      (material.color.set as (color: unknown) => void)?.(mixedColor);
+    } else {
+      (material.color as { set?: (color: THREE.Color) => void })?.set?.(
+        mixedColor,
+      );
     }
 
     material.transparent = true;
-    material.opacity = 0.9;
+    material.opacity = 0.42;
     material.depthWrite = false;
     material.blending = THREE.AdditiveBlending;
     material.fog = true;
     material.needsUpdate = true;
+
+    ensureDepthFadeShader(material, depthShift + 260);
   }
 
   const cameraY = 190 + heightFactor * 30;
@@ -127,6 +191,8 @@ const adjustDotsLayout = (
   if (typeof cameraLookAt === "function") {
     cameraLookAt.call(effect.camera, 0, -verticalShift * 0.18, 0);
   }
+
+  applyRendererFade(effect);
 
   const effectWithTime = effect as { t?: number; t2?: number };
   if (typeof effectWithTime.t === "number") {
@@ -191,8 +257,7 @@ const useVantaDots = (
         }) as VantaDotsInstance;
 
         adjustDotsLayout(effect, containerRef.current);
-        const canvas = containerRef.current.querySelector("canvas");
-        fadeInCanvas(canvas as HTMLCanvasElement | null);
+        applyRendererFade(effect);
         effectRef.current = effect;
 
         setIsActive(true);
