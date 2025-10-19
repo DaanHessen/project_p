@@ -42,7 +42,7 @@ type State = {
 const CELL_SIZE = 14;
 const FRAME_INTERVAL = 1000 / 22;
 const WRAP_MARGIN = 8;
-const REVEAL_DURATION = 1000;
+const REVEAL_DURATION = 3000;
 const REVEAL_FADE = 520;
 
 const ASCII_PALETTE = [" ", "`", ".", ":", ";", "~", "+", "=", "*", "#", "%", "@"] as const;
@@ -80,28 +80,12 @@ const createNoiseField = (columns: number, rows: number): CellNoise[][] =>
     ),
   );
 
-const createRevealDelays = (columns: number, rows: number): number[][] => {
-  const total = columns * rows;
-  const indices = Array.from({ length: total }, (_, idx) => idx);
-
-  for (let i = indices.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [indices[i], indices[j]] = [indices[j], indices[i]];
-  }
-
-  const step = REVEAL_DURATION / Math.max(total, 1);
-  const delays = Array.from({ length: rows }, () => Array(columns).fill(0));
-
-  indices.forEach((index, order) => {
-    const row = Math.floor(index / columns);
-    const col = index % columns;
-    const baseDelay = order * step;
-    const jitter = randomBetween(-step * 0.35, step * 0.35);
-    delays[row][col] = Math.max(0, baseDelay + jitter);
-  });
-
-  return delays;
-};
+const createRevealDelays = (columns: number, rows: number): number[][] =>
+  Array.from({ length: rows }, () =>
+    Array.from({ length: columns }, () =>
+      Math.max(0, randomBetween(-REVEAL_FADE * 0.65, REVEAL_DURATION)),
+    ),
+  );
 
 const createBlob = (columns: number, rows: number, bias?: { x: number; y: number }): CloudBlob => {
   const radius = randomBetween(30, 56);
