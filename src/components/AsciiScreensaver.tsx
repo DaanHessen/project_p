@@ -6,9 +6,9 @@ type BaseCell = {
   alpha: number;
 };
 
-type ShadeBand = {
-  threshold: number;
-  chars: readonly string[];
+type CellNoise = {
+  jitter: number;
+  paletteBias: number;
 };
 
 type CloudBlob = {
@@ -34,83 +34,96 @@ type State = {
   gridOffsetX: number;
   gridOffsetY: number;
   baseGrid: BaseCell[][];
-  noise: number[][];
+  noise: CellNoise[][];
   blobs: CloudBlob[];
 };
 
 const CELL_SIZE = 14;
-const FRAME_INTERVAL = 1000 / 18;
-const WRAP_MARGIN = 12;
+const FRAME_INTERVAL = 1000 / 22;
+const WRAP_MARGIN = 8;
 
 const BACKDROP_CHARACTERS = ["s", ";", ":"] as const;
-const SHADE_BANDS: ShadeBand[] = [
-  { threshold: 0.18, chars: ["`", ".", ":"] },
-  { threshold: 0.36, chars: [":", ";", "~"] },
-  { threshold: 0.55, chars: ["*", "+", "="] },
-  { threshold: 0.75, chars: ["#", "%", "@"] },
-  { threshold: 1, chars: ["@", "&", "$"] },
-];
+const ASCII_PALETTE = [" ", "`", ".", ":", ";", "~", "+", "=", "*", "#", "%", "@"] as const;
 
 const randomBetween = (min: number, max: number) => min + Math.random() * (max - min);
 const randomChoice = <T,>(collection: readonly T[]) =>
   collection[Math.floor(Math.random() * collection.length)];
 
-const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(max, Math.max(min, value));
 
-const pickShadeCharacter = (intensity: number, jitter: number) => {
-  const adjusted = clamp(intensity + jitter * 0.2, 0, 1);
-  const bandIndex = SHADE_BANDS.findIndex((candidate) => adjusted <= candidate.threshold);
-  const band =
-    bandIndex === -1 ? SHADE_BANDS[SHADE_BANDS.length - 1] : SHADE_BANDS[bandIndex];
-  return randomChoice(band.chars);
+const pickShadeCharacter = (intensity: number, noise: CellNoise, palette: readonly string[]) => {
+  const adjusted = clamp(intensity + noise.jitter, 0, 1);
+  const paletteSize = ASCII_PALETTE.length;
+  const scaled = adjusted * (paletteSize - 1);
+  const biased = scaled + noise.paletteBias * 0.6;
+  const index = Math.max(0, Math.min(paletteSize - 1, Math.round(biased)));
+  return palette[index];
 };
 
 const createBaseGrid = (columns: number, rows: number): BaseCell[][] =>
   Array.from({ length: rows }, () =>
     Array.from({ length: columns }, () => ({
       char: randomChoice(BACKDROP_CHARACTERS),
-      alpha: randomBetween(0.06, 0.12),
+      alpha: randomBetween(0.05, 0.09),
     })),
   );
 
-const createNoiseField = (columns: number, rows: number): number[][] =>
+const createNoiseField = (columns: number, rows: number): CellNoise[][] =>
   Array.from({ length: rows }, () =>
-    Array.from({ length: columns }, () => randomBetween(-0.08, 0.08)),
+    Array.from(
+      { length: columns },
+      () =>
+        ({
+          jitter: randomBetween(-0.05, 0.05),
+          paletteBias: Math.random() - 0.5,
+        }) satisfies CellNoise,
+    ),
   );
 
-const createBlob = (columns: number, rows: number): CloudBlob => {
-  const radius = randomBetween(20, 38);
-  const aspect = randomBetween(0.6, 1.35);
+const createBlob = (columns: number, rows: number, bias?: { x: number; y: number }): CloudBlob => {
+  const radius = randomBetween(30, 56);
+  const aspect = randomBetween(0.75, 1.35);
   const radiusX = radius;
   const radiusY = radius * aspect;
-  const speed = randomBetween(0.00028, 0.00058);
+  const speed = randomBetween(0.0018, 0.0032);
   const direction = randomBetween(0, Math.PI * 2);
 
-  const life = randomBetween(105000, 165000);
+  const lifeSpan = randomBetween(105000, 165000);
+  const life = lifeSpan - randomBetween(0, lifeSpan * 0.4);
 
   return {
-    cx: randomBetween(-WRAP_MARGIN, columns + WRAP_MARGIN),
-    cy: randomBetween(-WRAP_MARGIN, rows + WRAP_MARGIN),
+    cx: bias ? clamp(bias.x + randomBetween(-4, 4), -WRAP_MARGIN, columns + WRAP_MARGIN) : randomBetween(-WRAP_MARGIN, columns + WRAP_MARGIN),
+    cy: bias ? clamp(bias.y + randomBetween(-4, 4), -WRAP_MARGIN, rows + WRAP_MARGIN) : randomBetween(-WRAP_MARGIN, rows + WRAP_MARGIN),
     baseRadiusX: radiusX,
     baseRadiusY: radiusY,
     rotation: randomBetween(0, Math.PI * 2),
     rotationSpeed: randomBetween(-0.00005, 0.00005),
-    intensity: randomBetween(0.35, 0.58),
+    intensity: randomBetween(0.24, 0.45),
     velocityX: Math.cos(direction) * speed,
     velocityY: Math.sin(direction) * speed,
-    wobbleAmplitude: randomBetween(0.08, 0.16),
-    wobbleSpeed: randomBetween(0.00035, 0.00085),
+    wobbleAmplitude: randomBetween(0.08, 0.18),
+    wobbleSpeed: randomBetween(0.00025, 0.0006),
     wobblePhase: randomBetween(0, Math.PI * 2),
     life,
-    maxLife: life,
+    maxLife: lifeSpan,
   };
 };
 
 const resetBlob = (columns: number, rows: number): CloudBlob => createBlob(columns, rows);
 
-const updateBlob = (blob: CloudBlob, delta: number, columns: number, rows: number) => {
-  const cx = blob.cx + blob.velocityX * delta;
-  const cy = blob.cy + blob.velocityY * delta;
+const updateBlob = (
+  blob: CloudBlob,
+  delta: number,
+  columns: number,
+  rows: number,
+  now: number,
+) => {
+  const driftMod =
+    1 + Math.sin(now * 0.00002 + blob.wobblePhase * 0.5) * 0.2 + Math.cos(now * 0.000015) * 0.1;
+  const cx = blob.cx + blob.velocityX * delta * driftMod;
+  const cy = blob.cy + blob.velocityY * delta * driftMod;
+
   let wrappedX = cx;
   let wrappedY = cy;
 
@@ -159,7 +172,12 @@ const drawBackdrop = (
   }
 };
 
-const drawFrame = (ctx: CanvasRenderingContext2D, state: State, now: number) => {
+const drawFrame = (
+  ctx: CanvasRenderingContext2D,
+  state: State,
+  now: number,
+  characterLUT: string[],
+) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
@@ -187,10 +205,10 @@ const drawFrame = (ctx: CanvasRenderingContext2D, state: State, now: number) => 
   };
 
   for (let row = 0; row < state.rows; row += 1) {
-    const verticalGradient = 0.18 + (1 - row / state.rows) * 0.08;
+    const verticalGradient = 0.14 + (1 - row / state.rows) * 0.06;
     for (let col = 0; col < state.columns; col += 1) {
-      const jitter = state.noise[row][col];
-      let brightness = verticalGradient + jitter * 0.45;
+      const cellNoise = state.noise[row][col];
+      let brightness = verticalGradient + cellNoise.jitter * 0.12;
 
       state.blobs.forEach((blob) => {
         const cos = resolveCos(blob.rotation);
@@ -211,16 +229,16 @@ const drawFrame = (ctx: CanvasRenderingContext2D, state: State, now: number) => 
         const fadeOut = clamp(blob.life / (blob.maxLife * 0.25), 0, 1);
         const envelope = fadeIn * fadeOut;
 
-        const influence = Math.exp(-distanceSq * 1.25) * blob.intensity * envelope;
+        const influence = Math.exp(-distanceSq * 1.05) * blob.intensity * envelope;
         brightness += influence;
       });
 
       brightness = clamp(brightness, 0, 1);
 
-      const char = pickShadeCharacter(brightness, jitter);
-      const alpha = 0.12 + brightness * 0.82;
+      const char = pickShadeCharacter(brightness, cellNoise, characterLUT);
+      const alpha = 0.1 + brightness * 0.56;
 
-      ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+      ctx.fillStyle = `rgba(168, 183, 205, ${alpha})`;
       const x = state.gridOffsetX + col * CELL_SIZE + CELL_SIZE / 2;
       const y = state.gridOffsetY + row * CELL_SIZE + CELL_SIZE / 2;
       ctx.fillText(char, x, y);
@@ -249,6 +267,13 @@ const AsciiScreensaver = () => {
       return;
     }
 
+    const characterLUT = Array.from({ length: ASCII_PALETTE.length }, (_, index) => {
+      const baseIndex = index;
+      const bias = randomBetween(-0.2, 0.2);
+      const adjusted = clamp(baseIndex + bias, 0, ASCII_PALETTE.length - 1);
+      return ASCII_PALETTE[Math.round(adjusted)];
+    });
+
     const setupState = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
@@ -275,7 +300,11 @@ const AsciiScreensaver = () => {
 
       const noise = createNoiseField(columns, rows);
       const blobCount = width < 640 ? 2 : width < 1024 ? 3 : width < 1600 ? 4 : 5;
-      const blobs = Array.from({ length: blobCount }, () => createBlob(columns, rows));
+      const blobs = Array.from({ length: blobCount }, (_, index) =>
+        index === 0
+          ? createBlob(columns, rows, { x: columns / 2, y: rows / 2 })
+          : createBlob(columns, rows),
+      );
 
       stateRef.current = {
         columns,
@@ -315,13 +344,14 @@ const AsciiScreensaver = () => {
       lastTimestampRef.current = now;
 
       state.blobs = state.blobs.map((blob) => {
-        const aliveBlob = blob.life <= 0 ? createBlob(state.columns, state.rows) : blob;
-        const updated = updateBlob(aliveBlob, delta, state.columns, state.rows);
+        const aliveBlob =
+          blob.life <= 0 ? createBlob(state.columns, state.rows) : blob;
+        const updated = updateBlob(aliveBlob, delta, state.columns, state.rows, now);
         return updated.life <= 0 ? resetBlob(state.columns, state.rows) : updated;
       });
 
       if (now - lastDrawRef.current >= FRAME_INTERVAL) {
-        drawFrame(overlayCtx, state, now);
+        drawFrame(overlayCtx, state, now, characterLUT);
         lastDrawRef.current = now;
       }
 
