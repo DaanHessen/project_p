@@ -32,6 +32,7 @@ type State = {
   noiseJitter: Float32Array;
   noisePaletteBias: Float32Array;
   revealDelays: Float32Array;
+  glyphs: (CanvasImageSource | null)[];
   blobs: CloudBlob[];
 };
 
@@ -44,6 +45,7 @@ const REVEAL_FADE = 520;
 const SPAWN_MARGIN = 18;
 const INTERIOR_MIN = 0.18;
 const INTERIOR_MAX = 0.82;
+const HALF_CELL = CELL_SIZE / 2;
 
 const ASCII_PALETTE = [" ", "`", ".", ":", ";", "~", "+", "=", "*", "#", "%", "@"] as const;
 const CANVAS_FONT = `${CELL_SIZE * 0.86}px "JetBrains Mono", "Fira Code", "Menlo", monospace`;
@@ -106,6 +108,59 @@ const pickShadeIndex = (
   const biased = scaled + paletteBias * 0.6;
   const index = Math.max(0, Math.min(paletteSize - 1, Math.round(biased)));
   return index;
+};
+
+const createGlyphAtlas = (
+  scale: number,
+  characters: readonly string[],
+): (CanvasImageSource | null)[] => {
+  const atlas: (CanvasImageSource | null)[] = new Array(characters.length).fill(null);
+  const pixelSize = Math.max(1, Math.ceil(CELL_SIZE * scale));
+
+  for (let index = 0; index < characters.length; index += 1) {
+    const character = characters[index];
+    if (!character.trim()) {
+      atlas[index] = null;
+      continue;
+    }
+
+    const needsOffscreen = typeof OffscreenCanvas !== "undefined";
+    if (needsOffscreen) {
+      const canvas = new OffscreenCanvas(pixelSize, pixelSize);
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        atlas[index] = null;
+        continue;
+      }
+      ctx.setTransform(scale, 0, 0, scale, 0, 0);
+      ctx.clearRect(0, 0, CELL_SIZE, CELL_SIZE);
+      ctx.fillStyle = OVERLAY_RGB;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = CANVAS_FONT;
+      ctx.fillText(character, HALF_CELL, HALF_CELL);
+      atlas[index] = canvas.transferToImageBitmap();
+    } else {
+      const canvas = document.createElement("canvas");
+      canvas.width = pixelSize;
+      canvas.height = pixelSize;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        atlas[index] = null;
+        continue;
+      }
+      ctx.setTransform(scale, 0, 0, scale, 0, 0);
+      ctx.clearRect(0, 0, CELL_SIZE, CELL_SIZE);
+      ctx.fillStyle = OVERLAY_RGB;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = CANVAS_FONT;
+      ctx.fillText(character, HALF_CELL, HALF_CELL);
+      atlas[index] = canvas;
+    }
+  }
+
+  return atlas;
 };
 
 type SpawnPoint = {
@@ -241,14 +296,12 @@ const drawFrame = (
     noiseJitter,
     noisePaletteBias,
     revealDelays,
+    glyphs,
   } = state;
 
   ctx.globalAlpha = 1;
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.font = CANVAS_FONT;
-  ctx.fillStyle = OVERLAY_RGB;
+  ctx.imageSmoothingEnabled = true;
 
   const blobCount = blobs.length;
   const { centersX, centersY, cos, sin, invRadiusX, invRadiusY, intensity } = blobTemp;
@@ -331,6 +384,11 @@ const drawFrame = (
       continue;
     }
 
+    const glyph = glyphs[shadeIndex];
+    if (!glyph) {
+      continue;
+    }
+
     const alpha = (0.1 + brightness * 0.56) * easedReveal;
 
     if (alpha <= ALPHA_EPSILON) {
@@ -338,7 +396,13 @@ const drawFrame = (
     }
 
     ctx.globalAlpha = alpha;
-    ctx.fillText(characterLUT[shadeIndex], cellCentersX[idx], cellCentersY[idx]);
+    ctx.drawImage(
+      glyph,
+      cellCentersX[idx] - HALF_CELL,
+      cellCentersY[idx] - HALF_CELL,
+      CELL_SIZE,
+      CELL_SIZE,
+    );
   }
 
   ctx.globalAlpha = 1;
@@ -388,6 +452,8 @@ const AsciiScreensaver = () => {
       baseCanvas.height = Math.floor(height * scale);
       baseCtx.setTransform(scale, 0, 0, scale, 0, 0);
       baseCtx.font = CANVAS_FONT;
+
+      const glyphs = createGlyphAtlas(scale, characterLUT);
 
       overlayCanvas.style.width = `${width}px`;
       overlayCanvas.style.height = `${height}px`;
@@ -451,6 +517,7 @@ const AsciiScreensaver = () => {
         noiseJitter,
         noisePaletteBias,
         revealDelays,
+        glyphs,
         blobs,
       };
 
