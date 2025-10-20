@@ -1,8 +1,5 @@
 .page-one {
   background-color: var(--bg-primary);
-  background-image: var(--gradient-bg-subtle);
-  background-repeat: no-repeat;
-  background-position: center;
   position: relative;
   overflow: hidden;
   transform: translateZ(0);
@@ -14,12 +11,14 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--gradient-bg-subtle);
+  background: radial-gradient(
+    ellipse at center top,
+    rgba(59, 130, 246, 0.03) 0%,
+    transparent 50%
+  );
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
-
-/* Vanta attaches a canvas to .page-one and pushes children forward */
 
 .main-content {
   display: flex;
