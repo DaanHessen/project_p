@@ -1,16 +1,6 @@
 import { useEffect, useRef } from "react";
 import "./AsciiScreensaver.css";
 
-type BaseCell = {
-  char: string;
-  alpha: number;
-};
-
-type CellNoise = {
-  jitter: number;
-  paletteBias: number;
-};
-
 type CloudBlob = {
   cx: number;
   cy: number;
@@ -33,59 +23,86 @@ type State = {
   rows: number;
   gridOffsetX: number;
   gridOffsetY: number;
-  baseGrid: BaseCell[][];
-  noise: CellNoise[][];
+  cellCount: number;
+  cellCentersX: Float32Array;
+  cellCentersY: Float32Array;
+  cellColumns: Float32Array;
+  cellRows: Float32Array;
+  baseBrightness: Float32Array;
+  noiseJitter: Float32Array;
+  noisePaletteBias: Float32Array;
+  revealDelays: Float32Array;
   blobs: CloudBlob[];
-  revealDelays: number[][];
 };
 
 const CELL_SIZE = 14;
 const FRAME_INTERVAL = 1000 / 22;
 const WRAP_MARGIN = 8;
-const REVEAL_DURATION = 3000;
+const REVEAL_DURATION = 100;
 const REVEAL_FADE = 520;
 
 const ASCII_PALETTE = [" ", "`", ".", ":", ";", "~", "+", "=", "*", "#", "%", "@"] as const;
+const CANVAS_FONT = `${CELL_SIZE * 0.86}px "JetBrains Mono", "Fira Code", "Menlo", monospace`;
+const OVERLAY_RGB = "rgb(186, 194, 209)";
+const ALPHA_EPSILON = 0.012;
+
+const GAUSSIAN_LUT_SIZE = 1024;
+const GAUSSIAN_LUT_MAX = 8;
+const GAUSSIAN_SCALE = (GAUSSIAN_LUT_SIZE - 1) / GAUSSIAN_LUT_MAX;
+
+const gaussianLUT = (() => {
+  const lut = new Float32Array(GAUSSIAN_LUT_SIZE);
+  for (let index = 0; index < GAUSSIAN_LUT_SIZE; index += 1) {
+    const distanceSq = index / GAUSSIAN_SCALE;
+    lut[index] = Math.exp(-distanceSq * 1.05);
+  }
+  return lut;
+})();
+
+const gaussianFalloff = (distanceSq: number) => {
+  if (distanceSq >= GAUSSIAN_LUT_MAX) {
+    return 0;
+  }
+  const lutIndex = Math.min(GAUSSIAN_LUT_SIZE - 1, Math.floor(distanceSq * GAUSSIAN_SCALE));
+  return gaussianLUT[lutIndex];
+};
+
+type BlobTempBuffers = {
+  centersX: number[];
+  centersY: number[];
+  cos: number[];
+  sin: number[];
+  invRadiusX: number[];
+  invRadiusY: number[];
+  intensity: number[];
+};
+
+const blobTemp: BlobTempBuffers = {
+  centersX: [],
+  centersY: [],
+  cos: [],
+  sin: [],
+  invRadiusX: [],
+  invRadiusY: [],
+  intensity: [],
+};
 
 const randomBetween = (min: number, max: number) => min + Math.random() * (max - min);
 const clamp = (value: number, min: number, max: number) =>
   Math.min(max, Math.max(min, value));
 
-const pickShadeCharacter = (intensity: number, noise: CellNoise, palette: readonly string[]) => {
-  const adjusted = clamp(intensity + noise.jitter, 0, 1);
-  const paletteSize = palette.length;
+const pickShadeIndex = (
+  intensity: number,
+  jitter: number,
+  paletteBias: number,
+  paletteSize: number,
+) => {
+  const adjusted = clamp(intensity + jitter, 0, 1);
   const scaled = adjusted * (paletteSize - 1);
-  const biased = scaled + noise.paletteBias * 0.6;
+  const biased = scaled + paletteBias * 0.6;
   const index = Math.max(0, Math.min(paletteSize - 1, Math.round(biased)));
-  return palette[index];
+  return index;
 };
-
-const createBaseGrid = (columns: number, rows: number): BaseCell[][] =>
-  Array.from({ length: rows }, () =>
-    Array.from({ length: columns }, () => ({
-      char: " ",
-      alpha: 0,
-    })),
-  );
-
-const createNoiseField = (columns: number, rows: number): CellNoise[][] =>
-  Array.from({ length: rows }, () =>
-    Array.from(
-      { length: columns },
-      () =>
-        ({
-          jitter: randomBetween(-0.05, 0.05),
-          paletteBias: Math.random() - 0.5,
-        }) satisfies CellNoise,
-    ),
-  );
-
-const createRevealDelays = (columns: number, rows: number): number[][] =>
-  Array.from({ length: rows }, () =>
-    Array.from({ length: columns }, () =>
-      Math.max(0, randomBetween(-REVEAL_FADE * 0.65, REVEAL_DURATION)),
-    ),
-  );
 
 const createBlob = (columns: number, rows: number, bias?: { x: number; y: number }): CloudBlob => {
   const radius = randomBetween(30, 56);
@@ -145,37 +162,11 @@ const updateBlob = (
     wrappedY = rows + WRAP_MARGIN;
   }
 
-  return {
-    ...blob,
-    cx: wrappedX,
-    cy: wrappedY,
-    rotation: blob.rotation + blob.rotationSpeed * delta,
-    life: blob.life - delta,
-  };
-};
-
-const drawBackdrop = (
-  ctx: CanvasRenderingContext2D,
-  grid: BaseCell[][],
-  columns: number,
-  rows: number,
-  gridOffsetX: number,
-  gridOffsetY: number,
-) => {
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.font = `${CELL_SIZE * 0.78}px "JetBrains Mono", "Fira Code", "Menlo", monospace`;
-
-  for (let row = 0; row < rows; row += 1) {
-    for (let col = 0; col < columns; col += 1) {
-      const cell = grid[row][col];
-      ctx.fillStyle = `rgba(255, 255, 255, ${cell.alpha})`;
-      const x = gridOffsetX + col * CELL_SIZE + CELL_SIZE / 2;
-      const y = gridOffsetY + row * CELL_SIZE + CELL_SIZE / 2;
-      ctx.fillText(cell.char, x, y);
-    }
-  }
+  blob.cx = wrappedX;
+  blob.cy = wrappedY;
+  blob.rotation += blob.rotationSpeed * delta;
+  blob.life -= delta;
+  return blob;
 };
 
 const drawFrame = (
@@ -185,79 +176,118 @@ const drawFrame = (
   characterLUT: string[],
   revealElapsed: number,
 ) => {
+  const {
+    blobs,
+    cellCount,
+    cellColumns,
+    cellRows,
+    cellCentersX,
+    cellCentersY,
+    baseBrightness,
+    noiseJitter,
+    noisePaletteBias,
+    revealDelays,
+  } = state;
+
+  ctx.globalAlpha = 1;
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.font = `${CELL_SIZE * 0.86}px "JetBrains Mono", "Fira Code", "Menlo", monospace`;
+  ctx.font = CANVAS_FONT;
+  ctx.fillStyle = OVERLAY_RGB;
 
-  const sinCache = new Map<number, number>();
-  const cosCache = new Map<number, number>();
+  const blobCount = blobs.length;
+  const { centersX, centersY, cos, sin, invRadiusX, invRadiusY, intensity } = blobTemp;
 
-  const resolveSin = (value: number) => {
-    let cached = sinCache.get(value);
-    if (cached === undefined) {
-      cached = Math.sin(value);
-      sinCache.set(value, cached);
+  centersX.length = blobCount;
+  centersY.length = blobCount;
+  cos.length = blobCount;
+  sin.length = blobCount;
+  invRadiusX.length = blobCount;
+  invRadiusY.length = blobCount;
+  intensity.length = blobCount;
+
+  for (let b = 0; b < blobCount; b += 1) {
+    const blob = blobs[b];
+    const cosVal = Math.cos(blob.rotation);
+    const sinVal = Math.sin(blob.rotation);
+    const pulse =
+      1 + Math.sin(now * blob.wobbleSpeed + blob.wobblePhase) * blob.wobbleAmplitude;
+    const radiusX = Math.max(blob.baseRadiusX * pulse, 12);
+    const radiusY = Math.max(blob.baseRadiusY * pulse, 12);
+    const lifeProgress = 1 - blob.life / blob.maxLife;
+    const fadeIn = clamp(lifeProgress / 0.18, 0, 1);
+    const fadeOut = clamp(blob.life / (blob.maxLife * 0.25), 0, 1);
+    const envelope = fadeIn * fadeOut;
+
+    centersX[b] = blob.cx;
+    centersY[b] = blob.cy;
+    cos[b] = cosVal;
+    sin[b] = sinVal;
+    invRadiusX[b] = 1 / radiusX;
+    invRadiusY[b] = 1 / radiusY;
+    intensity[b] = blob.intensity * envelope;
+  }
+
+  for (let idx = 0; idx < cellCount; idx += 1) {
+    const revealDelay = revealDelays[idx];
+    const revealProgressRaw = (revealElapsed - revealDelay) / REVEAL_FADE;
+    const revealProgress = clamp(revealProgressRaw, 0, 1);
+    if (revealProgress <= 0) {
+      continue;
     }
-    return cached;
-  };
 
-  const resolveCos = (value: number) => {
-    let cached = cosCache.get(value);
-    if (cached === undefined) {
-      cached = Math.cos(value);
-      cosCache.set(value, cached);
-    }
-    return cached;
-  };
+    const easedReveal = revealProgress * revealProgress * (3 - 2 * revealProgress);
+    let brightness = baseBrightness[idx];
 
-  for (let row = 0; row < state.rows; row += 1) {
-    const verticalGradient = 0.14 + (1 - row / state.rows) * 0.06;
-    for (let col = 0; col < state.columns; col += 1) {
-      const cellNoise = state.noise[row][col];
-      const revealDelay = state.revealDelays[row][col];
-      const revealProgressRaw = (revealElapsed - revealDelay) / REVEAL_FADE;
-      const revealProgress = clamp(revealProgressRaw, 0, 1);
-      if (revealProgress <= 0) {
+    const col = cellColumns[idx];
+    const row = cellRows[idx];
+
+    for (let b = 0; b < blobCount; b += 1) {
+      const blobIntensity = intensity[b];
+      if (blobIntensity <= 0) {
         continue;
       }
-      const easedReveal = revealProgress * revealProgress * (3 - 2 * revealProgress);
-      let brightness = verticalGradient + cellNoise.jitter * 0.12;
 
-      state.blobs.forEach((blob) => {
-        const cos = resolveCos(blob.rotation);
-        const sin = resolveSin(blob.rotation);
-        const dx = col - blob.cx;
-        const dy = row - blob.cy;
-        const pulse =
-          1 + Math.sin(now * blob.wobbleSpeed + blob.wobblePhase) * blob.wobbleAmplitude;
-        const radiusX = Math.max(blob.baseRadiusX * pulse, 12);
-        const radiusY = Math.max(blob.baseRadiusY * pulse, 12);
+      const dx = col - centersX[b];
+      const dy = row - centersY[b];
 
-        const localX = (dx * cos - dy * sin) / radiusX;
-        const localY = (dx * sin + dy * cos) / radiusY;
-        const distanceSq = localX * localX + localY * localY;
+      const localX = (dx * cos[b] - dy * sin[b]) * invRadiusX[b];
+      const localY = (dx * sin[b] + dy * cos[b]) * invRadiusY[b];
+      const distanceSq = localX * localX + localY * localY;
+      const influence = gaussianFalloff(distanceSq);
 
-        const lifeProgress = 1 - blob.life / blob.maxLife;
-        const fadeIn = clamp(lifeProgress / 0.18, 0, 1);
-        const fadeOut = clamp(blob.life / (blob.maxLife * 0.25), 0, 1);
-        const envelope = fadeIn * fadeOut;
+      if (influence <= 0) {
+        continue;
+      }
 
-        const influence = Math.exp(-distanceSq * 1.05) * blob.intensity * envelope;
-        brightness += influence;
-      });
-
-      brightness = clamp(brightness * easedReveal, 0, 1);
-
-      const char = pickShadeCharacter(brightness, cellNoise, characterLUT);
-      const alpha = (0.1 + brightness * 0.56) * easedReveal;
-
-      ctx.fillStyle = `rgba(186, 194, 209, ${alpha})`;
-      const x = state.gridOffsetX + col * CELL_SIZE + CELL_SIZE / 2;
-      const y = state.gridOffsetY + row * CELL_SIZE + CELL_SIZE / 2;
-      ctx.fillText(char, x, y);
+      brightness += influence * blobIntensity;
     }
+
+    brightness = clamp(brightness * easedReveal, 0, 1);
+
+    const shadeIndex = pickShadeIndex(
+      brightness,
+      noiseJitter[idx],
+      noisePaletteBias[idx],
+      characterLUT.length,
+    );
+
+    if (shadeIndex === 0) {
+      continue;
+    }
+
+    const alpha = (0.1 + brightness * 0.56) * easedReveal;
+
+    if (alpha <= ALPHA_EPSILON) {
+      continue;
+    }
+
+    ctx.globalAlpha = alpha;
+    ctx.fillText(characterLUT[shadeIndex], cellCentersX[idx], cellCentersY[idx]);
   }
+
+  ctx.globalAlpha = 1;
 };
 
 const AsciiScreensaver = () => {
@@ -303,18 +333,53 @@ const AsciiScreensaver = () => {
       baseCanvas.width = Math.floor(width * scale);
       baseCanvas.height = Math.floor(height * scale);
       baseCtx.setTransform(scale, 0, 0, scale, 0, 0);
+      baseCtx.font = CANVAS_FONT;
 
       overlayCanvas.style.width = `${width}px`;
       overlayCanvas.style.height = `${height}px`;
       overlayCanvas.width = Math.floor(width * scale);
       overlayCanvas.height = Math.floor(height * scale);
       overlayCtx.setTransform(scale, 0, 0, scale, 0, 0);
+      overlayCtx.font = CANVAS_FONT;
+      overlayCtx.textAlign = "center";
+      overlayCtx.textBaseline = "middle";
 
-      const baseGrid = createBaseGrid(columns, rows);
-      drawBackdrop(baseCtx, baseGrid, columns, rows, gridOffsetX, gridOffsetY);
+      baseCtx.clearRect(0, 0, width, height);
 
-      const noise = createNoiseField(columns, rows);
-      const revealDelays = createRevealDelays(columns, rows);
+      const cellCount = columns * rows;
+      const cellCentersX = new Float32Array(cellCount);
+      const cellCentersY = new Float32Array(cellCount);
+      const cellColumns = new Float32Array(cellCount);
+      const cellRows = new Float32Array(cellCount);
+      const baseBrightness = new Float32Array(cellCount);
+      const noiseJitter = new Float32Array(cellCount);
+      const noisePaletteBias = new Float32Array(cellCount);
+      const revealDelays = new Float32Array(cellCount);
+
+      let index = 0;
+      for (let row = 0; row < rows; row += 1) {
+        const verticalGradient = 0.14 + (1 - row / rows) * 0.06;
+        const centerY = gridOffsetY + row * CELL_SIZE + CELL_SIZE / 2;
+        for (let col = 0; col < columns; col += 1) {
+          const jitter = randomBetween(-0.05, 0.05);
+          const bias = Math.random() - 0.5;
+          const centerX = gridOffsetX + col * CELL_SIZE + CELL_SIZE / 2;
+
+          cellCentersX[index] = centerX;
+          cellCentersY[index] = centerY;
+          cellColumns[index] = col;
+          cellRows[index] = row;
+          baseBrightness[index] = verticalGradient + jitter * 0.12;
+          noiseJitter[index] = jitter;
+          noisePaletteBias[index] = bias;
+          index += 1;
+        }
+      }
+
+      for (let idx = 0; idx < cellCount; idx += 1) {
+        revealDelays[idx] = Math.max(0, randomBetween(-REVEAL_FADE * 0.65, REVEAL_DURATION));
+      }
+
       const blobCount = width < 640 ? 2 : width < 1024 ? 3 : width < 1600 ? 4 : 5;
       const blobs = Array.from({ length: blobCount }, (_, index) =>
         index === 0
@@ -325,12 +390,18 @@ const AsciiScreensaver = () => {
       stateRef.current = {
         columns,
         rows,
+        cellCount,
         gridOffsetX,
         gridOffsetY,
-        baseGrid,
-        noise,
-        blobs,
+        cellCentersX,
+        cellCentersY,
+        cellColumns,
+        cellRows,
+        baseBrightness,
+        noiseJitter,
+        noisePaletteBias,
         revealDelays,
+        blobs,
       };
 
       revealStartRef.current = performance.now();
@@ -365,12 +436,15 @@ const AsciiScreensaver = () => {
       const movementFactor = clamp(revealElapsed / REVEAL_DURATION, 0, 1);
       const effectiveDelta = delta * movementFactor;
 
-      state.blobs = state.blobs.map((blob) => {
-        const aliveBlob =
-          blob.life <= 0 ? createBlob(state.columns, state.rows) : blob;
-        const updated = updateBlob(aliveBlob, effectiveDelta, state.columns, state.rows, now);
-        return updated.life <= 0 ? resetBlob(state.columns, state.rows) : updated;
-      });
+      const { blobs, columns, rows } = state;
+      for (let index = 0; index < blobs.length; index += 1) {
+        let blob = blobs[index];
+        if (blob.life <= 0) {
+          blob = createBlob(columns, rows);
+        }
+        const updated = updateBlob(blob, effectiveDelta, columns, rows, now);
+        blobs[index] = updated.life <= 0 ? resetBlob(columns, rows) : updated;
+      }
 
       if (now - lastDrawRef.current >= FRAME_INTERVAL) {
         drawFrame(overlayCtx, state, now, characterLUT, revealElapsed);
