@@ -41,6 +41,10 @@ const WRAP_MARGIN = 8;
 const REVEAL_DURATION = 100;
 const REVEAL_FADE = 520;
 
+const SPAWN_MARGIN = 18;
+const INTERIOR_MIN = 0.18;
+const INTERIOR_MAX = 0.82;
+
 const ASCII_PALETTE = [" ", "`", ".", ":", ";", "~", "+", "=", "*", "#", "%", "@"] as const;
 const CANVAS_FONT = `${CELL_SIZE * 0.86}px "JetBrains Mono", "Fira Code", "Menlo", monospace`;
 const OVERLAY_RGB = "rgb(186, 194, 209)";
@@ -104,20 +108,66 @@ const pickShadeIndex = (
   return index;
 };
 
-const createBlob = (columns: number, rows: number, bias?: { x: number; y: number }): CloudBlob => {
+type SpawnPoint = {
+  cx: number;
+  cy: number;
+  baseDirection: number;
+};
+
+const pickSpawnPoint = (columns: number, rows: number): SpawnPoint => {
+  const targetX = randomBetween(columns * INTERIOR_MIN, columns * INTERIOR_MAX);
+  const targetY = randomBetween(rows * INTERIOR_MIN, rows * INTERIOR_MAX);
+
+  const edge = Math.floor(Math.random() * 4);
+  let cx = 0;
+  let cy = 0;
+
+  switch (edge) {
+    case 0: {
+      // left
+      cx = -SPAWN_MARGIN;
+      cy = randomBetween(-SPAWN_MARGIN, rows + SPAWN_MARGIN);
+      break;
+    }
+    case 1: {
+      // right
+      cx = columns + SPAWN_MARGIN;
+      cy = randomBetween(-SPAWN_MARGIN, rows + SPAWN_MARGIN);
+      break;
+    }
+    case 2: {
+      // top
+      cx = randomBetween(-SPAWN_MARGIN, columns + SPAWN_MARGIN);
+      cy = -SPAWN_MARGIN;
+      break;
+    }
+    default: {
+      // bottom
+      cx = randomBetween(-SPAWN_MARGIN, columns + SPAWN_MARGIN);
+      cy = rows + SPAWN_MARGIN;
+      break;
+    }
+  }
+
+  const baseDirection = Math.atan2(targetY - cy, targetX - cx);
+  return { cx, cy, baseDirection };
+};
+
+const createBlob = (columns: number, rows: number, warmStart = false): CloudBlob => {
+  const spawn = pickSpawnPoint(columns, rows);
   const radius = randomBetween(30, 56);
   const aspect = randomBetween(0.75, 1.35);
   const radiusX = radius;
   const radiusY = radius * aspect;
-  const speed = randomBetween(0.0018, 0.0032);
-  const direction = randomBetween(0, Math.PI * 2);
+  const speed = randomBetween(0.0018, 0.0031);
+  const direction = spawn.baseDirection + randomBetween(-0.35, 0.35);
 
-  const lifeSpan = randomBetween(105000, 165000);
-  const life = lifeSpan - randomBetween(0, lifeSpan * 0.4);
+  const lifeSpan = randomBetween(65000, 110000);
+  const life = warmStart ? lifeSpan - randomBetween(0, lifeSpan * 0.5) : lifeSpan;
 
   return {
-    cx: bias ? clamp(bias.x + randomBetween(-4, 4), -WRAP_MARGIN, columns + WRAP_MARGIN) : randomBetween(-WRAP_MARGIN, columns + WRAP_MARGIN),
-    cy: bias ? clamp(bias.y + randomBetween(-4, 4), -WRAP_MARGIN, rows + WRAP_MARGIN) : randomBetween(-WRAP_MARGIN, rows + WRAP_MARGIN),
+    cx: spawn.cx,
+    cy: spawn.cy,
     baseRadiusX: radiusX,
     baseRadiusY: radiusY,
     rotation: randomBetween(0, Math.PI * 2),
@@ -147,25 +197,29 @@ const updateBlob = (
   const cx = blob.cx + blob.velocityX * delta * driftMod;
   const cy = blob.cy + blob.velocityY * delta * driftMod;
 
-  let wrappedX = cx;
-  let wrappedY = cy;
-
-  if (wrappedX > columns + WRAP_MARGIN) {
-    wrappedX = -WRAP_MARGIN;
-  } else if (wrappedX < -WRAP_MARGIN) {
-    wrappedX = columns + WRAP_MARGIN;
-  }
-
-  if (wrappedY > rows + WRAP_MARGIN) {
-    wrappedY = -WRAP_MARGIN;
-  } else if (wrappedY < -WRAP_MARGIN) {
-    wrappedY = rows + WRAP_MARGIN;
-  }
-
-  blob.cx = wrappedX;
-  blob.cy = wrappedY;
+  blob.cx = cx;
+  blob.cy = cy;
   blob.rotation += blob.rotationSpeed * delta;
   blob.life -= delta;
+
+  const outsideSoft =
+    cx < -WRAP_MARGIN ||
+    cx > columns + WRAP_MARGIN ||
+    cy < -WRAP_MARGIN ||
+    cy > rows + WRAP_MARGIN;
+  if (outsideSoft) {
+    blob.life -= delta * 1.45;
+  }
+
+  const outsideHard =
+    cx < -SPAWN_MARGIN ||
+    cx > columns + SPAWN_MARGIN ||
+    cy < -SPAWN_MARGIN ||
+    cy > rows + SPAWN_MARGIN;
+  if (outsideHard) {
+    blob.life -= delta * 3.5;
+  }
+
   return blob;
 };
 
@@ -381,11 +435,7 @@ const AsciiScreensaver = () => {
       }
 
       const blobCount = width < 640 ? 2 : width < 1024 ? 3 : width < 1600 ? 4 : 5;
-      const blobs = Array.from({ length: blobCount }, (_, index) =>
-        index === 0
-          ? createBlob(columns, rows, { x: columns / 2, y: rows / 2 })
-          : createBlob(columns, rows),
-      );
+      const blobs = Array.from({ length: blobCount }, () => createBlob(columns, rows, true));
 
       stateRef.current = {
         columns,
