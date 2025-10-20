@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useRef } from "react";
 import "./SocialMedia.css";
 
 const SocialMedia: React.FC = () => {
+  const tooltipRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const showTooltip = (index: number) => {
+    const tooltip = tooltipRefs.current[index];
+    tooltip?.classList.add("active");
+  };
+
+  const hideTooltip = (index: number) => {
+    const tooltip = tooltipRefs.current[index];
+    tooltip?.classList.remove("active");
+  };
+
   const socialLinks = [
     {
       name: "LinkedIn",
@@ -44,6 +56,16 @@ const SocialMedia: React.FC = () => {
       ),
     },
     {
+      name: "Resumé",
+      url: "/resume.html",
+      className: "resume",
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+        </svg>
+      ),
+    },
+    {
       name: "Buy Me A Coffee (yeah I know)",
       url: "https://buymeacoffee.com/daanhessen",
       className: "coffee",
@@ -64,7 +86,10 @@ const SocialMedia: React.FC = () => {
               key={link.name} 
               className="tooltip-item" 
               data-tooltip={link.name}
-              style={{ left: `calc((100% / 5) * ${index} + (100% / 5 / 2))` }}
+              ref={(element) => {
+                tooltipRefs.current[index] = element;
+              }}
+              style={{ left: `calc((100% / 6) * ${index} + (100% / 6 / 2))` }}
             />
           ))}
         </div>
@@ -77,14 +102,8 @@ const SocialMedia: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`social-link ${link.className}`}
-                onMouseEnter={() => {
-                  const tooltip = document.querySelectorAll('.tooltip-item')[index];
-                  tooltip?.classList.add('active');
-                }}
-                onMouseLeave={() => {
-                  const tooltip = document.querySelectorAll('.tooltip-item')[index];
-                  tooltip?.classList.remove('active');
-                }}
+                onMouseEnter={() => showTooltip(index)}
+                onMouseLeave={() => hideTooltip(index)}
               >
                 <div className="hover-bg"></div>
                 {link.icon}
