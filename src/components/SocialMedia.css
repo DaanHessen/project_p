@@ -84,7 +84,7 @@
 
 .social-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   gap: 0;
   padding: 0;
   background: var(--bg-primary);
@@ -164,6 +164,20 @@
 .social-link:hover svg {
   color: var(--text-primary);
   transform: scale(1.1);
+}
+
+.social-link.disabled {
+  /* cursor: not-allowed; */
+  opacity: 0.4;
+  /* pointer-events: none; */
+}
+
+.social-link.disabled:hover .hover-bg {
+  transform: translate3d(-100%, 0, 0);
+}
+
+.social-link.disabled svg {
+  opacity: 0.5;
 }
 
 /* .social-link:hover {
