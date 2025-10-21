@@ -46,13 +46,10 @@ export default defineConfig({
               }
             }
           },
-          {
-            urlPattern: ({ url, sameOrigin }) =>
-              sameOrigin &&
-              (/\/resume(?:\.html)?$/.test(url.pathname) ||
-                /\/resume(?:\.html)?$/.test(url.pathname.replace(/\/$/,""))),
-            handler: 'NetworkOnly',
-          },
+        ],
+        navigateFallbackDenylist: [
+          /^\/resume(?:\/)?$/,
+          /^\/resume\.html$/,
         ],
         manifestTransforms: [
           async (entries) => ({
