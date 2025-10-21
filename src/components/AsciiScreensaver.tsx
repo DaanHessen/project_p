@@ -134,7 +134,6 @@ const createGlyphAtlas = (
       }
       ctx.setTransform(scale, 0, 0, scale, 0, 0);
       ctx.clearRect(0, 0, CELL_SIZE, CELL_SIZE);
-      // Add strong glow effect for better readability
       ctx.fillStyle = "rgba(96, 165, 250, 0.35)";
       ctx.shadowColor = "rgba(59, 130, 246, 0.6)";
       ctx.shadowBlur = 6;
@@ -144,7 +143,6 @@ const createGlyphAtlas = (
       ctx.textBaseline = "middle";
       ctx.font = CANVAS_FONT;
       ctx.fillText(character, HALF_CELL, HALF_CELL);
-      // Draw main text on top with glow
       ctx.shadowColor = "rgba(59, 130, 246, 0.3)";
       ctx.shadowBlur = 2;
       ctx.fillStyle = OVERLAY_RGB;
@@ -161,7 +159,6 @@ const createGlyphAtlas = (
       }
       ctx.setTransform(scale, 0, 0, scale, 0, 0);
       ctx.clearRect(0, 0, CELL_SIZE, CELL_SIZE);
-      // Add strong glow effect for better readability
       ctx.fillStyle = "rgba(96, 165, 250, 0.35)";
       ctx.shadowColor = "rgba(59, 130, 246, 0.6)";
       ctx.shadowBlur = 6;
@@ -171,7 +168,6 @@ const createGlyphAtlas = (
       ctx.textBaseline = "middle";
       ctx.font = CANVAS_FONT;
       ctx.fillText(character, HALF_CELL, HALF_CELL);
-      // Draw main text on top with glow
       ctx.shadowColor = "rgba(59, 130, 246, 0.3)";
       ctx.shadowBlur = 2;
       ctx.fillStyle = OVERLAY_RGB;

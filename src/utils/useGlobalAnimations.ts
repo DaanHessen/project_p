@@ -22,30 +22,26 @@ const useGlobalAnimations = () => {
         isTransitioning: true,
       });
 
-      // Reset transitioning state after animation completes
       setTimeout(() => {
         setPageState((prev) => ({
           ...prev,
           isTransitioning: false,
         }));
-      }, 300); // Reduced from 500ms to 300ms
+      }, 300);
     },
     [pageState.currentPage, pageState.isTransitioning],
   );
 
-  // Simple content fade variants for page content
-  // Using hardware-accelerated properties only (opacity and transform)
   const contentFadeVariants = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
     exit: { opacity: 0 },
   };
 
-  // Optimized transition settings for smooth animations
   const transitionSettings = {
     content: {
       duration: 0.4,
-      ease: [0.25, 0.1, 0.25, 1], // Custom cubic bezier for smoother animation
+      ease: [0.25, 0.1, 0.25, 1],
     },
     fast: {
       duration: 0.2,

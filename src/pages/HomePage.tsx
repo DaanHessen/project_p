@@ -23,12 +23,10 @@ const HomePage = () => {
 
   const asciiContainerRef = useRef<HTMLDivElement | null>(null);
   
-  // Calculate initial font size based on window width
   const getInitialFontSize = () => {
     if (typeof window === 'undefined') return 'clamp(0.4rem, 1.1vw, 0.8rem)';
     
     if (window.innerWidth <= 768) {
-      // Pre-calculate for mobile to avoid flash
       const approximateWidth = window.innerWidth * 0.92;
       const minFont = 5;
       const sizeByWidth = approximateWidth / maxLineLength;
@@ -52,19 +50,16 @@ const HomePage = () => {
         return;
       }
 
-      // Only apply dynamic sizing on mobile/small screens
       if (window.innerWidth <= 768) {
-        const minFont = 5; // px — ensures readability on very small screens (down to 320px)
+        const minFont = 5;
         const sizeByWidth = (availableWidth * 0.92) / maxLineLength;
         const clampedSize = Math.max(minFont, sizeByWidth);
         setAsciiFontSize(`${clampedSize}px`);
       } else {
-        // On desktop, use the CSS clamp for natural sizing
         setAsciiFontSize('clamp(0.4rem, 1.1vw, 0.8rem)');
       }
     };
 
-    // Only update on actual window resize, not container resize
     window.addEventListener("resize", updateFontSize);
     window.addEventListener("orientationchange", updateFontSize);
 
