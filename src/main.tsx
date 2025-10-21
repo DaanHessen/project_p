@@ -7,16 +7,21 @@ import "./animations.css";
 import "./globals.css";
 
 import App from "./App.tsx";
-import { registerSW } from 'virtual:pwa-register';
 
-const updateSW = registerSW({
-  onNeedRefresh() {
-    updateSW(true);
-  },
-  onOfflineReady() {
-    console.log('App ready to work offline');
-  },
-});
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .getRegistrations()
+    .then((registrations) => {
+      registrations.forEach((registration) => {
+        registration.unregister().catch(() => {
+          /* ignore */
+        });
+      });
+    })
+    .catch(() => {
+      /* ignore */
+    });
+}
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

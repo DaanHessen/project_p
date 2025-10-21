@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import "./SocialMedia.css";
 
-const resumeUrl = `/resume?v=${__RESUME_VERSION__}`;
+const resumeUrl = `/resume.html?v=${__RESUME_VERSION__}`;
 
 const SocialMedia: React.FC = () => {
   const tooltipRefs = useRef<(HTMLDivElement | null)[]>([]);
