@@ -1,7 +1,7 @@
 import "./globals.css";
 import HomePage from "./pages/HomePage";
 import SocialMedia from "./components/SocialMedia";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   return (
