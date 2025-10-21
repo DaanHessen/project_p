@@ -1,6 +1,8 @@
 import React, { useRef } from "react";
 import "./SocialMedia.css";
 
+const resumeUrl = `/resume.html?v=${__RESUME_VERSION__}`;
+
 const SocialMedia: React.FC = () => {
   const tooltipRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -57,7 +59,7 @@ const SocialMedia: React.FC = () => {
     },
     {
       name: "Resumé",
-      url: "/resume.html",
+      url: resumeUrl,
       className: "resume",
       icon: (
         <svg viewBox="0 0 24 24" fill="currentColor">

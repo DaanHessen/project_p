@@ -2,6 +2,11 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
+const resumeVersion =
+  process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 8) ??
+  process.env.npm_package_version ??
+  Date.now().toString();
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -20,7 +25,7 @@ export default defineConfig({
               cacheName: 'google-fonts-cache',
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                maxAgeSeconds: 60 * 60 * 24 * 365
               },
               cacheableResponse: {
                 statuses: [0, 200]
@@ -34,7 +39,7 @@ export default defineConfig({
               cacheName: 'gstatic-fonts-cache',
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                maxAgeSeconds: 60 * 60 * 24 * 365
               },
               cacheableResponse: {
                 statuses: [0, 200]
@@ -53,7 +58,7 @@ export default defineConfig({
         name: "Daan Hessen - Full Stack Developer Portfolio",
         short_name: "Daan Hessen",
         description:
-          "Portfolio website of Daan Hessen, Full Stack Developer and HBO-ICT student",
+          "Portfolio website of Daan Hessen, Software Developer and HBO-ICT student",
         theme_color: "#000000",
         background_color: "#000000",
         display: "standalone",
@@ -75,8 +80,11 @@ export default defineConfig({
     }),
   ],
 
+  define: {
+    __RESUME_VERSION__: JSON.stringify(resumeVersion),
+  },
+
   build: {
-    // Optimize for SEO and performance
     minify: "terser",
     rollupOptions: {
       output: {
@@ -86,16 +94,12 @@ export default defineConfig({
         },
       },
     },
-    // Generate source maps for better debugging
     sourcemap: false,
-    // Optimize chunk size
     chunkSizeWarningLimit: 600,
-    // Ensure CSS consistency across environments
     cssCodeSplit: true,
     cssMinify: true,
   },
   
-  // CSS processing configuration
   css: {
     devSourcemap: true,
     preprocessorOptions: {
@@ -104,11 +108,9 @@ export default defineConfig({
       },
     },
   },
-  // Optimize dependencies
   optimizeDeps: {
     include: ["react", "react-dom", "framer-motion"],
   },
-  // Performance optimizations
   server: {
     fs: {
       strict: true,
