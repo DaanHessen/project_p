@@ -45,8 +45,21 @@ export default defineConfig({
                 statuses: [0, 200]
               }
             }
-          }
-        ]
+          },
+          {
+            urlPattern: ({ url, sameOrigin }) =>
+              sameOrigin &&
+              (/\/resume(?:\.html)?$/.test(url.pathname) ||
+                /\/resume(?:\.html)?$/.test(url.pathname.replace(/\/$/,""))),
+            handler: 'NetworkOnly',
+          },
+        ],
+        manifestTransforms: [
+          async (entries) => ({
+            manifest: entries.filter((entry) => entry.url !== "resume.html"),
+            warnings: [],
+          }),
+        ],
       },
       includeAssets: [
         "favicon.ico",
