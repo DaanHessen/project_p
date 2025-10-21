@@ -6,7 +6,15 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/((?!api|_next|favicon.ico|robots.txt|sitemap.xml|site.webmanifest).*)",
+      "source": "/resume",
+      "destination": "/resume.html"
+    },
+    {
+      "source": "/resume/",
+      "destination": "/resume.html"
+    },
+    {
+      "source": "/((?!api|_next|favicon.ico|robots.txt|sitemap.xml|site.webmanifest|resume(?:\\.html)?).*)",
       "destination": "/index.html"
     }
   ],
@@ -33,6 +41,18 @@
         {
           "key": "Permissions-Policy",
           "value": "camera=(), microphone=(), geolocation=(), payment=()"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "Pragma",
+          "value": "no-cache"
+        },
+        {
+          "key": "Expires",
+          "value": "0"
         }
       ]
     },
@@ -130,7 +150,7 @@
         },
         {
           "key": "Cache-Control",
-          "value": "public, max-age=86400"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -143,7 +163,7 @@
         },
         {
           "key": "Cache-Control",
-          "value": "public, max-age=86400"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -152,7 +172,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -161,7 +181,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -170,7 +190,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -179,7 +199,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -188,7 +208,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -197,7 +217,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -206,7 +226,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -215,7 +235,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -224,7 +244,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -233,7 +253,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -242,7 +262,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -251,7 +271,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -260,7 +280,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -269,7 +289,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -282,7 +302,7 @@
         },
         {
           "key": "Cache-Control",
-          "value": "public, max-age=86400"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     }
