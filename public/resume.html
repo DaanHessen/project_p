@@ -226,6 +226,18 @@
       color: #60a5fa;
     }
 
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: #101421;
+      color: #8ab4ff;
+      border: 1px solid #263048;
+      border-radius: 4px;
+      padding: 0 6px;
+      font-size: 0.92em;
+      display: inline-block;
+      line-height: 1.5;
+    }
+
     .about .desc,
     .details .section__list .desc,
     .details .section__list .text,
@@ -633,7 +645,7 @@
             <div class="text">
               As part of a big group project for my studies, we were tasked by an actual client
               to create software that could simulate the flow of water through hydraulic pipes,
-              including heating or cooling of said water. The end result was a program that 
+              including heating or cooling of said water. The end result was a proof of concept that 
               could help design complex hydraulic systems, ranging from household plumbing to 
               large-scale industrial networks. It simulated fluid flow, heat transfer, and provided
               visualizations of flow and temperature over time. Although the project is no longer available online,
@@ -655,6 +667,14 @@
         var value = Math.min(100, Math.max(0, parseFloat(match[1])));
         meter.style.width = value + '%';
         valueSpan.textContent = value + '%';
+      });
+
+      var mdTargets = document.querySelectorAll('.desc, .text, .details .section__list-item .name, .details .section__list-item .addr, .details .section__list-item .duration');
+      mdTargets.forEach(function (node) {
+        if (node.innerHTML.indexOf('`') === -1) return;
+        node.innerHTML = node.innerHTML.replace(/`([^`]+)`/g, function (_, content) {
+          return '<code>' + content.trim() + '</code>';
+        });
       });
     })();
   </script>
