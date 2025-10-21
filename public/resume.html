@@ -5,8 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daan Hessen - Resume</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-  <link href="https://fonts.googleapis.com/css?family=Lato:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
+    @font-face {
+      font-family: 'SF Pixelate';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: local('SF Pixelate'), url('https://fonts.cdnfonts.com/s/7402/SF Pixelate.woff') format('woff');
+    }
+
+    @font-face {
+      font-family: 'SF Pixelate';
+      font-style: italic;
+      font-weight: 400;
+      font-display: swap;
+      src: local('SF Pixelate Oblique'), url('https://fonts.cdnfonts.com/s/7402/SF Pixelate Oblique.woff') format('woff');
+    }
+
+    @font-face {
+      font-family: 'SF Pixelate';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: local('SF Pixelate Bold'), url('https://fonts.cdnfonts.com/s/7402/SF Pixelate Bold.woff') format('woff');
+    }
+
+    @font-face {
+      font-family: 'SF Pixelate';
+      font-style: italic;
+      font-weight: 700;
+      font-display: swap;
+      src: local('SF Pixelate Bold Oblique'), url('https://fonts.cdnfonts.com/s/7402/SF Pixelate Bold Oblique.woff') format('woff');
+    }
+
+    @font-face {
+      font-family: 'SF Pixelate Shaded';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: local('SF Pixelate Shaded'), url('https://fonts.cdnfonts.com/s/7402/SF Pixelate Shaded.woff') format('woff');
+    }
+
+    @font-face {
+      font-family: 'SF Pixelate Shaded';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: local('SF Pixelate Shaded Bold'), url('https://fonts.cdnfonts.com/s/7402/SF Pixelate Shaded Bold.woff') format('woff');
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -21,7 +69,7 @@
       height: 100vh;
       margin: 0;
       background: #0a0c14;
-      font-family: 'Lato', sans-serif;
+      font-family: 'JetBrains Mono', monospace;
       font-weight: 400;
       color: #d0d6e1;
       font-size: 14px;
@@ -51,6 +99,13 @@
       display: flex;
       align-items: baseline;
       gap: 8px;
+      font-family: 'SF Pixelate', 'SF Pixelate Shaded', monospace;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .header .full-name:hover .last-name {
+      color: #8ab4ff;
     }
     
     .header .first-name {
@@ -117,6 +172,7 @@
       font-weight: bold;
       margin-bottom: 10px;
       text-transform: uppercase;
+      font-family: 'SF Pixelate', 'SF Pixelate Shaded', monospace;
     }
     
     .details .section__list-item {
@@ -157,27 +213,69 @@
       text-decoration: underline;
       color: #60a5fa;
     }
-    
-    .details .skills__item {
-      margin-bottom: 10px;  
+
+    .about .desc,
+    .details .section__list .desc,
+    .details .section__list .text,
+    .email-val,
+    .phone-val,
+    .details .addr,
+    .details .duration,
+    .header .contact-info,
+    .header .email,
+    .header .phone {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 300;
+      letter-spacing: 0.25px;
+      line-height: 1.6;
     }
     
-    .details .skills__item .right input {
-      display: none;
+    .skills {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
-    
-    .details .skills__item .right label {
-      display: inline-block;  
-      width: 20px;
-      height: 20px;
-      background: #242938;
-      border-radius: 20px;
-      margin-right: 3px;
-      border: 1px solid #3b82f6;
+
+    .skillbox {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      justify-content: space-between;
     }
-    
-    .details .skills__item .right input:checked + label {
-      background: #3b82f6;
+
+    .skill-meta {
+      min-width: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.35px;
+      text-transform: uppercase;
+      color: #d0d6e1;
+    }
+
+    .skill-meta span:last-child {
+      display: inline-block;
+      min-width: 36px;
+      text-align: right;
+      color: #8ab4ff;
+    }
+
+    .skill {
+      flex: 1;
+      background-color: #101527;
+      padding: 2px;
+      border: 1px solid #60a5fa;
+      border-radius: 2px;
+    }
+
+    .skill_level {
+      background-color: #60a5fa;
+      width: 100%;
+      height: 6px;
+      border-radius: 1px;
     }
 
     @media (max-width: 1024px) {
@@ -194,10 +292,10 @@
 <body>
   <div class="container">
     <div class="header">
-      <div class="full-name">
+      <a class="full-name" href="https://daanhessen.nl">
         <span class="first-name">Daan</span>
         <span class="last-name">Hessen</span>
-      </div>
+      </a>
 
       <div class="contact-info">
         <span class="email">Email: </span>
@@ -329,135 +427,53 @@
         <div class="section__title">Skills</div>
 
         <div class="skills">
-          <div class="skills__item">
-            <div class="left">
-              <div class="name">Java</div>
+          <div class="skillbox">
+            <div class="skill-meta">
+              <span>Java</span>
+              <span>60%</span>
             </div>
-            <div class="right">
-              <input id="java-ck1" type="checkbox" checked />
-              <label for="java-ck1"></label>
-
-              <input id="java-ck2" type="checkbox" checked />
-              <label for="java-ck2"></label>
-
-              <input id="java-ck3" type="checkbox" checked />
-              <label for="java-ck3"></label>
-
-              <input id="java-ck4" type="checkbox" />
-              <label for="java-ck4"></label>
-
-              <input id="java-ck5" type="checkbox" />
-              <label for="java-ck5"></label>
+            <div class="skill">
+              <div class="skill_level" style="width:60%"></div>
             </div>
           </div>
 
-          <div class="skills__item">
-            <div class="left">
-              <div class="name">JavaScript</div>
+          <div class="skillbox">
+            <div class="skill-meta">
+              <span>JavaScript</span>
+              <span>40%</span>
             </div>
-            <div class="right">
-              <input id="js-ck1" type="checkbox" checked />
-              <label for="js-ck1"></label>
-
-              <input id="js-ck2" type="checkbox" checked />
-              <label for="js-ck2"></label>
-
-              <input id="js-ck3" type="checkbox" />
-              <label for="js-ck3"></label>
-
-              <input id="js-ck4" type="checkbox" />
-              <label for="js-ck4"></label>
-
-              <input id="js-ck5" type="checkbox" />
-              <label for="js-ck5"></label>
+            <div class="skill">
+              <div class="skill_level" style="width:40%"></div>
             </div>
           </div>
 
-          <div class="skills__item">
-            <div class="left">
-              <div class="name">CSS</div>
+          <div class="skillbox">
+            <div class="skill-meta">
+              <span>CSS</span>
+              <span>40%</span>
             </div>
-            <div class="right">
-              <input id="css-ck1" type="checkbox" checked />
-              <label for="css-ck1"></label>
-
-              <input id="css-ck2" type="checkbox" checked />
-              <label for="css-ck2"></label>
-
-              <input id="css-ck3" type="checkbox" />
-              <label for="css-ck3"></label>
-
-              <input id="css-ck4" type="checkbox" />
-              <label for="css-ck4"></label>
-
-              <input id="css-ck5" type="checkbox" />
-              <label for="css-ck5"></label>
+            <div class="skill">
+              <div class="skill_level" style="width:40%"></div>
             </div>
           </div>
 
-          <div class="skills__item">
-            <div class="left">
-              <div class="name">HTML</div>
+          <div class="skillbox">
+            <div class="skill-meta">
+              <span>HTML</span>
+              <span>90%</span>
             </div>
-            <div class="right">
-              <input id="html-ck1" type="checkbox" checked />
-              <label for="html-ck1"></label>
-
-              <input id="html-ck2" type="checkbox" checked />
-              <label for="html-ck2"></label>
-
-              <input id="html-ck3" type="checkbox" checked />
-              <label for="html-ck3"></label>
-
-              <input id="html-ck4" type="checkbox" checked />
-              <label for="html-ck4"></label>
-
-              <input id="html-ck5" type="checkbox" checked />
-              <label for="html-ck5"></label>
+            <div class="skill">
+              <div class="skill_level" style="width:90%"></div>
             </div>
           </div>
 
-          <div class="skills__item">
-            <div class="left">
-              <div class="name">Go</div>
+          <div class="skillbox">
+            <div class="skill-meta">
+              <span>Go</span>
+              <span>20%</span>
             </div>
-            <div class="right">
-              <input id="go-ck1" type="checkbox" checked />
-              <label for="go-ck1"></label>
-
-              <input id="go-ck2" type="checkbox" checked />
-              <label for="go-ck2"></label>
-
-              <input id="go-ck3" type="checkbox" />
-              <label for="go-ck3"></label>
-
-              <input id="go-ck4" type="checkbox" />
-              <label for="go-ck4"></label>
-
-              <input id="go-ck5" type="checkbox" />
-              <label for="go-ck5"></label>
-            </div>
-          </div>
-
-          <div class="skills__item">
-            <div class="left">
-              <div class="name">Skiing</div>
-            </div>
-            <div class="right">
-              <input id="ski-ck1" type="checkbox" checked />
-              <label for="ski-ck1"></label>
-
-              <input id="ski-ck2" type="checkbox" />
-              <label for="ski-ck2"></label>
-
-              <input id="ski-ck3" type="checkbox" />
-              <label for="ski-ck3"></label>
-
-              <input id="ski-ck4" type="checkbox" />
-              <label for="ski-ck4"></label>
-
-              <input id="ski-ck5" type="checkbox" />
-              <label for="ski-ck5"></label>
+            <div class="skill">
+              <div class="skill_level" style="width:20%"></div>
             </div>
           </div>
         </div>
@@ -467,69 +483,33 @@
         <div class="section__title">Languages</div>
 
         <div class="skills">
-          <div class="skills__item">
-            <div class="left">
-              <div class="name">Dutch</div>
+          <div class="skillbox">
+            <div class="skill-meta">
+              <span>Dutch</span>
+              <span>100%</span>
             </div>
-            <div class="right">
-              <input id="dutch-ck1" type="checkbox" checked />
-              <label for="dutch-ck1"></label>
-
-              <input id="dutch-ck2" type="checkbox" checked />
-              <label for="dutch-ck2"></label>
-
-              <input id="dutch-ck3" type="checkbox" checked />
-              <label for="dutch-ck3"></label>
-
-              <input id="dutch-ck4" type="checkbox" checked />
-              <label for="dutch-ck4"></label>
-
-              <input id="dutch-ck5" type="checkbox" checked />
-              <label for="dutch-ck5"></label>
+            <div class="skill">
+              <div class="skill_level" style="width:100%"></div>
             </div>
           </div>
 
-          <div class="skills__item">
-            <div class="left">
-              <div class="name">English</div>
+          <div class="skillbox">
+            <div class="skill-meta">
+              <span>English</span>
+              <span>95%</span>
             </div>
-            <div class="right">
-              <input id="english-ck1" type="checkbox" checked />
-              <label for="english-ck1"></label>
-
-              <input id="english-ck2" type="checkbox" checked />
-              <label for="english-ck2"></label>
-
-              <input id="english-ck3" type="checkbox" checked />
-              <label for="english-ck3"></label>
-
-              <input id="english-ck4" type="checkbox" checked />
-              <label for="english-ck4"></label>
-
-              <input id="english-ck5" type="checkbox" checked />
-              <label for="english-ck5"></label>
+            <div class="skill">
+              <div class="skill_level" style="width:95%"></div>
             </div>
           </div>
 
-          <div class="skills__item">
-            <div class="left">
-              <div class="name">German</div>
+          <div class="skillbox">
+            <div class="skill-meta">
+              <span>German</span>
+              <span>55%</span>
             </div>
-            <div class="right">
-              <input id="german-ck1" type="checkbox" checked />
-              <label for="german-ck1"></label>
-
-              <input id="german-ck2" type="checkbox" checked />
-              <label for="german-ck2"></label>
-
-              <input id="german-ck3" type="checkbox" checked />
-              <label for="german-ck3"></label>
-
-              <input id="german-ck4" type="checkbox" />
-              <label for="german-ck4"></label>
-
-              <input id="german-ck5" type="checkbox" />
-              <label for="german-ck5"></label>
+            <div class="skill">
+              <div class="skill_level" style="width:55%"></div>
             </div>
           </div>
         </div>

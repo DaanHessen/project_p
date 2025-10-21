@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'SF Pixelate';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('SF Pixelate'), url('https://fonts.cdnfonts.com/s/7402/SF Pixelate.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'SF Pixelate';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('SF Pixelate Bold'), url('https://fonts.cdnfonts.com/s/7402/SF Pixelate Bold.woff') format('woff');
+}
+
 html {
   overflow: hidden;
   background: #0a0c14;
@@ -318,5 +334,4 @@ body::-webkit-scrollbar {
     opacity: 0.5;
   }
 }
-
 
