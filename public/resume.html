@@ -130,6 +130,18 @@
       color: #9ca3b4;
       font-weight: 300;
     }
+
+    .header .email-val,
+    .header .phone-val {
+      color: #d0d6e1;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .header .email-val:hover,
+    .header .phone-val:hover {
+      color: #60a5fa;
+    }
     
     .header .separator {
       height: 10px;
@@ -273,9 +285,10 @@
 
     .skill_level {
       background-color: #60a5fa;
-      width: 100%;
+      width: 0;
       height: 6px;
       border-radius: 1px;
+      transition: width 0.3s ease;
     }
 
     @media (max-width: 1024px) {
@@ -287,6 +300,73 @@
         padding: 30px 20px;
       }
     }
+
+    @media (max-width: 640px) {
+      .experience-section .section__list,
+      .education-section .section__list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .experience-section .section__list-item,
+      .education-section .section__list-item {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+        background: #101524;
+        border: 1px solid #1f2739;
+        border-radius: 8px;
+      }
+
+      .experience-section .left,
+      .experience-section .right,
+      .education-section .left,
+      .education-section .right {
+        width: 100%;
+        text-align: left;
+      }
+
+      .experience-section .right,
+      .education-section .right {
+        border-top: 1px solid #1f2739;
+        padding-top: 12px;
+        margin-top: 6px;
+      }
+
+      .experience-section .right::before,
+      .education-section .right::before {
+        display: block;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        color: #7c859d;
+        margin-bottom: 6px;
+      }
+
+      .experience-section .right::before {
+        content: 'Role';
+      }
+
+      .education-section .right::before {
+        content: 'Program';
+      }
+
+      .experience-section .left .name,
+      .education-section .left .name {
+        font-size: 15px;
+      }
+
+      .experience-section .right .name,
+      .education-section .right .name {
+        color: #8ab4ff;
+        font-size: 13px;
+        font-weight: 600;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -299,10 +379,10 @@
 
       <div class="contact-info">
         <span class="email">Email: </span>
-        <span class="email-val">daanh2002@gmail.com</span>
+        <a class="email-val" href="mailto:daanh2002@gmail.com">daanh2002@gmail.com</a>
         <span class="separator"></span>
         <span class="phone">Phone: </span>
-        <span class="phone-val">+31 642872646</span>
+        <a class="phone-val" href="tel:+31642872646">+31 642872646</a>
       </div>
 
       <div class="about">
@@ -319,7 +399,7 @@
     </div>
 
     <div class="details">
-      <div class="section">
+      <div class="section experience-section">
         <div class="section__title">Experience</div>
         <div class="section__list">
           <div class="section__list-item">
@@ -386,7 +466,7 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section education-section">
         <div class="section__title">Education</div>
         <div class="section__list">
           <div class="section__list-item">
@@ -433,7 +513,7 @@
               <span>60%</span>
             </div>
             <div class="skill">
-              <div class="skill_level" style="width:60%"></div>
+              <div class="skill_level"></div>
             </div>
           </div>
 
@@ -443,7 +523,7 @@
               <span>40%</span>
             </div>
             <div class="skill">
-              <div class="skill_level" style="width:40%"></div>
+              <div class="skill_level"></div>
             </div>
           </div>
 
@@ -453,19 +533,30 @@
               <span>40%</span>
             </div>
             <div class="skill">
-              <div class="skill_level" style="width:40%"></div>
+              <div class="skill_level"></div>
             </div>
           </div>
 
           <div class="skillbox">
             <div class="skill-meta">
               <span>HTML</span>
-              <span>90%</span>
+              <span>95%</span>
             </div>
             <div class="skill">
-              <div class="skill_level" style="width:90%"></div>
+              <div class="skill_level"></div>
             </div>
           </div>
+
+          <div class="skillbox">
+            <div class="skill-meta">
+              <span>Python</span>
+              <span>35%</span>
+            </div>
+            <div class="skill">
+              <div class="skill_level"></div>
+            </div>
+          </div>
+
 
           <div class="skillbox">
             <div class="skill-meta">
@@ -473,7 +564,17 @@
               <span>20%</span>
             </div>
             <div class="skill">
-              <div class="skill_level" style="width:20%"></div>
+              <div class="skill_level"></div>
+            </div>
+          </div>
+
+          <div class="skillbox">
+            <div class="skill-meta">
+              <span>SQL</span>
+              <span>40%</span>
+            </div>
+            <div class="skill">
+              <div class="skill_level"></div>
             </div>
           </div>
         </div>
@@ -489,7 +590,7 @@
               <span>100%</span>
             </div>
             <div class="skill">
-              <div class="skill_level" style="width:100%"></div>
+              <div class="skill_level"></div>
             </div>
           </div>
 
@@ -499,7 +600,7 @@
               <span>95%</span>
             </div>
             <div class="skill">
-              <div class="skill_level" style="width:95%"></div>
+              <div class="skill_level"></div>
             </div>
           </div>
 
@@ -509,7 +610,7 @@
               <span>55%</span>
             </div>
             <div class="skill">
-              <div class="skill_level" style="width:55%"></div>
+              <div class="skill_level"></div>
             </div>
           </div>
         </div>
@@ -522,7 +623,7 @@
             <div class="name">Website for restaurant called 'BASE'</div>
             <div class="text">
               The restaurant I currently work at is planning on opening a new
-              restaurant in the (near) future called 'BASE'. I have created its
+              restaurant in the (near) future called `BASE`. I have created its
               website as a first solo project. <a target="_blank" href="https://basebymonsees.nl">check it out here</a>.
             </div>
           </div>
@@ -542,5 +643,20 @@
         </div>
       </div>
   </div>
+  <script>
+    (function () {
+      var skillBoxes = document.querySelectorAll('.skillbox');
+      skillBoxes.forEach(function (box) {
+        var valueSpan = box.querySelector('.skill-meta span:last-child');
+        var meter = box.querySelector('.skill_level');
+        if (!valueSpan || !meter) return;
+        var match = (valueSpan.textContent || '').match(/(\d+(?:\.\d+)?)\s*%?/);
+        if (!match) return;
+        var value = Math.min(100, Math.max(0, parseFloat(match[1])));
+        meter.style.width = value + '%';
+        valueSpan.textContent = value + '%';
+      });
+    })();
+  </script>
 </body>
 </html>
