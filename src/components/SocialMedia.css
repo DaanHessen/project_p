@@ -368,7 +368,7 @@
     gap: var(--space-xs);
     border: none;
     border-radius: 0;
-    background: transparent;
+    /* background: transparent; */
     padding: var(--space-sm);
     box-shadow: none;
     width: 100%;
