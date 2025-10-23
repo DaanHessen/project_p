@@ -140,7 +140,7 @@ const SocialMedia: React.FC = () => {
           </div>
           <div className="ascii-footer-bottom">
             <span className="ascii-footer-byline">
-              This background now ships as an npm package made by me! Check it out:
+              This background now ships as a highly customizable npm package made by me!
             </span>
             <div className="ascii-footer-links">
               <a
