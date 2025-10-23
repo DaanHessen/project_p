@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import "./SocialMedia.css";
 
 const resumeUrl = `/resume.html?v=${__RESUME_VERSION__}`;
+const ASCII_BLOBS_VERSION = "1.0.1";
 
 const SocialMedia: React.FC = () => {
   const tooltipRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -130,6 +131,38 @@ const SocialMedia: React.FC = () => {
           ))}
         </div>
       </div>
+
+      <footer className="ascii-footer-floating" aria-label="ASCII-blobs showcase">
+        <div className="ascii-footer-card">
+          <div className="ascii-footer-top">
+            <span className="ascii-footer-title">ASCII-blobs</span>
+            <span className="ascii-footer-version">v{ASCII_BLOBS_VERSION}</span>
+          </div>
+          <div className="ascii-footer-bottom">
+            <span className="ascii-footer-byline">
+              This background now ships as an npm package made by me! Check it out:
+            </span>
+            <div className="ascii-footer-links">
+              <a
+                href="https://github.com/DaanHessen/ASCII-blobs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ascii-footer-link"
+              >
+                GitHub
+              </a>
+              <a
+                href="https://www.npmjs.com/package/ascii-blobs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ascii-footer-link"
+              >
+                npm
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

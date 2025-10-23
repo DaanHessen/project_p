@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @font-face {
   font-family: 'SF Pixelate';
   font-style: normal;
@@ -334,4 +336,3 @@ body::-webkit-scrollbar {
     opacity: 0.5;
   }
 }
-
