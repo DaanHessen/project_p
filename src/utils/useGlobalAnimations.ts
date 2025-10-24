@@ -1,37 +1,4 @@
-import { useState, useCallback } from "react";
-
-interface PageState {
-  currentPage: number;
-  isTransitioning: boolean;
-}
-
 const useGlobalAnimations = () => {
-  const [pageState, setPageState] = useState<PageState>({
-    currentPage: 1,
-    isTransitioning: false,
-  });
-
-  const navigateToPage = useCallback(
-    (newPage: number) => {
-      if (newPage === pageState.currentPage || pageState.isTransitioning) {
-        return;
-      }
-
-      setPageState({
-        currentPage: newPage,
-        isTransitioning: true,
-      });
-
-      setTimeout(() => {
-        setPageState((prev) => ({
-          ...prev,
-          isTransitioning: false,
-        }));
-      }, 300);
-    },
-    [pageState.currentPage, pageState.isTransitioning],
-  );
-
   const contentFadeVariants = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
@@ -54,9 +21,6 @@ const useGlobalAnimations = () => {
   };
 
   return {
-    currentPage: pageState.currentPage,
-    isTransitioning: pageState.isTransitioning,
-    navigateToPage,
     contentFadeVariants,
     transitionSettings,
   };

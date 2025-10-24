@@ -199,10 +199,6 @@
   opacity: 0.7;
 }
 
-.page-slide-up {
-  transform: translateY(-100vh);
-}
-
 @media (max-width: 1024px) {
   .main-content {
     padding: var(--space-lg) var(--space-md);
