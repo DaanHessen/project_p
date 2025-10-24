@@ -201,7 +201,7 @@
   grid-template-columns: repeat(7, 1fr);
   gap: 0;
   padding: 0;
-  background: var(--bg-primary);
+  /* background: var(--bg-primary); */
   border: 2px solid var(--accent-primary);
   position: relative;
   box-shadow: 0 -4px 0px var(--accent-primary);
