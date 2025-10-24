@@ -3,7 +3,8 @@ import "./HomePage.css";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useGlobalAnimations from "../utils/useGlobalAnimations";
-import AsciiScreensaver from "../components/AsciiScreensaver";
+import { AsciiBlobs } from "ascii-blobs";
+import "ascii-blobs/dist/style.css";
 
 const HomePage = () => {
   const { contentFadeVariants, transitionSettings } = useGlobalAnimations();
@@ -96,7 +97,12 @@ const HomePage = () => {
       />
 
       <div className="page page-one">
-        <AsciiScreensaver />
+        <AsciiBlobs 
+          animation={{
+            revealDuration: 250,
+            revealFade: 250,
+          }}
+        />
         <div className="content-container">
           <div className="main-content">
             <div className="ascii-art-section" ref={asciiContainerRef}>
