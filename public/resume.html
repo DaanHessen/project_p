@@ -307,6 +307,244 @@
       transition: width 0.3s ease;
     }
 
+    /* Download button styles */
+    .download-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      transition: all 0.2s ease;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .download-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    }
+
+    .download-button:active {
+      transform: translateY(0);
+    }
+
+    .download-button svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Print/PDF styles */
+    @media print {
+      @page {
+        size: A4;
+        margin: 15mm 15mm 15mm 15mm;
+      }
+
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      body {
+        background: white !important;
+        color: #1a1d29 !important;
+        font-size: 11pt;
+        line-height: 1.4;
+      }
+
+      .container {
+        background: white !important;
+        padding: 0 !important;
+        min-height: auto !important;
+        page-break-after: avoid;
+      }
+
+      .download-button {
+        display: none !important;
+      }
+
+      .header {
+        margin-bottom: 15pt;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+      }
+
+      .header .full-name {
+        color: #1a1d29 !important;
+      }
+
+      .header .first-name,
+      .header .last-name {
+        color: #1a1d29 !important;
+      }
+
+      .header .last-name {
+        color: #2563eb !important;
+      }
+
+      .header .email,
+      .header .phone,
+      .header .dob,
+      .header .address,
+      .header .separator {
+        color: #4b5563 !important;
+      }
+
+      .header .email-val,
+      .header .phone-val,
+      .header .dob-val,
+      .header .address-val {
+        color: #1a1d29 !important;
+      }
+
+      .header .position {
+        color: #2563eb !important;
+      }
+
+      .header .contact-info {
+        display: block;
+      }
+
+      .header .email,
+      .header .email-val,
+      .header .phone,
+      .header .phone-val {
+        display: inline;
+      }
+
+      .header .email-val + .separator {
+        display: inline-block;
+      }
+
+      .header .phone-val + .separator {
+        display: block;
+        height: 0;
+        margin: 0;
+        border: none;
+        visibility: hidden;
+      }
+
+      .header .dob,
+      .header .dob-val,
+      .header .address,
+      .header .address-val {
+        display: inline;
+      }
+
+      .header .dob-val + .separator {
+        display: inline-block;
+      }
+
+      .about {
+        color: #374151 !important;
+      }
+
+      .details {
+        color: #1a1d29 !important;
+        gap: 20pt;
+      }
+
+      .details .section {
+        page-break-inside: avoid;
+        margin-bottom: 20pt;
+      }
+
+      .details .section:last-of-type {
+        margin-bottom: 0;
+      }
+
+      .details .section__title {
+        color: #2563eb !important;
+        page-break-after: avoid;
+        margin-bottom: 10pt;
+      }
+
+      .details .section__list-item {
+        page-break-inside: avoid;
+        margin-bottom: 15pt;
+        color: #1a1d29 !important;
+      }
+
+      .details .section__list-item:last-of-type {
+        margin-bottom: 0;
+      }
+
+      .details .section__list-item .left .name {
+        color: #1a1d29 !important;
+      }
+
+      .details .section__list-item .left .addr {
+        color: #4b5563 !important;
+      }
+
+      .details .section__list-item .right .company,
+      .details .section__list-item .right .school {
+        color: #2563eb !important;
+      }
+
+      .details .section__list-item .right .duration {
+        color: #6b7280 !important;
+      }
+
+      .details .section__list-item .text,
+      .details .section__list-item .desc {
+        color: #374151 !important;
+      }
+
+      .details .section__list-item .text a,
+      .details .section__list-item .desc a {
+        color: #2563eb !important;
+        text-decoration: underline;
+      }
+
+      .details .section__list-item code {
+        background: #f3f4f6 !important;
+        color: #1a1d29 !important;
+        border: 1px solid #d1d5db !important;
+      }
+
+      .skillbox {
+        page-break-inside: avoid;
+      }
+
+      .skill-meta span:first-child {
+        color: #1a1d29 !important;
+      }
+
+      .skill-meta span:last-child {
+        color: #6b7280 !important;
+      }
+
+      .skill_progress {
+        background: #e5e7eb !important;
+      }
+
+      .skill_level {
+        background-color: #2563eb !important;
+      }
+
+      .projects-section {
+        page-break-before: auto;
+      }
+
+      .details .section__title {
+        orphans: 3;
+        widows: 3;
+      }
+    }
+
     @media (max-width: 1024px) {
       .details {
         grid-template-columns: 1fr;
@@ -318,6 +556,18 @@
     }
 
     @media (max-width: 640px) {
+      .download-button {
+        top: 10px;
+        right: 10px;
+        padding: 10px 16px;
+        font-size: 12px;
+      }
+
+      .download-button svg {
+        width: 16px;
+        height: 16px;
+      }
+
       .container {
         padding: 20px 16px;
         min-height: auto;
@@ -448,6 +698,14 @@
   </style>
 </head>
 <body>
+  <button class="download-button" onclick="window.print()" title="Download as PDF">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+      <polyline points="7 10 12 15 17 10"></polyline>
+      <line x1="12" y1="15" x2="12" y2="3"></line>
+    </svg>
+    Download PDF
+  </button>
   <div class="container">
     <div class="header">
       <a class="full-name" href="https://daanhessen.nl">
