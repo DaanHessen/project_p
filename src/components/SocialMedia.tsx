@@ -1,11 +1,89 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+// Removed react-fast-marquee due to inconsistent speed on some mobile browsers.
 import "./SocialMedia.css";
 
 const resumeUrl = `/resume.html?v=${__RESUME_VERSION__}`;
-const ASCII_BLOBS_VERSION = "1.0.4";
 
 const SocialMedia: React.FC = () => {
   const tooltipRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+  const [allowMotion, setAllowMotion] = useState(true);
+  const marqueeRef = useRef<HTMLDivElement | null>(null);
+  const [marqueeReady, setMarqueeReady] = useState(false);
+  const [contentWidth, setContentWidth] = useState(0);
+  const SPEED_PX_PER_SEC = 18; // tuned slow speed
+  const [offset, setOffset] = useState(0);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+  // Determine if viewport is mobile-sized
+    const checkMobile = () => setIsMobile(window.innerWidth <= 640);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    // Respect reduced motion preferences
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateMotion = () => setAllowMotion(!mq.matches);
+    updateMotion();
+    mq.addEventListener?.("change", updateMotion);
+
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+      mq.removeEventListener?.("change", updateMotion);
+    };
+  }, []);
+
+  // Measure content width after fonts load & on resize
+  useEffect(() => {
+    if (!marqueeRef.current) return;
+    const el = marqueeRef.current;
+    const measure = () => {
+      const span = el.querySelector<HTMLSpanElement>(".marquee-text-inner");
+      if (span) {
+        const w = span.getBoundingClientRect().width;
+        setContentWidth(w);
+      }
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    // fonts ready
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(measure).catch(() => {});
+    }
+    window.addEventListener("orientationchange", measure);
+    setMarqueeReady(true);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("orientationchange", measure);
+    };
+  }, [isMobile]);
+
+  // Animation loop
+  useEffect(() => {
+    if (!allowMotion || !isMobile || !marqueeReady || contentWidth === 0) {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      return;
+    }
+    let last = performance.now();
+    const step = (now: number) => {
+      const dt = (now - last) / 1000; // seconds
+      last = now;
+      setOffset((prev) => {
+        const next = prev - SPEED_PX_PER_SEC * dt;
+        // loop when fully scrolled past width
+        if (Math.abs(next) > contentWidth) {
+          return 0;
+        }
+        return next;
+      });
+      rafRef.current = requestAnimationFrame(step);
+    };
+    rafRef.current = requestAnimationFrame(step);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [allowMotion, isMobile, marqueeReady, contentWidth]);
 
   const showTooltip = (index: number) => {
     const tooltip = tooltipRefs.current[index];
@@ -78,8 +156,8 @@ const SocialMedia: React.FC = () => {
         </svg>
       ),
     },
-    {
-      name: "Buy Me A Coffee (yeah I know)",
+{
+      name: "buy me a new laptop (☕)",
       url: "https://buymeacoffee.com/daanhessen",
       className: "coffee",
       icon: (
@@ -91,79 +169,105 @@ const SocialMedia: React.FC = () => {
   ];
 
   return (
-    <div className="pixel-social-container">
-      <div className="social-section">
-        <div className="tooltip-container">
-          {socialLinks.map((link, index) => (
-            <div 
-              key={link.name} 
-              className="tooltip-item" 
-              data-tooltip={link.name}
-              ref={(element) => {
-                tooltipRefs.current[index] = element;
-              }}
-              style={{ left: `calc((100% / 7) * ${index} + (100% / 7 / 2))` }}
-            />
-          ))}
-        </div>
-        
-        <div className="social-grid">
-          {socialLinks.map((link, index) => (
-            <div key={link.name} className="social-link-wrapper">
-              <a
-                href={link.url || undefined}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`social-link ${link.className}`}
-                onMouseEnter={() => showTooltip(index)}
-                onMouseLeave={() => hideTooltip(index)}
-                onClick={(e) => {
-                  if (!link.url) {
-                    e.preventDefault();
-                  }
+    <>
+      <div className="pixel-social-container">
+        <div className="social-section">
+          <div className="tooltip-container">
+            {socialLinks.map((link, index) => (
+              <div 
+                key={link.name} 
+                className="tooltip-item" 
+                data-tooltip={link.name}
+                ref={(element) => {
+                  tooltipRefs.current[index] = element;
                 }}
-                aria-disabled={!link.url}
-              >
-                <div className="hover-bg"></div>
-                {link.icon}
-              </a>
-            </div>
-          ))}
+                style={{ left: `calc((100% / 7) * ${index} + (100% / 7 / 2))` }}
+              />
+            ))}
+          </div>
+          
+          <div className="social-grid">
+            {socialLinks.map((link, index) => (
+              <div key={link.name} className="social-link-wrapper">
+                <a
+                  href={link.url || undefined}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`social-link ${link.className}`}
+                  onMouseEnter={() => showTooltip(index)}
+                  onMouseLeave={() => hideTooltip(index)}
+                  onClick={(e) => {
+                    if (!link.url) {
+                      e.preventDefault();
+                    }
+                  }}
+                  aria-disabled={!link.url}
+                >
+                  <div className="hover-bg"></div>
+                  {link.icon}
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      <footer className="ascii-footer-floating" aria-label="ASCII-blobs showcase">
-        <div className="ascii-footer-card">
-          <div className="ascii-footer-top">
-            <span className="ascii-footer-title">ASCII-blobs</span>
-            <span className="ascii-footer-version">v{ASCII_BLOBS_VERSION}</span>
+      <div className="library-strip" aria-label="ASCII-blobs promo links">
+        <div className="library-strip-content">
+          <div className="library-strip-text" ref={marqueeRef}>
+            {allowMotion && isMobile ? (
+              <div
+                className="marquee-track"
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "0",
+                  transform: `translateX(${offset}px)`,
+                  willChange: "transform",
+                }}
+                aria-label="background promo ticker"
+              >
+                <span
+                  className="marquee-text-inner"
+                  style={{ whiteSpace: "nowrap", paddingRight: "2rem" }}
+                >
+                  This background now ships as a highly customizable npm package made by me!
+                </span>
+                {/* duplicate for seamless loop */}
+                <span
+                  className="marquee-text-inner"
+                  style={{ whiteSpace: "nowrap", paddingRight: "2rem" }}
+                >
+                  This background now ships as a highly customizable npm package made by me!
+                </span>
+              </div>
+            ) : (
+              <span>
+                This background now ships as a highly customizable npm package made by me!
+              </span>
+            )}
           </div>
-          <div className="ascii-footer-bottom">
-            <span className="ascii-footer-byline">
-              This background now ships as a highly customizable npm package made by me!
-            </span>
-            <div className="ascii-footer-links">
-              <a
-                href="https://github.com/DaanHessen/ASCII-blobs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ascii-footer-link"
-              >
-                GitHub
-              </a>
-              <a
-                href="https://www.npmjs.com/package/ascii-blobs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ascii-footer-link"
-              >
-                npm
-              </a>
-            </div>
+          <div className="library-strip-actions">
+            <a
+              href="https://www.npmjs.com/package/ascii-blobs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="library-strip-button"
+            >
+              npm
+            </a>
+            <a
+              href="https://github.com/DaanHessen/ASCII-blobs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="library-strip-button"
+            >
+              GitHub
+            </a>
           </div>
         </div>
-      </footer>
-    </div>
+      </div>
+    </>
   );
 };
 
