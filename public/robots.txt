@@ -1,14 +1,9 @@
 User-agent: *
 Allow: /
-Allow: /projects
-Allow: /about
 
 Sitemap: https://daanhessen.nl/sitemap.xml
 
 Crawl-delay: 1
-
-# User-agent: BadBot
-# Disallow: /
 
 User-agent: facebookexternalhit/*
 Allow: /
