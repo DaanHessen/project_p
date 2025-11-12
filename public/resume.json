@@ -1,0 +1,93 @@
+{
+  "personal": {
+    "firstName": "Daan",
+    "lastName": "Hessen",
+    "email": "daanh2002@gmail.com",
+    "phone": "+31 642872646",
+    "dateOfBirth": "09-04-2002",
+    "address": "Hilversum, Netherlands",
+    "website": "https://daanhessen.nl",
+    "position": "Software Developer",
+    "about": "I am a third-year Software Development student at the University of Applied Sciences in Utrecht. Alongside my studies, I've been working in the Hospitality industry for about seven years, both as restaurant server and more recently bartender. I'm a hard-working and motivated guy seeking a positive workplace where I can apply my knowledge and get the opportunity to continue to grow."
+  },
+  "experience": [
+    {
+      "company": "Brasserie Monsees",
+      "location": "'s Graveland, Netherlands",
+      "duration": "2022 - Present",
+      "position": "Bartender",
+      "description": "A fine-dining restaurant where I am currently working as a bartender and server."
+    },
+    {
+      "company": "Ambrosius Stube",
+      "location": "Lech, Austria",
+      "duration": "2022 - 2022",
+      "position": "Bartender",
+      "description": "During my gap year from school I decided to work internationally in a busy ski-area in Lech. I gained valuable experience there."
+    },
+    {
+      "company": "Oh Lobo",
+      "location": "Hilversum, Netherlands",
+      "duration": "2018 - 2020",
+      "position": "Restaurant Server",
+      "description": "Busy, fast-paced restaurant I worked at for about two years. I gained a lot of experience here."
+    },
+    {
+      "company": "Proeflokaal Sijgje",
+      "location": "Hilversum, Netherlands",
+      "duration": "2015 - 2017",
+      "position": "Restaurant Server",
+      "description": "My first restaurant job; mostly serving tables and washing dishes."
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of Applied Sciences Utrecht",
+      "location": "Utrecht, Netherlands",
+      "duration": "2023 - Present",
+      "degree": "HBO-ICT - Software Developer",
+      "description": "My current studies. I chose to specialize in Software development, focussing on both front-end and back-end technologies. Coursework and projects involve languages such as JavaScript, Java, HTML and more."
+    },
+    {
+      "institution": "University of Applied Sciences Amsterdam",
+      "location": "Amsterdam, Netherlands",
+      "duration": "2020 - 2022",
+      "degree": "Creative Business",
+      "description": "My first studies after finishing grade school. While I had a good time there, I found that the studies just wasn't for me."
+    }
+  ],
+  "skills": [
+    {
+      "name": "I'LL DO THIS LATER",
+      "level": 0
+    }
+  ],
+  "languages": [
+    {
+      "name": "Dutch",
+      "level": 100
+    },
+    {
+      "name": "English",
+      "level": 95
+    },
+    {
+      "name": "German",
+      "level": 55
+    }
+  ],
+  "projects": [
+    {
+      "name": "ASCII-blobs",
+      "description": "I created a library that generates animated ASCII backgrounds with blobs that move around the screen. It is highly customizable, allowing users to adjust blob size, speed, density, and colors to fit their design preferences. You can find the library on <a target=\"_blank\" href=\"https://www.npmjs.com/package/ascii-blobs\">npm</a> or <a target=\"_blank\" href=\"https://github.com/DaanHessen/ASCII-blobs\">GitHub</a>."
+    },
+    {
+      "name": "F.L.O.W.",
+      "description": "As part of a big group project for my studies, we were tasked by a client to create software that could simulate the flow of water through hydraulic pipes, including heating or cooling of said water. The end result was a proof of concept that could help design complex hydraulic systems, ranging from household plumbing to large-scale industrial networks. It simulated fluid flow, heat transfer, and provided visualizations of flow and temperature over time. Although the project is no longer available online, you can check out the linked-in post made by our client <a target=\"_blank\" href=\"https://www.linkedin.com/feed/update/urn:li:activity:7344319541029552128/\">here</a>."
+    },
+    {
+      "name": "BASE",
+      "description": "The restaurant I currently work at is planning on opening a new restaurant in the (near) future called BASE. I have created the website. <a target=\"_blank\" href=\"https://basebymonsees.nl\">check it out here</a>."
+    }
+  ]
+}

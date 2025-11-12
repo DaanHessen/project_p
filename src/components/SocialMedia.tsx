@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-// Removed react-fast-marquee due to inconsistent speed on some mobile browsers.
 import "./SocialMedia.css";
 
 const resumeUrl = `/resume.html?v=${__RESUME_VERSION__}`;
@@ -17,11 +16,9 @@ const SocialMedia: React.FC = () => {
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
-  // Determine if viewport is mobile-sized
     const checkMobile = () => setIsMobile(window.innerWidth <= 640);
     checkMobile();
     
-    // Debounce resize handler
     let resizeTimeout: ReturnType<typeof setTimeout>;
     const debouncedCheckMobile = () => {
       clearTimeout(resizeTimeout);
@@ -30,7 +27,6 @@ const SocialMedia: React.FC = () => {
     
     window.addEventListener("resize", debouncedCheckMobile);
 
-    // Respect reduced motion preferences
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const updateMotion = () => setAllowMotion(!mq.matches);
     updateMotion();
@@ -43,7 +39,6 @@ const SocialMedia: React.FC = () => {
     };
   }, []);
 
-  // Measure content width after fonts load & on resize
   useEffect(() => {
     if (!marqueeRef.current) return;
     const el = marqueeRef.current;
@@ -56,7 +51,6 @@ const SocialMedia: React.FC = () => {
     };
     measure();
     
-    // Debounce ResizeObserver callback
     let measureTimeout: ReturnType<typeof setTimeout>;
     const debouncedMeasure = () => {
       clearTimeout(measureTimeout);
@@ -65,7 +59,6 @@ const SocialMedia: React.FC = () => {
     
     const ro = new ResizeObserver(debouncedMeasure);
     ro.observe(el);
-    // fonts ready
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(measure).catch(() => {});
     }
@@ -78,7 +71,6 @@ const SocialMedia: React.FC = () => {
     };
   }, [isMobile]);
 
-  // Animation loop - using direct DOM manipulation to avoid React re-renders
   useEffect(() => {
     if (!allowMotion || !isMobile || !marqueeReady || contentWidth === 0) {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -90,17 +82,15 @@ const SocialMedia: React.FC = () => {
     
     let last = performance.now();
     const step = (now: number) => {
-      const dt = (now - last) / 1000; // seconds
+      const dt = (now - last) / 1000;
       last = now;
       
       offsetRef.current -= SPEED_PX_PER_SEC * dt;
       
-      // loop when fully scrolled past width
       if (Math.abs(offsetRef.current) > contentWidth) {
         offsetRef.current = 0;
       }
       
-      // Update DOM directly without triggering React re-render
       track.style.transform = `translateX(${offsetRef.current}px)`;
       
       rafRef.current = requestAnimationFrame(step);
@@ -259,7 +249,6 @@ const SocialMedia: React.FC = () => {
                 >
                   This background now ships as a highly customizable npm package made by me!
                 </span>
-                {/* duplicate for seamless loop */}
                 <span
                   className="marquee-text-inner"
                   style={{ whiteSpace: "nowrap", paddingRight: "2rem" }}

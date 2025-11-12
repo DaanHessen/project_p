@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 function App() {
   const [loadAnalytics, setLoadAnalytics] = useState(false);
 
-  // Defer analytics loading until after idle
   useEffect(() => {
     const loadAfterIdle = () => setLoadAnalytics(true);
     

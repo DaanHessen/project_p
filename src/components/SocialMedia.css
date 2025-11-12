@@ -86,7 +86,6 @@
   grid-template-columns: repeat(7, 1fr);
   gap: 0;
   padding: 0;
-  /* background: var(--bg-primary); */
   border: 2px solid var(--accent-primary);
   position: relative;
   box-shadow: 0 -4px 0px var(--accent-primary);
@@ -113,11 +112,8 @@
   width: 48px;
   height: 48px;
   background: var(--gradient-card);
-  /* border: 1px solid rgba(59, 130, 246, 0.2); */
   color: var(--text-secondary);
   text-decoration: none;
-  /* transition: var(--transition-normal); */
-  /* backdrop-filter: blur(10px); */
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
@@ -161,9 +157,7 @@
 }
 
 .social-link.disabled {
-  /* cursor: not-allowed; */
   opacity: 0.4;
-  /* pointer-events: none; */
 }
 
 .social-link.disabled:hover .hover-bg {
@@ -173,11 +167,6 @@
 .social-link.disabled svg {
   opacity: 0.5;
 }
-
-/* .social-link:hover {
-  transform: translateY(-1px);
-  border-color: var(--accent-primary);
-} */
 
 @media (max-width: 1024px) {
   .social-link {
@@ -301,15 +290,12 @@
   animation-delay: 0.5s;
 }
 
-/* Only apply backdrop-filter on desktop where it's less expensive */
 @media (min-width: 769px) {
   .library-strip {
     background: rgba(15, 18, 28, 0.65);
     backdrop-filter: blur(8px);
   }
 }
-
-/* Clean minimal footer: no decorative overlays */
 
 .library-strip-content {
   max-width: 1100px;
@@ -328,7 +314,7 @@
 .library-strip-text {
   overflow: hidden;
   white-space: nowrap;
-  min-width: 0; /* allow grid item to shrink so buttons stay beside */
+  min-width: 0;
 }
 
 .library-strip-text span {
@@ -338,7 +324,6 @@
   color: var(--text-secondary);
 }
 
-/* Ensure marquee track respects overflow */
 .library-strip-text {
   overflow: hidden;
 }
@@ -391,7 +376,6 @@
 
 @media (max-width: 640px) {
   .library-strip-content {
-    /* Keep buttons next to the text on mobile too */
     grid-template-columns: 1fr auto;
     gap: var(--space-xs);
     padding: 0.25rem 0.75rem;
@@ -410,7 +394,6 @@
     font-size: 0.6rem;
   }
 
-  /* Disable CSS marquee animation on mobile; we'll control motion via JS */
   .library-strip-text span {
     animation: none;
   }

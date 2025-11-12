@@ -10,10 +10,7 @@ const HomePage = () => {
   const { contentFadeVariants, transitionSettings } = useGlobalAnimations();
   const [showBlobs, setShowBlobs] = useState(false);
 
-  // Defer AsciiBlobs loading slightly to not block initial render
   useEffect(() => {
-    // Use a very short delay to allow React to paint the ASCII art first
-    // but still have blobs animate in sync with the rest of the page
     const timer = setTimeout(() => setShowBlobs(true), 50);
     return () => clearTimeout(timer);
   }, []);
@@ -70,7 +67,6 @@ const HomePage = () => {
       }
     };
 
-    // Debounce resize handler to reduce layout thrashing
     let resizeTimeout: ReturnType<typeof setTimeout>;
     const debouncedUpdate = () => {
       clearTimeout(resizeTimeout);
