@@ -9,17 +9,26 @@ const SocialMedia: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [allowMotion, setAllowMotion] = useState(true);
   const marqueeRef = useRef<HTMLDivElement | null>(null);
+  const marqueeTrackRef = useRef<HTMLDivElement | null>(null);
   const [marqueeReady, setMarqueeReady] = useState(false);
   const [contentWidth, setContentWidth] = useState(0);
   const SPEED_PX_PER_SEC = 18; // tuned slow speed
-  const [offset, setOffset] = useState(0);
+  const offsetRef = useRef(0);
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
   // Determine if viewport is mobile-sized
     const checkMobile = () => setIsMobile(window.innerWidth <= 640);
     checkMobile();
-    window.addEventListener("resize", checkMobile);
+    
+    // Debounce resize handler
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    const debouncedCheckMobile = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(checkMobile, 150);
+    };
+    
+    window.addEventListener("resize", debouncedCheckMobile);
 
     // Respect reduced motion preferences
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -28,7 +37,8 @@ const SocialMedia: React.FC = () => {
     mq.addEventListener?.("change", updateMotion);
 
     return () => {
-      window.removeEventListener("resize", checkMobile);
+      clearTimeout(resizeTimeout);
+      window.removeEventListener("resize", debouncedCheckMobile);
       mq.removeEventListener?.("change", updateMotion);
     };
   }, []);
@@ -45,7 +55,15 @@ const SocialMedia: React.FC = () => {
       }
     };
     measure();
-    const ro = new ResizeObserver(measure);
+    
+    // Debounce ResizeObserver callback
+    let measureTimeout: ReturnType<typeof setTimeout>;
+    const debouncedMeasure = () => {
+      clearTimeout(measureTimeout);
+      measureTimeout = setTimeout(measure, 150);
+    };
+    
+    const ro = new ResizeObserver(debouncedMeasure);
     ro.observe(el);
     // fonts ready
     if (document.fonts && document.fonts.ready) {
@@ -54,29 +72,37 @@ const SocialMedia: React.FC = () => {
     window.addEventListener("orientationchange", measure);
     setMarqueeReady(true);
     return () => {
+      clearTimeout(measureTimeout);
       ro.disconnect();
       window.removeEventListener("orientationchange", measure);
     };
   }, [isMobile]);
 
-  // Animation loop
+  // Animation loop - using direct DOM manipulation to avoid React re-renders
   useEffect(() => {
     if (!allowMotion || !isMobile || !marqueeReady || contentWidth === 0) {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       return;
     }
+    
+    const track = marqueeTrackRef.current;
+    if (!track) return;
+    
     let last = performance.now();
     const step = (now: number) => {
       const dt = (now - last) / 1000; // seconds
       last = now;
-      setOffset((prev) => {
-        const next = prev - SPEED_PX_PER_SEC * dt;
-        // loop when fully scrolled past width
-        if (Math.abs(next) > contentWidth) {
-          return 0;
-        }
-        return next;
-      });
+      
+      offsetRef.current -= SPEED_PX_PER_SEC * dt;
+      
+      // loop when fully scrolled past width
+      if (Math.abs(offsetRef.current) > contentWidth) {
+        offsetRef.current = 0;
+      }
+      
+      // Update DOM directly without triggering React re-render
+      track.style.transform = `translateX(${offsetRef.current}px)`;
+      
       rafRef.current = requestAnimationFrame(step);
     };
     rafRef.current = requestAnimationFrame(step);
@@ -217,12 +243,12 @@ const SocialMedia: React.FC = () => {
           <div className="library-strip-text" ref={marqueeRef}>
             {allowMotion && isMobile ? (
               <div
+                ref={marqueeTrackRef}
                 className="marquee-track"
                 style={{
                   display: "flex",
                   flexDirection: "row",
                   gap: "0",
-                  transform: `translateX(${offset}px)`,
                   willChange: "transform",
                 }}
                 aria-label="background promo ticker"

@@ -4,7 +4,6 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   
-  <!-- Homepage -->
   <url>
     <loc>https://daanhessen.nl/</loc>
     <lastmod>2024-12-19</lastmod>
@@ -12,35 +11,10 @@
     <priority>1.0</priority>
   </url>
   
-  <!-- Projects Page -->
-  <url>
-    <loc>https://daanhessen.nl/projects</loc>
+    <url>
+    <loc>https://daanhessen.nl/resume.html?v=0.0.0</loc>
     <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-  
-  <!-- About Page (if exists) -->
-  <url>
-    <loc>https://daanhessen.nl/about</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- Individual Projects -->
-  <url>
-    <loc>https://daanhessen.nl/projects/basebymonsees</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>https://daanhessen.nl/projects/portfolio</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
 </urlset> 

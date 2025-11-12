@@ -3,17 +3,13 @@ Allow: /
 Allow: /projects
 Allow: /about
 
-# Sitemaps
 Sitemap: https://daanhessen.nl/sitemap.xml
 
-# Crawl-delay for bots (optional)
 Crawl-delay: 1
 
-# Block specific bots if needed (uncomment if necessary)
 # User-agent: BadBot
 # Disallow: /
 
-# Allow social media bots
 User-agent: facebookexternalhit/*
 Allow: /
 
@@ -26,6 +22,4 @@ Allow: /
 User-agent: WhatsApp
 Allow: /
 
-# Cache directive
-# This helps with SEO by preventing frequent recrawling
 Host: https://daanhessen.nl 

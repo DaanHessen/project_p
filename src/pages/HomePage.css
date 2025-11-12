@@ -46,7 +46,6 @@
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  will-change: auto;
 }
 
 
@@ -72,9 +71,6 @@
   opacity: 1;
   text-align: center;
   font-kerning: none;
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -163,14 +159,10 @@
   bottom: 85px;
   left: 0;
   right: 0;
-  transform: none;
   opacity: 0.7;
   transition: var(--transition-normal);
   z-index: 1001;
   pointer-events: none;
-  will-change: auto;
-  backface-visibility: hidden;
-  transform: translateZ(0);
 }
 
 .nav-hint:hover {
@@ -292,11 +284,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.main-content,
-.ascii-art-section,
-.hero-section {
-  will-change: auto;
-}
+
 
 @media (prefers-reduced-motion: reduce) {
   .ascii-text {
