@@ -14,7 +14,7 @@
       "destination": "/resume.html"
     },
     {
-      "source": "/((?!api|_next|favicon.ico|robots.txt|sitemap.xml|site.webmanifest|resume(?:\\.html|\\.json)?).*)",
+      "source": "/:path((?!resume\\.html|resume\\.json|robots\\.txt|sitemap\\.xml|site\\.webmanifest|favicon\\.ico).*)",
       "destination": "/index.html"
     }
   ],
