@@ -14,7 +14,7 @@
       "destination": "/resume.html"
     },
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
