@@ -88,6 +88,10 @@
     {
       "name": "BASE",
       "description": "The restaurant I currently work at is planning on opening a new restaurant in the (near) future called BASE. I have created the website. <a target=\"_blank\" href=\"https://basebymonsees.nl\">check it out here</a>."
+    },
+    {
+      "name": "earcli",
+      "description": "I needed a way to control my Nothing Ear 1 earbuds via my computer (to change the ANC setting, see the battery percentages of my earbuds etc.). so, I made a Rust rewrite of the backend logic used by the community ear-web tool that offered this functionality already (though through the browser). It exposes the same Bluetooth Serial Port Profile commands through a REST API and a small CLI. That means you can automate ANC, EQ, latency mode, gestures, and the rest of the Nothing/CMF settings without launching a browser directly in CLI. <a target=\"_blank\" href=\"https://github.com/DaanHessen/earctl\">check it out here</a>."
     }
   ]
 }
