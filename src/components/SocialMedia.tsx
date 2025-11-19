@@ -247,18 +247,18 @@ const SocialMedia: React.FC = () => {
                   className="marquee-text-inner"
                   style={{ whiteSpace: "nowrap", paddingRight: "2rem" }}
                 >
-                  This background now ships as a highly customizable npm package made by me!
+                  You can now this (customizable) background for your own projects!
                 </span>
                 <span
                   className="marquee-text-inner"
                   style={{ whiteSpace: "nowrap", paddingRight: "2rem" }}
                 >
-                  This background now ships as a highly customizable npm package made by me!
+                  You can now this (customizable) background for your own projects!
                 </span>
               </div>
             ) : (
               <span>
-                This background now ships as a highly customizable npm package made by me!
+                You can now this (customizable) background for your own projects!
               </span>
             )}
           </div>
