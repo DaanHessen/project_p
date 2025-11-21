@@ -79,19 +79,57 @@
   "projects": [
     {
       "name": "ASCII-blobs",
-      "description": "I created a library that generates animated ASCII backgrounds with blobs that move around the screen. It is highly customizable, allowing users to adjust blob size, speed, density, and colors to fit their design preferences. You can find the library on <a target=\"_blank\" href=\"https://www.npmjs.com/package/ascii-blobs\">npm</a> or <a target=\"_blank\" href=\"https://github.com/DaanHessen/ASCII-blobs\">GitHub</a>."
+      "description": "I created a library that generates animated ASCII backgrounds with blobs that move around the screen. It is highly customizable, allowing users to adjust blob size, speed, density, and colors to fit their design preferences.",
+      "links": [
+        {
+          "type": "npm",
+          "text": "npm",
+          "url": "https://www.npmjs.com/package/ascii-blobs"
+        },
+        {
+          "type": "github",
+          "text": "GitHub",
+          "url": "https://github.com/DaanHessen/ASCII-blobs"
+        }
+      ]
     },
     {
       "name": "F.L.O.W.",
-      "description": "As part of a big group project for my studies, we were tasked by a client to create software that could simulate the flow of water through hydraulic pipes, including heating or cooling of said water. The end result was a proof of concept that could help design complex hydraulic systems, ranging from household plumbing to large-scale industrial networks. It simulated fluid flow, heat transfer, and provided visualizations of flow and temperature over time. Although the project is no longer available online, you can check out the linked-in post made by our client <a target=\"_blank\" href=\"https://www.linkedin.com/feed/update/urn:li:activity:7344319541029552128/\">here</a>."
+      "description": "As part of a big group project for my studies, we were tasked by a client to create software that could simulate the flow of water through hydraulic pipes, including heating or cooling of said water. The end result was a proof of concept that could help design complex hydraulic systems, ranging from household plumbing to large-scale industrial networks. It simulated fluid flow, heat transfer, and provided visualizations of flow and temperature over time. Although the project is no longer available online, you can check out the linked-in post made by our client.",
+      "links": [
+        {
+          "type": "linkedin",
+          "text": "LinkedIn",
+          "url": "https://www.linkedin.com/feed/update/urn:li:activity:7344319541029552128/"
+        }
+      ]
     },
     {
       "name": "BASE",
-      "description": "The restaurant I currently work at is planning on opening a new restaurant in the (near) future called BASE. I have created the website. <a target=\"_blank\" href=\"https://basebymonsees.nl\">check it out here</a>."
+      "description": "The restaurant I currently work at is planning on opening a new restaurant in the (near) future called BASE. I have created the website.",
+      "links": [
+        {
+          "type": "website",
+          "text": "Visit Site",
+          "url": "https://basebymonsees.nl"
+        }
+      ]
     },
     {
-      "name": "earcli",
-      "description": "I needed a way to control my Nothing Ear 1 earbuds via my computer (to change the ANC setting, see the battery percentages of my earbuds etc.). so, I made a Rust rewrite of the backend logic used by the community ear-web tool that offered this functionality already (though through the browser). It exposes the same Bluetooth Serial Port Profile commands through a REST API and a small CLI. That means you can automate ANC, EQ, latency mode, gestures, and the rest of the Nothing/CMF settings without launching a browser directly in CLI. <a target=\"_blank\" href=\"https://github.com/DaanHessen/earctl\">check it out here</a>."
+      "name": "earctl",
+      "description": "I needed a way to control my Nothing Ear 1 earbuds via my computer (to change the ANC setting, see the battery percentages of my earbuds etc.). so, I made a Rust rewrite of the backend logic used by the community ear-web tool that offered this functionality already (though through the browser). It exposes the same Bluetooth Serial Port Profile commands through a REST API and a small CLI. That means you can automate ANC, EQ, latency mode, gestures, and the rest of the Nothing/CMF settings without launching a browser directly in CLI.",
+      "links": [
+        {
+          "type": "github",
+          "text": "GitHub",
+          "url": "https://github.com/DaanHessen/earctl"
+        },
+        {
+          "type": "aur",
+          "text": "AUR",
+          "url": "https://aur.archlinux.org/packages/earctl"
+        }
+      ]
     }
-  ]
+  ] 
 }
