@@ -11,7 +11,7 @@ const SocialMedia: React.FC = () => {
   const marqueeTrackRef = useRef<HTMLDivElement | null>(null);
   const [marqueeReady, setMarqueeReady] = useState(false);
   const [contentWidth, setContentWidth] = useState(0);
-  const SPEED_PX_PER_SEC = 18; // tuned slow speed
+  const SPEED_PX_PER_SEC = 18;
   const offsetRef = useRef(0);
   const rafRef = useRef<number | null>(null);
 
@@ -173,7 +173,7 @@ const SocialMedia: React.FC = () => {
       ),
     },
 {
-      name: "buy me a new laptop (☕)",
+      name: "$$$$$",
       url: "https://buymeacoffee.com/daanhessen",
       className: "coffee",
       icon: (
