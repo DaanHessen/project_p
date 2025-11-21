@@ -319,3 +319,11 @@ body::-webkit-scrollbar {
     opacity: 0.5;
   }
 }
+
+/* Hide ascii-blobs library banner if it exists */
+.ascii-blobs-banner,
+.ascii-blobs__banner,
+[class*="ascii-blobs"][class*="banner"],
+[data-ascii-blobs-banner] {
+  display: none !important;
+}

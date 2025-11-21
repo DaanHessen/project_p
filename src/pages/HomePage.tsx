@@ -118,6 +118,25 @@ const HomePage = () => {
             }}
           />
         )}
+        
+        <div className="version-badge">
+          <a
+            href="https://www.npmjs.com/package/ascii-blobs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ascii-blobs v1.0.3
+          </a>
+          {" • "}
+          <a
+            href="https://github.com/DaanHessen/ASCII-blobs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            git
+          </a>
+        </div>
+
         <div className="content-container">
           <div className="main-content">
             <div className="ascii-art-section" ref={asciiContainerRef}>

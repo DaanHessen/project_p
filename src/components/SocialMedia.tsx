@@ -227,61 +227,6 @@ const SocialMedia: React.FC = () => {
           </div>
         </div>
       </div>
-
-      <div className="library-strip" aria-label="ASCII-blobs promo links">
-        <div className="library-strip-content">
-          <div className="library-strip-text" ref={marqueeRef}>
-            {allowMotion && isMobile ? (
-              <div
-                ref={marqueeTrackRef}
-                className="marquee-track"
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: "0",
-                  willChange: "transform",
-                }}
-                aria-label="background promo ticker"
-              >
-                <span
-                  className="marquee-text-inner"
-                  style={{ whiteSpace: "nowrap", paddingRight: "2rem" }}
-                >
-                  You can now this (customizable) background for your own projects!
-                </span>
-                <span
-                  className="marquee-text-inner"
-                  style={{ whiteSpace: "nowrap", paddingRight: "2rem" }}
-                >
-                  You can now this (customizable) background for your own projects!
-                </span>
-              </div>
-            ) : (
-              <span>
-                You can now this (customizable) background for your own projects!
-              </span>
-            )}
-          </div>
-          <div className="library-strip-actions">
-            <a
-              href="https://www.npmjs.com/package/ascii-blobs"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="library-strip-button"
-            >
-              npm
-            </a>
-            <a
-              href="https://github.com/DaanHessen/ASCII-blobs"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="library-strip-button"
-            >
-              GitHub
-            </a>
-          </div>
-        </div>
-      </div>
     </>
   );
 };

@@ -332,7 +332,6 @@
       box-shadow: 0 0 8px rgba(96, 165, 250, 0.3);
     }
 
-    /* Projects Section Grid Layout - Desktop Only */
     @media (min-width: 641px) {
       .projects-section .section__list {
         display: grid;
@@ -342,9 +341,7 @@
         align-items: stretch;
       }
 
-      /* High specificity to override generic .details .section__list-item styles */
       .details .projects-section .section__list-item {
-        /* Reset inherited styles */
         display: flex !important;
         flex-direction: column !important;
         flex-wrap: nowrap !important;
@@ -353,7 +350,6 @@
         border-bottom: none !important;
         width: auto !important;
         
-        /* Card Styles */
         background: #101524;
         border: 1px solid #1f2739;
         border-radius: 8px;
@@ -688,7 +684,6 @@
         border: 1px solid #d1d5db !important;
       }
 
-      /* Fix project title visibility in PDF */
       .projects-section .section__list-item .name {
         color: #1a1d29 !important;
         font-weight: bold;
@@ -786,7 +781,6 @@
         padding: 30px 20px;
       }
 
-      /* Stack projects on tablet */
       .projects-section .section__list {
         grid-template-columns: 1fr;
       }
@@ -1121,7 +1115,6 @@
             var item = document.createElement('div');
             item.className = 'section__list-item';
             
-            // Generate buttons from links array
             var buttonsHTML = '';
             if (project.links && project.links.length > 0) {
               buttonsHTML = project.links.map(function(link) {
