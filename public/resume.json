@@ -1,7 +1,7 @@
 {
   "personal": {
     "position": "Software Developer",
-    "about": "Third-year Software Development student at the University of Applied Sciences Utrecht, with about eight years of experience in hospitality across service and bartending roles. Strong work ethic, quick learner, and motivated to grow in a professional environment while applying technical knowledge in practice." 
+    "about": "Third-year Software Development student at the University of Applied Sciences Utrecht, with about eight years of experience in hospitality across service and bartending roles. Strong work ethic, quick learner, and motivated to grow in a professional environment while applying technical knowledge in practice."
   },
   "experience": [
     {
@@ -9,35 +9,35 @@
       "location": "'s-Graveland, Netherlands",
       "duration": "2022 - Present",
       "position": "Bartender / Server",
-      "description": "Working in a fine-dining restaurant, handling mostly bar service and some table service." 
+      "description": "Working in a fine-dining restaurant, handling mostly bar service and some table service."
     },
     {
       "company": "OutlierAI",
       "location": "Remote",
       "duration": "2026 - Present",
       "position": "AI Training Specialist, Project Aether",
-      "description": "Contributing to AI model improvement through data annotation, transcription correction, and quality-focused training tasks." 
+      "description": "Contributing to AI model improvement through data annotation, transcription correction, and quality-focused training tasks."
     },
     {
       "company": "Ambrosius Stube",
       "location": "Lech, Austria",
       "duration": "2022 - 2022",
       "position": "Bartender",
-      "description": "Worked in a ski-resort. Long hours, but gained a lot of experience and knowledge." 
+      "description": "Worked in a ski-resort. Long hours, but gained a lot of experience and knowledge."
     },
     {
       "company": "Oh Lobo",
       "location": "Hilversum, Netherlands",
       "duration": "2018 - 2020",
       "position": "Restaurant Server",
-      "description": "Provided table service in a restaurant and improved my customer service and teamwork skills." 
+      "description": "Provided table service in a restaurant and improved my customer service and teamwork skills."
     },
     {
       "company": "Proeflokaal Sijgje",
       "location": "Hilversum, Netherlands",
       "duration": "2015 - 2017",
       "position": "Restaurant Server",
-      "description": "My first hospitality role. mostly did dishwashing." 
+      "description": "My first hospitality role. mostly did dishwashing."
     }
   ],
   "education": [
@@ -46,14 +46,29 @@
       "location": "Utrecht, Netherlands",
       "duration": "2023 - Present",
       "degree": "HBO-ICT, Software Development",
-      "description": "Specializing in software development, with courses and projects in both front-end and back-end technologies (JavaScript, Java, HTML, etc.)." 
+      "description": "Specializing in software development, with courses and projects in both front-end and back-end technologies (JavaScript, Java, HTML, etc.)."
     },
     {
       "institution": "University of Applied Sciences Amsterdam",
       "location": "Amsterdam, Netherlands",
       "duration": "2020 - 2022",
       "degree": "Creative Business",
-      "description": "Completed two years before switching to software development." 
+      "description": "Completed two years before switching to software development."
+    }
+  ],
+  "skills": [],
+  "languages": [
+    {
+      "name": "Dutch",
+      "level": 100
+    },
+    {
+      "name": "English",
+      "level": 95
+    },
+    {
+      "name": "German",
+      "level": 65
     }
   ],
   "projects": [
@@ -72,10 +87,10 @@
           "url": "https://github.com/DaanHessen/ASCII-blobs"
         }
       ]
-    }
+    },
     {
       "name": "F.L.O.W.",
-      "description": "Group project (for school) developed for a client to simulate water flow and heat transfer in hydraulic pipe systems. Delivered as a proof of concept with visualizations of flow and temperature over time.", 
+      "description": "Group project (for school) developed for a client to simulate water flow and heat transfer in hydraulic pipe systems. Delivered as a proof of concept with visualizations of flow and temperature over time.",
       "links": [
         {
           "type": "linkedin",
@@ -83,7 +98,7 @@
           "url": "https://www.linkedin.com/feed/update/urn:li:activity:7344319541029552128/"
         }
       ]
-    }
+    },
     {
       "name": "BASE",
       "description": "Built the website for BASE, a new restaurant concept planned by Brasserie Monsees.",
@@ -94,7 +109,7 @@
           "url": "https://basebymonsees.nl"
         }
       ]
-    }
+    },
     {
       "name": "earctl",
       "description": "Rust-based CLI and REST API for controlling Nothing and CMF earbuds from Linux. Supports ANC, EQ, latency mode, gestures, and battery status.",
