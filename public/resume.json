@@ -72,7 +72,7 @@
           "url": "https://github.com/DaanHessen/ASCII-blobs"
         }
       ]
-    },
+    }
     {
       "name": "F.L.O.W.",
       "description": "Group project (for school) developed for a client to simulate water flow and heat transfer in hydraulic pipe systems. Delivered as a proof of concept with visualizations of flow and temperature over time.", 
@@ -83,7 +83,7 @@
           "url": "https://www.linkedin.com/feed/update/urn:li:activity:7344319541029552128/"
         }
       ]
-    },
+    }
     {
       "name": "BASE",
       "description": "Built the website for BASE, a new restaurant concept planned by Brasserie Monsees.",
@@ -94,7 +94,7 @@
           "url": "https://basebymonsees.nl"
         }
       ]
-    },
+    }
     {
       "name": "earctl",
       "description": "Rust-based CLI and REST API for controlling Nothing and CMF earbuds from Linux. Supports ANC, EQ, latency mode, gestures, and battery status.",
