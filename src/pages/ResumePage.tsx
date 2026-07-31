@@ -91,7 +91,7 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => (
         <h2 className="resume__section-title">Projects</h2>
         {resume.projects.map((project) => (
           <article className="resume__entry" key={project.name}>
-            <div className="resume__meta">
+            <div className="resume__meta resume__meta--strong">
               <span>{project.name}</span>
             </div>
             <div>

@@ -90,6 +90,12 @@
   line-height: 1.6;
 }
 
+/* A project's name is its headline, so it does not recede like a date does. */
+.resume__meta--strong {
+  color: var(--fg);
+  font-weight: 500;
+}
+
 .resume__meta-place {
   display: block;
 }

@@ -1,71 +1,71 @@
-import SEOHead from "../components/SEOHead";
-import "./HomePage.css";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
-import useGlobalAnimations from "../utils/useGlobalAnimations";
 import { AsciiBlobs } from "ascii-blobs";
 import "ascii-blobs/dist/style.css";
+import SEOHead from "../components/SEOHead";
+import SiteNav from "../components/SiteNav";
+import "./HomePage.css";
 
-const HomePage = () => {
-  const { contentFadeVariants, transitionSettings } = useGlobalAnimations();
-  const [showBlobs, setShowBlobs] = useState(false);
+interface HomePageProps {
+  onNavigateToResume: () => void;
+}
 
-  useEffect(() => {
-    const timer = setTimeout(() => setShowBlobs(true), 50);
-    return () => clearTimeout(timer);
-  }, []);
-  
-  const asciiArt = `██████╗  █████╗  █████╗ ███╗   ██╗    ██╗  ██╗███████╗███████╗███████╗███████╗███╗   ██╗
+const asciiArt = `██████╗  █████╗  █████╗ ███╗   ██╗    ██╗  ██╗███████╗███████╗███████╗███████╗███╗   ██╗
 ██╔══██╗██╔══██╗██╔══██╗████╗  ██║    ██║  ██║██╔════╝██╔════╝██╔════╝██╔════╝████╗  ██║
 ██║  ██║███████║███████║██╔██╗ ██║    ███████║█████╗  ███████╗███████╗█████╗  ██╔██╗ ██║
 ██║  ██║██╔══██║██╔══██║██║╚██╗██║    ██╔══██║██╔══╝  ╚════██║╚════██║██╔══╝  ██║╚██╗██║
 ██████╔╝██║  ██║██║  ██║██║ ╚████║    ██║  ██║███████╗███████║███████║███████╗██║ ╚████║
 ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝    ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝`;
 
-  const asciiLines = useMemo(() => asciiArt.split("\n"), [asciiArt]);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  mainEntity: {
+    "@type": "Person",
+    name: "Daan Hessen",
+    jobTitle: "Software Developer",
+    url: "https://daanhessen.nl",
+    worksFor: {
+      "@type": "EducationalOrganization",
+      name: "University of Applied Sciences Utrecht",
+    },
+  },
+};
+
+const HomePage = ({ onNavigateToResume }: HomePageProps) => {
+  const [showBlobs, setShowBlobs] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowBlobs(true), 50);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const asciiLines = useMemo(() => asciiArt.split("\n"), []);
   const maxLineLength = useMemo(
     () => asciiLines.reduce((max, line) => Math.max(max, line.length), 0),
     [asciiLines],
   );
 
-  const asciiContainerRef = useRef<HTMLDivElement | null>(null);
-  
-  const getInitialFontSize = () => {
-    if (typeof window === 'undefined') return 'clamp(0.4rem, 1.1vw, 0.8rem)';
-    
-    if (window.innerWidth <= 768) {
-      const approximateWidth = window.innerWidth * 0.92;
-      const minFont = 5;
-      const sizeByWidth = approximateWidth / maxLineLength;
-      const clampedSize = Math.max(minFont, sizeByWidth);
-      return `${clampedSize}px`;
-    }
-    return 'clamp(0.4rem, 1.1vw, 0.8rem)';
-  };
-  
-  const [asciiFontSize, setAsciiFontSize] = useState<string>(getInitialFontSize());
+  const nameRef = useRef<HTMLDivElement | null>(null);
+  const [fontSize, setFontSize] = useState("clamp(0.4rem, 1.1vw, 0.8rem)");
 
   useEffect(() => {
     const updateFontSize = () => {
-      const container = asciiContainerRef.current;
-      if (!container || maxLineLength === 0) {
-        return;
-      }
+      const container = nameRef.current;
+      if (!container || maxLineLength === 0) return;
 
       const availableWidth = container.clientWidth;
-      if (availableWidth <= 0) {
-        return;
-      }
+      if (availableWidth <= 0) return;
 
       if (window.innerWidth <= 768) {
-        const minFont = 5;
         const sizeByWidth = (availableWidth * 0.92) / maxLineLength;
-        const clampedSize = Math.max(minFont, sizeByWidth);
-        setAsciiFontSize(`${clampedSize}px`);
+        setFontSize(`${Math.max(5, sizeByWidth)}px`);
       } else {
-        setAsciiFontSize('clamp(0.4rem, 1.1vw, 0.8rem)');
+        setFontSize("clamp(0.4rem, 1.1vw, 0.8rem)");
       }
     };
+
+    updateFontSize();
 
     let resizeTimeout: ReturnType<typeof setTimeout>;
     const debouncedUpdate = () => {
@@ -83,38 +83,19 @@ const HomePage = () => {
     };
   }, [maxLineLength]);
 
-  const homePageStructuredData = {
-    "@context": "https://schema.org",
-    "@type": "ProfilePage",
-    mainEntity: {
-      "@type": "Person",
-      name: "Daan Hessen",
-      description: "23-year-old HBO-ICT student at Hogeschool Utrecht",
-      url: "https://daanhessen.nl",
-      image: "https://daanhessen.nl/og-image.jpg",
-      jobTitle: "HBO-ICT Student",
-      worksFor: {
-        "@type": "EducationalOrganization",
-        name: "Hogeschool Utrecht",
-      },
-    },
-  };
-
   return (
     <>
       <SEOHead
-        title="Home - Daan Hessen"
-        description="23-year-old HBO-ICT student at Hogeschool Utrecht."
+        title="Daan Hessen — Software Developer"
+        description="Software development student in Utrecht."
         canonical="https://daanhessen.nl"
-        structuredData={homePageStructuredData}
+        structuredData={structuredData}
       />
 
-      <div className="page page-one">
-        {showBlobs && (
-          <AsciiBlobs />
-        )}
-        
-        <div className="version-badge">
+      <div className="home">
+        {showBlobs && <AsciiBlobs />}
+
+        <div className="home__credit">
           <a
             href="https://www.npmjs.com/package/ascii-blobs"
             target="_blank"
@@ -122,7 +103,7 @@ const HomePage = () => {
           >
             ascii-blobs v1.0.3
           </a>
-          {" • "}
+          {" · "}
           <a
             href="https://github.com/DaanHessen/ASCII-blobs"
             target="_blank"
@@ -132,39 +113,29 @@ const HomePage = () => {
           </a>
         </div>
 
-        <div className="content-container">
-          <div className="main-content">
-            <div className="ascii-art-section" ref={asciiContainerRef}>
-              <pre className="ascii-text" style={{ fontSize: asciiFontSize }}>
-                {asciiLines.map((line, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: 0.3,
-                      delay: index * 0.05,
-                      ease: [0.25, 0.1, 0.25, 1],
-                    }}
-                    style={{ display: "block", fontKerning: "none" }}
-                  >
-                    {line}
-                  </motion.div>
-                ))}
-              </pre>
-            </div>
-
-            <motion.div
-              className="hero-section"
-              variants={contentFadeVariants}
-              initial="initial"
-              animate="animate"
-              transition={{
-                ...transitionSettings.content,
-                delay: 0.3,
-              }}
-            ></motion.div>
+        <div className="home__stage">
+          <div className="home__name" ref={nameRef}>
+            <pre className="home__name-art" style={{ fontSize }}>
+              {asciiLines.map((line, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.22,
+                    delay: index * 0.03,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  }}
+                  style={{ display: "block", fontKerning: "none" }}
+                >
+                  {line}
+                </motion.div>
+              ))}
+            </pre>
+            <p className="home__tagline">software developer · utrecht</p>
           </div>
+
+          <SiteNav onNavigateToResume={onNavigateToResume} />
         </div>
       </div>
     </>

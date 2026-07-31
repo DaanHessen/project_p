@@ -1,27 +1,18 @@
 import "./globals.css";
 import HomePage from "./pages/HomePage";
-import SocialMedia from "./components/SocialMedia";
-import { Analytics } from "@vercel/analytics/react";
-import { useEffect, useState } from "react";
+import ResumePage from "./pages/ResumePage";
+import { useRoute } from "./router";
 
 function App() {
-  const [loadAnalytics, setLoadAnalytics] = useState(false);
-
-  useEffect(() => {
-    const loadAfterIdle = () => setLoadAnalytics(true);
-    
-    if (typeof requestIdleCallback !== 'undefined') {
-      requestIdleCallback(loadAfterIdle, { timeout: 2000 });
-    } else {
-      setTimeout(loadAfterIdle, 2000);
-    }
-  }, []);
+  const { route, navigate } = useRoute();
 
   return (
-    <div className="app-container">
-      <HomePage />
-      <SocialMedia />
-      {loadAnalytics && <Analytics />}
+    <div className={`app ${route === "cv" ? "app--flow" : "app--locked"}`}>
+      {route === "cv" ? (
+        <ResumePage onNavigateHome={() => navigate("/")} />
+      ) : (
+        <HomePage onNavigateToResume={() => navigate("/cv")} />
+      )}
     </div>
   );
 }

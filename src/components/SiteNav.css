@@ -16,6 +16,8 @@
   gap: var(--space-4);
   padding: var(--space-3) var(--space-5);
   border: 1px solid var(--accent);
+  /* Opaque enough that the blob field does not read through the control. */
+  background: rgba(7, 8, 11, 0.82);
   color: var(--accent);
   font-size: 0.875rem;
   letter-spacing: 0.04em;
@@ -46,10 +48,15 @@
 }
 
 .site-nav__link {
-  color: var(--fg-faint);
+  color: var(--fg-muted);
   font-size: 0.8125rem;
   letter-spacing: 0.02em;
   transition: color 0.15s ease;
+  /* Matches the halo on the landing type; see HomePage.css. */
+  text-shadow:
+    0 0 4px var(--bg),
+    0 0 10px var(--bg),
+    0 0 18px var(--bg);
 }
 
 .site-nav__link:hover,
