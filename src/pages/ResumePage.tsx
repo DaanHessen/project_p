@@ -25,6 +25,7 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => (
       description={resume.personal.about}
       canonical="https://daanhessen.nl/cv"
       structuredData={structuredData}
+      noindex
     />
 
     <main className="resume">

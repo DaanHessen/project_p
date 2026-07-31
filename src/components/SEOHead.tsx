@@ -8,6 +8,7 @@ interface SEOHeadProps {
   ogType?: string;
   canonical?: string;
   structuredData?: object;
+  noindex?: boolean;
 }
 
 const SEOHead = ({
@@ -18,12 +19,26 @@ const SEOHead = ({
   ogType = "website",
   canonical = "https://daanhessen.nl",
   structuredData,
+  noindex = false,
 }: SEOHeadProps) => {
   return (
     <Helmet>
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
+      {/*
+        Robots lives here rather than in index.html. A static tag there would
+        not be replaced by this one, leaving /cv with two conflicting
+        directives.
+      */}
+      <meta
+        name="robots"
+        content={
+          noindex
+            ? "noindex, follow"
+            : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        }
+      />
 
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
