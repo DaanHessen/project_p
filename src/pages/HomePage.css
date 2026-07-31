@@ -26,12 +26,16 @@
   );
 }
 
-/* One entrance, not six. Everything in the stack arrives together. */
+/*
+  The name cascades line by line; the tagline and nav overlap the tail of that
+  cascade rather than waiting for it. The whole sequence is done inside 0.7s,
+  so it reads as one arrival with texture rather than as three separate ones.
+*/
 
 @keyframes home-enter {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -43,8 +47,6 @@
   position: relative;
   z-index: 2;
   flex: 1;
-  opacity: 0;
-  animation: home-enter 0.32s cubic-bezier(0.25, 0.1, 0.25, 1) 0.06s forwards;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -86,6 +88,9 @@
 .home__name-line {
   display: block;
   font-kerning: none;
+  opacity: 0;
+  animation: home-enter 0.26s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  animation-delay: calc(var(--line) * 0.045s);
 }
 
 .home__tagline {
@@ -94,6 +99,8 @@
   font-size: 0.8125rem;
   letter-spacing: 0.16em;
   text-transform: lowercase;
+  opacity: 0;
+  animation: home-enter 0.28s cubic-bezier(0.25, 0.1, 0.25, 1) 0.26s forwards;
   text-shadow:
     0 0 4px var(--bg),
     0 0 10px var(--bg),
@@ -114,7 +121,13 @@
     0 0 4px var(--bg),
     0 0 10px var(--bg);
   opacity: 0;
-  animation: home-enter 0.32s cubic-bezier(0.25, 0.1, 0.25, 1) 0.06s forwards;
+  animation: home-enter 0.28s cubic-bezier(0.25, 0.1, 0.25, 1) 0.34s forwards;
+}
+
+/* The nav closes the sequence, just behind the tagline. */
+.home__stage .site-nav {
+  opacity: 0;
+  animation: home-enter 0.28s cubic-bezier(0.25, 0.1, 0.25, 1) 0.34s forwards;
 }
 
 .home__credit a {

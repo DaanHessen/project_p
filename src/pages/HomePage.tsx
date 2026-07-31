@@ -1,9 +1,9 @@
+import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AsciiBlobs } from "ascii-blobs";
 import "ascii-blobs/dist/style.css";
 import SEOHead from "../components/SEOHead";
 import SiteNav from "../components/SiteNav";
-import useAsciiReveal from "../utils/useAsciiReveal";
 import "./HomePage.css";
 
 interface HomePageProps {
@@ -46,7 +46,6 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
     [asciiLines],
   );
 
-  const revealedLines = useAsciiReveal(asciiLines, 2000);
   const nameRef = useRef<HTMLDivElement | null>(null);
   const [fontSize, setFontSize] = useState("clamp(0.4rem, 1.1vw, 0.8rem)");
 
@@ -128,8 +127,12 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
         <div className="home__stage">
           <div className="home__name" ref={nameRef}>
             <pre className="home__name-art" style={{ fontSize }}>
-              {revealedLines.map((line, index) => (
-                <span key={index} className="home__name-line">
+              {asciiLines.map((line, index) => (
+                <span
+                  key={index}
+                  className="home__name-line"
+                  style={{ "--line": index } as React.CSSProperties}
+                >
                   {line}
                 </span>
               ))}
