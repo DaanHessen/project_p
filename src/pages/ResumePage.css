@@ -1,0 +1,251 @@
+.resume {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-5) var(--space-8);
+}
+
+/* Header ----------------------------------------------------------------- */
+
+.resume__bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.resume__back,
+.resume__print {
+  font-size: 0.8125rem;
+  color: var(--fg-faint);
+  background: none;
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.resume__back:hover,
+.resume__print:hover {
+  color: var(--fg);
+}
+
+.resume__name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  line-height: 1.2;
+}
+
+.resume__position {
+  margin-top: var(--space-2);
+  color: var(--fg-muted);
+}
+
+.resume__about {
+  margin-top: var(--space-5);
+  max-width: var(--measure);
+  color: var(--fg-muted);
+}
+
+/* Sections --------------------------------------------------------------- */
+
+.resume__section {
+  margin-top: var(--space-8);
+}
+
+.resume__section-title {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Entries ---------------------------------------------------------------- */
+/*
+  Two columns: a fixed meta gutter for dates and place, and a flexible column
+  for the thing itself. On narrow screens the gutter stacks above rather than
+  squeezing, which keeps the dates readable.
+*/
+
+.resume__entry {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: var(--space-5);
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.resume__entry:last-child {
+  border-bottom: 0;
+}
+
+.resume__meta {
+  color: var(--fg-faint);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.resume__meta-place {
+  display: block;
+}
+
+.resume__entry-title {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+.resume__entry-org {
+  color: var(--fg-muted);
+}
+
+.resume__entry-desc {
+  margin-top: var(--space-3);
+  max-width: var(--measure);
+}
+
+/* Languages -------------------------------------------------------------- */
+
+.resume__languages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  padding-top: var(--space-5);
+}
+
+.resume__language-level {
+  color: var(--fg-faint);
+}
+
+/* Project links ---------------------------------------------------------- */
+
+.resume__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+}
+
+.resume__link {
+  color: var(--fg-muted);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1px;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.resume__link:hover {
+  color: var(--fg);
+  border-bottom-color: var(--fg-faint);
+}
+
+/* Narrow ----------------------------------------------------------------- */
+
+@media (max-width: 40rem) {
+  .resume {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .resume__entry {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .resume__meta {
+    display: flex;
+    gap: var(--space-3);
+  }
+
+  .resume__meta-place::before {
+    content: "·";
+    margin-right: var(--space-3);
+  }
+}
+
+/* Print ------------------------------------------------------------------ */
+/*
+  This is the download. "Save as PDF" from the browser print dialog must land
+  on a clean A4 document, so everything screen-specific inverts or disappears.
+*/
+
+@page {
+  size: A4;
+  margin: 18mm;
+}
+
+@media print {
+  html,
+  body,
+  #root,
+  .app,
+  .app--flow {
+    background: #fff !important;
+    color: #000 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  .resume__bar,
+  .resume__back,
+  .resume__print {
+    display: none !important;
+  }
+
+  .resume {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    font-size: 10pt;
+    line-height: 1.45;
+    color: #000;
+  }
+
+  .resume__name,
+  .resume__entry-title {
+    color: #000;
+  }
+
+  .resume__position,
+  .resume__about,
+  .resume__entry-org,
+  .resume__entry-desc,
+  .resume__meta,
+  .resume__section-title,
+  .resume__language-level,
+  .resume__link {
+    color: #1a1a1a;
+  }
+
+  .resume__section-title,
+  .resume__entry {
+    border-color: #c8c8c8;
+  }
+
+  .resume__section {
+    margin-top: 8mm;
+    break-inside: avoid;
+  }
+
+  .resume__entry {
+    break-inside: avoid;
+    padding: 3mm 0;
+  }
+
+  .resume__link {
+    border-bottom: 0;
+    text-decoration: underline;
+  }
+
+  /* Printed links are dead without their target. */
+  .resume__link::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    color: #555;
+  }
+}
