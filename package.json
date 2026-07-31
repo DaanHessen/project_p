@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write .",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc -b",
     "test": "vitest run",
     "portrait": "node tools/portrait.mjs"
   },
@@ -36,7 +36,7 @@
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1",
-    "vitest": "^4.1.10"
+    "vitest": "^3.2.7"
   },
   "allowScripts": {
     "esbuild@0.21.5": true
