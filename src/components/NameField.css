@@ -1,0 +1,76 @@
+.name-glow {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  user-select: none;
+  isolation: isolate;
+}
+
+.name-glow__layer {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(0.26rem, 0.52vw, 0.6rem);
+  line-height: 1;
+  white-space: pre;
+  font-kerning: none;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Body: dim enough that the field texture dominates, solid enough that the
+   name still exists over an empty patch of field. */
+.name-glow__layer--base {
+  color: rgba(232, 235, 240, 0.2);
+  text-shadow:
+    0 0 12px rgba(7, 8, 11, 0.95),
+    0 0 28px rgba(7, 8, 11, 0.9),
+    0 0 48px rgba(7, 8, 11, 0.7);
+}
+
+/* Light: lifts whatever ASCII sits behind the letterforms. */
+.name-glow__layer--light {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  mix-blend-mode: screen;
+  color: transparent;
+  background: linear-gradient(
+    100deg,
+    rgba(150, 160, 178, 0.6) 0%,
+    rgba(196, 205, 220, 0.72) 32%,
+    rgba(255, 255, 255, 0.92) 50%,
+    rgba(196, 205, 220, 0.72) 68%,
+    rgba(150, 160, 178, 0.6) 100%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: name-shine 11s linear infinite;
+}
+
+@keyframes name-shine {
+  from {
+    background-position: 120% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
+}
+
+.name-glow__row {
+  display: block;
+  font-kerning: none;
+  opacity: 0;
+  animation: home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  animation-delay: calc(var(--line) * 0.034s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .name-glow__layer--light {
+    animation: none;
+    background-position: 50% 0;
+  }
+}

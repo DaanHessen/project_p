@@ -6,12 +6,6 @@
   overflow: hidden;
 }
 
-/*
-  A pool of darkness under the composition. The field is dense enough that
-  glyph-level halos alone left small type unreadable, so the type gets its own
-  ground. Falls off well before the frame edges, so the field stays the field.
-*/
-
 .home__scrim {
   position: absolute;
   inset: 0;
@@ -19,18 +13,12 @@
   pointer-events: none;
   background: radial-gradient(
     ellipse 46rem 24rem at 50% 50%,
-    rgba(7, 8, 11, 0.95) 0%,
-    rgba(7, 8, 11, 0.88) 35%,
+    rgba(7, 8, 11, 0.86) 0%,
+    rgba(7, 8, 11, 0.82) 35%,
     rgba(7, 8, 11, 0.55) 60%,
     transparent 78%
   );
 }
-
-/*
-  The name cascades line by line; the tagline and nav overlap the tail of that
-  cascade rather than waiting for it. The whole sequence is done inside 0.51s,
-  so it reads as one arrival with texture rather than as three separate ones.
-*/
 
 @keyframes home-enter {
   from {
@@ -56,12 +44,6 @@
   text-align: center;
 }
 
-/*
-  A soft darkening at the frame edges. The field runs to the very corners, and
-  without this the composition reads as sitting on top of a texture rather than
-  inside a space.
-*/
-
 .home::after {
   content: "";
   position: absolute;
@@ -74,12 +56,6 @@
     rgba(7, 8, 11, 0.55) 100%
   );
 }
-
-/*
-  The field fades as one flat layer, starting with the first line of the name
-  and finishing exactly when the nav does. 430ms here plus the 40ms mount delay
-  in HomePage.tsx lands on 470ms, the end of the foreground sequence.
-*/
 
 @keyframes field-fade {
   from {
@@ -94,19 +70,11 @@
   animation: field-fade 0.43s cubic-bezier(0.25, 0.1, 0.25, 1) both;
 }
 
-/* Name ------------------------------------------------------------------- */
-
 .home__name {
   width: 100%;
   overflow: hidden;
   user-select: none;
 }
-
-/*
-  The blob field is dense enough to swallow small type. Rather than dimming the
-  blobs — they are the point — each text element carries a tight halo in the
-  background colour, which clears just the glyphs and leaves the field intact.
-*/
 
 .home__name-art {
   margin: 0;
@@ -145,15 +113,6 @@
     0 0 18px var(--bg);
 }
 
-/* Intro ------------------------------------------------------------------ */
-
-/*
-  Measured to sit under the name as a wide, short block rather than a tall
-  column. A narrow measure made it taller and more ragged, which is what made
-  it read as body copy dropped into a hero. balance evens the line lengths so
-  the block has a flat bottom edge instead of a ragged tail.
-*/
-
 .home__intro {
   max-width: 58ch;
   margin-top: calc(var(--space-3) * -1);
@@ -169,19 +128,12 @@
     0 0 18px var(--bg);
 }
 
-/* Blobs credit ----------------------------------------------------------- */
-
 .home__credit {
   position: fixed;
   top: var(--space-4);
   right: var(--space-4);
   z-index: 3;
   font-size: 0.6875rem;
-  /*
-    Was --fg-faint, which measures 3.34:1 against the background — below the
-    4.5:1 AA threshold for text this size, and it disappeared into the busier
-    corners of the field.
-  */
   color: var(--fg-muted);
   letter-spacing: 0.02em;
   text-shadow:
@@ -191,9 +143,7 @@
   animation: home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) 0.25s forwards;
 }
 
-/* The nav closes the sequence, just behind the intro. */
 .home__stage .site-nav {
-  /* Extra air here separates the prose from the one thing to click. */
   margin-top: var(--space-3);
   opacity: 0;
   animation: home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) 0.25s forwards;
