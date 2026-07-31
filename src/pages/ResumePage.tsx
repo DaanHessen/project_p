@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import SEOHead from "../components/SEOHead";
 import { useGitHubRepos } from "../data/github";
 import { proficiency, resume } from "../data/resume";
@@ -33,6 +33,22 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
   );
   const repos = useGitHubRepos(curated);
 
+  // The bar only earns a divider once it is actually overlapping content.
+  const sentinel = useRef<HTMLDivElement | null>(null);
+  const [stuck, setStuck] = useState(false);
+
+  useEffect(() => {
+    const node = sentinel.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setStuck(!entry.isIntersecting),
+      { rootMargin: "-1px 0px 0px 0px", threshold: 0 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
     <SEOHead
@@ -44,7 +60,8 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
     />
 
     <main className="resume">
-      <div className="resume__bar">
+      <div ref={sentinel} className="resume__sentinel" aria-hidden="true" />
+      <div className="resume__bar" data-stuck={stuck}>
         <button type="button" className="resume__back" onClick={onNavigateHome}>
           ← back
         </button>
@@ -95,11 +112,12 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
         <p className="resume__about">{resume.personal.about}</p>
       </header>
 
-      <section className="resume__section">
+      <section className="resume__section resume__section--timeline">
         <h2 className="resume__section-title">Experience</h2>
         {resume.experience.map((job) => (
           <article
             className="resume__entry"
+            data-current={job.duration.includes("Present")}
             key={`${job.company}-${job.duration}`}
           >
             <div className="resume__meta">
@@ -115,11 +133,12 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
         ))}
       </section>
 
-      <section className="resume__section">
+      <section className="resume__section resume__section--timeline">
         <h2 className="resume__section-title">Education</h2>
         {resume.education.map((entry) => (
           <article
             className="resume__entry"
+            data-current={entry.duration.includes("Present")}
             key={`${entry.institution}-${entry.duration}`}
           >
             <div className="resume__meta">

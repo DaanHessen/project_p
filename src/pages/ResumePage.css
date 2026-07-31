@@ -6,12 +6,30 @@
 
 /* Header ----------------------------------------------------------------- */
 
+/*
+  The bar sticks so the way back and the download stay reachable from anywhere
+  in a long document. It is blurred rather than solid so the page still reads as
+  one surface scrolling under it.
+*/
+
 .resume__bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: var(--space-4);
-  margin-bottom: var(--space-8);
+  margin: calc(var(--space-8) * -1) calc(var(--space-5) * -1) var(--space-8);
+  padding: var(--space-4) var(--space-5);
+  background: rgba(7, 8, 11, 0.82);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.resume__bar[data-stuck="true"] {
+  border-bottom-color: var(--rule);
 }
 
 .resume__back,
@@ -98,6 +116,7 @@
 */
 
 .resume__entry {
+  position: relative;
   display: grid;
   grid-template-columns: 11rem 1fr;
   gap: var(--space-5);
@@ -107,6 +126,50 @@
 
 .resume__entry:last-child {
   border-bottom: 0;
+}
+
+/*
+  A rail down the gutter with a node per entry. Experience is a sequence, and
+  a hairline plus a dot says so without spending any colour on it.
+*/
+
+.resume__section--timeline .resume__entry {
+  padding-left: var(--space-5);
+}
+
+.resume__section--timeline .resume__entry::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--rule);
+}
+
+.resume__section--timeline .resume__entry:first-of-type::before {
+  top: var(--space-5);
+}
+
+.resume__section--timeline .resume__entry:last-child::before {
+  bottom: auto;
+  height: var(--space-5);
+}
+
+.resume__section--timeline .resume__entry::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(var(--space-5) + 0.45rem);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--fg-faint);
+}
+
+/* The current roles are the ones worth pointing at. */
+.resume__section--timeline .resume__entry[data-current="true"]::after {
+  background: var(--accent);
 }
 
 .resume__meta {
@@ -225,8 +288,19 @@
 
   .resume__bar,
   .resume__back,
-  .resume__print {
+  .resume__print,
+  .resume__sentinel {
     display: none !important;
+  }
+
+  /* The rail is screen furniture; on paper the dates carry the sequence. */
+  .resume__section--timeline .resume__entry {
+    padding-left: 0;
+  }
+
+  .resume__section--timeline .resume__entry::before,
+  .resume__section--timeline .resume__entry::after {
+    display: none;
   }
 
   .resume {

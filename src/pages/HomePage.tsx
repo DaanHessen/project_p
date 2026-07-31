@@ -36,7 +36,9 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
   const [showBlobs, setShowBlobs] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowBlobs(true), 50);
+    // Long enough to let the type paint first, short enough that the field's
+    // reveal still finishes with the rest of the composition.
+    const timer = setTimeout(() => setShowBlobs(true), 40);
     return () => clearTimeout(timer);
   }, []);
 
@@ -93,7 +95,15 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
       />
 
       <div className="home">
-        {showBlobs && <AsciiBlobs />}
+        {/*
+          The field's own per-cell reveal is the fade-in. Its last cell starts
+          at revealDuration and takes revealFade to finish, so it is fully up at
+          the sum — 430ms, plus the 40ms mount delay below, lands it at 470ms:
+          exactly when the nav, the last thing to animate, finishes.
+        */}
+        {showBlobs && (
+          <AsciiBlobs animation={{ revealDuration: 200, revealFade: 230 }} />
+        )}
 
         <div className="home__credit">
           <a
@@ -140,7 +150,18 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
             <p className="home__tagline">software developer · utrecht</p>
           </div>
 
+          <p className="home__intro">
+            Third-year software development student. I build things end to end —
+            a published npm package, a Rust CLI, client sites — and I like the
+            problems that need taking apart.
+          </p>
+
           <SiteNav onNavigateToResume={onNavigateToResume} />
+
+          <p className="home__status">
+            <span className="home__status-dot" aria-hidden="true" />
+            open to internships and junior roles
+          </p>
         </div>
       </div>
     </>

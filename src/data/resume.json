@@ -5,12 +5,12 @@
     "email": "daanh2002@gmail.com",
     "github": "https://github.com/DaanHessen",
     "linkedin": "https://www.linkedin.com/in/daan-hessen-552789236/",
-    "about": "Third-year Software Development student at the University of Applied Sciences Utrecht, with about eight years of experience in hospitality across service and bartending roles. Strong work ethic, quick learner, and motivated to grow in a professional environment while applying technical knowledge in practice."
+    "about": "Third-year Software Development student at the University of Applied Sciences Utrecht. I build things end to end — a published npm package for animated ASCII backgrounds, a Rust CLI and REST API for controlling earbuds on Linux, and client work for a restaurant group. Comfortable across TypeScript, Java and Rust, and happiest with a problem that needs taking apart. Eight years in hospitality alongside it taught me to work under pressure and communicate with people who do not share my vocabulary."
   },
   "experience": [
     {
       "company": "Milo",
-      "location": "Netherlands",
+      "location": "Utrecht, Netherlands",
       "duration": "2026 - Present",
       "position": "Restaurant Server",
       "description": "Table service in a restaurant, building on eight years of hospitality experience."
