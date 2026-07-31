@@ -1,5 +1,4 @@
-/// <reference types="vitest" />
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -13,11 +12,17 @@ const asciiBlobsSrc = resolve(here, "../ASCII-blobs/src");
 // otherwise fall through to the installed package.
 const linkAsciiBlobs = existsSync(asciiBlobsSrc);
 
-// https://vitejs.dev/config/
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
 
   resolve: {
+    // The sibling checkout lives outside this project, and ascii-blobs declares
+    // react as an optional peer. Without deduping, rolldown resolves react from
+    // inside that checkout to an empty optional-peer stub and the build fails on
+    // every missing hook.
+    dedupe: ["react", "react-dom"],
+
     alias: linkAsciiBlobs
       ? {
           "ascii-blobs/dist/style.css": resolve(
@@ -30,11 +35,14 @@ export default defineConfig({
   },
 
   build: {
-    minify: "terser",
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ["react", "react-dom"],
+        // Vite 8 bundles with rolldown, which only accepts the function form
+        // of manualChunks. React is split out because it changes far less
+        // often than the site does.
+        manualChunks(id) {
+          if (id.includes("node_modules/react")) return "vendor";
+          return undefined;
         },
       },
     },
@@ -43,20 +51,17 @@ export default defineConfig({
     cssCodeSplit: true,
     cssMinify: true,
   },
-  
+
   css: {
     devSourcemap: true,
-    preprocessorOptions: {
-      css: {
-        charset: false,
-      },
-    },
   },
+
   optimizeDeps: {
     include: ["react", "react-dom"],
     // Linked during development; prebundling would serve a stale copy.
     exclude: ["ascii-blobs"],
   },
+
   server: {
     fs: {
       strict: true,
