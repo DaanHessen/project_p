@@ -1,1 +1,0 @@
-{"root":["./src/App.tsx","./src/main.tsx","./src/router.test.ts","./src/router.tsx","./src/vite-env.d.ts","./src/components/SEOHead.tsx","./src/components/SiteNav.tsx","./src/data/resume.test.ts","./src/data/resume.ts","./src/pages/HomePage.tsx","./src/pages/ResumePage.tsx"],"version":"5.8.3"}
