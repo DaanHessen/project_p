@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { existsSync } from "node:fs";
@@ -70,5 +71,10 @@ export default defineConfig({
     fs: {
       strict: true,
     },
+  },
+
+  test: {
+    environment: "node",
+    include: ["src/**/*.test.ts"],
   },
 });
