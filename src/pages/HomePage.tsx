@@ -111,12 +111,7 @@ const HomePage = () => {
 
       <div className="page page-one">
         {showBlobs && (
-          <AsciiBlobs 
-            animation={{
-              revealDuration: 250,
-              revealFade: 250,
-            }}
-          />
+          <AsciiBlobs />
         )}
         
         <div className="version-badge">

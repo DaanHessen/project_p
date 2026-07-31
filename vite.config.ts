@@ -1,5 +1,16 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
+
+const here = dirname(fileURLToPath(import.meta.url));
+const asciiBlobsSrc = resolve(here, "../ASCII-blobs/src");
+
+// ascii-blobs is developed alongside this site. When the sibling checkout is
+// present, resolve it to source so edits show up without a publish/link cycle;
+// otherwise fall through to the installed package.
+const linkAsciiBlobs = existsSync(asciiBlobsSrc);
 
 const resumeVersion =
   process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 8) ??
@@ -9,6 +20,18 @@ const resumeVersion =
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+
+  resolve: {
+    alias: linkAsciiBlobs
+      ? {
+          "ascii-blobs/dist/style.css": resolve(
+            asciiBlobsSrc,
+            "components/AsciiBlobs.css",
+          ),
+          "ascii-blobs": resolve(asciiBlobsSrc, "index.ts"),
+        }
+      : {},
+  },
 
   define: {
     __RESUME_VERSION__: JSON.stringify(resumeVersion),
@@ -40,6 +63,8 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ["react", "react-dom", "framer-motion"],
+    // Linked during development; prebundling would serve a stale copy.
+    exclude: ["ascii-blobs"],
   },
   server: {
     fs: {
