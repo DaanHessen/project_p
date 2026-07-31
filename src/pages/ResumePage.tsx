@@ -34,6 +34,25 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
 
   const sentinel = useRef<HTMLDivElement | null>(null);
   const [stuck, setStuck] = useState(false);
+  const [printHint, setPrintHint] = useState(false);
+
+  /*
+    Printing is the only way to a PDF here, and it is not uniformly available:
+    it is a no-op in Firefox Android and inside app webviews, and on iOS the
+    dialog can decline to open at all. Rather than leave a dead button, fall
+    back to telling the reader the route their browser does have.
+  */
+  const handlePrint = () => {
+    if (typeof window.print !== "function") {
+      setPrintHint(true);
+      return;
+    }
+    try {
+      window.print();
+    } catch {
+      setPrintHint(true);
+    }
+  };
 
   useEffect(() => {
     const node = sentinel.current;
@@ -100,13 +119,17 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
 
         <p className="resume__about">{resume.personal.about}</p>
 
-        <button
-          type="button"
-          className="resume__print"
-          onClick={() => window.print()}
-        >
+        <button type="button" className="resume__print" onClick={handlePrint}>
           download as PDF
         </button>
+
+        {printHint && (
+          <p className="resume__print-hint" role="status">
+            This browser will not open a print dialog. On iPhone use Share →
+            Print, then pinch the preview to save it as a PDF; in an in-app
+            browser, open the page in Safari or Chrome first.
+          </p>
+        )}
       </header>
 
       <div className="resume__body">

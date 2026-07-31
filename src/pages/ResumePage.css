@@ -95,6 +95,14 @@
   transform: translateY(1px);
 }
 
+.resume__print-hint {
+  max-width: var(--measure);
+  margin-top: var(--space-3);
+  color: var(--fg-faint);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
 .resume__name {
   font-size: 1.5rem;
   font-weight: 600;
@@ -281,6 +289,18 @@
     padding: var(--space-6) var(--space-4);
   }
 
+  /*
+    The bar bleeds to the page edge with negative margins that have to match
+    the container padding. Below 40rem the padding drops to --space-4 while
+    the margins stayed at --space-5, which pushed the bar 1rem wider than the
+    viewport and was the only thing scrolling sideways.
+  */
+  .resume__bar {
+    margin: calc(var(--space-6) * -1) calc(var(--space-4) * -1)
+      var(--space-6);
+    padding: var(--space-4);
+  }
+
   .resume__entry,
   .resume__skill-row,
   .resume__language-row {
@@ -320,6 +340,7 @@
   .resume__bar,
   .resume__back,
   .resume__print,
+  .resume__print-hint,
   .resume__sentinel {
     display: none !important;
   }
