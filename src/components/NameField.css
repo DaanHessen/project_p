@@ -7,13 +7,14 @@
   */
   width: min(818px, 100%);
   margin: 0 auto;
-  isolation: isolate;
   user-select: none;
 }
 
+/* A whisper of a contact shadow. It paints over the corona, so any more than
+   this eats the characters exactly where they should be brightest. */
 .name-mark__halo {
-  filter: drop-shadow(0 0 12px rgba(7, 8, 11, 0.95))
-    drop-shadow(0 0 28px rgba(7, 8, 11, 0.9));
+  position: relative;
+  filter: drop-shadow(0 0 4px rgba(7, 8, 11, 0.7));
 }
 
 .name-mark__layer {
@@ -21,15 +22,12 @@
   flex-direction: column;
 }
 
-.name-mark__layer--light {
-  position: absolute;
-  inset: 0;
-  mix-blend-mode: screen;
-}
-
+/* The mark itself: plain white, opaque, and left alone. Everything that moves
+   in this component happens in the field around it. */
 .name-mark__row {
   width: 100%;
   aspect-ratio: var(--row-ratio) / 1;
+  background: #fff;
   -webkit-mask-image: var(--mask);
   mask-image: var(--mask);
   -webkit-mask-size: 100% 100%;
@@ -41,48 +39,10 @@
   animation-delay: calc(var(--line) * 0.034s);
 }
 
-/* Body: dim enough that the field texture dominates, solid enough that the
-   name still exists over an empty patch of field. */
-.name-mark__layer--base .name-mark__row {
-  background: rgba(232, 235, 240, 0.2);
-}
-
-/* Light: lifts whatever ASCII sits behind the letterforms. */
-.name-mark__layer--light .name-mark__row {
-  background-image: linear-gradient(
-    100deg,
-    rgba(150, 160, 178, 0.6) 0%,
-    rgba(196, 205, 220, 0.72) 32%,
-    rgba(255, 255, 255, 0.92) 50%,
-    rgba(196, 205, 220, 0.72) 68%,
-    rgba(150, 160, 178, 0.6) 100%
-  );
-  background-size: 240% 100%;
-  animation:
-    home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) forwards,
-    name-shine 11s linear infinite;
-  animation-delay: calc(var(--line) * 0.034s), 0s;
-}
-
 /* On a phone the stage padding alone leaves the mark edge to edge, which
    reads as bigger than everything under it. */
 @media (max-width: 30rem) {
   .name-mark {
     width: 84%;
-  }
-}
-
-@keyframes name-shine {
-  from {
-    background-position: 120% 0;
-  }
-  to {
-    background-position: -120% 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .name-mark__layer--light .name-mark__row {
-    background-position: 50% 0;
   }
 }

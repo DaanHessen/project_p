@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { AsciiBlobs } from "ascii-blobs";
+import { useEffect, useRef, useState } from "react";
+import { AsciiBlobs, CELL_SIZE, type AsciiBlobsRef } from "ascii-blobs";
 import "ascii-blobs/dist/style.css";
 import SEOHead from "../components/SEOHead";
 import SiteNav from "../components/SiteNav";
@@ -27,11 +27,32 @@ const structuredData = {
 
 const HomePage = ({ onNavigateToResume }: HomePageProps) => {
   const [showBlobs, setShowBlobs] = useState(false);
+  const [cellPx, setCellPx] = useState(CELL_SIZE);
+  const blobs = useRef<AsciiBlobsRef>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowBlobs(true), 40);
     return () => clearTimeout(timer);
   }, []);
+
+  /*
+    The name's corona draws on the field's grid, so it has to be told how wide
+    a cell actually is. The engine is the only thing that knows: it clamps the
+    configured size against the viewport, so asking it beats assuming.
+  */
+  useEffect(() => {
+    if (!showBlobs) return;
+
+    const readCell = () => {
+      const stats = blobs.current?.getStats();
+      if (!stats?.columns) return;
+      setCellPx(window.innerWidth / stats.columns);
+    };
+
+    readCell();
+    window.addEventListener("resize", readCell);
+    return () => window.removeEventListener("resize", readCell);
+  }, [showBlobs]);
 
   return (
     <>
@@ -44,7 +65,14 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
 
       <div className="home">
         {showBlobs && (
-          <AsciiBlobs animation={{ revealDuration: 0, revealFade: 1 }} />
+          <AsciiBlobs
+            ref={blobs}
+            animation={{ revealDuration: 0, revealFade: 1 }}
+            onReady={() => {
+              const stats = blobs.current?.getStats();
+              if (stats?.columns) setCellPx(window.innerWidth / stats.columns);
+            }}
+          />
         )}
 
         <div className="home__credit">
@@ -66,10 +94,11 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
         </div>
 
         <div className="home__scrim" aria-hidden="true" />
+        <div className="home__vignette" aria-hidden="true" />
 
         <div className="home__stage">
           <div className="home__name">
-            <NameField />
+            <NameField cellPx={cellPx} />
             <p className="home__tagline">software developer, hilversum</p>
           </div>
 

@@ -1,0 +1,21 @@
+/* Sits over the field and under the letters, spilling past the mark on every
+   side by the padding the canvas reserves for it. */
+.name-mark__glow {
+  position: absolute;
+  top: calc(var(--pad) * -1);
+  left: calc(var(--pad) * -1);
+  width: calc(100% + var(--pad) * 2);
+  height: calc(100% + var(--pad) * 2);
+  pointer-events: none;
+  opacity: 0;
+  animation: glow-enter 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.28s forwards;
+}
+
+@keyframes glow-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

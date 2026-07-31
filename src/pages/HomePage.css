@@ -6,16 +6,26 @@
   overflow: hidden;
 }
 
+/*
+  The scrim, the vignette and the stage carry no z-index: they are positioned
+  and stack by DOM order alone, over the field canvas at z-index 0. Keep them
+  in that order in the markup — the name's corona has to land above the scrim
+  and under the letters, and the order here is what puts it there.
+*/
 .home__scrim {
   position: absolute;
   inset: 0;
-  z-index: 1;
   pointer-events: none;
+  /*
+    Lighter than it looks like it should be: the wordmark is solid white with
+    its own contact shadow now, so the scrim no longer has to carry legibility.
+    It only has to keep the field quiet enough for the corona to read against.
+  */
   background: radial-gradient(
     ellipse 46rem 24rem at 50% 50%,
-    rgba(7, 8, 11, 0.86) 0%,
-    rgba(7, 8, 11, 0.82) 35%,
-    rgba(7, 8, 11, 0.55) 60%,
+    rgba(7, 8, 11, 0.7) 0%,
+    rgba(7, 8, 11, 0.66) 35%,
+    rgba(7, 8, 11, 0.45) 60%,
     transparent 78%
   );
 }
@@ -33,7 +43,6 @@
 
 .home__stage {
   position: relative;
-  z-index: 2;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -44,11 +53,11 @@
   text-align: center;
 }
 
-.home::after {
-  content: "";
+/* An element rather than .home::after: a pseudo-element would paint after the
+   stage, and it has to stay under the text. */
+.home__vignette {
   position: absolute;
   inset: 0;
-  z-index: 1;
   pointer-events: none;
   background: radial-gradient(
     ellipse 90% 80% at 50% 50%,
@@ -70,33 +79,11 @@
   animation: field-fade 0.43s cubic-bezier(0.25, 0.1, 0.25, 1) both;
 }
 
+/* No overflow clip: the geometry mark can no longer overrun the way the font
+   fallback did, and clipping here would cut the bloom off at the top row. */
 .home__name {
   width: 100%;
-  overflow: hidden;
   user-select: none;
-}
-
-.home__name-art {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: clamp(0.4rem, 1.1vw, 0.8rem);
-  line-height: 1;
-  color: var(--fg);
-  white-space: pre;
-  text-align: center;
-  font-kerning: none;
-  -webkit-font-smoothing: antialiased;
-  text-shadow:
-    0 0 6px var(--bg),
-    0 0 14px var(--bg);
-}
-
-.home__name-line {
-  display: block;
-  font-kerning: none;
-  opacity: 0;
-  animation: home-enter 0.2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
-  animation-delay: calc(var(--line) * 0.032s);
 }
 
 .home__tagline {
@@ -167,10 +154,6 @@
     font-size: 0.5625rem;
     top: var(--space-3);
     right: var(--space-3);
-  }
-
-  .home__name {
-    --gutter: 2.5rem;
   }
 
   .home__tagline {
