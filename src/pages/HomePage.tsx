@@ -36,8 +36,6 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
   const [showBlobs, setShowBlobs] = useState(false);
 
   useEffect(() => {
-    // Long enough to let the type paint first, short enough that the field's
-    // reveal still finishes with the rest of the composition.
     const timer = setTimeout(() => setShowBlobs(true), 40);
     return () => clearTimeout(timer);
   }, []);
@@ -95,12 +93,6 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
       />
 
       <div className="home">
-        {/*
-          The field's own per-cell reveal is the fade-in. Its last cell starts
-          at revealDuration and takes revealFade to finish, so it is fully up at
-          the sum — 430ms, plus the 40ms mount delay below, lands it at 470ms:
-          exactly when the nav, the last thing to animate, finishes.
-        */}
         {showBlobs && (
           <AsciiBlobs animation={{ revealDuration: 200, revealFade: 230 }} />
         )}
@@ -123,17 +115,8 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
           </a>
         </div>
 
-        {/*
-          The scrim sits between the field and the type. Haloing the glyphs
-          alone was not enough against a field this dense, so the composition
-          gets its own pool of darkness to sit in.
-        */}
         <div className="home__scrim" aria-hidden="true" />
 
-        {/*
-          One entrance for the whole composition rather than a per-line
-          stagger — the parts belong together, so they arrive together.
-        */}
         <div className="home__stage">
           <div className="home__name" ref={nameRef}>
             <pre className="home__name-art" style={{ fontSize }}>
@@ -151,9 +134,10 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
           </div>
 
           <p className="home__intro">
-            Third-year software development student. I build things end to end —
-            a published npm package, a Rust CLI, client sites — and I like the
-            problems that need taking apart.
+            Just a guy studying HBO-ICT at the University of Applied Sciences
+            Utrecht. Experience in hospitality, plus a few (passion) projects.
+            I like solving problems and learning new things. I write my own
+            code, and use AI to move faster.
           </p>
 
           <SiteNav onNavigateToResume={onNavigateToResume} />

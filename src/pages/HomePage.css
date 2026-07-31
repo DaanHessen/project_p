@@ -128,12 +128,19 @@
 
 /* Intro and status ------------------------------------------------------- */
 
+/*
+  Measured to sit under the name as a wide, short block rather than a tall
+  column. A narrow measure made it taller and more ragged, which is what made
+  it read as body copy dropped into a hero. balance evens the line lengths so
+  the block has a flat bottom edge instead of a ragged tail.
+*/
+
 .home__intro {
-  max-width: 44ch;
-  margin-top: calc(var(--space-2) * -1);
+  max-width: 58ch;
+  margin-top: calc(var(--space-3) * -1);
   color: var(--fg-muted);
-  font-size: 0.8125rem;
-  line-height: 1.75;
+  font-size: 0.78125rem;
+  line-height: 1.8;
   text-wrap: balance;
   opacity: 0;
   animation: home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) 0.22s forwards;
@@ -202,6 +209,8 @@
 
 /* The nav closes the sequence, just behind the intro. */
 .home__stage .site-nav {
+  /* Extra air here separates the prose from the one thing to click. */
+  margin-top: var(--space-3);
   opacity: 0;
   animation: home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) 0.25s forwards;
 }
