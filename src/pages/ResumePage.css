@@ -4,13 +4,6 @@
   padding: var(--space-8) var(--space-5) var(--space-8);
 }
 
-/*
-  Above 68rem the identity block moves into a column of its own and stays put
-  while the sections scroll past it. On a 1440px screen the single column left
-  roughly 350px of dead space either side; this spends it on something useful
-  rather than just widening the measure, which would hurt readability.
-*/
-
 @media (min-width: 68rem) {
   .resume {
     max-width: 74rem;
@@ -35,19 +28,10 @@
     min-width: 0;
   }
 
-  /* The first section sits level with the name, not below the whole sidebar. */
   .resume__body > .resume__section:first-child {
     margin-top: 0;
   }
 }
-
-/* Header ----------------------------------------------------------------- */
-
-/*
-  The bar sticks so the way back and the download stay reachable from anywhere
-  in a long document. It is blurred rather than solid so the page still reads as
-  one surface scrolling under it.
-*/
 
 .resume__bar {
   position: sticky;
@@ -142,8 +126,6 @@
   color: var(--fg-muted);
 }
 
-/* Skills ----------------------------------------------------------------- */
-
 .resume__skills {
   padding-top: var(--space-5);
 }
@@ -159,12 +141,6 @@
   color: var(--fg-faint);
 }
 
-/*
-  Skills and Languages are both short label/value lists. On screen they stack
-  like every other section; in print they sit side by side, which keeps four
-  lines of Languages from claiming a page of its own.
-*/
-
 .resume__pair {
   display: contents;
 }
@@ -175,12 +151,6 @@
   margin-top: var(--space-8);
 }
 
-/*
-  These were 0.8125rem against entry titles rendering near 1rem, so a section
-  heading was smaller than the job titles beneath it. Size and a heavier rule
-  do the separating now, without reaching for uppercase tracking.
-*/
-
 .resume__section-title {
   font-size: 1.125rem;
   font-weight: 600;
@@ -189,13 +159,6 @@
   padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--fg-faint);
 }
-
-/* Entries ---------------------------------------------------------------- */
-/*
-  Two columns: a fixed meta gutter for dates and place, and a flexible column
-  for the thing itself. On narrow screens the gutter stacks above rather than
-  squeezing, which keeps the dates readable.
-*/
 
 .resume__entry {
   position: relative;
@@ -209,11 +172,6 @@
 .resume__entry:last-child {
   border-bottom: 0;
 }
-
-/*
-  A rail down the gutter with a node per entry. Experience is a sequence, and
-  a hairline plus a dot says so without spending any colour on it.
-*/
 
 .resume__section--timeline .resume__entry {
   padding-left: var(--space-5);
@@ -255,7 +213,6 @@
   line-height: 1.6;
 }
 
-/* A project's name is its headline, so it does not recede like a date does. */
 .resume__meta--strong {
   color: var(--fg);
   font-weight: 500;
@@ -280,8 +237,6 @@
   max-width: var(--measure);
 }
 
-/* Languages -------------------------------------------------------------- */
-
 .resume__languages {
   padding-top: var(--space-5);
 }
@@ -297,8 +252,6 @@
   color: var(--fg-faint);
 }
 
-/* Project links ---------------------------------------------------------- */
-
 .resume__links {
   display: flex;
   flex-wrap: wrap;
@@ -306,7 +259,6 @@
   margin-top: var(--space-3);
 }
 
-/* Matches the landing page's link behaviour rather than inventing a second. */
 .resume__link {
   color: var(--fg-muted);
   text-decoration: underline;
@@ -323,8 +275,6 @@
   color: var(--fg);
   text-decoration-color: var(--fg-faint);
 }
-
-/* Narrow ----------------------------------------------------------------- */
 
 @media (max-width: 40rem) {
   .resume {
@@ -348,12 +298,6 @@
     margin-right: var(--space-2);
   }
 }
-
-/* Print ------------------------------------------------------------------ */
-/*
-  This is the download. "Save as PDF" from the browser print dialog must land
-  on a clean A4 document, so everything screen-specific inverts or disappears.
-*/
 
 @page {
   size: A4;
@@ -380,7 +324,6 @@
     display: none !important;
   }
 
-  /* The rail is screen furniture; on paper the dates carry the sequence. */
   .resume__section--timeline .resume__entry {
     padding-left: 0;
   }
@@ -390,7 +333,6 @@
     display: none;
   }
 
-  /* Paper has one column. */
   .resume {
     max-width: none;
     margin: 0;
@@ -407,11 +349,6 @@
     grid-column: auto;
   }
 
-  /*
-    The wide-screen rule that levels the first section with the name must not
-    survive into print, where the sidebar is stacked above it and the heading
-    would otherwise butt straight against the last line of the summary.
-  */
   .resume__body > .resume__section:first-child {
     margin-top: 8mm;
   }
@@ -437,12 +374,6 @@
     border-color: #c8c8c8;
   }
 
-  /*
-    Sections must be allowed to split across pages. Holding a whole section
-    together pushed each one onto a page of its own, which is what turned a
-    two-page CV into five. Entries stay atomic, and a heading never gets left
-    stranded at the foot of a page.
-  */
   .resume__section {
     margin-top: 6mm;
     break-inside: auto;
@@ -485,10 +416,6 @@
     margin-top: 1.5mm;
   }
 
-  /*
-    The contact links already print their address as their label, so repeating
-    it in brackets was pure duplication.
-  */
   .resume__contact .resume__link::after {
     content: none;
   }
@@ -498,12 +425,6 @@
     text-decoration: underline;
   }
 
-  /*
-    Printing every href in brackets cost roughly a page: the LinkedIn activity
-    URL alone wrapped onto its own line. Chrome's Save-as-PDF keeps the links
-    clickable, and the addresses worth typing by hand (the domains, the email)
-    are already their own link text.
-  */
   .resume__link::after {
     content: none;
   }
@@ -520,7 +441,6 @@
     margin-top: 6mm;
   }
 
-  /* 11rem of gutter is generous at 9.5pt and squeezes the descriptions. */
   .resume__entry {
     grid-template-columns: 34mm 1fr;
     gap: 4mm;

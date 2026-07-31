@@ -67,7 +67,12 @@ const NameField = () => {
   );
 
   return (
-    <div className="name-glow" aria-label="Daan Hessen" role="img">
+    <div
+      className="name-glow"
+      aria-label="Daan Hessen"
+      role="img"
+      style={{ ["--cols" as string]: lines[0].length }}
+    >
       {layer("base")}
       {layer("light")}
     </div>

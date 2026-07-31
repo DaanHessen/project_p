@@ -10,7 +10,12 @@
 .name-glow__layer {
   margin: 0;
   font-family: var(--font-mono);
-  font-size: clamp(0.26rem, 0.52vw, 0.6rem);
+  /*
+    Every glyph is 0.6em wide in the mono face, so the whole wordmark is
+    --cols * 0.6em. Sizing against that directly means it can never overrun
+    the viewport, whatever the column count ends up being.
+  */
+  font-size: min(0.6rem, calc((100vw - var(--gutter, 3rem)) / (var(--cols) * 0.6)));
   line-height: 1;
   white-space: pre;
   font-kerning: none;

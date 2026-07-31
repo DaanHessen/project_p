@@ -21,7 +21,6 @@ const structuredData = {
 };
 
 const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
-  // Repos written up by hand below say more than their GitHub blurb would.
   const curated = useMemo(
     () =>
       resume.projects.flatMap((project) =>
@@ -33,7 +32,6 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
   );
   const repos = useGitHubRepos(curated);
 
-  // The bar only earns a divider once it is actually overlapping content.
   const sentinel = useRef<HTMLDivElement | null>(null);
   const [stuck, setStuck] = useState(false);
 
@@ -71,7 +69,6 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
         <h1 className="resume__name">Daan Hessen</h1>
         <p className="resume__position">{resume.personal.position}</p>
 
-        {/* A CV with no way to reply is a dead end. */}
         <ul className="resume__contact">
           <li className="resume__contact-place">{resume.personal.location}</li>
           <li>
@@ -103,12 +100,6 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
 
         <p className="resume__about">{resume.personal.about}</p>
 
-        {/*
-          The download was a dim label in the top corner and easy to miss. As a
-          bordered control in the sidebar it reads as the one action on the
-          page, and it carries the same accent as the résumé link on the
-          landing page so the two read as one system.
-        */}
         <button
           type="button"
           className="resume__print"
