@@ -27,7 +27,7 @@
 .name-mark__row {
   width: 100%;
   aspect-ratio: var(--row-ratio) / 1;
-  background: #fff;
+  background: var(--fg);
   -webkit-mask-image: var(--mask);
   mask-image: var(--mask);
   -webkit-mask-size: 100% 100%;
