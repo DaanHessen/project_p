@@ -11,8 +11,7 @@
     "serve": "node server.mjs",
     "format": "prettier --write .",
     "type-check": "tsc -b",
-    "test": "vitest run",
-    "portrait": "node tools/portrait.mjs"
+    "test": "vitest run"
   },
   "dependencies": {
     "ascii-blobs": "^1.0.4",

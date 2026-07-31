@@ -101,7 +101,7 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            ascii-blobs v1.0.3
+            ascii-blobs v1.0.4
           </a>
           {" · "}
           <a

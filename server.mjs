@@ -41,12 +41,24 @@ async function resolveFile(urlPath) {
   return null;
 }
 
+// Carried over from the Vercel config this server replaces.
+const securityHeaders = {
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()",
+};
+
 const server = createServer(async (req, res) => {
   const urlPath = decodeURIComponent(
     new URL(req.url, "http://localhost").pathname,
   );
   const file = (await resolveFile(urlPath)) ?? join(root, "index.html");
   const ext = extname(file);
+
+  for (const [key, value] of Object.entries(securityHeaders)) {
+    res.setHeader(key, value);
+  }
 
   res.setHeader("Content-Type", types[ext] ?? "application/octet-stream");
   res.setHeader(
