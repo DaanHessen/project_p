@@ -1,22 +1,33 @@
 {
   "personal": {
     "position": "Software Developer",
+    "location": "Utrecht, Netherlands",
+    "email": "daanh2002@gmail.com",
+    "github": "https://github.com/DaanHessen",
+    "linkedin": "https://www.linkedin.com/in/daan-hessen-552789236/",
     "about": "Third-year Software Development student at the University of Applied Sciences Utrecht, with about eight years of experience in hospitality across service and bartending roles. Strong work ethic, quick learner, and motivated to grow in a professional environment while applying technical knowledge in practice."
   },
   "experience": [
     {
-      "company": "Brasserie Monsees",
-      "location": "'s-Graveland, Netherlands",
-      "duration": "2022 - Present",
-      "position": "Bartender / Server",
-      "description": "Working in a fine-dining restaurant, handling mostly bar service and some table service."
+      "company": "Milo",
+      "location": "Netherlands",
+      "duration": "2026 - Present",
+      "position": "Restaurant Server",
+      "description": "Table service in a restaurant, building on eight years of hospitality experience."
     },
     {
       "company": "OutlierAI",
       "location": "Remote",
       "duration": "2026 - Present",
-      "position": "AI Training Specialist, Project Aether",
-      "description": "Contributing to AI model improvement through data annotation, transcription correction, and quality-focused training tasks."
+      "position": "AI Training Specialist",
+      "description": "Improving AI models through data annotation, transcription correction, and quality-focused training tasks. Completed work on Project Aether; currently between project assignments."
+    },
+    {
+      "company": "Brasserie Monsees",
+      "location": "'s-Graveland, Netherlands",
+      "duration": "2022 - 2026",
+      "position": "Bartender / Server",
+      "description": "Worked in a fine-dining restaurant, handling mostly bar service and some table service."
     },
     {
       "company": "Ambrosius Stube",
@@ -56,7 +67,20 @@
       "description": "Completed two years before switching to software development."
     }
   ],
-  "skills": [],
+  "skills": [
+    {
+      "group": "Programming",
+      "items": ["TypeScript", "JavaScript", "Java", "Rust", "Python", "SQL"]
+    },
+    {
+      "group": "Frontend",
+      "items": ["React", "Vite", "HTML", "CSS"]
+    },
+    {
+      "group": "Backend & tooling",
+      "items": ["Node.js", "REST APIs", "Git", "Linux"]
+    }
+  ],
   "languages": [
     {
       "name": "Dutch",

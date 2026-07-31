@@ -1,4 +1,6 @@
+import { useMemo } from "react";
 import SEOHead from "../components/SEOHead";
+import { useGitHubRepos } from "../data/github";
 import { proficiency, resume } from "../data/resume";
 import "./ResumePage.css";
 
@@ -18,8 +20,21 @@ const structuredData = {
   },
 };
 
-const ResumePage = ({ onNavigateHome }: ResumePageProps) => (
-  <>
+const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
+  // Repos written up by hand below say more than their GitHub blurb would.
+  const curated = useMemo(
+    () =>
+      resume.projects.flatMap((project) =>
+        project.links
+          .filter((link) => link.url.includes("github.com"))
+          .map((link) => link.url),
+      ),
+    [],
+  );
+  const repos = useGitHubRepos(curated);
+
+  return (
+    <>
     <SEOHead
       title="Résumé — Daan Hessen"
       description={resume.personal.about}
@@ -44,7 +59,39 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => (
 
       <header>
         <h1 className="resume__name">Daan Hessen</h1>
-        <p className="resume__position">{resume.personal.position}</p>
+        <p className="resume__position">
+          {resume.personal.position} · {resume.personal.location}
+        </p>
+
+        {/* A CV with no way to reply is a dead end. */}
+        <ul className="resume__contact">
+          <li>
+            <a className="resume__link" href={`mailto:${resume.personal.email}`}>
+              {resume.personal.email}
+            </a>
+          </li>
+          <li>
+            <a
+              className="resume__link"
+              href={resume.personal.github}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              github.com/DaanHessen
+            </a>
+          </li>
+          <li>
+            <a
+              className="resume__link"
+              href={resume.personal.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              linkedin
+            </a>
+          </li>
+        </ul>
+
         <p className="resume__about">{resume.personal.about}</p>
       </header>
 
@@ -115,6 +162,50 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => (
         ))}
       </section>
 
+      {repos.length > 0 && (
+        <section className="resume__section">
+          <h2 className="resume__section-title">More on GitHub</h2>
+          {repos.map((repo) => (
+            <article className="resume__entry" key={repo.url}>
+              <div className="resume__meta resume__meta--strong">
+                <span>{repo.name}</span>
+                {repo.language && (
+                  <span className="resume__meta-place">{repo.language}</span>
+                )}
+              </div>
+              <div>
+                <p className="resume__entry-desc">{repo.description}</p>
+                <div className="resume__links">
+                  <a
+                    className="resume__link"
+                    href={repo.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub ↗
+                  </a>
+                  {repo.stars > 0 && (
+                    <span className="resume__stars">★ {repo.stars}</span>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </section>
+      )}
+
+      <section className="resume__section">
+        <h2 className="resume__section-title">Skills</h2>
+        <dl className="resume__skills">
+          {resume.skills.map((group) => (
+            <div className="resume__skill-row" key={group.group}>
+              <dt className="resume__meta">{group.group}</dt>
+              <dd>{group.items.join(" · ")}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
       <section className="resume__section">
         <h2 className="resume__section-title">Languages</h2>
         <ul className="resume__languages">
@@ -128,8 +219,9 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => (
           ))}
         </ul>
       </section>
-    </main>
-  </>
-);
+      </main>
+    </>
+  );
+};
 
 export default ResumePage;

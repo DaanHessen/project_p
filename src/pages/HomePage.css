@@ -28,7 +28,7 @@
 
 /*
   The name cascades line by line; the tagline and nav overlap the tail of that
-  cascade rather than waiting for it. The whole sequence is done inside 0.7s,
+  cascade rather than waiting for it. The whole sequence is done inside 0.5s,
   so it reads as one arrival with texture rather than as three separate ones.
 */
 
@@ -89,8 +89,8 @@
   display: block;
   font-kerning: none;
   opacity: 0;
-  animation: home-enter 0.26s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
-  animation-delay: calc(var(--line) * 0.045s);
+  animation: home-enter 0.2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  animation-delay: calc(var(--line) * 0.032s);
 }
 
 .home__tagline {
@@ -100,7 +100,7 @@
   letter-spacing: 0.16em;
   text-transform: lowercase;
   opacity: 0;
-  animation: home-enter 0.28s cubic-bezier(0.25, 0.1, 0.25, 1) 0.26s forwards;
+  animation: home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) 0.19s forwards;
   text-shadow:
     0 0 4px var(--bg),
     0 0 10px var(--bg),
@@ -121,13 +121,13 @@
     0 0 4px var(--bg),
     0 0 10px var(--bg);
   opacity: 0;
-  animation: home-enter 0.28s cubic-bezier(0.25, 0.1, 0.25, 1) 0.34s forwards;
+  animation: home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) 0.25s forwards;
 }
 
 /* The nav closes the sequence, just behind the tagline. */
 .home__stage .site-nav {
   opacity: 0;
-  animation: home-enter 0.28s cubic-bezier(0.25, 0.1, 0.25, 1) 0.34s forwards;
+  animation: home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) 0.25s forwards;
 }
 
 .home__credit a {

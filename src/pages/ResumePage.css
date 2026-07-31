@@ -43,10 +43,35 @@
   color: var(--fg-muted);
 }
 
+.resume__contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin-top: var(--space-4);
+  font-size: 0.8125rem;
+}
+
 .resume__about {
   margin-top: var(--space-5);
   max-width: var(--measure);
   color: var(--fg-muted);
+}
+
+/* Skills ----------------------------------------------------------------- */
+
+.resume__skills {
+  padding-top: var(--space-5);
+}
+
+.resume__skill-row {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: var(--space-5);
+  padding-bottom: var(--space-3);
+}
+
+.resume__stars {
+  color: var(--fg-faint);
 }
 
 /* Sections --------------------------------------------------------------- */
@@ -157,7 +182,8 @@
     padding: var(--space-6) var(--space-4);
   }
 
-  .resume__entry {
+  .resume__entry,
+  .resume__skill-row {
     grid-template-columns: 1fr;
     gap: var(--space-2);
   }

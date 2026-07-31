@@ -33,14 +33,23 @@ export interface LanguageEntry {
   level: number;
 }
 
+export interface SkillGroup {
+  group: string;
+  items: string[];
+}
+
 export interface Resume {
   personal: {
     position: string;
+    location: string;
+    email: string;
+    github: string;
+    linkedin: string;
     about: string;
   };
   experience: ExperienceEntry[];
   education: EducationEntry[];
-  skills: string[];
+  skills: SkillGroup[];
   languages: LanguageEntry[];
   projects: ProjectEntry[];
 }

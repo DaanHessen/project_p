@@ -15,7 +15,7 @@ const SEOHead = ({
   title = "Daan Hessen - Developer & HBO-ICT Student | Portfolio",
   description = "Student and developer (don't have much to say, just take a look...)",
   keywords = "Daan Hessen, HBO-ICT, Hogeschool Utrecht, Portfolio, Frontend Developer, Backend Developer, Netherlands, Dutch, English, German",
-  ogImage = "https://daanhessen.nl/og-image.jpg",
+  ogImage = "https://daanhessen.nl/og-image.png",
   ogType = "website",
   canonical = "https://daanhessen.nl",
   structuredData,

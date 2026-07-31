@@ -22,13 +22,19 @@ describe("proficiency", () => {
 });
 
 describe("resume data", () => {
-  it("carries no contact details", () => {
-    // The gate decision in the spec rests on this staying true.
+  it("carries no sensitive contact details", () => {
+    // The no-gate decision in the spec rests on this staying true. Email is
+    // deliberately present — a CV nobody can reply to is useless, and the same
+    // address is already a mailto link in the site nav. Phone, date of birth
+    // and home address are the ones that would change the calculus.
     const personal = resume.personal as Record<string, unknown>;
-    expect(personal.email).toBeUndefined();
     expect(personal.phone).toBeUndefined();
     expect(personal.dob).toBeUndefined();
     expect(personal.address).toBeUndefined();
+  });
+
+  it("has a reachable email", () => {
+    expect(resume.personal.email).toContain("@");
   });
 
   it("has entries to render", () => {
