@@ -75,6 +75,25 @@
   );
 }
 
+/*
+  The field fades as one flat layer, starting with the first line of the name
+  and finishing exactly when the nav does. 430ms here plus the 40ms mount delay
+  in HomePage.tsx lands on 470ms, the end of the foreground sequence.
+*/
+
+@keyframes field-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.home .ascii-blobs {
+  animation: field-fade 0.43s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
 /* Name ------------------------------------------------------------------- */
 
 .home__name {

@@ -93,8 +93,15 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
       />
 
       <div className="home">
+        {/*
+          The field's own per-cell reveal is switched off, so every cell lands
+          at once and the whole layer fades as one. A staggered materialisation
+          underneath a staggered foreground read as two competing animations;
+          one flat fade sits behind the type instead of arguing with it.
+          Timing lives in HomePage.css.
+        */}
         {showBlobs && (
-          <AsciiBlobs animation={{ revealDuration: 200, revealFade: 230 }} />
+          <AsciiBlobs animation={{ revealDuration: 0, revealFade: 1 }} />
         )}
 
         <div className="home__credit">
