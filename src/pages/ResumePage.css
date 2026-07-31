@@ -159,6 +159,16 @@
   color: var(--fg-faint);
 }
 
+/*
+  Skills and Languages are both short label/value lists. On screen they stack
+  like every other section; in print they sit side by side, which keeps four
+  lines of Languages from claiming a page of its own.
+*/
+
+.resume__pair {
+  display: contents;
+}
+
 /* Sections --------------------------------------------------------------- */
 
 .resume__section {
@@ -347,7 +357,7 @@
 
 @page {
   size: A4;
-  margin: 18mm;
+  margin: 14mm 16mm;
 }
 
 @media print {
@@ -386,8 +396,8 @@
     margin: 0;
     padding: 0;
     display: block;
-    font-size: 10pt;
-    line-height: 1.45;
+    font-size: 9.5pt;
+    line-height: 1.4;
     color: #000;
   }
 
@@ -427,14 +437,60 @@
     border-color: #c8c8c8;
   }
 
+  /*
+    Sections must be allowed to split across pages. Holding a whole section
+    together pushed each one onto a page of its own, which is what turned a
+    two-page CV into five. Entries stay atomic, and a heading never gets left
+    stranded at the foot of a page.
+  */
   .resume__section {
-    margin-top: 8mm;
-    break-inside: avoid;
+    margin-top: 6mm;
+    break-inside: auto;
+  }
+
+  .resume__section-title {
+    break-after: avoid;
+    font-size: 12pt;
+    padding-bottom: 1.5mm;
   }
 
   .resume__entry {
     break-inside: avoid;
-    padding: 3mm 0;
+    padding: 2.5mm 0;
+  }
+
+  .resume__entry-desc {
+    margin-top: 1mm;
+  }
+
+  .resume__about {
+    margin-top: 3mm;
+  }
+
+  .resume__contact {
+    margin-top: 2mm;
+  }
+
+  .resume__skill-row,
+  .resume__language-row {
+    padding-bottom: 1.5mm;
+  }
+
+  .resume__skills,
+  .resume__languages {
+    padding-top: 3mm;
+  }
+
+  .resume__links {
+    margin-top: 1.5mm;
+  }
+
+  /*
+    The contact links already print their address as their label, so repeating
+    it in brackets was pure duplication.
+  */
+  .resume__contact .resume__link::after {
+    content: none;
   }
 
   .resume__link {
@@ -442,10 +498,37 @@
     text-decoration: underline;
   }
 
-  /* Printed links are dead without their target. */
+  /*
+    Printing every href in brackets cost roughly a page: the LinkedIn activity
+    URL alone wrapped onto its own line. Chrome's Save-as-PDF keeps the links
+    clickable, and the addresses worth typing by hand (the domains, the email)
+    are already their own link text.
+  */
   .resume__link::after {
-    content: " (" attr(href) ")";
-    font-size: 8pt;
-    color: #555;
+    content: none;
+  }
+
+  .resume__pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 8mm;
+    align-items: start;
+    break-inside: avoid;
+  }
+
+  .resume__pair > .resume__section {
+    margin-top: 6mm;
+  }
+
+  /* 11rem of gutter is generous at 9.5pt and squeezes the descriptions. */
+  .resume__entry {
+    grid-template-columns: 34mm 1fr;
+    gap: 4mm;
+  }
+
+  .resume__skill-row,
+  .resume__language-row {
+    grid-template-columns: 26mm 1fr;
+    gap: 3mm;
   }
 }

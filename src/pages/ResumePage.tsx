@@ -223,6 +223,7 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
         </section>
       )}
 
+      <div className="resume__pair">
       <section className="resume__section">
         <h2 className="resume__section-title">Skills</h2>
         <dl className="resume__skills">
@@ -246,6 +247,7 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
           ))}
         </dl>
       </section>
+      </div>
       </div>
       </main>
     </>

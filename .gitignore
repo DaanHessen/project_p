@@ -25,3 +25,6 @@ dist-ssr
 
 package-lock.json
 *.tsbuildinfo
+
+# Downloaded résumé exports
+*.pdf
