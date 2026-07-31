@@ -61,6 +61,10 @@
   color: var(--fg-muted);
 }
 
+.resume__contact-place {
+  color: var(--fg-faint);
+}
+
 .resume__contact {
   display: flex;
   flex-wrap: wrap;
@@ -257,8 +261,8 @@
   }
 
   .resume__meta-place::before {
-    content: "·";
-    margin-right: var(--space-3);
+    content: ",";
+    margin-right: var(--space-2);
   }
 }
 

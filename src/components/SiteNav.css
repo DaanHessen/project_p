@@ -39,14 +39,6 @@
   transform: translateY(1px);
 }
 
-.site-nav__arrow {
-  transition: transform 0.18s ease;
-}
-
-.site-nav__resume:hover .site-nav__arrow {
-  transform: translateX(2px);
-}
-
 .site-nav__links {
   display: flex;
   flex-wrap: wrap;

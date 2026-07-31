@@ -126,7 +126,7 @@
     0 0 18px var(--bg);
 }
 
-/* Intro and status ------------------------------------------------------- */
+/* Intro ------------------------------------------------------------------ */
 
 /*
   Measured to sit under the name as a wide, short block rather than a tall
@@ -148,56 +148,6 @@
     0 0 4px var(--bg),
     0 0 10px var(--bg),
     0 0 18px var(--bg);
-}
-
-/*
-  A bordered chip rather than a loose line, so it reads as a state and not as
-  another sentence. Deliberately hairline and colourless — the accent stays
-  reserved for the résumé control, and the dot alone carries it here.
-*/
-
-.home__status {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 0.35rem 0.75rem;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  background: rgba(7, 8, 11, 0.6);
-  color: var(--fg-muted);
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  opacity: 0;
-  animation: home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) 0.29s forwards;
-  text-shadow:
-    0 0 4px var(--bg),
-    0 0 10px var(--bg),
-    0 0 18px var(--bg);
-}
-
-.home__status-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 0 rgba(217, 164, 65, 0.5);
-  animation: status-pulse 2.8s ease-out infinite;
-}
-
-@keyframes status-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(217, 164, 65, 0.45);
-  }
-  70%,
-  100% {
-    box-shadow: 0 0 0 7px rgba(217, 164, 65, 0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home__status-dot {
-    animation: none;
-  }
 }
 
 /* Blobs credit ----------------------------------------------------------- */

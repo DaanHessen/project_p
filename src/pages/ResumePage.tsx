@@ -76,12 +76,11 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
 
       <header>
         <h1 className="resume__name">Daan Hessen</h1>
-        <p className="resume__position">
-          {resume.personal.position} · {resume.personal.location}
-        </p>
+        <p className="resume__position">{resume.personal.position}</p>
 
         {/* A CV with no way to reply is a dead end. */}
         <ul className="resume__contact">
+          <li className="resume__contact-place">{resume.personal.location}</li>
           <li>
             <a className="resume__link" href={`mailto:${resume.personal.email}`}>
               {resume.personal.email}
@@ -219,7 +218,7 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
           {resume.skills.map((group) => (
             <div className="resume__skill-row" key={group.group}>
               <dt className="resume__meta">{group.group}</dt>
-              <dd>{group.items.join(" · ")}</dd>
+              <dd>{group.items.join(", ")}</dd>
             </div>
           ))}
         </dl>

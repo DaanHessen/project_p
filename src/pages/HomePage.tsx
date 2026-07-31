@@ -105,7 +105,7 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
           >
             ascii-blobs v1.0.4
           </a>
-          {" · "}
+          {" / "}
           <a
             href="https://github.com/DaanHessen/ASCII-blobs"
             target="_blank"
@@ -130,22 +130,18 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
                 </span>
               ))}
             </pre>
-            <p className="home__tagline">software developer · utrecht</p>
+            <p className="home__tagline">software developer, hilversum</p>
           </div>
 
           <p className="home__intro">
             Just a guy studying HBO-ICT at the University of Applied Sciences
             Utrecht. Experience in hospitality, plus a few (passion) projects.
             I like solving problems and learning new things. I write my own
-            code, and use AI to move faster.
+            code, and use AI to move faster. I am currently looking for an
+            internship.
           </p>
 
           <SiteNav onNavigateToResume={onNavigateToResume} />
-
-          <p className="home__status">
-            <span className="home__status-dot" aria-hidden="true" />
-            open to internships and junior roles
-          </p>
         </div>
       </div>
     </>

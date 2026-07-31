@@ -39,10 +39,7 @@ const SiteNav = ({ onNavigateToResume }: SiteNavProps) => {
   return (
     <nav className="site-nav" aria-label="Primary">
       <a className="site-nav__resume" href="/cv" onClick={handleResumeClick}>
-        <span>résumé</span>
-        <span className="site-nav__arrow" aria-hidden="true">
-          →
-        </span>
+        résumé
       </a>
 
       <ul className="site-nav__links">
