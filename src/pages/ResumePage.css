@@ -4,6 +4,43 @@
   padding: var(--space-8) var(--space-5) var(--space-8);
 }
 
+/*
+  Above 68rem the identity block moves into a column of its own and stays put
+  while the sections scroll past it. On a 1440px screen the single column left
+  roughly 350px of dead space either side; this spends it on something useful
+  rather than just widening the measure, which would hurt readability.
+*/
+
+@media (min-width: 68rem) {
+  .resume {
+    max-width: 74rem;
+    display: grid;
+    grid-template-columns: 19rem 1fr;
+    column-gap: var(--space-8);
+    align-items: start;
+  }
+
+  .resume__bar {
+    grid-column: 1 / -1;
+  }
+
+  .resume__identity {
+    position: sticky;
+    top: 5.5rem;
+    grid-column: 1;
+  }
+
+  .resume__body {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  /* The first section sits level with the name, not below the whole sidebar. */
+  .resume__body > .resume__section:first-child {
+    margin-top: 0;
+  }
+}
+
 /* Header ----------------------------------------------------------------- */
 
 /*
@@ -22,8 +59,8 @@
   gap: var(--space-4);
   margin: calc(var(--space-8) * -1) calc(var(--space-5) * -1) var(--space-8);
   padding: var(--space-4) var(--space-5);
-  background: rgba(7, 8, 11, 0.82);
-  backdrop-filter: blur(8px);
+  background: rgba(7, 8, 11, 0.94);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease;
 }
@@ -103,11 +140,9 @@
 }
 
 .resume__section-title {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--fg-faint);
+  color: var(--fg);
   padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--rule);
 }
@@ -169,11 +204,6 @@
   height: 5px;
   border-radius: 50%;
   background: var(--fg-faint);
-}
-
-/* The current roles are the ones worth pointing at. */
-.resume__section--timeline .resume__entry[data-current="true"]::after {
-  background: var(--accent);
 }
 
 .resume__meta {
@@ -307,13 +337,30 @@
     display: none;
   }
 
+  /* Paper has one column. */
   .resume {
     max-width: none;
     margin: 0;
     padding: 0;
+    display: block;
     font-size: 10pt;
     line-height: 1.45;
     color: #000;
+  }
+
+  .resume__identity,
+  .resume__body {
+    position: static;
+    grid-column: auto;
+  }
+
+  /*
+    The wide-screen rule that levels the first section with the name must not
+    survive into print, where the sidebar is stacked above it and the heading
+    would otherwise butt straight against the last line of the summary.
+  */
+  .resume__body > .resume__section:first-child {
+    margin-top: 8mm;
   }
 
   .resume__name,

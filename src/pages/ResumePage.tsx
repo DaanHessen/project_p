@@ -52,7 +52,7 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
   return (
     <>
     <SEOHead
-      title="Résumé — Daan Hessen"
+      title="Daan Hessen, résumé"
       description={resume.personal.about}
       canonical="https://daanhessen.nl/cv"
       structuredData={structuredData}
@@ -70,11 +70,11 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
           className="resume__print"
           onClick={() => window.print()}
         >
-          download ↓
+          download
         </button>
       </div>
 
-      <header>
+      <header className="resume__identity">
         <h1 className="resume__name">Daan Hessen</h1>
         <p className="resume__position">{resume.personal.position}</p>
 
@@ -110,6 +110,8 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
 
         <p className="resume__about">{resume.personal.about}</p>
       </header>
+
+      <div className="resume__body">
 
       <section className="resume__section resume__section--timeline">
         <h2 className="resume__section-title">Experience</h2>
@@ -171,7 +173,7 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {link.text} ↗
+                    {link.text}
                   </a>
                 ))}
               </div>
@@ -200,10 +202,12 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    GitHub ↗
+                    GitHub
                   </a>
                   {repo.stars > 0 && (
-                    <span className="resume__stars">★ {repo.stars}</span>
+                    <span className="resume__stars">
+                      {repo.stars} {repo.stars === 1 ? "star" : "stars"}
+                    </span>
                   )}
                 </div>
               </div>
@@ -229,14 +233,15 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
         <ul className="resume__languages">
           {resume.languages.map((language) => (
             <li key={language.name}>
-              {language.name}{" "}
+              {language.name},{" "}
               <span className="resume__language-level">
-                — {proficiency(language.level)}
+                {proficiency(language.level)}
               </span>
             </li>
           ))}
         </ul>
       </section>
+      </div>
       </main>
     </>
   );

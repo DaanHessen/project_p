@@ -86,7 +86,7 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
   return (
     <>
       <SEOHead
-        title="Daan Hessen — Software Developer"
+        title="Daan Hessen"
         description="Software development student in Utrecht."
         canonical="https://daanhessen.nl"
         structuredData={structuredData}

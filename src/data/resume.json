@@ -1,11 +1,11 @@
 {
   "personal": {
     "position": "Software Developer",
-    "location": "Utrecht, Netherlands",
+    "location": "Hilversum, Netherlands",
     "email": "daanh2002@gmail.com",
     "github": "https://github.com/DaanHessen",
     "linkedin": "https://www.linkedin.com/in/daan-hessen-552789236/",
-    "about": "Third-year Software Development student at the University of Applied Sciences Utrecht. I build things end to end — a published npm package for animated ASCII backgrounds, a Rust CLI and REST API for controlling earbuds on Linux, and client work for a restaurant group. Comfortable across TypeScript, Java and Rust, and happiest with a problem that needs taking apart. Eight years in hospitality alongside it taught me to work under pressure and communicate with people who do not share my vocabulary."
+    "about": "Just a guy studying HBO-ICT at the University of Applied Sciences Utrecht. I've worked in hospitality for about eight years, across serving and bar work, and I've kept studying alongside the job. Outside of that I've built a few (passion) projects: an npm package for animated ASCII backgrounds, a Rust CLI for controlling earbuds on Linux, and a website for a restaurant. I like solving problems and learning new things. I write my own code, and use AI to move faster. I am currently looking for an internship."
   },
   "experience": [
     {
