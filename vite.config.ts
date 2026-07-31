@@ -13,11 +13,6 @@ const asciiBlobsSrc = resolve(here, "../ASCII-blobs/src");
 // otherwise fall through to the installed package.
 const linkAsciiBlobs = existsSync(asciiBlobsSrc);
 
-const resumeVersion =
-  process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 8) ??
-  process.env.npm_package_version ??
-  Date.now().toString();
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
@@ -32,10 +27,6 @@ export default defineConfig({
           "ascii-blobs": resolve(asciiBlobsSrc, "index.ts"),
         }
       : {},
-  },
-
-  define: {
-    __RESUME_VERSION__: JSON.stringify(resumeVersion),
   },
 
   build: {
