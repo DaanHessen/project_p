@@ -65,13 +65,6 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
         <button type="button" className="resume__back" onClick={onNavigateHome}>
           ← back
         </button>
-        <button
-          type="button"
-          className="resume__print"
-          onClick={() => window.print()}
-        >
-          download
-        </button>
       </div>
 
       <header className="resume__identity">
@@ -109,6 +102,20 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
         </ul>
 
         <p className="resume__about">{resume.personal.about}</p>
+
+        {/*
+          The download was a dim label in the top corner and easy to miss. As a
+          bordered control in the sidebar it reads as the one action on the
+          page, and it carries the same accent as the résumé link on the
+          landing page so the two read as one system.
+        */}
+        <button
+          type="button"
+          className="resume__print"
+          onClick={() => window.print()}
+        >
+          download as PDF
+        </button>
       </header>
 
       <div className="resume__body">
@@ -230,16 +237,14 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
 
       <section className="resume__section">
         <h2 className="resume__section-title">Languages</h2>
-        <ul className="resume__languages">
+        <dl className="resume__languages">
           {resume.languages.map((language) => (
-            <li key={language.name}>
-              {language.name},{" "}
-              <span className="resume__language-level">
-                {proficiency(language.level)}
-              </span>
-            </li>
+            <div className="resume__language-row" key={language.name}>
+              <dt className="resume__meta">{language.name}</dt>
+              <dd>{proficiency(language.level)}</dd>
+            </div>
           ))}
-        </ul>
+        </dl>
       </section>
       </div>
       </main>

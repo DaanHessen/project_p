@@ -69,8 +69,7 @@
   border-bottom-color: var(--rule);
 }
 
-.resume__back,
-.resume__print {
+.resume__back {
   font-size: 0.8125rem;
   color: var(--fg-faint);
   background: none;
@@ -80,9 +79,36 @@
   transition: color 0.15s ease;
 }
 
-.resume__back:hover,
-.resume__print:hover {
+.resume__back:hover {
   color: var(--fg);
+}
+
+.resume__print {
+  display: inline-block;
+  margin-top: var(--space-6);
+  padding: 0.7rem 1.3rem;
+  border: 1px solid var(--accent);
+  background: none;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.resume__print:hover,
+.resume__print:focus-visible {
+  background: var(--accent);
+  color: var(--bg);
+  box-shadow: 0 0 18px rgba(217, 164, 65, 0.28);
+}
+
+.resume__print:active {
+  transform: translateY(1px);
 }
 
 .resume__name {
@@ -139,12 +165,19 @@
   margin-top: var(--space-8);
 }
 
+/*
+  These were 0.8125rem against entry titles rendering near 1rem, so a section
+  heading was smaller than the job titles beneath it. Size and a heavier rule
+  do the separating now, without reaching for uppercase tracking.
+*/
+
 .resume__section-title {
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--fg);
   padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--fg-faint);
 }
 
 /* Entries ---------------------------------------------------------------- */
@@ -224,6 +257,7 @@
 
 .resume__entry-title {
   color: var(--fg);
+  font-size: 0.9375rem;
   font-weight: 500;
 }
 
@@ -239,10 +273,14 @@
 /* Languages -------------------------------------------------------------- */
 
 .resume__languages {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-6);
   padding-top: var(--space-5);
+}
+
+.resume__language-row {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: var(--space-5);
+  padding-bottom: var(--space-3);
 }
 
 .resume__language-level {
@@ -258,18 +296,22 @@
   margin-top: var(--space-3);
 }
 
+/* Matches the landing page's link behaviour rather than inventing a second. */
 .resume__link {
   color: var(--fg-muted);
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 1px;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: 1px;
   transition:
     color 0.15s ease,
-    border-color 0.15s ease;
+    text-decoration-color 0.15s ease;
 }
 
-.resume__link:hover {
+.resume__link:hover,
+.resume__link:focus-visible {
   color: var(--fg);
-  border-bottom-color: var(--fg-faint);
+  text-decoration-color: var(--fg-faint);
 }
 
 /* Narrow ----------------------------------------------------------------- */
@@ -280,7 +322,8 @@
   }
 
   .resume__entry,
-  .resume__skill-row {
+  .resume__skill-row,
+  .resume__language-row {
     grid-template-columns: 1fr;
     gap: var(--space-2);
   }

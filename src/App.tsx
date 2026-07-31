@@ -8,11 +8,18 @@ function App() {
 
   return (
     <div className={`app ${route === "cv" ? "app--flow" : "app--locked"}`}>
-      {route === "cv" ? (
-        <ResumePage onNavigateHome={() => navigate("/")} />
-      ) : (
-        <HomePage onNavigateToResume={() => navigate("/cv")} />
-      )}
+      {/*
+        Keying on the route remounts the page, which both replays its own
+        entrance and restarts this wrapper's fade. Short on purpose: it covers
+        the swap without making navigation feel slow.
+      */}
+      <div className="app__route" key={route}>
+        {route === "cv" ? (
+          <ResumePage onNavigateHome={() => navigate("/")} />
+        ) : (
+          <HomePage onNavigateToResume={() => navigate("/cv")} />
+        )}
+      </div>
     </div>
   );
 }

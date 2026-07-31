@@ -100,6 +100,25 @@ ul {
   min-height: 100dvh;
 }
 
+.app--locked .app__route {
+  height: 100%;
+}
+
+@keyframes route-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.app__route {
+  animation: route-enter 0.16s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
 /* Motion ----------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {

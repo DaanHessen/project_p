@@ -97,6 +97,17 @@
   ],
   "projects": [
     {
+      "name": "Krentenweger",
+      "description": "My first launched product. It collects the weekly deals from the big Dutch supermarkets and pairs them with recipes built around whatever is on sale. Rust backend on Axum and SQLite that scrapes each supermarket and matches recipes against the deals, with a vanilla JavaScript frontend. Also has accounts, social login, a weekly email digest, and payments for the paid tier.",
+      "links": [
+        {
+          "type": "website",
+          "text": "krentenweger.nl",
+          "url": "https://krentenweger.nl"
+        }
+      ]
+    },
+    {
       "name": "ASCII-blobs",
       "description": "Library for generating animated ASCII backgrounds with customizable blobs, including controls for size, speed, density, and color.",
       "links": [
