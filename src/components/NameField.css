@@ -1,48 +1,55 @@
-.name-glow {
+.name-mark {
   position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  user-select: none;
+  /*
+    818px is the size the character version settled at on desktop; below that
+    the mark is simply as wide as the stage allows, so it can never overrun a
+    phone the way font fallback did.
+  */
+  width: min(818px, 100%);
+  margin: 0 auto;
   isolation: isolate;
+  user-select: none;
 }
 
-.name-glow__layer {
-  margin: 0;
-  font-family: var(--font-mono);
-  /*
-    Every glyph is 0.6em wide in the mono face, so the whole wordmark is
-    --cols * 0.6em. Sizing against that directly means it can never overrun
-    the viewport, whatever the column count ends up being.
-  */
-  font-size: min(0.6rem, calc((100vw - var(--gutter, 3rem)) / (var(--cols) * 0.6)));
-  line-height: 1;
-  white-space: pre;
-  font-kerning: none;
-  letter-spacing: 0;
-  -webkit-font-smoothing: antialiased;
+.name-mark__halo {
+  filter: drop-shadow(0 0 12px rgba(7, 8, 11, 0.95))
+    drop-shadow(0 0 28px rgba(7, 8, 11, 0.9));
+}
+
+.name-mark__layer {
+  display: flex;
+  flex-direction: column;
+}
+
+.name-mark__layer--light {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen;
+}
+
+.name-mark__row {
+  width: 100%;
+  aspect-ratio: var(--row-ratio) / 1;
+  -webkit-mask-image: var(--mask);
+  mask-image: var(--mask);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  opacity: 0;
+  animation: home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  animation-delay: calc(var(--line) * 0.034s);
 }
 
 /* Body: dim enough that the field texture dominates, solid enough that the
    name still exists over an empty patch of field. */
-.name-glow__layer--base {
-  color: rgba(232, 235, 240, 0.2);
-  text-shadow:
-    0 0 12px rgba(7, 8, 11, 0.95),
-    0 0 28px rgba(7, 8, 11, 0.9),
-    0 0 48px rgba(7, 8, 11, 0.7);
+.name-mark__layer--base .name-mark__row {
+  background: rgba(232, 235, 240, 0.2);
 }
 
 /* Light: lifts whatever ASCII sits behind the letterforms. */
-.name-glow__layer--light {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  mix-blend-mode: screen;
-  color: transparent;
-  background: linear-gradient(
+.name-mark__layer--light .name-mark__row {
+  background-image: linear-gradient(
     100deg,
     rgba(150, 160, 178, 0.6) 0%,
     rgba(196, 205, 220, 0.72) 32%,
@@ -51,9 +58,18 @@
     rgba(150, 160, 178, 0.6) 100%
   );
   background-size: 240% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: name-shine 11s linear infinite;
+  animation:
+    home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) forwards,
+    name-shine 11s linear infinite;
+  animation-delay: calc(var(--line) * 0.034s), 0s;
+}
+
+/* On a phone the stage padding alone leaves the mark edge to edge, which
+   reads as bigger than everything under it. */
+@media (max-width: 30rem) {
+  .name-mark {
+    width: 84%;
+  }
 }
 
 @keyframes name-shine {
@@ -65,17 +81,8 @@
   }
 }
 
-.name-glow__row {
-  display: block;
-  font-kerning: none;
-  opacity: 0;
-  animation: home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
-  animation-delay: calc(var(--line) * 0.034s);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .name-glow__layer--light {
-    animation: none;
+  .name-mark__layer--light .name-mark__row {
     background-position: 50% 0;
   }
 }

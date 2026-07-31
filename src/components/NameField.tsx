@@ -1,11 +1,17 @@
+import type React from "react";
 import { useMemo } from "react";
 import "./NameField.css";
 
 /**
- * The name as a bright region of the field behind it: block glyphs painted
- * with a screen blend, so the ASCII noise keeps showing through the letters
- * instead of being covered by them. A dim base layer underneath keeps the
- * wordmark legible where the field happens to be empty.
+ * The name as a bright region of the field behind it: the letterforms are cut
+ * out as a mask, a dim base keeps them legible over an empty patch of field,
+ * and a screen-blend layer lifts whatever ASCII sits behind them.
+ *
+ * The mark is geometry, not text. Block characters (U+2588) are absent from
+ * the JetBrains Mono subsets Google serves, so they fall back to whatever the
+ * platform picks — a face whose advance width is 0.6em on this desktop and is
+ * not on Android, which tore the grid apart. Rectangles have no metrics to
+ * disagree about.
  */
 
 const GLYPHS: Record<string, string[]> = {
@@ -21,9 +27,11 @@ const TEXT = "DAAN HESSEN";
 const ROWS = 7;
 const LETTER_GAP = 2;
 const WORD_GAP = 5;
-const SCALE_X = 2;
 
-function buildLines(): string[] {
+/** Pixels are wider than they are tall, which is what the mono grid gave us. */
+const CELL_W = 1.2;
+
+function buildGrid(): number[][] {
   const rows: number[][] = Array.from({ length: ROWS }, () => []);
   const push = (row: number, value: number, times: number) => {
     for (let i = 0; i < times; i++) rows[row].push(value);
@@ -43,37 +51,69 @@ function buildLines(): string[] {
     }
   });
 
-  // Mono cells are taller than wide, so every column is doubled.
-  return rows
-    .map((row) => row.flatMap((v) => Array(SCALE_X).fill(v)))
-    .map((row) => row.map((v) => (v ? "█" : " ")).join(""));
+  return rows;
+}
+
+/** One SVG per row, so the rows can still stagger in independently. */
+function rowMask(row: number[]): string {
+  const width = row.length * CELL_W;
+  const rects: string[] = [];
+
+  let start = -1;
+  for (let c = 0; c <= row.length; c++) {
+    if (row[c] && start === -1) start = c;
+    if (!row[c] && start !== -1) {
+      // Runs are merged so a row is a handful of rects, not seventy.
+      rects.push(
+        `<rect x="${(start * CELL_W).toFixed(2)}" y="0" width="${(
+          (c - start) * CELL_W
+        ).toFixed(2)}" height="1"/>`,
+      );
+      start = -1;
+    }
+  }
+
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width.toFixed(2)} 1"` +
+    ` preserveAspectRatio="none" fill="#fff">${rects.join("")}</svg>`;
+
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 }
 
 const NameField = () => {
-  const lines = useMemo(() => buildLines(), []);
+  const { masks, ratio } = useMemo(() => {
+    const grid = buildGrid();
+    return {
+      masks: grid.map(rowMask),
+      ratio: (grid[0].length * CELL_W).toFixed(3),
+    };
+  }, []);
 
   const layer = (variant: string) => (
-    <pre className={`name-glow__layer name-glow__layer--${variant}`}>
-      {lines.map((line, index) => (
-        <span
+    <div className={`name-mark__layer name-mark__layer--${variant}`}>
+      {masks.map((mask, index) => (
+        <div
           key={index}
-          className="name-glow__row"
-          style={{ ["--line" as string]: index }}
-        >
-          {line}
-        </span>
+          className="name-mark__row"
+          style={
+            {
+              "--mask": mask,
+              "--line": index,
+            } as React.CSSProperties
+          }
+        />
       ))}
-    </pre>
+    </div>
   );
 
   return (
     <div
-      className="name-glow"
+      className="name-mark"
       aria-label="Daan Hessen"
       role="img"
-      style={{ ["--cols" as string]: lines[0].length }}
+      style={{ ["--row-ratio" as string]: ratio }}
     >
-      {layer("base")}
+      <div className="name-mark__halo">{layer("base")}</div>
       {layer("light")}
     </div>
   );
