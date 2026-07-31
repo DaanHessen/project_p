@@ -35,7 +35,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ["react", "react-dom"],
-          animations: ["framer-motion"],
         },
       },
     },
@@ -54,7 +53,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ["react", "react-dom", "framer-motion"],
+    include: ["react", "react-dom"],
     // Linked during development; prebundling would serve a stale copy.
     exclude: ["ascii-blobs"],
   },

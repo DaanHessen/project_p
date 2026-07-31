@@ -6,10 +6,45 @@
   overflow: hidden;
 }
 
+/*
+  A pool of darkness under the composition. The field is dense enough that
+  glyph-level halos alone left small type unreadable, so the type gets its own
+  ground. Falls off well before the frame edges, so the field stays the field.
+*/
+
+.home__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 44rem 20rem at 50% 50%,
+    rgba(7, 8, 11, 0.95) 0%,
+    rgba(7, 8, 11, 0.88) 35%,
+    rgba(7, 8, 11, 0.55) 60%,
+    transparent 78%
+  );
+}
+
+/* One entrance, not six. Everything in the stack arrives together. */
+
+@keyframes home-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .home__stage {
   position: relative;
   z-index: 2;
   flex: 1;
+  opacity: 0;
+  animation: home-enter 0.32s cubic-bezier(0.25, 0.1, 0.25, 1) 0.06s forwards;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -48,6 +83,11 @@
     0 0 14px var(--bg);
 }
 
+.home__name-line {
+  display: block;
+  font-kerning: none;
+}
+
 .home__tagline {
   margin-top: var(--space-6);
   color: var(--fg-muted);
@@ -73,6 +113,8 @@
   text-shadow:
     0 0 4px var(--bg),
     0 0 10px var(--bg);
+  opacity: 0;
+  animation: home-enter 0.32s cubic-bezier(0.25, 0.1, 0.25, 1) 0.06s forwards;
 }
 
 .home__credit a {

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AsciiBlobs } from "ascii-blobs";
 import "ascii-blobs/dist/style.css";
@@ -113,23 +112,24 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
           </a>
         </div>
 
+        {/*
+          The scrim sits between the field and the type. Haloing the glyphs
+          alone was not enough against a field this dense, so the composition
+          gets its own pool of darkness to sit in.
+        */}
+        <div className="home__scrim" aria-hidden="true" />
+
+        {/*
+          One entrance for the whole composition rather than a per-line
+          stagger — the parts belong together, so they arrive together.
+        */}
         <div className="home__stage">
           <div className="home__name" ref={nameRef}>
             <pre className="home__name-art" style={{ fontSize }}>
               {asciiLines.map((line, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.22,
-                    delay: index * 0.03,
-                    ease: [0.25, 0.1, 0.25, 1],
-                  }}
-                  style={{ display: "block", fontKerning: "none" }}
-                >
+                <span key={index} className="home__name-line">
                   {line}
-                </motion.div>
+                </span>
               ))}
             </pre>
             <p className="home__tagline">software developer · utrecht</p>
