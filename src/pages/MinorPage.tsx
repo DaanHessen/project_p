@@ -220,11 +220,13 @@ const MinorPage = ({ onNavigateHome }: MinorPageProps) => {
                   <p className="resume__entry-desc">
                     Als {story.asA}, wil ik {story.iWant}, zodat {story.soThat}.
                   </p>
-                  <ul className="minor__criteria-list">
-                    {story.acceptanceCriteria.map((crit, idx) => (
-                      <li key={idx}>{crit}</li>
-                    ))}
-                  </ul>
+                  {story.acceptanceCriteria && story.acceptanceCriteria.length > 0 && (
+                    <ul className="minor__criteria-list">
+                      {story.acceptanceCriteria.map((crit, idx) => (
+                        <li key={idx}>{crit}</li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </article>
             ))}

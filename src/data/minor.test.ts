@@ -44,6 +44,5 @@ describe("minor data integrity", () => {
     const portfolioStory = minorData.userStories.find((us) => us.id === "US-01");
     expect(portfolioStory).toBeDefined();
     expect(portfolioStory?.status).toBe("Done");
-    expect(portfolioStory?.acceptanceCriteria.length).toBeGreaterThan(0);
   });
 });

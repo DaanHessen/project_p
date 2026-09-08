@@ -227,13 +227,7 @@ export const minorData: MinorData = {
       soThat:
         "ik tijdens de minor al mijn bewijzen en sprintopdrachten transparant kan aantonen voor de 5 leeruitkomsten.",
       status: "Done",
-      acceptanceCriteria: [
-        "Gehost op daanhessen.nl/minor via Vercel.",
-        "Sluit aan bij de esthetiek van de rest van de site (JetBrains Mono, dark theme, ASCII achtergrond).",
-        "Duidelijke structuur afgestemd op de 5 leeruitkomsten uit Future-proof met AI! v2.0.",
-        "Geen overbodige persoonlijke info of foto's, puur gefocust op de academische eisen van de minor.",
-        "Direct herkenbare broncode zonder overbodige dependencies.",
-      ],
+      acceptanceCriteria: [],
     },
   ],
 };
