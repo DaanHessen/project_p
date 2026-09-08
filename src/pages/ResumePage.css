@@ -1,36 +1,45 @@
+/* ==========================================================================
+   Resume & Minor Shared Layout System
+   Pure, handcrafted minimalism ("less is more") matching the homepage.
+   Expansive viewport layout without big dead borders on the sides.
+   ========================================================================== */
+
 .resume {
-  max-width: 46rem;
+  max-width: 90rem;
   margin: 0 auto;
-  padding: var(--space-5) var(--space-5) var(--space-8);
+  padding: var(--space-5) clamp(1.5rem, 3.5vw, 3.5rem) var(--space-8);
   scroll-behavior: smooth;
+  position: relative;
 }
 
 .resume .resume__section {
   scroll-margin-top: 5rem;
 }
 
-.resume__nav {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  margin-top: var(--space-6);
-  font-size: 0.8125rem;
-}
-
-@media (min-width: 68rem) {
+/* --------------------------------------------------------------------------
+   Desktop Two-Column Grid (Active from 54rem / 864px upwards)
+   -------------------------------------------------------------------------- */
+@media (min-width: 54rem) {
   .resume {
-    max-width: 74rem;
     display: grid;
-    grid-template-columns: 19rem 1fr;
-    column-gap: var(--space-8);
+    grid-template-columns: 21rem 1fr;
+    column-gap: clamp(2.5rem, 4.5vw, 5rem);
     align-items: start;
-    padding: var(--space-6) var(--space-5) var(--space-8);
+    padding: var(--space-6) clamp(1.5rem, 3.5vw, 3.5rem) var(--space-8);
   }
 
   .resume__identity {
     position: sticky;
-    top: 4rem;
+    top: 4.5rem;
     grid-column: 1;
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .resume__identity::-webkit-scrollbar {
+    display: none;
   }
 
   .resume__body {
@@ -43,38 +52,47 @@
   }
 }
 
+/* --------------------------------------------------------------------------
+   Buttons & Controls (Matching Homepage & SiteNav)
+   -------------------------------------------------------------------------- */
 .resume__topbar-action {
   position: relative;
   display: flex;
   align-items: center;
 }
 
+.resume__btn,
 .resume__print {
   display: inline-flex;
   align-items: center;
-  padding: 0.35rem 0.75rem;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.45rem 1.1rem;
   border: 1px solid var(--accent);
-  background: transparent;
+  background: rgba(7, 8, 11, 0.85);
   color: var(--accent);
   font-family: inherit;
-  font-size: 0.75rem;
-  border-radius: 2px;
-  letter-spacing: 0.04em;
-  line-height: 1;
+  font-size: 0.78125rem;
+  letter-spacing: 0.05em;
+  text-align: center;
   cursor: pointer;
+  white-space: nowrap;
   transition:
     background-color 0.18s ease,
     color 0.18s ease,
     box-shadow 0.18s ease;
 }
 
+.resume__btn:hover,
+.resume__btn:focus-visible,
 .resume__print:hover,
 .resume__print:focus-visible {
   background: var(--accent);
   color: var(--bg);
-  box-shadow: 0 0 14px rgba(217, 164, 65, 0.28);
+  box-shadow: 0 0 16px rgba(217, 164, 65, 0.28);
 }
 
+.resume__btn:active,
 .resume__print:active {
   transform: translateY(1px);
 }
@@ -98,6 +116,15 @@
   z-index: 60;
 }
 
+/* --------------------------------------------------------------------------
+   Identity Sidebar
+   -------------------------------------------------------------------------- */
+.resume__identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
 .resume__name {
   font-size: 1.5rem;
   font-weight: 600;
@@ -107,7 +134,19 @@
 }
 
 .resume__position {
-  margin-top: var(--space-2);
+  margin-top: calc(var(--space-2) * -1);
+  color: var(--fg-muted);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+.resume__contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  font-size: 0.8125rem;
   color: var(--fg-muted);
 }
 
@@ -115,79 +154,100 @@
   color: var(--fg-faint);
 }
 
-.resume__contact {
+.resume__about {
+  color: var(--fg-muted);
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  max-width: 58ch;
+}
+
+/* --------------------------------------------------------------------------
+   Navigation Jump Links
+   -------------------------------------------------------------------------- */
+.resume__nav {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-5);
+  flex-direction: column;
+  gap: var(--space-2);
   margin-top: var(--space-4);
   font-size: 0.8125rem;
 }
 
-.resume__about {
-  margin-top: var(--space-5);
-  max-width: var(--measure);
-  color: var(--fg-muted);
-}
-
-.resume__skills {
-  padding-top: var(--space-5);
-}
-
-.resume__skill-row {
-  display: grid;
-  grid-template-columns: 11rem 1fr;
-  gap: var(--space-5);
-  padding-bottom: var(--space-3);
-}
-
-.resume__stars {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
+.resume__nav-link {
   color: var(--fg-faint);
-  font-size: 0.75rem;
   letter-spacing: 0.02em;
-  user-select: none;
+  text-transform: lowercase;
+  transition: color 0.15s ease;
+  display: inline-block;
+  width: fit-content;
 }
 
-.resume__stat {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35ch;
+.resume__nav-link:hover,
+.resume__nav-link:focus-visible {
+  color: var(--fg);
 }
 
-.resume__stat-icon {
-  width: 0.8125rem;
-  height: 0.8125rem;
-  fill: currentColor;
-  flex-shrink: 0;
-  vertical-align: middle;
+.resume__nav-link--active {
+  color: var(--accent);
 }
 
-.resume__pair {
-  display: contents;
+.resume__nav-link--active::before {
+  content: "— ";
+  color: var(--accent);
 }
 
-/* Sections --------------------------------------------------------------- */
+/* Mobile Quick Navigation (< 54rem) */
+.resume__quick-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-3) 0;
+  margin-top: var(--space-4);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.75rem;
+}
 
+.resume__quick-link {
+  color: var(--fg-faint);
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  transition: color 0.15s ease;
+}
+
+.resume__quick-link:hover,
+.resume__quick-link--active {
+  color: var(--accent);
+}
+
+@media (min-width: 54rem) {
+  .resume__quick-nav {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Sections & Entries (Clean Typographical Grid, Expansive & Balanced)
+   -------------------------------------------------------------------------- */
 .resume__section {
   margin-top: var(--space-8);
 }
 
 .resume__section-title {
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-size: 1.0625rem;
+  font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--fg);
+  text-transform: lowercase;
   padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--fg-faint);
+  border-bottom: 1px solid var(--rule);
 }
 
 .resume__entry {
   position: relative;
   display: grid;
-  grid-template-columns: 11rem 1fr;
-  gap: var(--space-5);
+  grid-template-columns: 13rem 1fr;
+  column-gap: var(--space-5);
+  row-gap: var(--space-2);
   padding: var(--space-5) 0;
   border-bottom: 1px solid var(--rule);
 }
@@ -196,44 +256,13 @@
   border-bottom: 0;
 }
 
-.resume__section--timeline .resume__entry {
-  padding-left: var(--space-5);
-}
-
-.resume__section--timeline .resume__entry::before {
-  content: "";
-  position: absolute;
-  left: 2px;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: var(--rule);
-}
-
-.resume__section--timeline .resume__entry:first-of-type::before {
-  top: var(--space-5);
-}
-
-.resume__section--timeline .resume__entry:last-child::before {
-  bottom: auto;
-  height: var(--space-5);
-}
-
-.resume__section--timeline .resume__entry::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: calc(var(--space-5) + 0.45rem);
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--fg-faint);
-}
-
 .resume__meta {
   color: var(--fg-faint);
-  font-size: 0.8125rem;
+  font-size: 0.78125rem;
   line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
 
 .resume__meta--strong {
@@ -242,57 +271,49 @@
 }
 
 .resume__meta-place {
-  display: block;
+  color: var(--fg-faint);
+}
+
+.resume__meta-status {
+  color: var(--accent);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
 }
 
 .resume__entry-title {
   color: var(--fg);
   font-size: 0.9375rem;
   font-weight: 500;
+  line-height: 1.4;
 }
 
 .resume__entry-org {
   color: var(--fg-muted);
+  font-size: 0.8125rem;
+  margin-top: 0.15rem;
 }
 
 .resume__entry-desc {
   margin-top: var(--space-3);
-  max-width: var(--measure);
+  max-width: 78ch;
+  color: var(--fg-muted);
+  font-size: 0.8125rem;
+  line-height: 1.75;
 }
 
-.resume__languages {
-  padding-top: var(--space-5);
-}
-
-.resume__language-row {
-  display: grid;
-  grid-template-columns: 11rem 1fr;
-  gap: var(--space-5);
-  padding-bottom: var(--space-3);
-}
-
-.resume__language-level {
-  color: var(--fg-faint);
-}
-
-.resume__actions-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  margin-top: var(--space-3);
-}
-
+/* Links (Subtle Underlines matching SiteNav) */
 .resume__links {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-3) var(--space-4);
+  margin-top: var(--space-3);
 }
 
 .resume__link {
   color: var(--fg-muted);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
   text-decoration: underline;
   text-decoration-color: var(--rule);
   text-underline-offset: 0.3em;
@@ -310,22 +331,11 @@
 
 .resume__link--offline {
   position: relative;
-  display: inline-flex;
-  align-items: center;
   color: var(--fg-faint);
-  text-decoration: underline;
   text-decoration-color: var(--fg-faint);
   text-decoration-style: dashed;
-  text-underline-offset: 0.3em;
-  text-decoration-thickness: 1px;
   cursor: not-allowed;
   user-select: none;
-}
-
-.resume__link--offline:hover,
-.resume__link--offline:focus-visible {
-  color: var(--fg-muted);
-  text-decoration-color: var(--fg-muted);
 }
 
 .resume__link-tooltip {
@@ -373,41 +383,105 @@
   transform: translateX(-50%) translateY(0);
 }
 
-@media (max-width: 40rem) {
-  .resume {
-    padding: var(--space-6) var(--space-4);
-  }
+.resume__actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
 
-  /*
-    The bar bleeds to the page edge with negative margins that have to match
-    the container padding. Below 40rem the padding drops to --space-4 while
-    the margins stayed at --space-5, which pushed the bar 1rem wider than the
-    viewport and was the only thing scrolling sideways.
-  */
-  .resume__bar {
-    margin: calc(var(--space-6) * -1) calc(var(--space-4) * -1)
-      var(--space-6);
-    padding: var(--space-4);
+.resume__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--fg-faint);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+
+.resume__stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35ch;
+}
+
+.resume__stat-icon {
+  width: 0.8125rem;
+  height: 0.8125rem;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Technologies & Languages Layout
+   -------------------------------------------------------------------------- */
+.resume__technologies,
+.resume__languages {
+  padding-top: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.resume__tech-row,
+.resume__language-row {
+  display: grid;
+  grid-template-columns: 13rem 1fr;
+  column-gap: var(--space-5);
+  row-gap: 0.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+
+.resume__tech-group,
+.resume__language-name {
+  color: var(--fg-faint);
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+
+.resume__tech-items {
+  color: var(--fg-muted);
+  max-width: 78ch;
+}
+
+.resume__language-level {
+  color: var(--fg-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Layout (< 48rem)
+   -------------------------------------------------------------------------- */
+@media (max-width: 48rem) {
+  .resume {
+    padding: var(--space-5) var(--space-4) var(--space-7);
   }
 
   .resume__entry,
-  .resume__skill-row,
+  .resume__tech-row,
   .resume__language-row {
     grid-template-columns: 1fr;
-    gap: var(--space-2);
+    row-gap: var(--space-2);
   }
 
   .resume__meta {
-    display: flex;
-    gap: var(--space-3);
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-2);
   }
 
   .resume__meta-place::before {
-    content: ",";
+    content: "·";
     margin-right: var(--space-2);
   }
 }
 
+/* --------------------------------------------------------------------------
+   Print Stylesheet (Pristine A4 Document)
+   -------------------------------------------------------------------------- */
 @page {
   size: A4;
   margin: 14mm 16mm;
@@ -426,141 +500,170 @@
     overflow: visible !important;
   }
 
-  .resume__bar,
-  .resume__back,
-  .resume__print,
-  .resume__print-hint,
+  .resume-scrim,
+  .back-bar,
+  .resume__topbar-action,
   .resume__nav,
+  .resume__quick-nav,
   .resume__link-tooltip,
-  .resume__sentinel {
+  .resume__print,
+  .resume__print-hint {
     display: none !important;
   }
 
-  .resume__section--timeline .resume__entry {
-    padding-left: 0;
-  }
-
-  .resume__section--timeline .resume__entry::before,
-  .resume__section--timeline .resume__entry::after {
-    display: none;
-  }
-
   .resume {
-    max-width: none;
-    margin: 0;
-    padding: 0;
-    display: block;
-    font-size: 9.5pt;
-    line-height: 1.4;
-    color: #000;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    font-size: 9.5pt !important;
+    line-height: 1.45 !important;
+    color: #000 !important;
   }
 
   .resume__identity,
   .resume__body {
-    position: static;
-    grid-column: auto;
+    position: static !important;
+    grid-column: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
   }
 
-  .resume__body > .resume__section:first-child {
-    margin-top: 8mm;
+  .resume__name {
+    font-size: 16pt !important;
+    color: #000 !important;
+    line-height: 1.2 !important;
   }
 
-  .resume__name,
-  .resume__entry-title {
-    color: #000;
-  }
-
-  .resume__position,
-  .resume__about,
-  .resume__entry-org,
-  .resume__entry-desc,
-  .resume__meta,
-  .resume__section-title,
-  .resume__language-level,
-  .resume__link {
-    color: #1a1a1a;
-  }
-
-  .resume__section-title,
-  .resume__entry {
-    border-color: #c8c8c8;
-  }
-
-  .resume__section {
-    margin-top: 6mm;
-    break-inside: auto;
-  }
-
-  .resume__section-title {
-    break-after: avoid;
-    font-size: 12pt;
-    padding-bottom: 1.5mm;
-  }
-
-  .resume__entry {
-    break-inside: avoid;
-    padding: 2.5mm 0;
-  }
-
-  .resume__entry-desc {
-    margin-top: 1mm;
-  }
-
-  .resume__about {
-    margin-top: 3mm;
+  .resume__position {
+    color: #222 !important;
+    font-size: 10pt !important;
+    margin-top: 1mm !important;
   }
 
   .resume__contact {
-    margin-top: 2mm;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 2mm 6mm !important;
+    border-top: 1px solid #d0d7de !important;
+    border-bottom: 1px solid #d0d7de !important;
+    padding: 2mm 0 !important;
+    margin-top: 2.5mm !important;
+    font-size: 8.5pt !important;
+    color: #333 !important;
   }
 
-  .resume__skill-row,
-  .resume__language-row {
-    padding-bottom: 1.5mm;
+  .resume__contact-place {
+    color: #444 !important;
   }
 
-  .resume__skills,
-  .resume__languages {
-    padding-top: 3mm;
+  .resume__about {
+    margin-top: 3mm !important;
+    font-size: 9pt !important;
+    line-height: 1.45 !important;
+    color: #222 !important;
   }
 
-  .resume__links {
-    margin-top: 1.5mm;
+  .resume__section {
+    margin-top: 6mm !important;
+    break-inside: auto !important;
   }
 
-  .resume__contact .resume__link::after {
-    content: none;
-  }
-
-  .resume__link {
-    border-bottom: 0;
-    text-decoration: underline;
-  }
-
-  .resume__link::after {
-    content: none;
-  }
-
-  .resume__pair {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 8mm;
-    align-items: start;
-    break-inside: avoid;
-  }
-
-  .resume__pair > .resume__section {
-    margin-top: 6mm;
+  .resume__section-title {
+    font-size: 11pt !important;
+    font-weight: 600 !important;
+    color: #000 !important;
+    border-bottom: 1px solid #c8c8c8 !important;
+    padding-bottom: 1.5mm !important;
+    break-after: avoid !important;
+    page-break-after: avoid !important;
   }
 
   .resume__entry {
-    grid-template-columns: 34mm 1fr;
-    gap: 4mm;
+    border-bottom: 1px solid #e8e8e8 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    padding: 2.5mm 0 !important;
+    display: grid !important;
+    grid-template-columns: 32mm 1fr !important;
+    column-gap: 4mm !important;
   }
 
-  .resume__skill-row,
+  .resume__entry:last-child {
+    border-bottom: 0 !important;
+  }
+
+  .resume__meta {
+    font-size: 8pt !important;
+    color: #444 !important;
+    line-height: 1.35 !important;
+  }
+
+  .resume__meta-place {
+    color: #666 !important;
+  }
+
+  .resume__entry-title {
+    color: #000 !important;
+    font-size: 9.5pt !important;
+    font-weight: 600 !important;
+  }
+
+  .resume__entry-org {
+    color: #333 !important;
+    font-size: 8.5pt !important;
+  }
+
+  .resume__entry-desc {
+    margin-top: 1mm !important;
+    font-size: 8.5pt !important;
+    line-height: 1.4 !important;
+    color: #222 !important;
+    max-width: none !important;
+  }
+
+  .resume__links {
+    margin-top: 1mm !important;
+    gap: 4mm !important;
+  }
+
+  .resume__link {
+    text-decoration: underline !important;
+    color: #000 !important;
+    font-size: 8pt !important;
+  }
+
+  .resume__stars {
+    display: none !important;
+  }
+
+  .resume__technologies,
+  .resume__languages {
+    padding-top: 2mm !important;
+    gap: 2mm !important;
+  }
+
+  .resume__tech-row,
   .resume__language-row {
-    grid-template-columns: 26mm 1fr;
-    gap: 3mm;
+    display: grid !important;
+    grid-template-columns: 32mm 1fr !important;
+    column-gap: 4mm !important;
+    padding: 1mm 0 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    font-size: 8.5pt !important;
+    line-height: 1.4 !important;
+  }
+
+  .resume__tech-group,
+  .resume__language-name {
+    color: #444 !important;
+    font-size: 8.5pt !important;
+  }
+
+  .resume__tech-items,
+  .resume__language-level {
+    color: #1a1a1a !important;
+    font-size: 8.5pt !important;
   }
 }

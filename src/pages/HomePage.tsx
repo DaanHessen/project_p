@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { AsciiBlobs, CELL_SIZE, type AsciiBlobsRef } from "ascii-blobs";
-import "ascii-blobs/dist/style.css";
+import { CELL_SIZE } from "ascii-blobs";
 import SEOHead from "../components/SEOHead";
 import SiteNav from "../components/SiteNav";
 import NameField from "../components/NameField";
@@ -10,6 +8,7 @@ import "./HomePage.css";
 interface HomePageProps {
   onNavigateToResume: () => void;
   onNavigateToMinor: () => void;
+  cellPx?: number;
 }
 
 const structuredData = {
@@ -30,35 +29,8 @@ const structuredData = {
 const HomePage = ({
   onNavigateToResume,
   onNavigateToMinor,
+  cellPx = CELL_SIZE,
 }: HomePageProps) => {
-  const [showBlobs, setShowBlobs] = useState(false);
-  const [cellPx, setCellPx] = useState(CELL_SIZE);
-  const blobs = useRef<AsciiBlobsRef>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowBlobs(true), 40);
-    return () => clearTimeout(timer);
-  }, []);
-
-  /*
-    The name's corona draws on the field's grid, so it has to be told how wide
-    a cell actually is. The engine is the only thing that knows: it clamps the
-    configured size against the viewport, so asking it beats assuming.
-  */
-  useEffect(() => {
-    if (!showBlobs) return;
-
-    const readCell = () => {
-      const stats = blobs.current?.getStats();
-      if (!stats?.columns) return;
-      setCellPx(window.innerWidth / stats.columns);
-    };
-
-    readCell();
-    window.addEventListener("resize", readCell);
-    return () => window.removeEventListener("resize", readCell);
-  }, [showBlobs]);
-
   return (
     <>
       <SEOHead
@@ -69,16 +41,6 @@ const HomePage = ({
       />
 
       <div className="home">
-        {showBlobs && (
-          <AsciiBlobs
-            ref={blobs}
-            animation={{ revealDuration: 0, revealFade: 1 }}
-            onReady={() => {
-              const stats = blobs.current?.getStats();
-              if (stats?.columns) setCellPx(window.innerWidth / stats.columns);
-            }}
-          />
-        )}
 
         <div className="home__credit">
           <a

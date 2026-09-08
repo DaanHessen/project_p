@@ -69,16 +69,37 @@
   ],
   "skills": [
     {
-      "group": "Programming",
-      "items": ["TypeScript", "JavaScript", "Java", "Rust", "Python", "SQL"]
+      "group": "Languages",
+      "items": [
+        "TypeScript",
+        "JavaScript",
+        "Java",
+        "Rust",
+        "Python",
+        "SQL",
+        "C#",
+        "Lua",
+        "Go"
+      ]
     },
     {
       "group": "Frontend",
-      "items": ["React", "Vite", "HTML", "CSS"]
+      "items": [
+        "React",
+        "Vite",
+        "HTML",
+        "CSS"
+      ]
     },
     {
       "group": "Backend & tooling",
-      "items": ["Node.js", "REST APIs", "Git", "Linux"]
+      "items": [
+        "Node.js",
+        "REST APIs",
+        "Git",
+        "Linux",
+        "Neovim"
+      ]
     }
   ],
   "languages": [

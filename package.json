@@ -1,7 +1,7 @@
 {
   "name": "daan-hessen-portfolio",
   "private": true,
-  "version": "2.3.1",
+  "version": "2.4.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +11,8 @@
     "serve": "node server.mjs",
     "format": "prettier --write .",
     "type-check": "tsc -b",
-    "test": "vitest run"
+    "test": "vitest run",
+    "sync-tech": "node scripts/sync-technologies.mjs"
   },
   "dependencies": {
     "ascii-blobs": "^2.0.0",

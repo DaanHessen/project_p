@@ -29,6 +29,13 @@ describe("routeFromPath", () => {
     expect(routeFromPath("/logboek")).toBe("planner");
   });
 
+  it("maps /minor/dagboek and /dagboek to the dagboek route", () => {
+    expect(routeFromPath("/minor/dagboek")).toBe("dagboek");
+    expect(routeFromPath("/minor/dagboek/")).toBe("dagboek");
+    expect(routeFromPath("/dagboek")).toBe("dagboek");
+    expect(routeFromPath("/dagboek/")).toBe("dagboek");
+  });
+
   it("falls back to home for unknown paths", () => {
     expect(routeFromPath("/resume.html")).toBe("home");
     expect(routeFromPath("/nope")).toBe("home");

@@ -1,114 +1,215 @@
-/* Minor page enhancements over standard resume styles */
-.minor {
-  scroll-behavior: smooth;
-}
+/* ==========================================================================
+   MinorPage Specific Enhancements
+   Harmonious with the minimal, typographical portfolio layout.
+   ========================================================================== */
 
-.minor .resume__section {
-  scroll-margin-top: 5rem;
-}
-
-.minor__route-badge {
-  font-size: 0.75rem;
-  color: var(--fg-faint);
-  letter-spacing: 0.04em;
-}
-
-.minor__section-header-wrap {
+.minor__topbar-action {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
+  align-items: center;
   gap: var(--space-3);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--fg-faint);
 }
 
-.minor__section-header-wrap .resume__section-title {
-  padding-bottom: 0;
-  border-bottom: 0;
+/* --------------------------------------------------------------------------
+   Spacious Left Sidebar Architecture
+   Utilizes full vertical viewport height with purposeful typographic hierarchy.
+   -------------------------------------------------------------------------- */
+.minor .resume__identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
 }
 
-.minor__action-btn {
-  background: transparent;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  font-family: inherit;
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  padding: 0.35rem 0.8rem;
-  cursor: pointer;
-  transition: all 0.18s ease;
+.minor__identity-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
-.minor__action-btn:hover {
-  background: var(--accent);
-  color: var(--bg);
-  box-shadow: 0 0 14px rgba(217, 164, 65, 0.25);
-}
-
-.minor__nav {
+.minor__meta-details {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  margin-top: var(--space-6);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.78125rem;
+}
+
+.minor__meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.minor__meta-label {
+  color: var(--fg-faint);
+  font-size: 0.75rem;
+}
+
+.minor__meta-value {
+  color: var(--fg);
+  font-size: 0.78125rem;
+  text-align: right;
+}
+
+.minor__sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.minor__sidebar-title {
+  font-size: 0.6875rem;
+  text-transform: lowercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-faint);
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   Sprints & Deliverables (Polished & Balanced)
+   -------------------------------------------------------------------------- */
+.minor__status-badge {
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  color: var(--fg-faint);
+  display: inline-block;
+}
+
+.minor__status-badge[data-status="In uitvoering"] {
+  color: var(--accent);
+}
+
+.minor__status-badge[data-status="done"],
+.minor__status-badge[data-status="Afgerond"] {
+  color: #3fb950;
+}
+
+/* Compact, clean presentation for upcoming planned sprints */
+.minor__entry--planned {
+  opacity: 0.65;
+  transition: opacity 0.15s ease;
+}
+
+.minor__entry--planned:hover {
+  opacity: 0.9;
+}
+
+.minor__planned-body {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.minor__planned-period {
+  color: var(--fg);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.minor__planned-hint {
+  color: var(--fg-faint);
+  font-size: 0.75rem;
+}
+
+/* Deliverables Container */
+.minor__deliverables {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+}
+
+.minor__deliverable {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: var(--space-3) 0;
+  border-top: 1px solid rgba(154, 163, 178, 0.08);
+}
+
+.minor__deliverable-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.minor__deliverable-title {
+  color: var(--fg);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.minor__deliverable-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.minor__lu-tag {
+  font-size: 0.6875rem;
+  color: var(--accent);
+  background: rgba(217, 164, 65, 0.08);
+  padding: 0.1rem 0.35rem;
+  border-radius: 2px;
+  border: 1px solid rgba(217, 164, 65, 0.2);
+}
+
+.minor__reflection {
+  margin-top: var(--space-3);
+  color: var(--fg-faint);
   font-size: 0.8125rem;
+  line-height: 1.7;
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--rule);
+}
+
+.minor__reflection-label {
+  color: var(--fg-muted);
+}
+
+/* --------------------------------------------------------------------------
+   User Stories & Acceptance Criteria
+   -------------------------------------------------------------------------- */
+.minor__subheading {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--fg-faint);
+  text-transform: lowercase;
+  letter-spacing: 0.08em;
+  margin: var(--space-5) 0 var(--space-3) 0;
+}
+
+.minor__story-target {
+  margin-bottom: var(--space-2);
 }
 
 .minor__criteria-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: 0.3rem;
   margin-top: var(--space-3);
-  font-size: 0.8125rem;
+  font-size: 0.78125rem;
   color: var(--fg-muted);
 }
 
-.minor__criteria-list li::before {
-  content: "—";
-  margin-right: var(--space-2);
-  color: var(--fg-faint);
-}
-
-.minor__deliverables {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-  margin-top: var(--space-4);
-}
-
-.minor__deliverable-row {
-  display: flex;
-  flex-direction: column;
-}
-
-.minor__deliverable-head {
+.minor__criteria-list li {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
-.minor__deliverable-name {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--fg);
-}
-
-.minor__deliverable-tags {
+.minor__criteria-bullet {
+  color: var(--accent);
   font-size: 0.75rem;
-  color: var(--fg-faint);
-}
-
-.minor__reflection {
-  margin-top: var(--space-4);
-  font-size: 0.8125rem;
-  color: var(--fg-faint);
-  line-height: 1.7;
-}
-
-.minor__reflection-label {
-  color: var(--fg-muted);
+  user-select: none;
 }
 
 .minor code {
@@ -118,8 +219,7 @@
 }
 
 @media print {
-  .minor__nav,
-  .minor__route-badge {
+  .minor__topbar-action {
     display: none !important;
   }
 }

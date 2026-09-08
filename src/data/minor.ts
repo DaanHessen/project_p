@@ -174,8 +174,8 @@ export const minorData: MinorData = {
               type: "demo",
             },
             {
-              label: "Dagboekje",
-              url: "https://futureproof-met-ai.vercel.app/",
+              label: "Digitaal Dagboek",
+              url: "https://daanhessen.nl/minor/dagboek",
               type: "demo",
             },
           ],
@@ -284,8 +284,8 @@ export const minorData: MinorData = {
       leeruitkomsten: ["LU4", "LU5"],
       links: [
         {
-          label: "Dagboekje",
-          url: "https://futureproof-met-ai.vercel.app/",
+          label: "Digitaal Dagboek",
+          url: "https://daanhessen.nl/minor/dagboek",
           type: "demo",
         },
         {

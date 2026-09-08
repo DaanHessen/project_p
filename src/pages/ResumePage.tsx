@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SEOHead from "../components/SEOHead";
 import BackButton from "../components/BackButton";
 import { useGitHubRepos } from "../data/github";
@@ -56,13 +56,57 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
   const { repos, stats } = useGitHubRepos(curated);
 
   const [printHint, setPrintHint] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("experience");
 
-  /*
-    Printing is the only way to a PDF here, and it is not uniformly available:
-    it is a no-op in Firefox Android and inside app webviews, and on iOS the
-    dialog can decline to open at all. Rather than leave a dead button, fall
-    back to telling the reader the route their browser does have.
-  */
+  const navItems = useMemo(() => {
+    const items = [
+      { id: "experience", label: "experience" },
+      { id: "education", label: "education" },
+      { id: "projects", label: "projects" },
+    ];
+    if (repos.length > 0) {
+      items.push({ id: "github", label: "more on github" });
+    }
+    items.push({ id: "technologies", label: "technologies" });
+    items.push({ id: "languages", label: "languages" });
+    return items;
+  }, [repos.length]);
+
+  useEffect(() => {
+    const sectionIds = navItems.map((item) => item.id);
+
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + 140;
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sectionIds[i]);
+        if (el && el.offsetTop <= scrollPos) {
+          setActiveSection(sectionIds[i]);
+          return;
+        }
+      }
+      if (window.scrollY < 100 && sectionIds.length > 0) {
+        setActiveSection(sectionIds[0]);
+      }
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [navItems]);
+
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    id: string,
+  ) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+      window.history.pushState(null, "", `#${id}`);
+      setActiveSection(id);
+    }
+  };
+
   const handlePrint = () => {
     if (typeof window.print !== "function") {
       setPrintHint(true);
@@ -77,297 +121,297 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
 
   return (
     <>
-    <SEOHead
-      title="Daan Hessen, résumé"
-      description={resume.personal.about}
-      canonical="https://daanhessen.nl/cv"
-      structuredData={structuredData}
-      noindex
-    />
+      <SEOHead
+        title="Daan Hessen, résumé"
+        description={resume.personal.about}
+        canonical="https://daanhessen.nl/cv"
+        structuredData={structuredData}
+        noindex
+      />
 
-    <BackButton
-      onNavigateHome={onNavigateHome}
-      rightAction={
-        <div className="resume__topbar-action">
-          <button type="button" className="resume__print" onClick={handlePrint}>
-            download as PDF
-          </button>
-          {printHint && (
-            <p className="resume__print-hint" role="status">
-              This browser will not open a print dialog. On iPhone use Share →
-              Print, then pinch the preview to save it as a PDF; in an in-app
-              browser, open the page in Safari or Chrome first.
-            </p>
-          )}
-        </div>
-      }
-    />
+      <BackButton
+        onNavigateHome={onNavigateHome}
+        rightAction={
+          <div className="resume__topbar-action">
+            <button type="button" className="resume__print" onClick={handlePrint}>
+              download as PDF
+            </button>
+            {printHint && (
+              <p className="resume__print-hint" role="status">
+                This browser will not open a print dialog. On iPhone use Share →
+                Print, then pinch the preview to save it as a PDF; in an in-app
+                browser, open the page in Safari or Chrome first.
+              </p>
+            )}
+          </div>
+        }
+      />
 
-    <main className="resume">
-      <header className="resume__identity">
-        <h1 className="resume__name">Daan Hessen</h1>
-        <p className="resume__position">{resume.personal.position}</p>
+      <main className="resume">
+        <header className="resume__identity">
+          <div>
+            <h1 className="resume__name">Daan Hessen</h1>
+            <p className="resume__position">{resume.personal.position}</p>
+          </div>
 
-        <ul className="resume__contact">
-          <li className="resume__contact-place">{resume.personal.location}</li>
-          <li>
-            <a className="resume__link" href={`mailto:${resume.personal.email}`}>
-              {resume.personal.email}
-            </a>
-          </li>
-          <li>
-            <a
-              className="resume__link"
-              href={resume.personal.github}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              github.com/DaanHessen
-            </a>
-          </li>
-          <li>
-            <a
-              className="resume__link"
-              href={resume.personal.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              linkedin
-            </a>
-          </li>
-        </ul>
-
-        <p className="resume__about">{resume.personal.about}</p>
-
-        <ul className="resume__nav">
-          <li>
-            <a className="resume__link" href="#experience">
-              Experience
-            </a>
-          </li>
-          <li>
-            <a className="resume__link" href="#education">
-              Education
-            </a>
-          </li>
-          <li>
-            <a className="resume__link" href="#projects">
-              Projects
-            </a>
-          </li>
-          {repos.length > 0 && (
+          <ul className="resume__contact">
+            <li className="resume__contact-place">{resume.personal.location}</li>
             <li>
-              <a className="resume__link" href="#github">
-                More on GitHub
+              <a className="resume__link" href={`mailto:${resume.personal.email}`}>
+                {resume.personal.email}
               </a>
             </li>
-          )}
-          {/* Skills disabled for now
-          <li>
-            <a className="resume__link" href="#skills">
-              Skills
-            </a>
-          </li>
-          */}
-          <li>
-            <a className="resume__link" href="#languages">
-              Languages
-            </a>
-          </li>
-        </ul>
-      </header>
+            <li>
+              <a
+                className="resume__link"
+                href={resume.personal.github}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                github.com/DaanHessen
+              </a>
+            </li>
+            <li>
+              <a
+                className="resume__link"
+                href={resume.personal.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                linkedin
+              </a>
+            </li>
+          </ul>
 
-      <div className="resume__body">
+          <p className="resume__about">{resume.personal.about}</p>
 
-      <section id="experience" className="resume__section resume__section--timeline">
-        <h2 className="resume__section-title">Experience</h2>
-        {resume.experience.map((job) => (
-          <article
-            className="resume__entry"
-            data-current={job.duration.includes("Present")}
-            key={`${job.company}-${job.duration}`}
-          >
-            <div className="resume__meta">
-              <span>{job.duration}</span>
-              <span className="resume__meta-place">{job.location}</span>
-            </div>
-            <div>
-              <h3 className="resume__entry-title">{job.position}</h3>
-              <p className="resume__entry-org">{job.company}</p>
-              <p className="resume__entry-desc">{job.description}</p>
-            </div>
-          </article>
-        ))}
-      </section>
+          <nav className="resume__nav" aria-label="Sections">
+            {navItems.map((item) => (
+              <a
+                key={item.id}
+                className={`resume__nav-link ${
+                  activeSection === item.id ? "resume__nav-link--active" : ""
+                }`}
+                href={`#${item.id}`}
+                onClick={(e) => handleNavClick(e, item.id)}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
 
-      <section id="education" className="resume__section resume__section--timeline">
-        <h2 className="resume__section-title">Education</h2>
-        {resume.education.map((entry) => (
-          <article
-            className="resume__entry"
-            data-current={entry.duration.includes("Present")}
-            key={`${entry.institution}-${entry.duration}`}
-          >
-            <div className="resume__meta">
-              <span>{entry.duration}</span>
-              <span className="resume__meta-place">{entry.location}</span>
-            </div>
-            <div>
-              <h3 className="resume__entry-title">{entry.degree}</h3>
-              <p className="resume__entry-org">{entry.institution}</p>
-              <p className="resume__entry-desc">{entry.description}</p>
-            </div>
-          </article>
-        ))}
-      </section>
+          <div className="resume__quick-nav" aria-label="Jump to section">
+            {navItems.map((item) => (
+              <a
+                key={item.id}
+                className={`resume__quick-link ${
+                  activeSection === item.id ? "resume__quick-link--active" : ""
+                }`}
+                href={`#${item.id}`}
+                onClick={(e) => handleNavClick(e, item.id)}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </header>
 
-      <section id="projects" className="resume__section">
-        <h2 className="resume__section-title">Projects</h2>
-        {resume.projects.map((project) => {
-          const ghLink = project.links.find(
-            (l) => l.type === "github" || l.url.toLowerCase().includes("github.com"),
-          );
-          const urlKey = ghLink?.url.toLowerCase().replace(/\/+$/, "");
-          const repoName = urlKey?.split("/").pop();
-          const projectStat =
-            (urlKey && stats[urlKey]) ||
-            (repoName && stats[repoName]) ||
-            stats[project.name.toLowerCase()] ||
-            null;
+        <div className="resume__body">
+          {/* Experience */}
+          <section id="experience" className="resume__section">
+            <h2 className="resume__section-title">experience</h2>
+            {resume.experience.map((job) => (
+              <article
+                className="resume__entry"
+                data-current={job.duration.includes("Present")}
+                key={`${job.company}-${job.duration}`}
+              >
+                <div className="resume__meta">
+                  <span>{job.duration}</span>
+                  <span className="resume__meta-place">{job.location}</span>
+                </div>
+                <div>
+                  <h3 className="resume__entry-title">{job.position}</h3>
+                  <p className="resume__entry-org">{job.company}</p>
+                  <p className="resume__entry-desc">{job.description}</p>
+                </div>
+              </article>
+            ))}
+          </section>
 
-          return (
-            <article className="resume__entry" key={project.name}>
-              <div className="resume__meta resume__meta--strong">
-                <span>{project.name}</span>
-              </div>
-              <div>
-                <p className="resume__entry-desc">{project.description}</p>
-                <div className="resume__actions-row">
-                  <div className="resume__links">
-                    {project.links.map((link) =>
-                      link.offline ? (
-                        <span
-                          className="resume__link resume__link--offline"
-                          key={link.url}
-                          role="link"
-                          aria-disabled="true"
-                          tabIndex={0}
-                          title="website offline"
-                        >
-                          {link.text}
-                          <span className="resume__link-tooltip" role="tooltip">
-                            website offline
-                          </span>
+          {/* Education */}
+          <section id="education" className="resume__section">
+            <h2 className="resume__section-title">education</h2>
+            {resume.education.map((entry) => (
+              <article
+                className="resume__entry"
+                data-current={entry.duration.includes("Present")}
+                key={`${entry.institution}-${entry.duration}`}
+              >
+                <div className="resume__meta">
+                  <span>{entry.duration}</span>
+                  <span className="resume__meta-place">{entry.location}</span>
+                </div>
+                <div>
+                  <h3 className="resume__entry-title">{entry.degree}</h3>
+                  <p className="resume__entry-org">{entry.institution}</p>
+                  <p className="resume__entry-desc">{entry.description}</p>
+                </div>
+              </article>
+            ))}
+          </section>
+
+          {/* Projects */}
+          <section id="projects" className="resume__section">
+            <h2 className="resume__section-title">projects</h2>
+            {resume.projects.map((project) => {
+              const ghLink = project.links.find(
+                (l) => l.type === "github" || l.url.toLowerCase().includes("github.com"),
+              );
+              const urlKey = ghLink?.url.toLowerCase().replace(/\/+$/, "");
+              const repoName = urlKey?.split("/").pop();
+              const projectStat =
+                (urlKey && stats[urlKey]) ||
+                (repoName && stats[repoName]) ||
+                stats[project.name.toLowerCase()] ||
+                null;
+
+              return (
+                <article className="resume__entry" key={project.name}>
+                  <div className="resume__meta resume__meta--strong">
+                    <span>{project.name}</span>
+                  </div>
+                  <div>
+                    <p className="resume__entry-desc">{project.description}</p>
+                    <div className="resume__actions-row">
+                      <div className="resume__links">
+                        {project.links.map((link) =>
+                          link.offline ? (
+                            <span
+                              className="resume__link resume__link--offline"
+                              key={link.url}
+                              role="link"
+                              aria-disabled="true"
+                              tabIndex={0}
+                              title="website offline"
+                            >
+                              {link.text}
+                              <span className="resume__link-tooltip" role="tooltip">
+                                website offline
+                              </span>
+                            </span>
+                          ) : (
+                            <a
+                              className="resume__link"
+                              key={link.url}
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {link.text}
+                            </a>
+                          ),
+                        )}
+                      </div>
+                      <span
+                        className="resume__stars"
+                        title={
+                          projectStat
+                            ? `${projectStat.stars} stars, ${projectStat.forks} forks on GitHub`
+                            : "Repository is private or not included on GitHub"
+                        }
+                      >
+                        <span className="resume__stat">
+                          <StarIcon />
+                          <span>{projectStat ? projectStat.stars : "-"}</span>
                         </span>
-                      ) : (
+                        <span className="resume__stat">
+                          <ForkIcon />
+                          <span>{projectStat ? projectStat.forks : "-"}</span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </section>
+
+          {/* More on GitHub */}
+          {repos.length > 0 && (
+            <section id="github" className="resume__section">
+              <h2 className="resume__section-title">more on github</h2>
+              {repos.map((repo) => (
+                <article className="resume__entry" key={repo.url}>
+                  <div className="resume__meta resume__meta--strong">
+                    <span>{repo.name}</span>
+                    {repo.language && (
+                      <span className="resume__meta-place">{repo.language}</span>
+                    )}
+                  </div>
+                  <div>
+                    <p className="resume__entry-desc">{repo.description}</p>
+                    <div className="resume__actions-row">
+                      <div className="resume__links">
                         <a
                           className="resume__link"
-                          key={link.url}
-                          href={link.url}
+                          href={repo.url}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {link.text}
+                          GitHub
                         </a>
-                      ),
-                    )}
+                      </div>
+                      <span
+                        className="resume__stars"
+                        title={`${repo.stars} stars, ${repo.forks} forks on GitHub`}
+                      >
+                        <span className="resume__stat">
+                          <StarIcon />
+                          <span>{repo.stars}</span>
+                        </span>
+                        <span className="resume__stat">
+                          <ForkIcon />
+                          <span>{repo.forks}</span>
+                        </span>
+                      </span>
+                    </div>
                   </div>
-                  <span
-                    className="resume__stars"
-                    title={
-                      projectStat
-                        ? `${projectStat.stars} stars, ${projectStat.forks} forks on GitHub`
-                        : "Repository is private or not included on GitHub"
-                    }
-                  >
-                    <span className="resume__stat">
-                      <StarIcon />
-                      <span>{projectStat ? projectStat.stars : "-"}</span>
-                    </span>
-                    <span className="resume__stat">
-                      <ForkIcon />
-                      <span>{projectStat ? projectStat.forks : "-"}</span>
-                    </span>
-                  </span>
+                </article>
+              ))}
+            </section>
+          )}
+
+          {/* Technologies & Tools (What I've worked with) */}
+          <section id="technologies" className="resume__section">
+            <h2 className="resume__section-title">
+              technologies & tools i&apos;ve worked with
+            </h2>
+            <dl className="resume__technologies">
+              {resume.skills.map((group) => (
+                <div className="resume__tech-row" key={group.group}>
+                  <dt className="resume__tech-group">{group.group}</dt>
+                  <dd className="resume__tech-items">{group.items.join(", ")}</dd>
                 </div>
-              </div>
-            </article>
-          );
-        })}
-      </section>
+              ))}
+            </dl>
+          </section>
 
-      {repos.length > 0 && (
-        <section id="github" className="resume__section">
-          <h2 className="resume__section-title">More on GitHub</h2>
-          {repos.map((repo) => (
-            <article className="resume__entry" key={repo.url}>
-              <div className="resume__meta resume__meta--strong">
-                <span>{repo.name}</span>
-                {repo.language && (
-                  <span className="resume__meta-place">{repo.language}</span>
-                )}
-              </div>
-              <div>
-                <p className="resume__entry-desc">{repo.description}</p>
-                <div className="resume__actions-row">
-                  <div className="resume__links">
-                    <a
-                      className="resume__link"
-                      href={repo.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      GitHub
-                    </a>
-                  </div>
-                  <span
-                    className="resume__stars"
-                    title={`${repo.stars} stars, ${repo.forks} forks on GitHub`}
-                  >
-                    <span className="resume__stat">
-                      <StarIcon />
-                      <span>{repo.stars}</span>
-                    </span>
-                    <span className="resume__stat">
-                      <ForkIcon />
-                      <span>{repo.forks}</span>
-                    </span>
-                  </span>
+          {/* Languages */}
+          <section id="languages" className="resume__section">
+            <h2 className="resume__section-title">languages</h2>
+            <dl className="resume__languages">
+              {resume.languages.map((language) => (
+                <div className="resume__language-row" key={language.name}>
+                  <dt className="resume__language-name">{language.name}</dt>
+                  <dd className="resume__language-level">
+                    {proficiency(language.level)}
+                  </dd>
                 </div>
-              </div>
-            </article>
-          ))}
-        </section>
-      )}
-
-      <div className="resume__pair">
-      {/* Skills disabled for now
-      <section id="skills" className="resume__section">
-        <h2 className="resume__section-title">Skills</h2>
-        <dl className="resume__skills">
-          {resume.skills.map((group) => (
-            <div className="resume__skill-row" key={group.group}>
-              <dt className="resume__meta">{group.group}</dt>
-              <dd>{group.items.join(", ")}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-      */}
-
-      <section id="languages" className="resume__section">
-        <h2 className="resume__section-title">Languages</h2>
-        <dl className="resume__languages">
-          {resume.languages.map((language) => (
-            <div className="resume__language-row" key={language.name}>
-              <dt className="resume__meta">{language.name}</dt>
-              <dd>{proficiency(language.level)}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-      </div>
-      </div>
+              ))}
+            </dl>
+          </section>
+        </div>
       </main>
     </>
   );

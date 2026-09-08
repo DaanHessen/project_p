@@ -1,3 +1,8 @@
+/* ==========================================================================
+   BackButton & Sticky BackBar
+   Aligned flush with the generous 90rem page grid.
+   ========================================================================== */
+
 .back-bar {
   position: sticky;
   top: 0;
@@ -15,21 +20,15 @@
 }
 
 .back-bar__inner {
-  max-width: 46rem;
+  max-width: 90rem;
   margin: 0 auto;
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-3) clamp(1.5rem, 3.5vw, 3.5rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-@media (min-width: 68rem) {
-  .back-bar__inner {
-    max-width: 74rem;
-  }
-}
-
-@media (max-width: 40rem) {
+@media (max-width: 42rem) {
   .back-bar__inner {
     padding: var(--space-3) var(--space-4);
   }

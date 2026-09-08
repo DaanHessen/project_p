@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-export type Route = "home" | "cv" | "minor" | "planner";
+export type Route = "home" | "cv" | "minor" | "planner" | "dagboek";
 
 /**
  * Routes and fallback. Kept as a pure function so it can be tested
@@ -10,6 +10,9 @@ export function routeFromPath(pathname: string): Route {
   const normalised = pathname.replace(/\/+$/, "");
   if (normalised === "/cv") return "cv";
   if (normalised === "/minor") return "minor";
+  if (normalised === "/minor/dagboek" || normalised === "/dagboek") {
+    return "dagboek";
+  }
   if (
     normalised === "/minor/logboek" ||
     normalised === "/minor/planner" ||

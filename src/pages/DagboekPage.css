@@ -1,0 +1,524 @@
+/* ==========================================================================
+   DagboekPage CSS
+   Polished, minimal typography matching the daanhessen.nl portfolio.
+   Uses the full expansive 90rem viewport grid without clutter or raw boxes.
+   ========================================================================== */
+
+.dagboek {
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: var(--space-5) clamp(1.5rem, 3.5vw, 3.5rem) var(--space-8);
+  position: relative;
+}
+
+/* --------------------------------------------------------------------------
+   Desktop Grid (Sticky Sidebar / Main Content)
+   -------------------------------------------------------------------------- */
+@media (min-width: 54rem) {
+  .dagboek {
+    display: grid;
+    grid-template-columns: 21rem 1fr;
+    column-gap: clamp(2.5rem, 4.5vw, 5rem);
+    align-items: start;
+    padding: var(--space-6) clamp(1.5rem, 3.5vw, 3.5rem) var(--space-8);
+  }
+
+  .dagboek__identity {
+    position: sticky;
+    top: 4.5rem;
+    grid-column: 1;
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .dagboek__identity::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dagboek__body {
+    grid-column: 2;
+    min-width: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Sidebar Typography & Metadata
+   -------------------------------------------------------------------------- */
+.dagboek__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.dagboek__subtitle {
+  font-size: 0.8125rem;
+  color: var(--fg-muted);
+  margin-top: var(--space-1);
+  line-height: 1.6;
+}
+
+.dagboek__meta-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.78125rem;
+}
+
+.dagboek__meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.dagboek__meta-label {
+  color: var(--fg-faint);
+  font-size: 0.75rem;
+}
+
+.dagboek__meta-value {
+  color: var(--fg);
+  font-size: 0.78125rem;
+  text-align: right;
+}
+
+.dagboek__streak-pill {
+  color: var(--accent);
+}
+
+/* Typographic Quote Section */
+.dagboek__quote-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.dagboek__quote-text {
+  color: var(--fg);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.dagboek__quote-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: 0.75rem;
+  color: var(--fg-faint);
+}
+
+.dagboek__quote-btn {
+  background: transparent;
+  border: none;
+  color: var(--fg-faint);
+  font-family: inherit;
+  font-size: 0.6875rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  transition: color 0.15s ease;
+}
+
+.dagboek__quote-btn:hover {
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Buttons & Inputs
+   -------------------------------------------------------------------------- */
+.dagboek__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--fg-muted);
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 2px;
+  cursor: pointer;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.dagboek__btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.dagboek__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.dagboek__btn--primary {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  font-weight: 500;
+}
+
+.dagboek__btn--primary:hover:not(:disabled) {
+  background: #e6b354;
+  border-color: #e6b354;
+  color: var(--bg);
+}
+
+/* --------------------------------------------------------------------------
+   Date Bar & Controls
+   -------------------------------------------------------------------------- */
+.dagboek__date-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--space-4);
+}
+
+.dagboek__date-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.dagboek__date-heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--fg);
+  text-transform: capitalize;
+  letter-spacing: -0.01em;
+}
+
+.dagboek__date-sub {
+  font-size: 0.75rem;
+  color: var(--fg-faint);
+  letter-spacing: 0.04em;
+}
+
+.dagboek__date-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.dagboek__date-input {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--fg-muted);
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.dagboek__date-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   Mood Bar
+   -------------------------------------------------------------------------- */
+.dagboek__mood-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid rgba(154, 163, 178, 0.08);
+  margin-bottom: var(--space-6);
+  font-size: 0.8125rem;
+}
+
+.dagboek__mood-title {
+  color: var(--fg-faint);
+  font-size: 0.75rem;
+  text-transform: lowercase;
+  letter-spacing: 0.06em;
+}
+
+.dagboek__mood-stars {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.dagboek__star-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--fg-faint);
+  cursor: pointer;
+  padding: 0.1rem;
+  transition: transform 0.1s ease, color 0.15s ease;
+}
+
+.dagboek__star-btn:hover:not(:disabled) {
+  transform: scale(1.15);
+  color: var(--accent);
+}
+
+.dagboek__star-btn--active {
+  color: var(--accent);
+}
+
+.dagboek__star-btn:disabled {
+  cursor: default;
+}
+
+.dagboek__mood-label {
+  color: var(--fg-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   Reader View (When Read-Only: Editorial & Beautiful)
+   -------------------------------------------------------------------------- */
+.dagboek__reader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.dagboek__reader-entry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid rgba(154, 163, 178, 0.08);
+}
+
+.dagboek__reader-entry:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.dagboek__reader-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.dagboek__reader-step {
+  font-size: 0.6875rem;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.dagboek__reader-title {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.dagboek__reader-hint {
+  font-size: 0.75rem;
+  color: var(--fg-faint);
+  margin-left: auto;
+}
+
+.dagboek__reader-body {
+  padding-left: calc(var(--space-3) + 1.25rem);
+}
+
+.dagboek__reader-text {
+  color: var(--fg);
+  font-size: 0.875rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.dagboek__reader-empty {
+  color: var(--fg-faint);
+  font-size: 0.8125rem;
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   Editor View (When Unlocked: Focused & Clean)
+   -------------------------------------------------------------------------- */
+.dagboek__editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.dagboek__editor-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.dagboek__editor-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dagboek__editor-hint {
+  font-size: 0.75rem;
+  color: var(--fg-faint);
+  font-weight: 400;
+}
+
+.dagboek__textarea {
+  width: 100%;
+  min-height: 7rem;
+  background: rgba(14, 17, 23, 0.45);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: var(--space-3);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  resize: vertical;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.dagboek__textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+  background: rgba(14, 17, 23, 0.7);
+}
+
+.dagboek__textarea::placeholder {
+  color: var(--fg-faint);
+  opacity: 0.6;
+}
+
+/* --------------------------------------------------------------------------
+   Footer Status Bar
+   -------------------------------------------------------------------------- */
+.dagboek__footer-bar {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.dagboek__status-row {
+  font-size: 0.75rem;
+  color: var(--fg-faint);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dagboek__status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3fb950;
+  display: inline-block;
+}
+
+.dagboek__status-dot[data-saving="true"] {
+  background: var(--accent);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* --------------------------------------------------------------------------
+   Password Modal
+   -------------------------------------------------------------------------- */
+.dagboek-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(7, 8, 11, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.dagboek-modal {
+  background: #0d1017;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: var(--space-6);
+  width: 100%;
+  max-width: 26rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.dagboek-modal__title {
+  color: var(--fg);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.dagboek-modal__text {
+  color: var(--fg-muted);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.dagboek-modal__input {
+  width: 100%;
+  background: rgba(7, 8, 11, 0.6);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: var(--space-3);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+.dagboek-modal__input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.dagboek-modal__error {
+  color: #f85149;
+  font-size: 0.75rem;
+}
+
+.dagboek-modal__buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}

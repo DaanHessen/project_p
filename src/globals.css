@@ -94,6 +94,42 @@ ul {
 
 .app {
   background: var(--bg);
+  position: relative;
+}
+
+.app-ascii-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: filter 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+    opacity 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: filter, opacity;
+}
+
+.app-ascii-bg--blurred {
+  filter: blur(16px);
+  opacity: 0.18;
+  transform: translateZ(0);
+}
+
+@keyframes field-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.app-ascii-bg .ascii-blobs {
+  animation: field-fade 0.43s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+@media print {
+  .app-ascii-bg {
+    display: none !important;
+  }
 }
 
 .app--locked {
@@ -123,6 +159,8 @@ ul {
 }
 
 .app__route {
+  position: relative;
+  z-index: 1;
   animation: route-enter 0.16s cubic-bezier(0.25, 0.1, 0.25, 1) both;
 }
 
