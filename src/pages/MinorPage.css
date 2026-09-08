@@ -25,19 +25,25 @@
   gap: var(--space-1);
 }
 
+/* Balancing splits "Future-proof" across its own hyphen; let it break on spaces. */
+.minor .resume__name {
+  font-size: 1.375rem;
+}
+
 .minor__meta-details {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-3) 0;
+  padding: var(--space-4) 0;
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
   font-size: 0.78125rem;
+  margin: var(--space-2) 0;
 }
 
 .minor__meta-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 6rem 1fr;
   align-items: baseline;
   gap: var(--space-3);
 }
@@ -48,23 +54,15 @@
 }
 
 .minor__meta-value {
-  color: var(--fg);
+  color: var(--fg-muted);
   font-size: 0.78125rem;
-  text-align: right;
+  text-align: left;
 }
 
 .minor__sidebar-section {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-}
-
-.minor__sidebar-title {
-  font-size: 0.6875rem;
-  text-transform: lowercase;
-  letter-spacing: 0.08em;
-  color: var(--fg-faint);
-  font-weight: 500;
 }
 
 /* --------------------------------------------------------------------------
@@ -75,99 +73,115 @@
   letter-spacing: 0.04em;
   text-transform: lowercase;
   color: var(--fg-faint);
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
+.minor__status-badge::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+/*
+  The accent marks the one thing actually under way. Every learning outcome
+  shares the same "in ontwikkeling" state, so colouring all five would be
+  five amber lines carrying no signal.
+*/
 .minor__status-badge[data-status="In uitvoering"] {
   color: var(--accent);
 }
 
-.minor__status-badge[data-status="done"],
-.minor__status-badge[data-status="Afgerond"] {
-  color: #3fb950;
-}
-
-/* Compact, clean presentation for upcoming planned sprints */
-.minor__entry--planned {
-  opacity: 0.65;
-  transition: opacity 0.15s ease;
-}
-
-.minor__entry--planned:hover {
+.minor__status-badge[data-status="In uitvoering"]::before,
+.minor__status-badge[data-status="In ontwikkeling"]::before {
   opacity: 0.9;
 }
 
-.minor__planned-body {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-2);
+/* Finished work is stated, not coloured — the amber accent stays the one hue. */
+.minor__status-badge[data-status="done"],
+.minor__status-badge[data-status="Afgerond"] {
+  color: var(--fg-muted);
 }
 
-.minor__planned-period {
-  color: var(--fg);
-  font-size: 0.875rem;
-  font-weight: 500;
+.minor__status-badge[data-status="done"]::before,
+.minor__status-badge[data-status="Afgerond"]::before {
+  opacity: 0.9;
 }
 
-.minor__planned-hint {
+/* The sprints that have not started yet, as one row. */
+.minor__entry--planned .resume__meta,
+.minor__entry--planned .resume__entry-title,
+.minor__entry--planned .resume__entry-desc {
   color: var(--fg-faint);
-  font-size: 0.75rem;
+  font-weight: 400;
 }
 
-/* Deliverables Container */
+/*
+  Deliverables sit flush with the entry title. They used to be indented behind
+  their own left rule, which put a third alignment into an entry that already
+  has a meta gutter, and pushed the LU tags to the far right of the column
+  where they no longer read as belonging to the title next to them.
+*/
 .minor__deliverables {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  margin-top: var(--space-3);
+  gap: var(--space-5);
+  margin-top: var(--space-4);
 }
 
 .minor__deliverable {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  padding: var(--space-3) 0;
-  border-top: 1px solid rgba(154, 163, 178, 0.08);
+  gap: var(--space-2);
 }
 
 .minor__deliverable-header {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
   flex-wrap: wrap;
-  gap: var(--space-2);
+  gap: var(--space-2) var(--space-3);
 }
 
 .minor__deliverable-title {
   color: var(--fg);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
-.minor__deliverable-tags {
+.minor__lu-tags {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.35rem;
+  margin-top: var(--space-2);
+}
+
+/* Inside a deliverable header the tags sit on the title's baseline. */
+.minor__deliverable-header .minor__lu-tags {
+  margin-top: 0;
 }
 
 .minor__lu-tag {
-  font-size: 0.6875rem;
-  color: var(--accent);
-  background: rgba(217, 164, 65, 0.08);
-  padding: 0.1rem 0.35rem;
+  font-size: 0.65rem;
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.4rem;
+  border: 1px solid var(--rule);
   border-radius: 2px;
-  border: 1px solid rgba(217, 164, 65, 0.2);
 }
 
 .minor__reflection {
-  margin-top: var(--space-3);
+  margin-top: var(--space-4);
   color: var(--fg-faint);
   font-size: 0.8125rem;
   line-height: 1.7;
-  padding-left: var(--space-3);
-  border-left: 2px solid var(--rule);
 }
 
 .minor__reflection-label {
@@ -179,36 +193,56 @@
    -------------------------------------------------------------------------- */
 .minor__subheading {
   font-size: 0.75rem;
-  font-weight: 500;
   color: var(--fg-faint);
   text-transform: lowercase;
-  letter-spacing: 0.08em;
-  margin: var(--space-5) 0 var(--space-3) 0;
+  letter-spacing: 0.06em;
+  margin: var(--space-7) 0 var(--space-2);
 }
 
-.minor__story-target {
-  margin-bottom: var(--space-2);
+.minor__subheading:first-of-type {
+  margin-top: var(--space-5);
+}
+
+/*
+  A text button that has to sit inside a paragraph and read as one of its
+  links.
+*/
+.minor__inline-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.minor__story-kw {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+.minor__story-format {
+  line-height: 1.8;
 }
 
 .minor__criteria-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  margin-top: var(--space-3);
+  gap: var(--space-2);
+  margin-top: var(--space-4);
   font-size: 0.78125rem;
+  line-height: 1.6;
   color: var(--fg-muted);
 }
 
 .minor__criteria-list li {
   display: flex;
   align-items: baseline;
-  gap: var(--space-2);
+  gap: 1ch;
 }
 
 .minor__criteria-bullet {
-  color: var(--accent);
-  font-size: 0.75rem;
+  color: var(--fg-faint);
   user-select: none;
 }
 
@@ -216,6 +250,13 @@
   font-family: inherit;
   font-size: 0.8125rem;
   color: var(--fg);
+}
+
+/* The sidebar nav is hidden below 54rem, so its label has nothing to head. */
+@media (max-width: 53.999rem) {
+  .minor__sidebar-section {
+    display: none;
+  }
 }
 
 @media (max-width: 48rem) {

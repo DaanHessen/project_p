@@ -22,6 +22,13 @@ const ENV_PASSWORD = (import.meta.env.VITE_PLANNER_PASSWORD || "").trim();
 
 const ALL_LUS: LeeruitkomstId[] = ["LU1", "LU2", "LU3", "LU4", "LU5"];
 
+/** Board columns and the table share one set of labels. */
+const STATUS_LABELS: Record<Story["status"], string> = {
+  "To Do": "to do",
+  "In Progress": "in uitvoering",
+  Done: "afgerond",
+};
+
 export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
   // Data state
   const [stories, setStories] = useState<Story[]>(() => {
@@ -268,8 +275,6 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
       />
 
       <div className="planner-page">
-        <div className="planner-page__scrim" aria-hidden="true" />
-
         {/* Topbar */}
         <header className="planner-page__topbar">
           <div className="planner-page__nav-left">
@@ -296,7 +301,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
               }`}
               onClick={() => setActiveTab("board")}
             >
-              [board: {stories.length}]
+              board <span className="planner-page__tab-count">{stories.length}</span>
             </button>
             <button
               type="button"
@@ -305,7 +310,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
               }`}
               onClick={() => setActiveTab("table")}
             >
-              [table: {stories.length}]
+              tabel <span className="planner-page__tab-count">{stories.length}</span>
             </button>
             <button
               type="button"
@@ -314,7 +319,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
               }`}
               onClick={() => setActiveTab("logbook")}
             >
-              [logbook: {logs.length}]
+              logboek <span className="planner-page__tab-count">{logs.length}</span>
             </button>
           </div>
 
@@ -323,7 +328,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
             <input
               type="text"
               className="planner-page__search"
-              placeholder="filter items..."
+              placeholder="zoeken…"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -337,7 +342,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 )
               }
             >
-              <option value="all">all sprints</option>
+              <option value="all">alle sprints</option>
               {minorData.sprints.map((s) => (
                 <option key={s.number} value={s.number}>
                   sprint {s.number}
@@ -352,16 +357,16 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                   className="planner-page__btn planner-page__btn--primary"
                   onClick={activeTab === "logbook" ? handleOpenNewLog : handleOpenNewStory}
                 >
-                  + {activeTab === "logbook" ? "new log" : "new story"}
+                  + {activeTab === "logbook" ? "logitem" : "story"}
                 </button>
 
                 <button
                   type="button"
                   className="planner-page__btn planner-page__btn--unlocked"
                   onClick={handleLock}
-                  title="Klik om te vergrendelen"
+                  title="Bewerken uitschakelen"
                 >
-                  [unlocked: lock]
+                  vergrendelen
                 </button>
               </>
             ) : (
@@ -374,7 +379,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                   setShowPasswordModal(true);
                 }}
               >
-                [unlock / edit]
+                ontgrendelen
               </button>
             )}
           </div>
@@ -390,13 +395,13 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 <div className="planner-page__column-header">
                   <div className="planner-page__column-title">
                     <span className="planner-page__dot" />
-                    <span>To Do</span>
+                    <span>to do</span>
                   </div>
                   <span className="planner-page__column-count">{todoStories.length}</span>
                 </div>
                 <div className="planner-page__cards">
                   {todoStories.length === 0 ? (
-                    <div className="planner-page__empty-col">geen items in to do</div>
+                    <div className="planner-page__empty-col">niets op de lijst</div>
                   ) : (
                     todoStories.map((story) => (
                       <BoardCard
@@ -420,7 +425,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 <div className="planner-page__column-header">
                   <div className="planner-page__column-title">
                     <span className="planner-page__dot planner-page__dot--progress" />
-                    <span>In Progress</span>
+                    <span>in uitvoering</span>
                   </div>
                   <span className="planner-page__column-count">
                     {inProgressStories.length}
@@ -429,7 +434,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 <div className="planner-page__cards">
                   {inProgressStories.length === 0 ? (
                     <div className="planner-page__empty-col">
-                      geen items in uitvoering
+                      niets in uitvoering
                     </div>
                   ) : (
                     inProgressStories.map((story) => (
@@ -455,13 +460,13 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 <div className="planner-page__column-header">
                   <div className="planner-page__column-title">
                     <span className="planner-page__dot planner-page__dot--done" />
-                    <span>Done</span>
+                    <span>afgerond</span>
                   </div>
                   <span className="planner-page__column-count">{doneStories.length}</span>
                 </div>
                 <div className="planner-page__cards">
                   {doneStories.length === 0 ? (
-                    <div className="planner-page__empty-col">geen afgeronde items</div>
+                    <div className="planner-page__empty-col">nog niets afgerond</div>
                   ) : (
                     doneStories.map((story) => (
                       <BoardCard
@@ -500,7 +505,10 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 <tbody>
                   {filteredStories.length === 0 ? (
                     <tr>
-                      <td colSpan={isUnlocked ? 7 : 6} style={{ textAlign: "center", color: "var(--fg-faint)" }}>
+                      <td
+                        className="planner-page__table-empty"
+                        colSpan={isUnlocked ? 7 : 6}
+                      >
                         geen items gevonden
                       </td>
                     </tr>
@@ -517,13 +525,16 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                           <span className="planner-page__tag">Sprint {story.sprint}</span>
                         </td>
                         <td>
-                          <strong style={{ color: "var(--fg)" }}>{story.title}</strong>
-                          <div style={{ fontSize: "0.75rem", color: "var(--fg-faint)", marginTop: "3px" }}>
-                            Als {story.asA}, wil ik {story.iWant}, zodat {story.soThat}.
+                          <div className="planner-page__table-title">
+                            {story.title}
                           </div>
+                          <p className="planner-page__table-formula">
+                            Als {story.asA}, wil ik {story.iWant}, zodat{" "}
+                            {story.soThat.replace(/\.+$/, "")}.
+                          </p>
                         </td>
                         <td>
-                          <div style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
+                          <div className="planner-page__tag-row">
                             {story.leeruitkomsten?.map((lu) => (
                               <span key={lu} className="planner-page__tag">
                                 {lu}
@@ -532,7 +543,9 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                           </div>
                         </td>
                         <td>
-                          <span className="planner-page__tag">{story.status}</span>
+                          <span className="planner-page__tag">
+                            {STATUS_LABELS[story.status]}
+                          </span>
                         </td>
                         {isUnlocked && (
                           <td>
@@ -574,10 +587,10 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 filteredLogs.map((log) => (
                   <article key={log.id} className="planner-page__log-entry">
                     <div className="planner-page__log-meta">
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div className="planner-page__log-ident">
                         <span className="planner-page__card-id">{log.id}</span>
                         <span className="planner-page__tag">sprint {log.sprint}</span>
-                        <span style={{ color: "var(--fg-faint)" }}>{log.date}</span>
+                        <span>{log.date}</span>
                       </div>
                       {isUnlocked && (
                         <div className="planner-page__card-btn-group">
@@ -605,7 +618,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                     <h3 className="planner-page__log-title">{log.title}</h3>
                     <p className="planner-page__log-desc">{log.description}</p>
 
-                    <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                    <div className="planner-page__tag-row">
                       {log.leeruitkomsten?.map((lu) => (
                         <span key={lu} className="planner-page__tag">
                           {lu}
@@ -623,8 +636,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            <span>↗</span>
-                            <span>{link.label}</span>
+                            {link.label} ↗
                           </a>
                         ))}
                       </div>
@@ -641,7 +653,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
           <div className="planner-modal-backdrop" onClick={() => setShowPasswordModal(false)}>
             <div className="planner-modal" onClick={(e) => e.stopPropagation()}>
               <div className="planner-modal__header">
-                <span className="planner-modal__title">Wachtwoord Vereist</span>
+                <span className="planner-modal__title">wachtwoord</span>
                 <button
                   type="button"
                   className="planner-modal__close"
@@ -651,7 +663,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 </button>
               </div>
 
-              <form onSubmit={handleUnlockSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <form className="planner-modal__form" onSubmit={handleUnlockSubmit}>
                 <p className="planner-modal__body">
                   Vul het beheerwachtwoord in om bewerkmodus te ontgrendelen:
                 </p>
@@ -692,10 +704,13 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
         {/* ==================== MODAL: EDIT STORY ==================== */}
         {editingStory && (
           <div className="planner-modal-backdrop" onClick={() => setEditingStory(null)}>
-            <div className="planner-modal" style={{ maxWidth: "34rem" }} onClick={(e) => e.stopPropagation()}>
+            <div
+              className="planner-modal planner-modal--wide"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="planner-modal__header">
                 <span className="planner-modal__title">
-                  {isNewStory ? "+ Nieuwe Story" : `✎ ${editingStory.id} Bewerken`}
+                  {isNewStory ? "nieuwe story" : `${editingStory.id} bewerken`}
                 </span>
                 <button
                   type="button"
@@ -711,11 +726,11 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                   e.preventDefault();
                   handleSaveStory(editingStory);
                 }}
-                style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}
+                className="planner-modal__form"
               >
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.5rem" }}>
+                <div className="planner-modal__grid">
                   <div>
-                    <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>ID</label>
+                    <label className="planner-modal__label">ID</label>
                     <input
                       type="text"
                       className="planner-modal__input"
@@ -727,10 +742,9 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                     />
                   </div>
                   <div>
-                    <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>Type</label>
+                    <label className="planner-modal__label">Type</label>
                     <select
                       className="planner-page__select"
-                      style={{ width: "100%", padding: "0.6rem" }}
                       value={editingStory.type}
                       onChange={(e) =>
                         setEditingStory({
@@ -745,7 +759,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                     </select>
                   </div>
                   <div>
-                    <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>Sprint</label>
+                    <label className="planner-modal__label">Sprint</label>
                     <input
                       type="number"
                       min={1}
@@ -764,7 +778,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 </div>
 
                 <div>
-                  <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>Titel</label>
+                  <label className="planner-modal__label">Titel</label>
                   <input
                     type="text"
                     className="planner-modal__input"
@@ -776,9 +790,9 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                   />
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
+                <div className="planner-modal__grid">
                   <div>
-                    <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>Als</label>
+                    <label className="planner-modal__label">Als</label>
                     <input
                       type="text"
                       className="planner-modal__input"
@@ -790,10 +804,9 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                     />
                   </div>
                   <div>
-                    <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>Status</label>
+                    <label className="planner-modal__label">Status</label>
                     <select
                       className="planner-page__select"
-                      style={{ width: "100%", padding: "0.6rem" }}
                       value={editingStory.status}
                       onChange={(e) =>
                         setEditingStory({
@@ -810,7 +823,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 </div>
 
                 <div>
-                  <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>Wil ik</label>
+                  <label className="planner-modal__label">Wil ik</label>
                   <input
                     type="text"
                     className="planner-modal__input"
@@ -823,7 +836,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 </div>
 
                 <div>
-                  <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>Zodat</label>
+                  <label className="planner-modal__label">Zodat</label>
                   <input
                     type="text"
                     className="planner-modal__input"
@@ -836,19 +849,16 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 </div>
 
                 <div>
-                  <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>Leeruitkomsten</label>
-                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "4px" }}>
+                  <label className="planner-modal__label">Leeruitkomsten</label>
+                  <div className="planner-modal__lu-picker">
                     {ALL_LUS.map((lu) => {
                       const active = (editingStory.leeruitkomsten || []).includes(lu);
                       return (
                         <button
                           key={lu}
                           type="button"
-                          className="planner-page__btn"
-                          style={{
-                            borderColor: active ? "var(--accent)" : "var(--rule)",
-                            color: active ? "var(--accent)" : "var(--fg-muted)",
-                          }}
+                          className="planner-page__btn planner-modal__lu"
+                          aria-pressed={active}
                           onClick={() => {
                             const cur = editingStory.leeruitkomsten || [];
                             const next = active
@@ -887,10 +897,13 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
         {/* ==================== MODAL: EDIT LOG ==================== */}
         {editingLog && (
           <div className="planner-modal-backdrop" onClick={() => setEditingLog(null)}>
-            <div className="planner-modal" style={{ maxWidth: "34rem" }} onClick={(e) => e.stopPropagation()}>
+            <div
+              className="planner-modal planner-modal--wide"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="planner-modal__header">
                 <span className="planner-modal__title">
-                  {isNewLog ? "+ Nieuw Logboek Item" : `✎ ${editingLog.id} Bewerken`}
+                  {isNewLog ? "nieuw logitem" : `${editingLog.id} bewerken`}
                 </span>
                 <button
                   type="button"
@@ -906,11 +919,11 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                   e.preventDefault();
                   handleSaveLog(editingLog);
                 }}
-                style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}
+                className="planner-modal__form"
               >
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.5rem" }}>
+                <div className="planner-modal__grid">
                   <div>
-                    <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>ID</label>
+                    <label className="planner-modal__label">ID</label>
                     <input
                       type="text"
                       className="planner-modal__input"
@@ -922,7 +935,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                     />
                   </div>
                   <div>
-                    <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>Datum</label>
+                    <label className="planner-modal__label">Datum</label>
                     <input
                       type="date"
                       className="planner-modal__input"
@@ -934,7 +947,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                     />
                   </div>
                   <div>
-                    <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>Sprint</label>
+                    <label className="planner-modal__label">Sprint</label>
                     <input
                       type="number"
                       min={1}
@@ -953,7 +966,7 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 </div>
 
                 <div>
-                  <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>Titel</label>
+                  <label className="planner-modal__label">Titel</label>
                   <input
                     type="text"
                     className="planner-modal__input"
@@ -966,10 +979,9 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
                 </div>
 
                 <div>
-                  <label style={{ fontSize: "0.6875rem", color: "var(--fg-faint)" }}>Beschrijving</label>
+                  <label className="planner-modal__label">Beschrijving</label>
                   <textarea
                     className="planner-modal__input"
-                    style={{ minHeight: "5rem" }}
                     value={editingLog.description}
                     onChange={(e) =>
                       setEditingLog({ ...editingLog, description: e.target.value })
@@ -1032,20 +1044,15 @@ function BoardCard({
 
       <h4 className="planner-page__card-title">{story.title}</h4>
 
-      <div className="planner-page__card-desc">
-        <div>
-          <span>als:</span> {story.asA}
-        </div>
-        <div>
-          <span>wil ik:</span> {story.iWant}
-        </div>
-        <div>
-          <span>zodat:</span> {story.soThat}
-        </div>
-      </div>
+      <p className="planner-page__card-desc">
+        <span className="planner-page__card-kw">Als</span> {story.asA},{" "}
+        <span className="planner-page__card-kw">wil ik</span> {story.iWant},{" "}
+        <span className="planner-page__card-kw">zodat</span>{" "}
+        {story.soThat.replace(/\.+$/, "")}.
+      </p>
 
       {story.leeruitkomsten && story.leeruitkomsten.length > 0 && (
-        <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "2px" }}>
+        <div className="planner-page__tag-row">
           {story.leeruitkomsten.map((lu) => (
             <span key={lu} className="planner-page__tag">
               {lu}

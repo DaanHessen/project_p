@@ -43,6 +43,35 @@ const ForkIcon = () => (
   </svg>
 );
 
+/*
+  Star and fork counts are metadata about the repository, so they sit in the
+  meta column with the name rather than floating at the far right of the entry
+  where they lined up with nothing.
+*/
+const RepoStats = ({
+  stats,
+}: {
+  stats: { stars: number; forks: number } | null;
+}) => (
+  <span
+    className="resume__stars"
+    title={
+      stats
+        ? `${stats.stars} stars, ${stats.forks} forks on GitHub`
+        : "Repository is private or not on GitHub"
+    }
+  >
+    <span className="resume__stat">
+      <StarIcon />
+      <span>{stats ? stats.stars : "–"}</span>
+    </span>
+    <span className="resume__stat">
+      <ForkIcon />
+      <span>{stats ? stats.forks : "–"}</span>
+    </span>
+  </span>
+);
+
 const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
   const curated = useMemo(
     () =>
@@ -289,11 +318,11 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
                 <article className="resume__entry" key={project.name}>
                   <div className="resume__meta resume__meta--strong">
                     <span>{project.name}</span>
+                    <RepoStats stats={projectStat} />
                   </div>
                   <div>
                     <p className="resume__entry-desc">{project.description}</p>
-                    <div className="resume__actions-row">
-                      <div className="resume__links">
+                    <div className="resume__links">
                         {project.links.map((link) =>
                           link.offline ? (
                             <span
@@ -321,24 +350,6 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
                             </a>
                           ),
                         )}
-                      </div>
-                      <span
-                        className="resume__stars"
-                        title={
-                          projectStat
-                            ? `${projectStat.stars} stars, ${projectStat.forks} forks on GitHub`
-                            : "Repository is private or not included on GitHub"
-                        }
-                      >
-                        <span className="resume__stat">
-                          <StarIcon />
-                          <span>{projectStat ? projectStat.stars : "-"}</span>
-                        </span>
-                        <span className="resume__stat">
-                          <ForkIcon />
-                          <span>{projectStat ? projectStat.forks : "-"}</span>
-                        </span>
-                      </span>
                     </div>
                   </div>
                 </article>
@@ -357,33 +368,19 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
                     {repo.language && (
                       <span className="resume__meta-place">{repo.language}</span>
                     )}
+                    <RepoStats stats={repo} />
                   </div>
                   <div>
                     <p className="resume__entry-desc">{repo.description}</p>
-                    <div className="resume__actions-row">
-                      <div className="resume__links">
-                        <a
-                          className="resume__link"
-                          href={repo.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          GitHub
-                        </a>
-                      </div>
-                      <span
-                        className="resume__stars"
-                        title={`${repo.stars} stars, ${repo.forks} forks on GitHub`}
+                    <div className="resume__links">
+                      <a
+                        className="resume__link"
+                        href={repo.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        <span className="resume__stat">
-                          <StarIcon />
-                          <span>{repo.stars}</span>
-                        </span>
-                        <span className="resume__stat">
-                          <ForkIcon />
-                          <span>{repo.forks}</span>
-                        </span>
-                      </span>
+                        GitHub
+                      </a>
                     </div>
                   </div>
                 </article>
@@ -396,11 +393,11 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
             <h2 className="resume__section-title">
               technologies & tools i&apos;ve worked with
             </h2>
-            <dl className="resume__technologies">
+            <dl className="resume__definitions">
               {resume.skills.map((group) => (
-                <div className="resume__tech-row" key={group.group}>
-                  <dt className="resume__tech-group">{group.group}</dt>
-                  <dd className="resume__tech-items">{group.items.join(", ")}</dd>
+                <div className="resume__entry" key={group.group}>
+                  <dt className="resume__meta">{group.group}</dt>
+                  <dd className="resume__def-value">{group.items.join(", ")}</dd>
                 </div>
               ))}
             </dl>
@@ -409,15 +406,22 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
           {/* Languages */}
           <section id="languages" className="resume__section">
             <h2 className="resume__section-title">languages</h2>
-            <dl className="resume__languages">
-              {resume.languages.map((language) => (
-                <div className="resume__language-row" key={language.name}>
-                  <dt className="resume__language-name">{language.name}</dt>
-                  <dd className="resume__language-level">
-                    {proficiency(language.level)}
-                  </dd>
-                </div>
-              ))}
+            <dl className="resume__definitions">
+              <div className="resume__entry">
+                <dt className="resume__meta">spoken</dt>
+                <dd className="resume__def-value">
+                  <ul className="resume__language-list">
+                    {resume.languages.map((language) => (
+                      <li className="resume__language" key={language.name}>
+                        {language.name}
+                        <span className="resume__language-level">
+                          {proficiency(language.level)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
             </dl>
           </section>
         </div>

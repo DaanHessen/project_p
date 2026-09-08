@@ -88,7 +88,6 @@
 .resume__print:focus-visible {
   background: var(--accent);
   color: var(--bg);
-  box-shadow: 0 0 16px rgba(217, 164, 65, 0.28);
 }
 
 .resume__btn:active,
@@ -121,7 +120,7 @@
 .resume__identity {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-6);
 }
 
 .resume__name {
@@ -133,7 +132,7 @@
 }
 
 .resume__position {
-  margin-top: calc(var(--space-2) * -1);
+  margin-top: var(--space-1);
   color: var(--fg-muted);
   font-size: 0.8125rem;
   letter-spacing: 0.08em;
@@ -143,9 +142,10 @@
 .resume__contact {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2) var(--space-4);
+  align-items: baseline;
+  gap: var(--space-3) var(--space-4);
   font-size: 0.8125rem;
+  line-height: 1.6;
   color: var(--fg-muted);
 }
 
@@ -156,7 +156,7 @@
 .resume__about {
   color: var(--fg-muted);
   font-size: 0.8125rem;
-  line-height: 1.8;
+  line-height: 1.85;
   max-width: 58ch;
 }
 
@@ -166,8 +166,7 @@
 .resume__nav {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  margin-top: var(--space-4);
+  gap: var(--space-3);
   font-size: 0.8125rem;
 }
 
@@ -224,6 +223,17 @@
   }
 }
 
+/*
+  The sidebar nav and the quick-nav are the same list of links. Above 54rem the
+  sidebar carries it; below, the quick-nav does. Showing both stacked the same
+  four links twice.
+*/
+@media (max-width: 53.999rem) {
+  .resume__nav {
+    display: none;
+  }
+}
+
 /* --------------------------------------------------------------------------
    Sections & Entries (Clean Typographical Grid, Expansive & Balanced)
    -------------------------------------------------------------------------- */
@@ -244,13 +254,11 @@
 .resume__entry {
   position: relative;
   display: grid;
-  grid-template-columns: 13rem 1fr;
-  column-gap: var(--space-5);
+  grid-template-columns: 12rem 1fr;
+  column-gap: var(--space-6);
   row-gap: var(--space-2);
-  padding: var(--space-5) 0;
+  padding: var(--space-6) 0;
   border-bottom: 1px solid var(--rule);
-  content-visibility: auto;
-  contain-intrinsic-size: 0 100px;
 }
 
 .resume__entry:last-child {
@@ -295,7 +303,7 @@
 }
 
 .resume__entry-desc {
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
   max-width: 78ch;
   color: var(--fg-muted);
   font-size: 0.8125rem;
@@ -384,21 +392,14 @@
   transform: translateX(-50%) translateY(0);
 }
 
-.resume__actions-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  margin-top: var(--space-3);
-}
-
 .resume__stars {
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
+  margin-top: 0.15rem;
   color: var(--fg-faint);
   font-size: 0.75rem;
+  font-weight: 400;
   letter-spacing: 0.02em;
   user-select: none;
 }
@@ -419,38 +420,39 @@
 /* --------------------------------------------------------------------------
    Technologies & Languages Layout
    -------------------------------------------------------------------------- */
-.resume__technologies,
-.resume__languages {
-  padding-top: var(--space-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.resume__tech-row,
-.resume__language-row {
-  display: grid;
-  grid-template-columns: 13rem 1fr;
-  column-gap: var(--space-5);
-  row-gap: 0.25rem;
-  font-size: 0.8125rem;
-  line-height: 1.7;
-}
-
-.resume__tech-group,
-.resume__language-name {
-  color: var(--fg-faint);
+/*
+  Skills and languages are the same shape as every other entry — a label in the
+  meta column, its content in the body — so they reuse .resume__entry rather
+  than carrying a second, narrower grid of their own.
+*/
+.resume__definitions .resume__meta {
   text-transform: lowercase;
   letter-spacing: 0.02em;
 }
 
-.resume__tech-items {
-  color: var(--fg-muted);
+.resume__def-value {
   max-width: 78ch;
+  color: var(--fg-muted);
+  font-size: 0.8125rem;
+  line-height: 1.75;
+}
+
+/* Set across the row rather than stacked, which left the column half empty. */
+.resume__language-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-7);
+}
+
+.resume__language {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.75ch;
+  color: var(--fg);
 }
 
 .resume__language-level {
-  color: var(--fg-muted);
+  color: var(--fg-faint);
 }
 
 /* --------------------------------------------------------------------------
@@ -461,9 +463,7 @@
     padding: var(--space-5) var(--space-4) var(--space-7);
   }
 
-  .resume__entry,
-  .resume__tech-row,
-  .resume__language-row {
+  .resume__entry {
     grid-template-columns: 1fr;
     row-gap: var(--space-2);
   }
@@ -638,33 +638,19 @@
     display: none !important;
   }
 
-  .resume__technologies,
-  .resume__languages {
-    padding-top: 2mm !important;
-    gap: 2mm !important;
-  }
-
-  .resume__tech-row,
-  .resume__language-row {
-    display: grid !important;
-    grid-template-columns: 32mm 1fr !important;
-    column-gap: 4mm !important;
-    padding: 1mm 0 !important;
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-    font-size: 8.5pt !important;
-    line-height: 1.4 !important;
-  }
-
-  .resume__tech-group,
-  .resume__language-name {
-    color: #444 !important;
-    font-size: 8.5pt !important;
-  }
-
-  .resume__tech-items,
-  .resume__language-level {
+  .resume__def-value {
     color: #1a1a1a !important;
     font-size: 8.5pt !important;
+    line-height: 1.4 !important;
+    max-width: none !important;
+  }
+
+  .resume__language-list {
+    gap: 1mm 8mm !important;
+  }
+
+  .resume__language,
+  .resume__language-level {
+    color: #1a1a1a !important;
   }
 }

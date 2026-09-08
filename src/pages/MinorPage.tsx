@@ -27,12 +27,44 @@ const structuredData = {
   },
 };
 
+/** "Sprint 3 · Weken 5 – 6" reads as just the weeks once it sits next to the number. */
+const stripSprintPrefix = (period: string) =>
+  period.replace(/^Sprint \d+\s*·\s*/i, "");
+
+/** The board's English status values, in the language the page is written in. */
+const STATUS_LABELS: Record<string, string> = {
+  done: "afgerond",
+  "in progress": "in uitvoering",
+  "to do": "te doen",
+};
+
+const statusLabel = (status: string) =>
+  STATUS_LABELS[status.toLowerCase()] ?? status.toLowerCase();
+
+/** The first and last week across a run of sprints, as one range. */
+const weekSpan = (sprints: { period: string }[]): string => {
+  const weeks = sprints
+    .flatMap((sprint) => stripSprintPrefix(sprint.period).match(/\d+/g) ?? [])
+    .map(Number);
+  if (weeks.length === 0) return "";
+  return `Weken ${Math.min(...weeks)} – ${Math.max(...weeks)}`;
+};
+
 const MinorPage = ({
   onNavigateHome,
   onNavigateToPlanner,
   onNavigateToDagboek,
 }: MinorPageProps) => {
   const [activeSection, setActiveSection] = useState<string>("leeruitkomsten");
+
+  const startedSprints = useMemo(
+    () => minorData.sprints.filter((s) => s.deliverables.length > 0),
+    [],
+  );
+  const plannedSprints = useMemo(
+    () => minorData.sprints.filter((s) => s.deliverables.length === 0),
+    [],
+  );
 
   const navItems = useMemo(
     () => [
@@ -160,7 +192,6 @@ const MinorPage = ({
           <p className="resume__about">{minorData.meta.description}</p>
 
           <div className="minor__sidebar-section">
-            <span className="minor__sidebar-title">inhoud</span>
             <nav className="resume__nav" aria-label="Sections">
               {navItems.map((item) => (
                 <a
@@ -196,10 +227,7 @@ const MinorPage = ({
         <div className="resume__body">
           {/* 1. Leeruitkomsten */}
           <section id="leeruitkomsten" className="resume__section">
-            <div className="resume__section-header">
-              <h2 className="resume__section-title">leeruitkomsten (v2.0)</h2>
-              <span className="resume__section-count">5 uitkomsten</span>
-            </div>
+            <h2 className="resume__section-title">leeruitkomsten</h2>
 
             {minorData.leeruitkomsten.map((lu) => (
               <article className="resume__entry" key={lu.id}>
@@ -208,7 +236,7 @@ const MinorPage = ({
                   <span className="resume__meta-place">
                     min. {lu.minEvaluations}× voldaan
                   </span>
-                  <span className="resume__meta-place">
+                  <span className="minor__status-badge" data-status={lu.status}>
                     {lu.status.toLowerCase()}
                   </span>
                 </div>
@@ -222,38 +250,10 @@ const MinorPage = ({
 
           {/* 2. Sprints & Bewijzen */}
           <section id="sprints" className="resume__section">
-            <div className="resume__section-header">
-              <h2 className="resume__section-title">sprints & bewijzen</h2>
-              <span className="resume__section-count">
-                {minorData.sprints.length} sprints
-              </span>
-            </div>
+            <h2 className="resume__section-title">sprints & bewijzen</h2>
 
-            {minorData.sprints.map((sprint) => {
-              const cleanPeriod = sprint.period.replace(/^Sprint \d+\s*·\s*/i, "");
-              const isPlanned = sprint.deliverables.length === 0;
-
-              if (isPlanned) {
-                return (
-                  <article
-                    className="resume__entry minor__entry--planned"
-                    key={sprint.number}
-                  >
-                    <div className="resume__meta">
-                      <span>Sprint {sprint.number}</span>
-                      <span className="minor__status-badge">
-                        {sprint.status.toLowerCase()}
-                      </span>
-                    </div>
-                    <div className="minor__planned-body">
-                      <span className="minor__planned-period">{cleanPeriod}</span>
-                      <span className="minor__planned-hint">
-                        bewijzen en deliverables volgen in deze sprintperiode
-                      </span>
-                    </div>
-                  </article>
-                );
-              }
+            {startedSprints.map((sprint) => {
+              const cleanPeriod = stripSprintPrefix(sprint.period);
 
               return (
                 <article className="resume__entry" key={sprint.number}>
@@ -281,7 +281,7 @@ const MinorPage = ({
                               <span className="minor__deliverable-title">
                                 {deliv.title}
                               </span>
-                              <div className="minor__deliverable-tags">
+                              <div className="minor__lu-tags">
                                 {deliv.leeruitkomsten.map((lu) => (
                                   <span key={lu} className="minor__lu-tag">
                                     {lu}
@@ -324,6 +324,31 @@ const MinorPage = ({
                 </article>
               );
             })}
+
+            {/*
+              The remaining sprints all say the same thing. One row with the
+              week ranges carries that, where eight near-identical rows only
+              padded the page.
+            */}
+            {plannedSprints.length > 0 && (
+              <article className="resume__entry minor__entry--planned">
+                <div className="resume__meta resume__meta--strong">
+                  <span>
+                    Sprint {plannedSprints[0].number} –{" "}
+                    {plannedSprints[plannedSprints.length - 1].number}
+                  </span>
+                  <span className="minor__status-badge">gepland</span>
+                </div>
+                <div>
+                  <h3 className="resume__entry-title">
+                    {weekSpan(plannedSprints)}
+                  </h3>
+                  <p className="resume__entry-desc">
+                    Bewijzen en deliverables volgen per sprintperiode.
+                  </p>
+                </div>
+              </article>
+            )}
           </section>
 
           {/* 3. Logboek & User Stories */}
@@ -343,14 +368,24 @@ const MinorPage = ({
                     className="minor__status-badge"
                     data-status={story.status.toLowerCase()}
                   >
-                    {story.status.toLowerCase()}
+                    {statusLabel(story.status)}
                   </span>
                 </div>
                 <div>
                   <h3 className="resume__entry-title">{story.title}</h3>
-                  <p className="resume__entry-desc">
-                    Als {story.asA}, wil ik {story.iWant}, zodat{" "}
-                    {story.soThat.replace(/\.+$/, "")}.
+                  {story.leeruitkomsten && story.leeruitkomsten.length > 0 && (
+                    <div className="minor__lu-tags">
+                      {story.leeruitkomsten.map((lu) => (
+                        <span key={lu} className="minor__lu-tag">
+                          {lu}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <p className="resume__entry-desc minor__story-format">
+                    <span className="minor__story-kw">Als</span> {story.asA},{" "}
+                    <span className="minor__story-kw">wil ik</span> {story.iWant},{" "}
+                    <span className="minor__story-kw">zodat</span> {story.soThat.replace(/\.+$/, "")}.
                   </p>
                   {story.acceptanceCriteria && story.acceptanceCriteria.length > 0 && (
                     <ul className="minor__criteria-list">
@@ -371,12 +406,7 @@ const MinorPage = ({
               </article>
             ))}
 
-            <div
-              className="minor__subheading"
-              style={{ marginTop: "var(--space-6)" }}
-            >
-              logboek items
-            </div>
+            <div className="minor__subheading">logboek items</div>
 
             {minorData.logEntries.map((log) => (
               <article className="resume__entry" key={log.id}>
@@ -389,6 +419,15 @@ const MinorPage = ({
                 </div>
                 <div>
                   <h3 className="resume__entry-title">{log.title}</h3>
+                  {log.leeruitkomsten.length > 0 && (
+                    <div className="minor__lu-tags">
+                      {log.leeruitkomsten.map((lu) => (
+                        <span key={lu} className="minor__lu-tag">
+                          {lu}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                   <p className="resume__entry-desc">{log.description}</p>
                   {log.links && log.links.length > 0 && (
                     <div className="resume__links">
@@ -441,25 +480,15 @@ const MinorPage = ({
                   </a>
                   .
                 </p>
-                <p
-                  className="resume__entry-desc"
-                  style={{ marginTop: "var(--space-3)" }}
-                >
+                <p className="resume__entry-desc">
                   De achtergrond van de pagina&apos;s draait op de geanimeerde ASCII
                   metaball engine (<code>ascii-blobs</code>). Voor dagelijkse
                   notities en reflecties is daarnaast het{" "}
                   {onNavigateToDagboek ? (
                     <button
                       type="button"
-                      className="resume__link"
+                      className="resume__link minor__inline-btn"
                       onClick={onNavigateToDagboek}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        font: "inherit",
-                        cursor: "pointer",
-                        padding: 0,
-                      }}
                     >
                       digitale dagboek
                     </button>

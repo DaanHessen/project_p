@@ -1,12 +1,17 @@
 /* ==========================================================================
-   PlannerPage (Standalone Full-Viewport GitHub-Style Planner & Logboek)
+   PlannerPage — sprint board, table and logbook for the minor.
+
+   This is a working tool rather than a document, so it keeps its own toolbar
+   and full-width canvas. Everything else borrows the site's language: one
+   frame level at most, hairline rules, lowercase labels, the single amber
+   accent. The page is transparent so the shared ASCII field reads through it
+   exactly as it does on /cv and /minor.
    ========================================================================== */
 
 .planner-page {
   width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
-  background: var(--bg);
   color: var(--fg);
   font-family: var(--font-mono);
   display: flex;
@@ -15,20 +20,9 @@
   z-index: 1;
 }
 
-/* Background gradient scrim */
-.planner-page__scrim {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  background: radial-gradient(
-    ellipse 80rem 50rem at 50% 20%,
-    rgba(14, 17, 23, 0.9) 0%,
-    rgba(7, 8, 11, 0.98) 100%
-  );
-}
-
-/* Top Navigation Bar */
+/* --------------------------------------------------------------------------
+   Toolbar
+   -------------------------------------------------------------------------- */
 .planner-page__topbar {
   position: sticky;
   top: 0;
@@ -38,73 +32,62 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: var(--space-3);
-  padding: 0.75rem 1.5rem;
+  padding: var(--space-3) clamp(1rem, 3vw, 2rem);
   background: rgba(7, 8, 11, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--rule);
 }
 
+@media (max-width: 48rem) {
+  .planner-page__topbar {
+    background: rgba(7, 8, 11, 0.98);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
 .planner-page__nav-left {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
-}
-
-.planner-page__back-btn {
-  background: transparent;
-  border: 1px solid var(--rule);
-  color: var(--fg-muted);
-  font-family: inherit;
-  font-size: 0.75rem;
-  padding: 0.35rem 0.75rem;
-  border-radius: 2px;
-  cursor: pointer;
-  letter-spacing: 0.04em;
-  transition: all 0.15s ease;
-}
-
-.planner-page__back-btn:hover,
-.planner-page__back-btn:focus-visible {
-  border-color: var(--accent);
-  color: var(--accent);
+  gap: var(--space-5);
+  min-width: 0;
 }
 
 .planner-page__breadcrumbs {
-  font-size: 0.8125rem;
-  color: var(--fg-faint);
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: 0.6ch;
+  font-size: 0.8125rem;
+  color: var(--fg-faint);
 }
 
 .planner-page__title {
   color: var(--fg);
   font-weight: 500;
-  font-size: 0.875rem;
 }
 
-/* Center Tabs */
+/* Tabs read as labels with a count, not as chrome. */
 .planner-page__tabs {
   display: flex;
   align-items: center;
-  gap: 2px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--rule);
-  padding: 2px;
-  border-radius: 2px;
+  gap: var(--space-6);
 }
 
 .planner-page__tab {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6ch;
   background: transparent;
   border: 0;
+  border-bottom: 1px solid transparent;
   color: var(--fg-faint);
   font-family: inherit;
-  font-size: 0.75rem;
-  padding: 0.35rem 0.85rem;
+  font-size: 0.78125rem;
+  letter-spacing: 0.02em;
+  padding: 0.35rem 0;
   cursor: pointer;
-  letter-spacing: 0.05em;
-  transition: all 0.15s ease;
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
 
 .planner-page__tab:hover {
@@ -112,12 +95,20 @@
 }
 
 .planner-page__tab--active {
-  background: rgba(217, 164, 65, 0.12);
   color: var(--accent);
-  font-weight: 500;
+  border-bottom-color: var(--accent);
 }
 
-/* Right Controls */
+.planner-page__tab-count {
+  font-size: 0.6875rem;
+  color: var(--fg-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.planner-page__tab--active .planner-page__tab-count {
+  color: var(--accent);
+}
+
 .planner-page__nav-right {
   display: flex;
   align-items: center;
@@ -125,61 +116,56 @@
   flex-wrap: wrap;
 }
 
-.planner-page__search {
-  background: rgba(255, 255, 255, 0.03);
+/* --------------------------------------------------------------------------
+   Controls
+   -------------------------------------------------------------------------- */
+.planner-page__search,
+.planner-page__select,
+.planner-page__btn,
+.planner-page__back-btn {
+  min-height: 1.75rem;
+  background: transparent;
   border: 1px solid var(--rule);
-  color: var(--fg);
+  border-radius: 2px;
+  color: var(--fg-muted);
   font-family: inherit;
   font-size: 0.75rem;
+  letter-spacing: 0.02em;
   padding: 0.35rem 0.75rem;
-  border-radius: 2px;
   outline: none;
-  width: 12rem;
-  transition: border-color 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease,
+    background-color 0.15s ease;
 }
 
-.planner-page__search:focus {
-  border-color: var(--accent);
+.planner-page__btn,
+.planner-page__back-btn,
+.planner-page__select {
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.planner-page__search {
+  width: 12rem;
+  color: var(--fg);
 }
 
 .planner-page__search::placeholder {
   color: var(--fg-faint);
 }
 
-.planner-page__select {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--rule);
-  color: var(--fg-muted);
-  font-family: inherit;
-  font-size: 0.75rem;
-  padding: 0.35rem 0.65rem;
-  border-radius: 2px;
-  outline: none;
-  cursor: pointer;
-}
-
+.planner-page__search:focus,
 .planner-page__select:focus {
   border-color: var(--accent);
-  color: var(--fg);
 }
 
-.planner-page__btn {
-  background: transparent;
-  border: 1px solid var(--rule);
-  color: var(--fg-muted);
-  font-family: inherit;
-  font-size: 0.75rem;
-  padding: 0.35rem 0.75rem;
-  border-radius: 2px;
-  cursor: pointer;
-  letter-spacing: 0.04em;
-  transition: all 0.15s ease;
-  white-space: nowrap;
-}
-
-.planner-page__btn:hover {
+.planner-page__btn:hover,
+.planner-page__back-btn:hover,
+.planner-page__back-btn:focus-visible,
+.planner-page__select:hover {
+  border-color: var(--fg-faint);
   color: var(--fg);
-  border-color: var(--fg-muted);
 }
 
 .planner-page__btn--primary {
@@ -189,151 +175,178 @@
 
 .planner-page__btn--primary:hover {
   background: var(--accent);
+  border-color: var(--accent);
   color: var(--bg);
 }
 
+/* The lock control states what it does; the mode is shown by the board being
+   editable, not by a second colour system. */
 .planner-page__btn--unlocked {
-  border-color: rgba(63, 185, 80, 0.4);
-  color: #7ee787;
-  background: rgba(46, 160, 67, 0.08);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
-/* Main Content Area (Full Viewport) */
+/* --------------------------------------------------------------------------
+   Canvas
+   -------------------------------------------------------------------------- */
 .planner-page__content {
   flex: 1;
-  padding: 1.5rem;
+  width: 100%;
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: var(--space-6) clamp(1rem, 3vw, 2rem) var(--space-8);
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 
-/* ==========================================================================
-   Kanban Board View (Full Viewport Columns)
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   Board — columns are regions under a rule, not nested boxes
+   -------------------------------------------------------------------------- */
 .planner-page__board {
+  flex: 1;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
-  flex: 1;
+  gap: var(--space-6);
 }
 
+/*
+  Above the breakpoint the lanes are divided by a full-height rule and the
+  board stretches to the bottom of the viewport. An empty lane then reads as
+  an empty lane rather than as the page having run out.
+*/
 @media (min-width: 56rem) {
   .planner-page__board {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .planner-page__column + .planner-page__column {
+    border-left: 1px solid var(--rule);
+    margin-left: clamp(1.25rem, 2.5vw, 2rem);
+    padding-left: clamp(1.25rem, 2.5vw, 2rem);
   }
 }
 
 .planner-page__column {
-  background: rgba(14, 17, 23, 0.4);
-  border: 1px solid var(--rule);
-  border-radius: 4px;
   display: flex;
   flex-direction: column;
-  min-height: 24rem;
+  min-width: 0;
 }
 
 .planner-page__column-header {
-  padding: 0.85rem 1rem;
-  border-bottom: 1px solid var(--rule);
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.02);
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--rule);
 }
 
 .planner-page__column-title {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  align-items: baseline;
+  gap: 0.75ch;
   font-size: 0.8125rem;
   font-weight: 500;
   color: var(--fg);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
 }
 
 .planner-page__dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--fg-faint);
+  opacity: 0.5;
+  flex: none;
+  transform: translateY(-1px);
 }
 
 .planner-page__dot--progress {
   background: var(--accent);
+  opacity: 1;
 }
 
 .planner-page__dot--done {
-  background: #a371f7;
+  background: var(--fg);
+  opacity: 0.8;
 }
 
 .planner-page__column-count {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--fg-faint);
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1px 6px;
-  border-radius: 10px;
+  font-variant-numeric: tabular-nums;
 }
 
 .planner-page__cards {
-  padding: 0.85rem;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  flex: 1;
-  overflow-y: auto;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
 }
 
 .planner-page__empty-col {
-  padding: 3rem 1rem;
-  text-align: center;
+  padding: var(--space-3) 0;
   color: var(--fg-faint);
   font-size: 0.75rem;
-  font-style: italic;
 }
 
-/* Standalone Card */
+/* --------------------------------------------------------------------------
+   Story card
+   -------------------------------------------------------------------------- */
 .planner-page__card {
-  background: rgba(7, 8, 11, 0.85);
-  border: 1px solid var(--rule);
-  border-radius: 3px;
-  padding: 0.85rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: rgba(7, 8, 11, 0.66);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
   transition: border-color 0.15s ease;
 }
 
 .planner-page__card:hover {
-  border-color: rgba(217, 164, 65, 0.4);
+  border-color: var(--fg-faint);
 }
 
 .planner-page__card-head {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
+  gap: var(--space-2);
   font-size: 0.6875rem;
+  color: var(--fg-faint);
 }
 
 .planner-page__card-id {
   color: var(--accent);
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .planner-page__card-tags {
   display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  color: var(--fg-faint);
+  align-items: baseline;
+  gap: 0.6ch;
 }
 
 .planner-page__tag {
   font-size: 0.625rem;
-  border: 1px solid var(--rule);
-  padding: 0 4px;
-  border-radius: 2px;
+  letter-spacing: 0.04em;
   color: var(--fg-muted);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 0 0.35rem;
+  white-space: nowrap;
+}
+
+.planner-page__tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .planner-page__card-title {
@@ -343,16 +356,19 @@
   line-height: 1.4;
 }
 
+/*
+  The user-story sentence, set as one paragraph with the three keywords
+  carrying the structure. It used to sit in its own bordered box inside the
+  card, which put three frames around a sentence.
+*/
 .planner-page__card-desc {
   font-size: 0.75rem;
   color: var(--fg-muted);
-  line-height: 1.6;
-  border-left: 2px solid var(--rule);
-  padding-left: 0.5rem;
+  line-height: 1.7;
 }
 
-.planner-page__card-desc span {
-  color: var(--accent);
+.planner-page__card-kw {
+  color: var(--fg);
 }
 
 .planner-page__card-criteria {
@@ -364,8 +380,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 0.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--rule);
 }
 
 .planner-page__card-btn-group {
@@ -375,14 +393,17 @@
 }
 
 .planner-page__mini-btn {
+  min-width: 1.5rem;
+  min-height: 1.5rem;
   background: transparent;
   border: 1px solid var(--rule);
-  color: var(--fg-muted);
+  border-radius: 2px;
+  color: var(--fg-faint);
   font-family: inherit;
   font-size: 0.6875rem;
-  padding: 1px 6px;
-  border-radius: 2px;
+  padding: 0 0.4rem;
   cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
 }
 
 .planner-page__mini-btn:hover {
@@ -390,15 +411,13 @@
   color: var(--accent);
 }
 
-/* ==========================================================================
-   Table View (Full Width)
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   Table
+   -------------------------------------------------------------------------- */
 .planner-page__table-wrap {
+  flex: 1;
   width: 100%;
   overflow-x: auto;
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-  background: rgba(14, 17, 23, 0.5);
 }
 
 .planner-page__table {
@@ -409,142 +428,186 @@
 }
 
 .planner-page__table th {
-  padding: 0.85rem 1.25rem;
-  background: rgba(7, 8, 11, 0.9);
+  padding: 0 var(--space-4) var(--space-3) 0;
   color: var(--fg-faint);
-  font-weight: 500;
-  border-bottom: 1px solid var(--rule);
-  letter-spacing: 0.04em;
+  font-weight: 400;
   font-size: 0.75rem;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--rule);
 }
 
 .planner-page__table td {
-  padding: 0.85rem 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  padding: var(--space-4) var(--space-4) var(--space-4) 0;
+  border-bottom: 1px solid var(--rule);
   color: var(--fg-muted);
   vertical-align: top;
 }
 
-.planner-page__table tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+.planner-page__table tr:last-child td {
+  border-bottom: 0;
 }
 
-/* ==========================================================================
-   Logbook View (Full Width Timeline)
-   ========================================================================== */
+.planner-page__table-title {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+.planner-page__table-formula {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--fg-faint);
+  line-height: 1.6;
+}
+
+.planner-page__table-empty {
+  padding: var(--space-5) 0;
+  color: var(--fg-faint);
+}
+
+/* --------------------------------------------------------------------------
+   Logbook
+   -------------------------------------------------------------------------- */
 .planner-page__logbook {
-  max-width: 64rem;
-  margin: 0 auto;
+  flex: 1;
   width: 100%;
+  max-width: 64rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
 }
 
 .planner-page__log-entry {
-  background: rgba(14, 17, 23, 0.5);
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-  padding: 1.25rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-3);
+  padding: var(--space-6) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.planner-page__log-entry:first-child {
+  padding-top: 0;
+}
+
+.planner-page__log-entry:last-child {
+  border-bottom: 0;
 }
 
 .planner-page__log-meta {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: var(--space-2);
   font-size: 0.75rem;
 }
 
+.planner-page__log-ident {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  color: var(--fg-faint);
+}
+
 .planner-page__log-title {
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 500;
   color: var(--fg);
+  line-height: 1.4;
 }
 
 .planner-page__log-desc {
+  max-width: 78ch;
   font-size: 0.8125rem;
   color: var(--fg-muted);
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .planner-page__log-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  gap: var(--space-3) var(--space-4);
 }
 
 .planner-page__log-link {
-  color: var(--accent);
+  color: var(--fg-muted);
   font-size: 0.75rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.planner-page__log-link:hover {
   text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: 1px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
-/* ==========================================================================
-   Password / Unlock Modal
-   ========================================================================== */
+.planner-page__log-link:hover,
+.planner-page__log-link:focus-visible {
+  color: var(--fg);
+  text-decoration-color: var(--fg-faint);
+}
+
+/* --------------------------------------------------------------------------
+   Modals
+   -------------------------------------------------------------------------- */
 .planner-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.82);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   z-index: 200;
+  background: rgba(7, 8, 11, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: var(--space-4);
 }
 
 .planner-modal {
-  background: #0d1117;
-  border: 1px solid var(--accent);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
-  border-radius: 4px;
   width: 100%;
   max-width: 28rem;
-  padding: 1.5rem;
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  padding: var(--space-5);
+  background: #0d1017;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--space-4);
   font-family: var(--font-mono);
+}
+
+.planner-modal--wide {
+  max-width: 34rem;
 }
 
 .planner-modal__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--rule);
-  padding-bottom: 0.75rem;
 }
 
 .planner-modal__title {
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--fg);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .planner-modal__close {
+  min-width: 1.75rem;
+  min-height: 1.75rem;
   background: transparent;
   border: 0;
   color: var(--fg-faint);
-  font-size: 1.25rem;
+  font-family: inherit;
+  font-size: 1.125rem;
+  line-height: 1;
   cursor: pointer;
+  transition: color 0.15s ease;
 }
 
 .planner-modal__close:hover {
@@ -554,24 +617,63 @@
 .planner-modal__body {
   font-size: 0.8125rem;
   color: var(--fg-muted);
-  line-height: 1.6;
+  line-height: 1.7;
+}
+
+.planner-modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.planner-modal__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: var(--space-3);
+}
+
+.planner-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.planner-modal__label {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: var(--fg-faint);
 }
 
 .planner-modal__input {
   width: 100%;
+  min-height: 2rem;
   background: rgba(7, 8, 11, 0.9);
   border: 1px solid var(--rule);
   border-radius: 2px;
   color: var(--fg);
   font-family: inherit;
-  font-size: 0.875rem;
-  padding: 0.6rem 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  padding: 0.45rem 0.6rem;
   outline: none;
-  letter-spacing: 0.05em;
+  transition: border-color 0.15s ease;
 }
 
 .planner-modal__input:focus {
   border-color: var(--accent);
+}
+
+textarea.planner-modal__input {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.planner-modal__form .planner-page__select {
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  min-height: 2rem;
 }
 
 .planner-modal__error {
@@ -579,11 +681,40 @@
   font-size: 0.75rem;
 }
 
+.planner-modal__lu-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.planner-modal__lu[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .planner-modal__footer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.75rem;
-  padding-top: 0.75rem;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
   border-top: 1px solid var(--rule);
+}
+
+/* --------------------------------------------------------------------------
+   Mobile
+   -------------------------------------------------------------------------- */
+@media (max-width: 48rem) {
+  .planner-page__nav-left {
+    width: 100%;
+  }
+
+  .planner-page__search {
+    width: 100%;
+    flex: 1 1 8rem;
+  }
+
+  .planner-page__nav-right {
+    width: 100%;
+  }
 }

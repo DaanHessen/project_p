@@ -97,13 +97,47 @@ ul {
   pointer-events: none;
   transition: filter 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
     opacity 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
-  will-change: filter, opacity;
 }
 
+/*
+  Inner pages sit on top of the field rather than replacing it: enough blur to
+  stop the glyphs competing with body copy, enough opacity that it still reads
+  as the ASCII field and not as a flat black page.
+*/
 .app-ascii-bg--blurred {
-  filter: blur(16px);
-  opacity: 0.18;
+  filter: blur(5px);
+  opacity: 0.55;
   transform: translateZ(0);
+}
+
+/*
+  Blurring a full-screen canvas that repaints every frame is the single most
+  expensive thing on this site on a phone. Below the tablet breakpoint the
+  field is dimmed instead of blurred — same intent, no per-frame filter pass.
+*/
+@media (max-width: 48rem) {
+  .app-ascii-bg--blurred {
+    filter: none;
+    opacity: 0.28;
+  }
+}
+
+/*
+  A single fixed wash between the field and the page content on scrolling
+  routes. ::after rather than ::before so it paints over the field, which is
+  an earlier sibling at the same z-index.
+*/
+.app--flow::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(7, 8, 11, 0.5),
+    rgba(7, 8, 11, 0.72)
+  );
 }
 
 @keyframes field-fade {

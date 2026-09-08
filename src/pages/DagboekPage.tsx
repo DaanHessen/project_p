@@ -19,11 +19,29 @@ interface DagboekPageProps {
   onNavigateBack: () => void;
 }
 
+/*
+  SECURITY: this unlock is a convenience gate, not access control. VITE_ vars
+  are compiled into the client bundle and the unlocked flag lives in
+  localStorage, so both are readable and settable by any visitor. The only
+  thing actually protecting the diary is the Supabase row-level security
+  policy on `entries` — it must deny anon INSERT/UPDATE/DELETE, or anyone
+  holding the publishable key (which ships in this bundle) can write to it.
+*/
 const STORAGE_UNLOCKED_KEY = "daan_planner_unlocked";
 const ENV_PASSWORD = (import.meta.env.VITE_PLANNER_PASSWORD || "").trim();
 
 function getTodayString(): string {
   return new Date().toISOString().split("T")[0];
+}
+
+/*
+  Quotes a CSV cell, and prefixes a lone quote where the text opens with a
+  character a spreadsheet would read as the start of a formula.
+*/
+function csvCell(value: string | undefined): string {
+  const text = value || "";
+  const escaped = text.replace(/"/g, '""');
+  return /^[=+\-@\t\r]/.test(text) ? `"'${escaped}"` : `"${escaped}"`;
 }
 
 function shiftDate(dateStr: string, days: number): string {
@@ -78,6 +96,7 @@ export default function DagboekPage({ onNavigateBack }: DagboekPageProps) {
 
   // Streak calculation
   const streak = useMemo(() => calculateStreak(allEntries), [allEntries]);
+  const entryCount = Object.keys(allEntries).length;
 
   // Daily quote
   const quote = useMemo(
@@ -161,10 +180,7 @@ export default function DagboekPage({ onNavigateBack }: DagboekPageProps) {
   // Export CSV
   const handleExportCsv = () => {
     const dates = Object.keys(allEntries).sort().reverse();
-    if (dates.length === 0) {
-      alert("Geen dagboek entries gevonden om te exporteren.");
-      return;
-    }
+    if (dates.length === 0) return;
     const headers = [
       "Datum",
       "Mood (1-5)",
@@ -176,16 +192,13 @@ export default function DagboekPage({ onNavigateBack }: DagboekPageProps) {
     const rows = dates.map((d) => {
       const e = allEntries[d];
       const m = e.mood || 0;
-      const done = (e.yesterday_done || "").replace(/"/g, '""');
-      const learned = (e.yesterday_learned || "").replace(/"/g, '""');
-      const planned = (e.today_planned || "").replace(/"/g, '""');
       return [
         d,
         m,
         MOOD_LABELS[m] || "",
-        `"${done}"`,
-        `"${learned}"`,
-        `"${planned}"`,
+        csvCell(e.yesterday_done),
+        csvCell(e.yesterday_learned),
+        csvCell(e.today_planned),
       ].join(";");
     });
     const csv = "\uFEFF" + [headers.join(";"), ...rows].join("\r\n");
@@ -215,16 +228,16 @@ export default function DagboekPage({ onNavigateBack }: DagboekPageProps) {
             {isUnlocked ? (
               <button
                 type="button"
-                className="dagboek__btn"
+                className="dagboek__btn dagboek__btn--accent"
                 onClick={handleLock}
-                title="Klik om te vergrendelen"
+                title="Bewerken uitschakelen"
               >
-                [ontgrendeld] vergrendel
+                vergrendelen
               </button>
             ) : (
               <button
                 type="button"
-                className="dagboek__btn"
+                className="dagboek__btn dagboek__btn--accent"
                 onClick={() => setShowPasswordModal(true)}
               >
                 ontgrendelen
@@ -247,24 +260,20 @@ export default function DagboekPage({ onNavigateBack }: DagboekPageProps) {
             <div className="dagboek__meta-row">
               <dt className="dagboek__meta-label">streak</dt>
               <dd className="dagboek__meta-value dagboek__streak-pill">
-                🔥 {streak} {streak === 1 ? "dag" : "dagen"}
+                {streak} {streak === 1 ? "dag" : "dagen"} op rij
               </dd>
             </div>
             <div className="dagboek__meta-row">
               <dt className="dagboek__meta-label">geregistreerd</dt>
               <dd className="dagboek__meta-value">
-                {Object.keys(allEntries).length} dagen
+                {entryCount} {entryCount === 1 ? "dag" : "dagen"}
               </dd>
-            </div>
-            <div className="dagboek__meta-row">
-              <dt className="dagboek__meta-label">dataopslag</dt>
-              <dd className="dagboek__meta-value">Supabase REST</dd>
             </div>
             <div className="dagboek__meta-row">
               <dt className="dagboek__meta-label">modus</dt>
               <dd
                 className="dagboek__meta-value"
-                style={{ color: isUnlocked ? "var(--accent)" : "var(--fg-faint)" }}
+                data-mode={isUnlocked ? "edit" : "read"}
               >
                 {isUnlocked ? "bewerken" : "alleen-lezen"}
               </dd>
@@ -274,25 +283,25 @@ export default function DagboekPage({ onNavigateBack }: DagboekPageProps) {
           <div className="dagboek__quote-section">
             <p className="dagboek__quote-text">“{quote.spreuk}”</p>
             <div className="dagboek__quote-meta">
-              <span>
-                — {quote.auteur} · {quote.thema.toLowerCase()}
+              <span className="dagboek__quote-attribution">
+                {quote.auteur} · {quote.thema.toLowerCase()}
               </span>
               <button
                 type="button"
                 className="dagboek__quote-btn"
                 onClick={handleNextQuote}
               >
-                nieuwe spreuk ↻
+                andere spreuk
               </button>
             </div>
           </div>
 
-          <div>
+          <div className="dagboek__export">
             <button
               type="button"
               className="dagboek__btn"
               onClick={handleExportCsv}
-              style={{ width: "100%" }}
+              disabled={entryCount === 0}
             >
               exporteer data (.csv) →
             </button>
@@ -386,9 +395,6 @@ export default function DagboekPage({ onNavigateBack }: DagboekPageProps) {
                   <h3 className="dagboek__reader-title">
                     Wat heb ik gisteren gedaan?
                   </h3>
-                  <span className="dagboek__reader-hint">
-                    activiteiten & resultaten
-                  </span>
                 </header>
                 <div className="dagboek__reader-body">
                   {currentEntry.yesterday_done ? (
@@ -409,9 +415,6 @@ export default function DagboekPage({ onNavigateBack }: DagboekPageProps) {
                   <h3 className="dagboek__reader-title">
                     Wat heb ik van gisteren geleerd?
                   </h3>
-                  <span className="dagboek__reader-hint">
-                    inzichten & reflectie
-                  </span>
                 </header>
                 <div className="dagboek__reader-body">
                   {currentEntry.yesterday_learned ? (
@@ -432,9 +435,6 @@ export default function DagboekPage({ onNavigateBack }: DagboekPageProps) {
                   <h3 className="dagboek__reader-title">
                     Wat ga ik vandaag doen?
                   </h3>
-                  <span className="dagboek__reader-hint">
-                    doelen & intenties
-                  </span>
                 </header>
                 <div className="dagboek__reader-body">
                   {currentEntry.today_planned ? (
@@ -454,9 +454,6 @@ export default function DagboekPage({ onNavigateBack }: DagboekPageProps) {
               <div className="dagboek__editor-field">
                 <label htmlFor="yesterday_done" className="dagboek__editor-label">
                   <span>1. Wat heb ik gisteren gedaan?</span>
-                  <span className="dagboek__editor-hint">
-                    activiteiten & resultaten
-                  </span>
                 </label>
                 <textarea
                   id="yesterday_done"
@@ -476,9 +473,6 @@ export default function DagboekPage({ onNavigateBack }: DagboekPageProps) {
                   className="dagboek__editor-label"
                 >
                   <span>2. Wat heb ik van gisteren geleerd?</span>
-                  <span className="dagboek__editor-hint">
-                    inzichten & reflectie
-                  </span>
                 </label>
                 <textarea
                   id="yesterday_learned"
@@ -495,7 +489,6 @@ export default function DagboekPage({ onNavigateBack }: DagboekPageProps) {
               <div className="dagboek__editor-field">
                 <label htmlFor="today_planned" className="dagboek__editor-label">
                   <span>3. Wat ga ik vandaag doen?</span>
-                  <span className="dagboek__editor-hint">doelen & intenties</span>
                 </label>
                 <textarea
                   id="today_planned"
