@@ -41,6 +41,39 @@
   letter-spacing: 0.04em;
 }
 
+.minor__section-header-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--fg-faint);
+}
+
+.minor__section-header-wrap .resume__section-title {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.minor__action-btn {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.minor__action-btn:hover {
+  background: var(--accent);
+  color: var(--bg);
+  box-shadow: 0 0 14px rgba(217, 164, 65, 0.25);
+}
+
 .minor__nav {
   display: flex;
   flex-direction: column;

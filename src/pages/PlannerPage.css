@@ -1,0 +1,588 @@
+/* ==========================================================================
+   PlannerPage (Standalone Full-Viewport GitHub-Style Planner & Logboek)
+   ========================================================================== */
+
+.planner-page {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+/* Background gradient scrim */
+.planner-page__scrim {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse 80rem 50rem at 50% 20%,
+    rgba(14, 17, 23, 0.9) 0%,
+    rgba(7, 8, 11, 0.98) 100%
+  );
+}
+
+/* Top Navigation Bar */
+.planner-page__topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: 0.75rem 1.5rem;
+  background: rgba(7, 8, 11, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.planner-page__nav-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.planner-page__back-btn {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--fg-muted);
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 2px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.15s ease;
+}
+
+.planner-page__back-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.planner-page__breadcrumbs {
+  font-size: 0.8125rem;
+  color: var(--fg-faint);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.planner-page__title {
+  color: var(--fg);
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+/* Center Tabs */
+.planner-page__tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--rule);
+  padding: 2px;
+  border-radius: 2px;
+}
+
+.planner-page__tab {
+  background: transparent;
+  border: 0;
+  color: var(--fg-faint);
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.85rem;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: all 0.15s ease;
+}
+
+.planner-page__tab:hover {
+  color: var(--fg);
+}
+
+.planner-page__tab--active {
+  background: rgba(217, 164, 65, 0.12);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Right Controls */
+.planner-page__nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.planner-page__search {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--rule);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 2px;
+  outline: none;
+  width: 12rem;
+  transition: border-color 0.15s ease;
+}
+
+.planner-page__search:focus {
+  border-color: var(--accent);
+}
+
+.planner-page__search::placeholder {
+  color: var(--fg-faint);
+}
+
+.planner-page__select {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--rule);
+  color: var(--fg-muted);
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.planner-page__select:focus {
+  border-color: var(--accent);
+  color: var(--fg);
+}
+
+.planner-page__btn {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--fg-muted);
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 2px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.planner-page__btn:hover {
+  color: var(--fg);
+  border-color: var(--fg-muted);
+}
+
+.planner-page__btn--primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.planner-page__btn--primary:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.planner-page__btn--unlocked {
+  border-color: rgba(63, 185, 80, 0.4);
+  color: #7ee787;
+  background: rgba(46, 160, 67, 0.08);
+}
+
+/* Main Content Area (Full Viewport) */
+.planner-page__content {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ==========================================================================
+   Kanban Board View (Full Viewport Columns)
+   ========================================================================== */
+.planner-page__board {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  flex: 1;
+}
+
+@media (min-width: 56rem) {
+  .planner-page__board {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.planner-page__column {
+  background: rgba(14, 17, 23, 0.4);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  min-height: 24rem;
+}
+
+.planner-page__column-header {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.planner-page__column-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--fg);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.planner-page__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--fg-faint);
+}
+
+.planner-page__dot--progress {
+  background: var(--accent);
+}
+
+.planner-page__dot--done {
+  background: #a371f7;
+}
+
+.planner-page__column-count {
+  font-size: 0.6875rem;
+  color: var(--fg-faint);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+.planner-page__cards {
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.planner-page__empty-col {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--fg-faint);
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
+/* Standalone Card */
+.planner-page__card {
+  background: rgba(7, 8, 11, 0.85);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.15s ease;
+}
+
+.planner-page__card:hover {
+  border-color: rgba(217, 164, 65, 0.4);
+}
+
+.planner-page__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+}
+
+.planner-page__card-id {
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.planner-page__card-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--fg-faint);
+}
+
+.planner-page__tag {
+  font-size: 0.625rem;
+  border: 1px solid var(--rule);
+  padding: 0 4px;
+  border-radius: 2px;
+  color: var(--fg-muted);
+}
+
+.planner-page__card-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--fg);
+  line-height: 1.4;
+}
+
+.planner-page__card-desc {
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+  line-height: 1.6;
+  border-left: 2px solid var(--rule);
+  padding-left: 0.5rem;
+}
+
+.planner-page__card-desc span {
+  color: var(--accent);
+}
+
+.planner-page__card-criteria {
+  font-size: 0.6875rem;
+  color: var(--fg-faint);
+}
+
+.planner-page__card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.planner-page__card-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.planner-page__mini-btn {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--fg-muted);
+  font-family: inherit;
+  font-size: 0.6875rem;
+  padding: 1px 6px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.planner-page__mini-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ==========================================================================
+   Table View (Full Width)
+   ========================================================================== */
+.planner-page__table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: rgba(14, 17, 23, 0.5);
+}
+
+.planner-page__table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.8125rem;
+}
+
+.planner-page__table th {
+  padding: 0.85rem 1.25rem;
+  background: rgba(7, 8, 11, 0.9);
+  color: var(--fg-faint);
+  font-weight: 500;
+  border-bottom: 1px solid var(--rule);
+  letter-spacing: 0.04em;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.planner-page__table td {
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: var(--fg-muted);
+  vertical-align: top;
+}
+
+.planner-page__table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* ==========================================================================
+   Logbook View (Full Width Timeline)
+   ========================================================================== */
+.planner-page__logbook {
+  max-width: 64rem;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.planner-page__log-entry {
+  background: rgba(14, 17, 23, 0.5);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.planner-page__log-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.planner-page__log-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.planner-page__log-desc {
+  font-size: 0.8125rem;
+  color: var(--fg-muted);
+  line-height: 1.7;
+}
+
+.planner-page__log-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.planner-page__log-link {
+  color: var(--accent);
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.planner-page__log-link:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Password / Unlock Modal
+   ========================================================================== */
+.planner-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.planner-modal {
+  background: #0d1117;
+  border: 1px solid var(--accent);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
+  width: 100%;
+  max-width: 28rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: var(--font-mono);
+}
+
+.planner-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.75rem;
+}
+
+.planner-modal__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.planner-modal__close {
+  background: transparent;
+  border: 0;
+  color: var(--fg-faint);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.planner-modal__close:hover {
+  color: var(--fg);
+}
+
+.planner-modal__body {
+  font-size: 0.8125rem;
+  color: var(--fg-muted);
+  line-height: 1.6;
+}
+
+.planner-modal__input {
+  width: 100%;
+  background: rgba(7, 8, 11, 0.9);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 0.875rem;
+  padding: 0.6rem 0.75rem;
+  outline: none;
+  letter-spacing: 0.05em;
+}
+
+.planner-modal__input:focus {
+  border-color: var(--accent);
+}
+
+.planner-modal__error {
+  color: #f85149;
+  font-size: 0.75rem;
+}
+
+.planner-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rule);
+}

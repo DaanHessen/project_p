@@ -2,6 +2,7 @@ import "./globals.css";
 import HomePage from "./pages/HomePage";
 import ResumePage from "./pages/ResumePage";
 import MinorPage from "./pages/MinorPage";
+import PlannerPage from "./pages/PlannerPage";
 import { useRoute } from "./router";
 
 function App() {
@@ -20,7 +21,12 @@ function App() {
         {route === "cv" ? (
           <ResumePage onNavigateHome={() => navigate("/")} />
         ) : route === "minor" ? (
-          <MinorPage onNavigateHome={() => navigate("/")} />
+          <MinorPage
+            onNavigateHome={() => navigate("/")}
+            onNavigateToPlanner={() => navigate("/minor/logboek")}
+          />
+        ) : route === "planner" ? (
+          <PlannerPage onNavigateBack={() => navigate("/minor")} />
         ) : (
           <HomePage
             onNavigateToResume={() => navigate("/cv")}
