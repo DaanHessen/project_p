@@ -14,6 +14,14 @@ describe("routeFromPath", () => {
     expect(routeFromPath("/cv/")).toBe("cv");
   });
 
+  it("maps /minor to the minor route", () => {
+    expect(routeFromPath("/minor")).toBe("minor");
+  });
+
+  it("ignores a trailing slash on /minor", () => {
+    expect(routeFromPath("/minor/")).toBe("minor");
+  });
+
   it("falls back to home for unknown paths", () => {
     expect(routeFromPath("/resume.html")).toBe("home");
     expect(routeFromPath("/nope")).toBe("home");

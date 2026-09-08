@@ -1,0 +1,122 @@
+/* Scrim & Vignette over ASCII background */
+.minor__scrim {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 60rem 36rem at 50% 30%,
+    rgba(7, 8, 11, 0.78) 0%,
+    rgba(7, 8, 11, 0.86) 60%,
+    rgba(7, 8, 11, 0.94) 100%
+  );
+}
+
+.minor__vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 95% 85% at 50% 50%,
+    transparent 40%,
+    rgba(7, 8, 11, 0.55) 100%
+  );
+}
+
+/* Minor page enhancements over standard resume styles */
+.minor {
+  position: relative;
+  z-index: 1;
+  scroll-behavior: smooth;
+}
+
+.minor .resume__section {
+  scroll-margin-top: 5rem;
+}
+
+.minor__route-badge {
+  font-size: 0.75rem;
+  color: var(--fg-faint);
+  letter-spacing: 0.04em;
+}
+
+.minor__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+  font-size: 0.8125rem;
+}
+
+.minor__criteria-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  font-size: 0.8125rem;
+  color: var(--fg-muted);
+}
+
+.minor__criteria-list li::before {
+  content: "—";
+  margin-right: var(--space-2);
+  color: var(--fg-faint);
+}
+
+.minor__deliverables {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin-top: var(--space-4);
+}
+
+.minor__deliverable-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.minor__deliverable-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.minor__deliverable-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.minor__deliverable-tags {
+  font-size: 0.75rem;
+  color: var(--fg-faint);
+}
+
+.minor__reflection {
+  margin-top: var(--space-4);
+  font-size: 0.8125rem;
+  color: var(--fg-faint);
+  line-height: 1.7;
+}
+
+.minor__reflection-label {
+  color: var(--fg-muted);
+}
+
+.minor code {
+  font-family: inherit;
+  font-size: 0.8125rem;
+  color: var(--fg);
+}
+
+@media print {
+  .minor__scrim,
+  .minor__vignette,
+  .minor__nav,
+  .minor__route-badge {
+    display: none !important;
+  }
+}

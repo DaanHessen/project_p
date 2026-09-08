@@ -58,7 +58,7 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
     <>
       <SEOHead
         title="Daan Hessen"
-        description="Software development student in Utrecht."
+        description="I’m a software development student at the University of Applied Sciences Utrecht, with a background in hospitality and a passion for building things. I like solving problems, learning how things work, and turning ideas into working software. Currently looking for an internship."
         canonical="https://daanhessen.nl"
         structuredData={structuredData}
       />
@@ -103,11 +103,13 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
           </div>
 
           <p className="home__intro">
-            Just a guy studying HBO-ICT at the University of Applied Sciences
-            Utrecht. Experience in hospitality, plus a few (passion) projects.
-            I like solving problems and learning new things. I write my own
-            code, but I use AI to move faster. I am currently looking for an
-            internship.
+            I’m a software development student at the University of Applied
+            Sciences Utrecht, with a background in hospitality and a passion for
+            building things. I like solving problems, learning how things work,
+            and turning ideas into working software.
+            <br />
+            <br />
+            Currently looking for an internship.
           </p>
 
           <SiteNav onNavigateToResume={onNavigateToResume} />

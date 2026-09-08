@@ -56,7 +56,17 @@
 
     <link rel="canonical" href="https://daanhessen.nl" />
 
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <!--
+      The .ico stays first and keeps its filename: it is what crawlers probe
+      at /favicon.ico, and Google's is one of them. It now carries a 48px
+      entry as well as 16 and 32, which is the size Search actually wants,
+      and the artwork sits on the site's own near-black rather than on
+      transparency — the old mark was white on nothing, so it disappeared
+      against a white results page.
+    -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#07080b" />
     <meta name="msapplication-TileColor" content="#07080b" />

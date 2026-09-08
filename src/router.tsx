@@ -1,14 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
 
-export type Route = "home" | "cv";
+export type Route = "home" | "cv" | "minor";
 
 /**
- * Two routes and a fallback. Kept as a pure function so it can be tested
+ * Three routes and a fallback. Kept as a pure function so it can be tested
  * without a DOM, and so `useRoute` has nothing to decide at call time.
  */
 export function routeFromPath(pathname: string): Route {
   const normalised = pathname.replace(/\/+$/, "");
-  return normalised === "/cv" ? "cv" : "home";
+  if (normalised === "/cv") return "cv";
+  if (normalised === "/minor") return "minor";
+  return "home";
 }
 
 function currentPath(): string {

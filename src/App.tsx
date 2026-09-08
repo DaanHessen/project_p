@@ -1,13 +1,16 @@
 import "./globals.css";
 import HomePage from "./pages/HomePage";
 import ResumePage from "./pages/ResumePage";
+import MinorPage from "./pages/MinorPage";
 import { useRoute } from "./router";
 
 function App() {
   const { route, navigate } = useRoute();
 
   return (
-    <div className={`app ${route === "cv" ? "app--flow" : "app--locked"}`}>
+    <div
+      className={`app ${route === "home" ? "app--locked" : "app--flow"}`}
+    >
       {/*
         Keying on the route remounts the page, which both replays its own
         entrance and restarts this wrapper's fade. Short on purpose: it covers
@@ -16,6 +19,8 @@ function App() {
       <div className="app__route" key={route}>
         {route === "cv" ? (
           <ResumePage onNavigateHome={() => navigate("/")} />
+        ) : route === "minor" ? (
+          <MinorPage onNavigateHome={() => navigate("/")} />
         ) : (
           <HomePage onNavigateToResume={() => navigate("/cv")} />
         )}
