@@ -63,21 +63,37 @@ const SiteNav = ({ onNavigateToResume, onNavigateToMinor }: SiteNavProps) => {
         </a>
       </div>
 
-      <ul className="site-nav__links">
-        {links.map((link) => (
-          <li key={link.label}>
-            <a
-              className="site-nav__link"
-              href={link.href}
-              {...(link.href.startsWith("mailto:")
-                ? {}
-                : { target: "_blank", rel: "noopener noreferrer" })}
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div className="site-nav__secondary">
+        <ul className="site-nav__links">
+          {links.map((link) => (
+            <li key={link.label}>
+              <a
+                className="site-nav__link"
+                href={link.href}
+                {...(link.href.startsWith("mailto:")
+                  ? {}
+                  : { target: "_blank", rel: "noopener noreferrer" })}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <div className="site-nav__project">
+          <a
+            className="site-nav__link site-nav__project-link"
+            href="https://krentenweger.nl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            krentenweger
+            <div className="site-nav__project-preview" role="tooltip">
+              Weekly Dutch supermarket deals paired with recipes based on what's on sale.
+            </div>
+          </a>
+        </div>
+      </div>
     </nav>
   );
 };

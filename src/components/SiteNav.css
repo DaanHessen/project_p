@@ -95,6 +95,72 @@
   text-decoration-color: var(--fg-faint);
 }
 
+.site-nav__secondary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.site-nav__project {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.site-nav__project-link {
+  position: relative;
+}
+
+.site-nav__project-preview {
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  width: max-content;
+  max-width: 20rem;
+  padding: var(--space-2) var(--space-3);
+  background: rgba(10, 12, 16, 0.96);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  color: var(--fg-muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-wrap: balance;
+  text-shadow: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    opacity 0.18s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.18s cubic-bezier(0.25, 0.1, 0.25, 1),
+    visibility 0.18s;
+  z-index: 10;
+}
+
+/* Hover bridge so moving into the preview keeps the link hovered */
+.site-nav__project-preview::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--space-1) * -1);
+  left: 0;
+  right: 0;
+  height: var(--space-1);
+}
+
+.site-nav__project-link:hover .site-nav__project-preview,
+.site-nav__project-link:focus-visible .site-nav__project-preview {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
 @media (max-width: 30rem) {
   .site-nav {
     gap: var(--space-5);
@@ -122,5 +188,10 @@
   .site-nav__link {
     padding: var(--space-2);
     font-size: 0.75rem;
+  }
+
+  .site-nav__project-preview {
+    max-width: min(18rem, calc(100vw - 2rem));
+    font-size: 0.6875rem;
   }
 }
