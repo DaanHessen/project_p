@@ -96,7 +96,7 @@ const MinorPage = ({ onNavigateHome }: MinorPageProps) => {
             <li>
               <a
                 className="resume__link"
-                href="https://github.com/DaanHessen/daanhessen-nl"
+                href="https://github.com/DaanHessen/project_p"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -179,36 +179,40 @@ const MinorPage = ({ onNavigateHome }: MinorPageProps) => {
                 </div>
                 <div>
                   <h3 className="resume__entry-title">{sprint.title}</h3>
-                  <p className="resume__entry-org">{sprint.goal}</p>
+                  {sprint.goal && (
+                    <p className="resume__entry-org">{sprint.goal}</p>
+                  )}
 
-                  <div className="minor__deliverables">
-                    {sprint.deliverables.map((deliv) => (
-                      <div key={deliv.id} className="minor__deliverable-row">
-                        <div className="minor__deliverable-head">
-                          <h4 className="minor__deliverable-name">
-                            {deliv.title}
-                          </h4>
-                          <span className="minor__deliverable-tags">
-                            {deliv.leeruitkomsten.join(", ")}
-                          </span>
+                  {sprint.deliverables.length > 0 && (
+                    <div className="minor__deliverables">
+                      {sprint.deliverables.map((deliv) => (
+                        <div key={deliv.id} className="minor__deliverable-row">
+                          <div className="minor__deliverable-head">
+                            <h4 className="minor__deliverable-name">
+                              {deliv.title}
+                            </h4>
+                            <span className="minor__deliverable-tags">
+                              {deliv.leeruitkomsten.join(", ")}
+                            </span>
+                          </div>
+                          <p className="resume__entry-desc">{deliv.description}</p>
+                          <div className="resume__links">
+                            {deliv.links.map((link) => (
+                              <a
+                                key={link.url + link.label}
+                                className="resume__link"
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {link.label}
+                              </a>
+                            ))}
+                          </div>
                         </div>
-                        <p className="resume__entry-desc">{deliv.description}</p>
-                        <div className="resume__links">
-                          {deliv.links.map((link) => (
-                            <a
-                              key={link.url + link.label}
-                              className="resume__link"
-                              href={link.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {link.label}
-                            </a>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
 
                   {sprint.reflection && (
                     <p className="minor__reflection">
@@ -266,7 +270,7 @@ const MinorPage = ({ onNavigateHome }: MinorPageProps) => {
                   centraal in{" "}
                   <a
                     className="resume__link"
-                    href="https://github.com/DaanHessen/daanhessen-nl/blob/main/src/data/minor.ts"
+                    href="https://github.com/DaanHessen/project_p/blob/main/src/data/minor.ts"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -275,7 +279,7 @@ const MinorPage = ({ onNavigateHome }: MinorPageProps) => {
                   . Client-side routing verloopt via{" "}
                   <a
                     className="resume__link"
-                    href="https://github.com/DaanHessen/daanhessen-nl/blob/main/src/router.tsx"
+                    href="https://github.com/DaanHessen/project_p/blob/main/src/router.tsx"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -288,9 +292,7 @@ const MinorPage = ({ onNavigateHome }: MinorPageProps) => {
                   style={{ marginTop: "var(--space-3)" }}
                 >
                   De achtergrond draait op de geanimeerde ASCII metaball engine (
-                  <code>ascii-blobs</code>). Grote bestanden en video-opnames
-                  staan extern op OneDrive en YouTube conform Vercel en GitHub
-                  richtlijnen.
+                  <code>ascii-blobs</code>).
                 </p>
               </div>
             </article>

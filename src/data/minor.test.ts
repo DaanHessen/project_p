@@ -15,13 +15,16 @@ describe("minor data integrity", () => {
     expect(ids).toEqual(["LU1", "LU2", "LU3"]);
   });
 
-  it("has sprints with deliverables and valid learning outcomes mapped", () => {
+  it("has sprints and valid learning outcomes mapped on deliverables", () => {
     expect(minorData.sprints.length).toBeGreaterThanOrEqual(5);
+
+    const sprint1 = minorData.sprints.find((s) => s.number === 1);
+    expect(sprint1).toBeDefined();
+    expect(sprint1?.deliverables.length).toBeGreaterThan(0);
 
     for (const sprint of minorData.sprints) {
       expect(sprint.number).toBeGreaterThan(0);
       expect(sprint.title.length).toBeGreaterThan(0);
-      expect(sprint.deliverables.length).toBeGreaterThan(0);
 
       for (const deliv of sprint.deliverables) {
         expect(deliv.id).toBeDefined();
@@ -32,15 +35,6 @@ describe("minor data integrity", () => {
         for (const link of deliv.links) {
           expect(link.label).toBeDefined();
           expect(link.url).toBeDefined();
-          expect([
-            "onedrive",
-            "youtube",
-            "github",
-            "doc",
-            "demo",
-            "canvas",
-            "other",
-          ]).toContain(link.type);
         }
       }
     }

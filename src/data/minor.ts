@@ -39,8 +39,8 @@ export interface Sprint {
   title: string;
   period: string;
   status: "Afgerond" | "In uitvoering" | "Gepland";
-  goal: string;
-  focus: string;
+  goal?: string;
+  focus?: string;
   deliverables: SprintDeliverable[];
   reflection?: string;
 }
@@ -82,7 +82,7 @@ export const minorData: MinorData = {
     academicYear: "2026 – 2027",
     contextDoc: "Future-proof met AI! v2.0 (Canvas)",
     description:
-      "Portfolio voor de Minor Future-proof met AI aan de Hogeschool Utrecht. Hier verzamel ik alle bewijzen, sprintopdrachten en uitwerkingen om de drie leeruitkomsten aan te tonen. Grote bestanden, logs en demo-opnames zijn gekoppeld via OneDrive en YouTube.",
+      "Portfolio voor de Minor Future-proof met AI aan de Hogeschool Utrecht. Hier verzamel ik alle bewijzen, sprintopdrachten en uitwerkingen om de drie leeruitkomsten aan te tonen.",
   },
 
   leeruitkomsten: [
@@ -135,9 +135,8 @@ export const minorData: MinorData = {
       number: 1,
       title: "Kickoff & Portfolio Opzet",
       period: "Sprint 1 · Weken 1 – 2",
-      status: "Afgerond",
-      goal: "Inrichten van de AI-ontwikkelomgeving, verkennen van vibe-coding en het realiseren van de portfolio-omgeving conform de richtlijnen van de minor.",
-      focus: "Opstart, Integraal logboek & Portfolio realisatie",
+      status: "In uitvoering",
+      goal: "Inrichten van het portfolio conform de eisen van de minor.",
       deliverables: [
         {
           id: "DELIV-1-1",
@@ -148,203 +147,45 @@ export const minorData: MinorData = {
           links: [
             {
               label: "GitHub repository",
-              url: "https://github.com/DaanHessen/daanhessen-nl",
+              url: "https://github.com/DaanHessen/project_p",
               type: "github",
             },
             {
-              label: "OneDrive bewijzenmap",
-              url: "https://onedrive.live.com",
-              type: "onedrive",
-            },
-            {
-              label: "YouTube demo",
-              url: "https://youtube.com",
-              type: "youtube",
-            },
-          ],
-        },
-        {
-          id: "DELIV-1-2",
-          title: "Integraal logboek & sprintplanning",
-          description:
-            "Initiële product backlog en user stories voor het aantonen van wat er gemaakt, onderzocht en geleerd wordt (afgeleid van 'Future-proof met AI! v2.0.pdf').",
-          leeruitkomsten: ["LU1"],
-          links: [
-            {
-              label: "OneDrive logboek",
-              url: "https://onedrive.live.com",
-              type: "onedrive",
+              label: "Live pagina",
+              url: "https://daanhessen.nl/minor",
+              type: "demo",
             },
           ],
         },
       ],
-      reflection:
-        "Tijdens deze eerste sprint lag de focus op het direct praktisch toepassen van vibe-coding om de portfolio-infrastructuur op te zetten. Grote bestanden en video's staan op OneDrive en YouTube zodat de static deployment snel en overzichtelijk blijft.",
     },
     {
       number: 2,
-      title: "Beroepspraktijkverkenning & AI-Tooling",
+      title: "Sprint 2",
       period: "Sprint 2 · Weken 3 – 4",
-      status: "In uitvoering",
-      goal: "Onderzoek naar de verschuiving in het softwarevak door AI en experimenteren met geavanceerde LLM-workflows en agents.",
-      focus: "Onderzoek beroepspraktijk (LU1) & Experimentatie",
-      deliverables: [
-        {
-          id: "DELIV-2-1",
-          title: "Onderzoeksverslag: AI-impact op software engineering",
-          description:
-            "Analyse van hoe code-assistenten, agentic IDE's en vibe-coding het dagelijkse ontwikkelproces veranderen en welke vaardigheden nu primair worden.",
-          leeruitkomsten: ["LU1", "LU3"],
-          links: [
-            {
-              label: "OneDrive verslag (PDF)",
-              url: "https://onedrive.live.com",
-              type: "onedrive",
-            },
-            {
-              label: "YouTube toelichting",
-              url: "https://youtube.com",
-              type: "youtube",
-            },
-          ],
-        },
-        {
-          id: "DELIV-2-2",
-          title: "Tooling benchmark & verkenning",
-          description:
-            "Vergelijkend onderzoek tussen verschillende AI-architecturen en agentic frameworks ter voorbereiding op het praktijkproject.",
-          leeruitkomsten: ["LU1", "LU2"],
-          links: [
-            {
-              label: "GitHub benchmark scripts",
-              url: "https://github.com/DaanHessen",
-              type: "github",
-            },
-            {
-              label: "OneDrive testdata & logs",
-              url: "https://onedrive.live.com",
-              type: "onedrive",
-            },
-          ],
-        },
-      ],
-      reflection:
-        "Het vergelijken van puur prompt-gebaseerde assistenten met autonome agentic workflows gaf duidelijke kaders voor de architectuur van de te bouwen AI-oplossing.",
+      status: "Gepland",
+      deliverables: [],
     },
     {
       number: 3,
-      title: "Concept & Prototype (Vibe-coding)",
+      title: "Sprint 3",
       period: "Sprint 3 · Weken 5 – 6",
       status: "Gepland",
-      goal: "Definiëren van het kernprobleem voor de praktijk, ontwerpen van de systeemarchitectuur en bouwen van een eerste Proof-of-Concept via vibe-coding.",
-      focus: "Praktijkoplossing ontwerp & MVP (LU2)",
-      deliverables: [
-        {
-          id: "DELIV-3-1",
-          title: "Technisch ontwerp & systeemarchitectuur",
-          description:
-            "Specificatie van de AI-pipeline: datastromen, modelselectie, context retrieval en interface.",
-          leeruitkomsten: ["LU2"],
-          links: [
-            {
-              label: "OneDrive architectuurdocument",
-              url: "https://onedrive.live.com",
-              type: "onedrive",
-            },
-          ],
-        },
-        {
-          id: "DELIV-3-2",
-          title: "Proof of Concept / Prototype",
-          description:
-            "Functionele MVP van de AI-oplossing, gerealiseerd met AI-assisted coding.",
-          leeruitkomsten: ["LU2"],
-          links: [
-            {
-              label: "GitHub repository",
-              url: "https://github.com/DaanHessen",
-              type: "github",
-            },
-            {
-              label: "YouTube walkthrough",
-              url: "https://youtube.com",
-              type: "youtube",
-            },
-          ],
-        },
-      ],
+      deliverables: [],
     },
     {
       number: 4,
-      title: "Realisatie & Ethische Toetsing",
+      title: "Sprint 4",
       period: "Sprint 4 · Weken 7 – 8",
       status: "Gepland",
-      goal: "Doorontwikkeling naar een volwaardige praktijkoplossing, gebruikerstesten met stakeholders en grondige ethische risicoanalyse.",
-      focus: "Verfijning, Testen & Ethiek (LU2 & LU3)",
-      deliverables: [
-        {
-          id: "DELIV-4-1",
-          title: "AI-oplossing & testresultaten",
-          description:
-            "Gevalideerde applicatie met foutafhandeling, fallback mechanismen en geoptimaliseerde latency.",
-          leeruitkomsten: ["LU2"],
-          links: [
-            {
-              label: "Live demo",
-              url: "https://daanhessen.nl",
-              type: "demo",
-            },
-            {
-              label: "OneDrive testverslag",
-              url: "https://onedrive.live.com",
-              type: "onedrive",
-            },
-          ],
-        },
-        {
-          id: "DELIV-4-2",
-          title: "Ethische & verantwoorde AI analyse (LU3)",
-          description:
-            "Rapportage over data-privacy, bias-detectie, intellectueel eigendom en naleving van de EU AI Act binnen het project.",
-          leeruitkomsten: ["LU3"],
-          links: [
-            {
-              label: "OneDrive ethisch assessment",
-              url: "https://onedrive.live.com",
-              type: "onedrive",
-            },
-          ],
-        },
-      ],
+      deliverables: [],
     },
     {
       number: 5,
-      title: "Eindverantwoording & Presentatie",
+      title: "Sprint 5",
       period: "Sprint 5 · Weken 9 – 10",
       status: "Gepland",
-      goal: "Definitieve bundeling van alle bewijsstukken voor de 3 leeruitkomsten, eindpresentatie voor docenten en leerteam, en zelfevaluatie.",
-      focus: "Eindbeoordeling & Presentatie (LU1, LU2, LU3)",
-      deliverables: [
-        {
-          id: "DELIV-5-1",
-          title: "Eindverantwoording leeruitkomsten",
-          description:
-            "Overzichtsdocument waarin per leeruitkomst exact wordt verwezen naar de geproduceerde bewijzen.",
-          leeruitkomsten: ["LU1", "LU2", "LU3"],
-          links: [
-            {
-              label: "OneDrive verantwoordingsdossier",
-              url: "https://onedrive.live.com",
-              type: "onedrive",
-            },
-            {
-              label: "YouTube eindpresentatie",
-              url: "https://youtube.com",
-              type: "youtube",
-            },
-          ],
-        },
-      ],
+      deliverables: [],
     },
   ],
 
@@ -364,66 +205,7 @@ export const minorData: MinorData = {
         "Sluit aan bij de esthetiek van de rest van de site (JetBrains Mono, dark theme, ASCII achtergrond).",
         "Geen overbodige persoonlijke info of foto's, puur gefocust op de academische eisen van de minor.",
         "Duidelijke structuur voor de 3 leeruitkomsten.",
-        "Externe links naar OneDrive en YouTube voor grote bestanden en video's.",
         "Direct herkenbare broncode zonder overbodige dependencies.",
-      ],
-    },
-    {
-      id: "US-02",
-      sprint: 1,
-      title: "Integraal logboek en sprintplanning bijhouden",
-      asA: "student",
-      iWant:
-        "mijn sprintactiviteiten en user stories vastleggen in een integraal logboek",
-      soThat:
-        "mijn voortgang tijdens de leerteamsessies en assessments direct inzichtelijk is.",
-      status: "Done",
-      acceptanceCriteria: [
-        "Gebaseerd op het Canvas document Future-proof met AI! v2.0.",
-        "Traceerbare status per sprint en activiteit.",
-      ],
-    },
-    {
-      id: "US-03",
-      sprint: 2,
-      title: "Onderzoek naar AI-impact op de softwarepraktijk (LU1)",
-      asA: "student developer",
-      iWant:
-        "onderzoeken hoe AI tooling de rol van de softwareontwikkelaar verandert",
-      soThat:
-        "ik kan aantonen welke competenties van belang worden voor mijn vakgebied.",
-      status: "In Progress",
-      acceptanceCriteria: [
-        "Kwalitatieve analyse van de verschuiving naar vibe-coding en architectuur.",
-        "Vastgelegd in een beknopt verslag op OneDrive.",
-      ],
-    },
-    {
-      id: "US-04",
-      sprint: 3,
-      title: "Praktijkgerichte AI-oplossing bouwen (LU2)",
-      asA: "developer",
-      iWant:
-        "een werkend AI-prototype ontwikkelen voor een concreet praktijkprobleem",
-      soThat:
-        "ik kan aantonen dat ik zelfstandig een AI-oplossing kan realiseren en valideren.",
-      status: "To Do",
-      acceptanceCriteria: [
-        "Werkend prototype met openbare repository op GitHub.",
-        "Korte demonstratievideo op YouTube.",
-      ],
-    },
-    {
-      id: "US-05",
-      sprint: 4,
-      title: "Ethische beoordeling van de AI-oplossing (LU3)",
-      asA: "ontwikkelaar",
-      iWant: "de ethische en juridische aspecten van mijn toepassing toetsen",
-      soThat:
-        "ik aantoont dat de oplossing verantwoord en betrouwbaar kan worden ingezet.",
-      status: "To Do",
-      acceptanceCriteria: [
-        "Risicoanalyse op het gebied van privacy (AVG), bias en betrouwbaarheid.",
       ],
     },
   ],
