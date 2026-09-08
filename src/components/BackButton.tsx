@@ -5,12 +5,14 @@ interface BackButtonProps {
   onNavigateHome: () => void;
   badge?: string;
   label?: string;
+  rightAction?: React.ReactNode;
 }
 
 export const BackButton = ({
   onNavigateHome,
   badge,
   label = "back",
+  rightAction,
 }: BackButtonProps) => {
   const [stuck, setStuck] = useState(false);
 
@@ -38,6 +40,7 @@ export const BackButton = ({
           <span className="back-button__label">{label}</span>
         </button>
         {badge && <span className="back-bar__badge">{badge}</span>}
+        {rightAction}
       </div>
     </header>
   );

@@ -72,3 +72,14 @@ describe("toRepos", () => {
     expect(toRepos(many, [])).toHaveLength(6);
   });
 });
+
+describe("toStatsMap", () => {
+  it("indexes repos by lowercase name and url", async () => {
+    const { toStatsMap } = await import("./github");
+    const map = toStatsMap([
+      repo({ name: "MyRepo", html_url: "https://github.com/DaanHessen/MyRepo", stargazers_count: 5, forks_count: 2 }),
+    ]);
+    expect(map["myrepo"]).toEqual({ stars: 5, forks: 2 });
+    expect(map["https://github.com/daanhessen/myrepo"]).toEqual({ stars: 5, forks: 2 });
+  });
+});

@@ -1,6 +1,3 @@
-import { useEffect, useRef, useState } from "react";
-import { AsciiBlobs, type AsciiBlobsRef } from "ascii-blobs";
-import "ascii-blobs/dist/style.css";
 import SEOHead from "../components/SEOHead";
 import BackButton from "../components/BackButton";
 import { minorData } from "../data/minor";
@@ -29,14 +26,6 @@ const structuredData = {
 };
 
 const MinorPage = ({ onNavigateHome, onNavigateToPlanner }: MinorPageProps) => {
-  const [showBlobs, setShowBlobs] = useState(false);
-  const blobs = useRef<AsciiBlobsRef>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowBlobs(true), 40);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <>
       <SEOHead
@@ -46,16 +35,6 @@ const MinorPage = ({ onNavigateHome, onNavigateToPlanner }: MinorPageProps) => {
         structuredData={structuredData}
         noindex
       />
-
-      {showBlobs && (
-        <AsciiBlobs
-          ref={blobs}
-          animation={{ revealDuration: 0, revealFade: 1 }}
-        />
-      )}
-
-      <div className="minor__scrim" aria-hidden="true" />
-      <div className="minor__vignette" aria-hidden="true" />
 
       <BackButton onNavigateHome={onNavigateHome} badge="/minor" />
 
@@ -321,7 +300,7 @@ const MinorPage = ({ onNavigateHome, onNavigateToPlanner }: MinorPageProps) => {
                   className="resume__entry-desc"
                   style={{ marginTop: "var(--space-3)" }}
                 >
-                  De achtergrond draait op de geanimeerde ASCII metaball engine (
+                  De achtergrond van de homepage draait op de geanimeerde ASCII metaball engine (
                   <code>ascii-blobs</code>). Voor dagelijkse notities en reflecties
                   is daarnaast het digitale{" "}
                   <a

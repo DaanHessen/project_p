@@ -64,7 +64,8 @@
   transition: all 0.15s ease;
 }
 
-.planner-page__back-btn:hover {
+.planner-page__back-btn:hover,
+.planner-page__back-btn:focus-visible {
   border-color: var(--accent);
   color: var(--accent);
 }

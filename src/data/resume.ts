@@ -20,6 +20,7 @@ export interface ProjectLink {
   type: string;
   text: string;
   url: string;
+  offline?: boolean;
 }
 
 export interface ProjectEntry {

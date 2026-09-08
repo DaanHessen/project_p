@@ -141,7 +141,8 @@
         {
           "type": "website",
           "text": "Visit Site",
-          "url": "https://basebymonsees.nl"
+          "url": "https://basebymonsees.nl",
+          "offline": true
         }
       ]
     },

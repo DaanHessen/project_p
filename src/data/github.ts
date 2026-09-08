@@ -9,8 +9,19 @@ export interface Repo {
   url: string;
   language: string | null;
   stars: number;
+  forks: number;
   updated: string;
 }
+
+export interface RepoStats {
+  stars: number;
+  forks: number;
+}
+
+export const INITIAL_PROJECT_STATS: Record<string, RepoStats> = {
+  "ascii-blobs": { stars: 2, forks: 1 },
+  "earctl": { stars: 4, forks: 1 },
+};
 
 /**
  * The topic a repo must carry to appear on the CV.
@@ -30,10 +41,24 @@ interface ApiRepo {
   html_url: string;
   language: string | null;
   stargazers_count: number;
+  forks_count?: number;
   pushed_at: string;
   fork: boolean;
   archived: boolean;
   topics?: string[];
+}
+
+export function toStatsMap(raw: ApiRepo[]): Record<string, RepoStats> {
+  const map: Record<string, RepoStats> = {};
+  for (const repo of raw) {
+    const stats: RepoStats = {
+      stars: repo.stargazers_count,
+      forks: repo.forks_count ?? 0,
+    };
+    map[repo.name.toLowerCase()] = stats;
+    map[repo.html_url.toLowerCase()] = stats;
+  }
+  return map;
 }
 
 export function toRepos(raw: ApiRepo[], exclude: string[]): Repo[] {
@@ -58,20 +83,30 @@ export function toRepos(raw: ApiRepo[], exclude: string[]): Repo[] {
       url: repo.html_url,
       language: repo.language,
       stars: repo.stargazers_count,
+      forks: repo.forks_count ?? 0,
       updated: repo.pushed_at,
     }));
 }
 
 /**
- * Live repositories, fetched in the browser.
+ * Live repositories and project stats, fetched in the browser.
  *
  * Deliberately silent on failure: GitHub rate-limits unauthenticated calls to
  * 60 an hour per IP, and a CV that renders an error box because a third party
  * is throttling is worse than one that simply shows the hand-written projects
- * above it. An empty list means the section does not render at all.
+ * above it. Initial known stats are used as fallbacks if the request is throttled.
  */
-export function useGitHubRepos(exclude: string[]): Repo[] {
-  const [repos, setRepos] = useState<Repo[]>([]);
+export function useGitHubRepos(exclude: string[]): {
+  repos: Repo[];
+  stats: Record<string, RepoStats>;
+} {
+  const [data, setData] = useState<{
+    repos: Repo[];
+    stats: Record<string, RepoStats>;
+  }>({
+    repos: [],
+    stats: INITIAL_PROJECT_STATS,
+  });
 
   useEffect(() => {
     let live = true;
@@ -79,7 +114,12 @@ export function useGitHubRepos(exclude: string[]): Repo[] {
     fetch(ENDPOINT, { headers: { Accept: "application/vnd.github+json" } })
       .then((response) => (response.ok ? response.json() : Promise.reject()))
       .then((raw: ApiRepo[]) => {
-        if (live) setRepos(toRepos(raw, exclude));
+        if (live) {
+          setData({
+            repos: toRepos(raw, exclude),
+            stats: { ...INITIAL_PROJECT_STATS, ...toStatsMap(raw) },
+          });
+        }
       })
       .catch(() => {
         /* leave the section empty */
@@ -91,5 +131,5 @@ export function useGitHubRepos(exclude: string[]): Repo[] {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exclude.join("|")]);
 
-  return repos;
+  return data;
 }

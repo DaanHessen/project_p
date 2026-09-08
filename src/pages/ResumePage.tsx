@@ -21,6 +21,28 @@ const structuredData = {
   },
 };
 
+const StarIcon = () => (
+  <svg
+    className="resume__stat-icon"
+    viewBox="0 0 16 16"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z" />
+  </svg>
+);
+
+const ForkIcon = () => (
+  <svg
+    className="resume__stat-icon"
+    viewBox="0 0 16 16"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z" />
+  </svg>
+);
+
 const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
   const curated = useMemo(
     () =>
@@ -31,7 +53,7 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
       ),
     [],
   );
-  const repos = useGitHubRepos(curated);
+  const { repos, stats } = useGitHubRepos(curated);
 
   const [printHint, setPrintHint] = useState(false);
 
@@ -63,7 +85,23 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
       noindex
     />
 
-    <BackButton onNavigateHome={onNavigateHome} />
+    <BackButton
+      onNavigateHome={onNavigateHome}
+      rightAction={
+        <div className="resume__topbar-action">
+          <button type="button" className="resume__print" onClick={handlePrint}>
+            download as PDF
+          </button>
+          {printHint && (
+            <p className="resume__print-hint" role="status">
+              This browser will not open a print dialog. On iPhone use Share →
+              Print, then pinch the preview to save it as a PDF; in an in-app
+              browser, open the page in Safari or Chrome first.
+            </p>
+          )}
+        </div>
+      }
+    />
 
     <main className="resume">
       <header className="resume__identity">
@@ -101,22 +139,47 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
 
         <p className="resume__about">{resume.personal.about}</p>
 
-        <button type="button" className="resume__print" onClick={handlePrint}>
-          download as PDF
-        </button>
-
-        {printHint && (
-          <p className="resume__print-hint" role="status">
-            This browser will not open a print dialog. On iPhone use Share →
-            Print, then pinch the preview to save it as a PDF; in an in-app
-            browser, open the page in Safari or Chrome first.
-          </p>
-        )}
+        <ul className="resume__nav">
+          <li>
+            <a className="resume__link" href="#experience">
+              Experience
+            </a>
+          </li>
+          <li>
+            <a className="resume__link" href="#education">
+              Education
+            </a>
+          </li>
+          <li>
+            <a className="resume__link" href="#projects">
+              Projects
+            </a>
+          </li>
+          {repos.length > 0 && (
+            <li>
+              <a className="resume__link" href="#github">
+                More on GitHub
+              </a>
+            </li>
+          )}
+          {/* Skills disabled for now
+          <li>
+            <a className="resume__link" href="#skills">
+              Skills
+            </a>
+          </li>
+          */}
+          <li>
+            <a className="resume__link" href="#languages">
+              Languages
+            </a>
+          </li>
+        </ul>
       </header>
 
       <div className="resume__body">
 
-      <section className="resume__section resume__section--timeline">
+      <section id="experience" className="resume__section resume__section--timeline">
         <h2 className="resume__section-title">Experience</h2>
         {resume.experience.map((job) => (
           <article
@@ -137,7 +200,7 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
         ))}
       </section>
 
-      <section className="resume__section resume__section--timeline">
+      <section id="education" className="resume__section resume__section--timeline">
         <h2 className="resume__section-title">Education</h2>
         {resume.education.map((entry) => (
           <article
@@ -158,35 +221,83 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
         ))}
       </section>
 
-      <section className="resume__section">
+      <section id="projects" className="resume__section">
         <h2 className="resume__section-title">Projects</h2>
-        {resume.projects.map((project) => (
-          <article className="resume__entry" key={project.name}>
-            <div className="resume__meta resume__meta--strong">
-              <span>{project.name}</span>
-            </div>
-            <div>
-              <p className="resume__entry-desc">{project.description}</p>
-              <div className="resume__links">
-                {project.links.map((link) => (
-                  <a
-                    className="resume__link"
-                    key={link.url}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {link.text}
-                  </a>
-                ))}
+        {resume.projects.map((project) => {
+          const ghLink = project.links.find(
+            (l) => l.type === "github" || l.url.toLowerCase().includes("github.com"),
+          );
+          const urlKey = ghLink?.url.toLowerCase().replace(/\/+$/, "");
+          const repoName = urlKey?.split("/").pop();
+          const projectStat =
+            (urlKey && stats[urlKey]) ||
+            (repoName && stats[repoName]) ||
+            stats[project.name.toLowerCase()] ||
+            null;
+
+          return (
+            <article className="resume__entry" key={project.name}>
+              <div className="resume__meta resume__meta--strong">
+                <span>{project.name}</span>
               </div>
-            </div>
-          </article>
-        ))}
+              <div>
+                <p className="resume__entry-desc">{project.description}</p>
+                <div className="resume__actions-row">
+                  <div className="resume__links">
+                    {project.links.map((link) =>
+                      link.offline ? (
+                        <span
+                          className="resume__link resume__link--offline"
+                          key={link.url}
+                          role="link"
+                          aria-disabled="true"
+                          tabIndex={0}
+                          title="website offline"
+                        >
+                          {link.text}
+                          <span className="resume__link-tooltip" role="tooltip">
+                            website offline
+                          </span>
+                        </span>
+                      ) : (
+                        <a
+                          className="resume__link"
+                          key={link.url}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {link.text}
+                        </a>
+                      ),
+                    )}
+                  </div>
+                  <span
+                    className="resume__stars"
+                    title={
+                      projectStat
+                        ? `${projectStat.stars} stars, ${projectStat.forks} forks on GitHub`
+                        : "Repository is private or not included on GitHub"
+                    }
+                  >
+                    <span className="resume__stat">
+                      <StarIcon />
+                      <span>{projectStat ? projectStat.stars : "-"}</span>
+                    </span>
+                    <span className="resume__stat">
+                      <ForkIcon />
+                      <span>{projectStat ? projectStat.forks : "-"}</span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </section>
 
       {repos.length > 0 && (
-        <section className="resume__section">
+        <section id="github" className="resume__section">
           <h2 className="resume__section-title">More on GitHub</h2>
           {repos.map((repo) => (
             <article className="resume__entry" key={repo.url}>
@@ -198,20 +309,30 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
               </div>
               <div>
                 <p className="resume__entry-desc">{repo.description}</p>
-                <div className="resume__links">
-                  <a
-                    className="resume__link"
-                    href={repo.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <div className="resume__actions-row">
+                  <div className="resume__links">
+                    <a
+                      className="resume__link"
+                      href={repo.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      GitHub
+                    </a>
+                  </div>
+                  <span
+                    className="resume__stars"
+                    title={`${repo.stars} stars, ${repo.forks} forks on GitHub`}
                   >
-                    GitHub
-                  </a>
-                  {repo.stars > 0 && (
-                    <span className="resume__stars">
-                      {repo.stars} {repo.stars === 1 ? "star" : "stars"}
+                    <span className="resume__stat">
+                      <StarIcon />
+                      <span>{repo.stars}</span>
                     </span>
-                  )}
+                    <span className="resume__stat">
+                      <ForkIcon />
+                      <span>{repo.forks}</span>
+                    </span>
+                  </span>
                 </div>
               </div>
             </article>
@@ -220,7 +341,8 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
       )}
 
       <div className="resume__pair">
-      <section className="resume__section">
+      {/* Skills disabled for now
+      <section id="skills" className="resume__section">
         <h2 className="resume__section-title">Skills</h2>
         <dl className="resume__skills">
           {resume.skills.map((group) => (
@@ -231,8 +353,9 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
           ))}
         </dl>
       </section>
+      */}
 
-      <section className="resume__section">
+      <section id="languages" className="resume__section">
         <h2 className="resume__section-title">Languages</h2>
         <dl className="resume__languages">
           {resume.languages.map((language) => (

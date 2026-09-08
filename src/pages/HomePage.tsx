@@ -4,6 +4,7 @@ import "ascii-blobs/dist/style.css";
 import SEOHead from "../components/SEOHead";
 import SiteNav from "../components/SiteNav";
 import NameField from "../components/NameField";
+import { APP_VERSION } from "../version";
 import "./HomePage.css";
 
 interface HomePageProps {
@@ -96,6 +97,8 @@ const HomePage = ({
             git
           </a>
         </div>
+
+        <div className="home__version">v{APP_VERSION}</div>
 
         <div className="home__scrim" aria-hidden="true" />
         <div className="home__vignette" aria-hidden="true" />

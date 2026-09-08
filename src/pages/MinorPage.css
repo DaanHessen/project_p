@@ -1,33 +1,5 @@
-/* Scrim & Vignette over ASCII background */
-.minor__scrim {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background: radial-gradient(
-    ellipse 60rem 36rem at 50% 30%,
-    rgba(7, 8, 11, 0.78) 0%,
-    rgba(7, 8, 11, 0.86) 60%,
-    rgba(7, 8, 11, 0.94) 100%
-  );
-}
-
-.minor__vignette {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background: radial-gradient(
-    ellipse 95% 85% at 50% 50%,
-    transparent 40%,
-    rgba(7, 8, 11, 0.55) 100%
-  );
-}
-
 /* Minor page enhancements over standard resume styles */
 .minor {
-  position: relative;
-  z-index: 1;
   scroll-behavior: smooth;
 }
 
@@ -146,8 +118,6 @@
 }
 
 @media print {
-  .minor__scrim,
-  .minor__vignette,
   .minor__nav,
   .minor__route-badge {
     display: none !important;
