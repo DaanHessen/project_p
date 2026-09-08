@@ -44,5 +44,22 @@ describe("minor data integrity", () => {
     const portfolioStory = minorData.userStories.find((us) => us.id === "US-01");
     expect(portfolioStory).toBeDefined();
     expect(portfolioStory?.status).toBe("Done");
+    expect(portfolioStory?.leeruitkomsten).toContain("LU4");
+    expect(portfolioStory?.leeruitkomsten).toContain("LU5");
+  });
+
+  it("contains logboek entries for sprint progress tracking", () => {
+    expect(minorData.logEntries.length).toBeGreaterThan(0);
+    for (const entry of minorData.logEntries) {
+      expect(entry.id).toBeDefined();
+      expect(entry.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(entry.sprint).toBeGreaterThan(0);
+      expect(entry.title.length).toBeGreaterThan(0);
+      expect(entry.description.length).toBeGreaterThan(0);
+      expect(entry.leeruitkomsten.length).toBeGreaterThan(0);
+      for (const luId of entry.leeruitkomsten) {
+        expect(["LU1", "LU2", "LU3", "LU4", "LU5"]).toContain(luId);
+      }
+    }
   });
 });

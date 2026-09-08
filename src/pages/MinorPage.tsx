@@ -3,6 +3,7 @@ import { AsciiBlobs, type AsciiBlobsRef } from "ascii-blobs";
 import "ascii-blobs/dist/style.css";
 import SEOHead from "../components/SEOHead";
 import BackButton from "../components/BackButton";
+import MinorPlanner from "../components/MinorPlanner";
 import { minorData } from "../data/minor";
 import "./ResumePage.css";
 import "./MinorPage.css";
@@ -204,32 +205,7 @@ const MinorPage = ({ onNavigateHome }: MinorPageProps) => {
           {/* 3. Integraal Logboek & User Stories */}
           <section id="logboek" className="resume__section">
             <h2 className="resume__section-title">Logboek & User Stories</h2>
-            {minorData.userStories.map((story) => (
-              <article className="resume__entry" key={story.id}>
-                <div className="resume__meta resume__meta--strong">
-                  <span>{story.id}</span>
-                  <span className="resume__meta-place">
-                    sprint {story.sprint}
-                  </span>
-                  <span className="resume__meta-place">
-                    {story.status.toLowerCase()}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="resume__entry-title">{story.title}</h3>
-                  <p className="resume__entry-desc">
-                    Als {story.asA}, wil ik {story.iWant}, zodat {story.soThat}.
-                  </p>
-                  {story.acceptanceCriteria && story.acceptanceCriteria.length > 0 && (
-                    <ul className="minor__criteria-list">
-                      {story.acceptanceCriteria.map((crit, idx) => (
-                        <li key={idx}>{crit}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </article>
-            ))}
+            <MinorPlanner data={minorData} />
           </section>
 
           {/* 4. Code & Opzet */}

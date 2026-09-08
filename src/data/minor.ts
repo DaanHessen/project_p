@@ -45,7 +45,19 @@ export interface Story {
   iWant: string;
   soThat: string;
   status: "Done" | "In Progress" | "To Do";
-  acceptanceCriteria: string[];
+  acceptanceCriteria?: string[];
+  leeruitkomsten?: LeeruitkomstId[];
+  updatedAt?: string;
+}
+
+export interface LogEntry {
+  id: string;
+  date: string;
+  sprint: number;
+  title: string;
+  description: string;
+  leeruitkomsten: LeeruitkomstId[];
+  links?: EvidenceLink[];
 }
 
 export interface MinorData {
@@ -62,6 +74,7 @@ export interface MinorData {
   leeruitkomsten: Leeruitkomst[];
   sprints: Sprint[];
   userStories: Story[];
+  logEntries: LogEntry[];
 }
 
 export const minorData: MinorData = {
@@ -227,7 +240,71 @@ export const minorData: MinorData = {
       soThat:
         "ik tijdens de minor al mijn bewijzen en sprintopdrachten transparant kan aantonen voor de 5 leeruitkomsten.",
       status: "Done",
-      acceptanceCriteria: [],
+      acceptanceCriteria: [
+        "Portfolio subpagina live op daanhessen.nl/minor",
+        "5 officiële HU leeruitkomsten gedefinieerd conform v2.0",
+        "Sprint 1 kickoff deliverable gekoppeld",
+      ],
+      leeruitkomsten: ["LU4", "LU5"],
+      updatedAt: "2026-09-08",
+    },
+    {
+      id: "US-02",
+      sprint: 1,
+      type: "US",
+      title: "Interactieve GitHub Planner & beveiligd logboek realiseren",
+      asA: "student en beoordelaar",
+      iWant:
+        "een GitHub Projects Kanban-board, datatabel en chronologisch logboek kunnen raadplegen",
+      soThat:
+        "de voortgang per sprint en leeruitkomst interactief inzichtelijk is en uitsluitend door mij cryptografisch kan worden bewerkt.",
+      status: "Done",
+      acceptanceCriteria: [
+        "Kanban bord (To Do, In Progress, Done) met filters op sprint en LU",
+        "Tabel- en logboekweergave met live search",
+        "Cryptografisch beveiligde edit-modus via GitHub API & Tailscale detectie",
+      ],
+      leeruitkomsten: ["LU2", "LU4", "LU5"],
+      updatedAt: "2026-09-08",
+    },
+  ],
+  logEntries: [
+    {
+      id: "LOG-01",
+      date: "2026-09-07",
+      sprint: 1,
+      title: "Kickoff Minor Future-proof met AI & portfolio architectuur",
+      description:
+        "Start van de minor aan Hogeschool Utrecht. De officiële Canvas documentatie (Future-proof met AI! v2.0) doorgenomen. Besloten het portfolio als subpagina (/minor) te integreren binnen mijn bestaande React/Vite portfolio met behulp van AI vibe-coding en agentic workflows.",
+      leeruitkomsten: ["LU4", "LU5"],
+      links: [
+        {
+          label: "Canvas HU",
+          url: "https://canvas.hu.nl",
+          type: "doc",
+        },
+      ],
+    },
+    {
+      id: "LOG-02",
+      date: "2026-09-08",
+      sprint: 1,
+      title: "Ontwikkeling interactieve GitHub Planner & auth integratie",
+      description:
+        "Ontwerp en implementatie van een interactief GitHub Projects-achtig planningssysteem voor user stories en het logboek. Voorzien van Kanban-kolommen, filter-toolbar, datatabel en cryptografische authenticatie via de GitHub API zodat de live site op Vercel uitsluitend door Daan Hessen kan worden gemuteerd.",
+      leeruitkomsten: ["LU2", "LU4", "LU5"],
+      links: [
+        {
+          label: "GitHub Repository",
+          url: "https://github.com/DaanHessen/project_p",
+          type: "github",
+        },
+        {
+          label: "Live /minor",
+          url: "https://daanhessen.nl/minor",
+          type: "demo",
+        },
+      ],
     },
   ],
 };
