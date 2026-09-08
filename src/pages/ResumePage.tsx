@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import SEOHead from "../components/SEOHead";
+import BackButton from "../components/BackButton";
 import { useGitHubRepos } from "../data/github";
 import { proficiency, resume } from "../data/resume";
 import "./ResumePage.css";
@@ -32,8 +33,6 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
   );
   const repos = useGitHubRepos(curated);
 
-  const sentinel = useRef<HTMLDivElement | null>(null);
-  const [stuck, setStuck] = useState(false);
   const [printHint, setPrintHint] = useState(false);
 
   /*
@@ -54,18 +53,6 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
     }
   };
 
-  useEffect(() => {
-    const node = sentinel.current;
-    if (!node) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setStuck(!entry.isIntersecting),
-      { rootMargin: "-1px 0px 0px 0px", threshold: 0 },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <>
     <SEOHead
@@ -76,14 +63,9 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
       noindex
     />
 
-    <main className="resume">
-      <div ref={sentinel} className="resume__sentinel" aria-hidden="true" />
-      <div className="resume__bar" data-stuck={stuck}>
-        <button type="button" className="resume__back" onClick={onNavigateHome}>
-          ← back
-        </button>
-      </div>
+    <BackButton onNavigateHome={onNavigateHome} />
 
+    <main className="resume">
       <header className="resume__identity">
         <h1 className="resume__name">Daan Hessen</h1>
         <p className="resume__position">{resume.personal.position}</p>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AsciiBlobs, type AsciiBlobsRef } from "ascii-blobs";
 import "ascii-blobs/dist/style.css";
 import SEOHead from "../components/SEOHead";
+import BackButton from "../components/BackButton";
 import { minorData } from "../data/minor";
 import "./ResumePage.css";
 import "./MinorPage.css";
@@ -30,24 +31,9 @@ const MinorPage = ({ onNavigateHome }: MinorPageProps) => {
   const [showBlobs, setShowBlobs] = useState(false);
   const blobs = useRef<AsciiBlobsRef>(null);
 
-  const sentinel = useRef<HTMLDivElement | null>(null);
-  const [stuck, setStuck] = useState(false);
-
   useEffect(() => {
     const timer = setTimeout(() => setShowBlobs(true), 40);
     return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    const node = sentinel.current;
-    if (!node) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setStuck(!entry.isIntersecting),
-      { rootMargin: "-1px 0px 0px 0px", threshold: 0 },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
   }, []);
 
   return (
@@ -70,19 +56,9 @@ const MinorPage = ({ onNavigateHome }: MinorPageProps) => {
       <div className="minor__scrim" aria-hidden="true" />
       <div className="minor__vignette" aria-hidden="true" />
 
-      <main className="resume minor">
-        <div ref={sentinel} className="resume__sentinel" aria-hidden="true" />
-        <div className="resume__bar" data-stuck={stuck}>
-          <button
-            type="button"
-            className="resume__back"
-            onClick={onNavigateHome}
-          >
-            ← back
-          </button>
-          <span className="minor__route-badge">/minor</span>
-        </div>
+      <BackButton onNavigateHome={onNavigateHome} badge="/minor" />
 
+      <main className="resume minor">
         <header className="resume__identity">
           <h1 className="resume__name">Minor: Future-proof met AI!</h1>
           <p className="resume__position">

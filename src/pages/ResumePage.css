@@ -1,7 +1,7 @@
 .resume {
   max-width: 46rem;
   margin: 0 auto;
-  padding: var(--space-8) var(--space-5) var(--space-8);
+  padding: var(--space-5) var(--space-5) var(--space-8);
 }
 
 @media (min-width: 68rem) {
@@ -11,15 +11,12 @@
     grid-template-columns: 19rem 1fr;
     column-gap: var(--space-8);
     align-items: start;
-  }
-
-  .resume__bar {
-    grid-column: 1 / -1;
+    padding: var(--space-6) var(--space-5) var(--space-8);
   }
 
   .resume__identity {
     position: sticky;
-    top: 5.5rem;
+    top: 4rem;
     grid-column: 1;
   }
 
@@ -31,40 +28,6 @@
   .resume__body > .resume__section:first-child {
     margin-top: 0;
   }
-}
-
-.resume__bar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-4);
-  margin: calc(var(--space-8) * -1) calc(var(--space-5) * -1) var(--space-8);
-  padding: var(--space-4) var(--space-5);
-  background: rgba(7, 8, 11, 0.94);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease;
-}
-
-.resume__bar[data-stuck="true"] {
-  border-bottom-color: var(--rule);
-}
-
-.resume__back {
-  font-size: 0.8125rem;
-  color: var(--fg-faint);
-  background: none;
-  border: 0;
-  font-family: inherit;
-  cursor: pointer;
-  transition: color 0.15s ease;
-}
-
-.resume__back:hover {
-  color: var(--fg);
 }
 
 .resume__print {
