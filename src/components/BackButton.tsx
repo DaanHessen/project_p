@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./BackButton.css";
 
 interface BackButtonProps {
@@ -15,18 +15,39 @@ export const BackButton = ({
   rightAction,
 }: BackButtonProps) => {
   const [stuck, setStuck] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setStuck(window.scrollY > 8);
-    };
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setStuck(!entry.isIntersecting);
+      },
+      { threshold: [0, 1] },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <header className="back-bar" data-stuck={stuck}>
+    <>
+      <div
+        ref={sentinelRef}
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "1px",
+          height: "8px",
+          pointerEvents: "none",
+          visibility: "hidden",
+        }}
+      />
+      <header className="back-bar" data-stuck={stuck}>
       <div className="back-bar__inner">
         <button
           type="button"
@@ -43,6 +64,7 @@ export const BackButton = ({
         {rightAction}
       </div>
     </header>
+    </>
   );
 };
 

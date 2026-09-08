@@ -8,7 +8,6 @@
   max-width: 90rem;
   margin: 0 auto;
   padding: var(--space-5) clamp(1.5rem, 3.5vw, 3.5rem) var(--space-8);
-  scroll-behavior: smooth;
   position: relative;
 }
 
@@ -250,6 +249,8 @@
   row-gap: var(--space-2);
   padding: var(--space-5) 0;
   border-bottom: 1px solid var(--rule);
+  content-visibility: auto;
+  contain-intrinsic-size: 0 100px;
 }
 
 .resume__entry:last-child {

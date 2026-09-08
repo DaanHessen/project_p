@@ -74,36 +74,33 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
 
   useEffect(() => {
     const sectionIds = navItems.map((item) => item.id);
+    const elements = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
 
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scrollPos = window.scrollY + 140;
-          for (let i = sectionIds.length - 1; i >= 0; i--) {
-            const el = document.getElementById(sectionIds[i]);
-            if (el && el.offsetTop <= scrollPos) {
-              setActiveSection((prev) =>
-                prev === sectionIds[i] ? prev : sectionIds[i],
-              );
-              ticking = false;
-              return;
-            }
-          }
-          if (window.scrollY < 100 && sectionIds.length > 0) {
-            setActiveSection((prev) =>
-              prev === sectionIds[0] ? prev : sectionIds[0],
-            );
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
+    if (elements.length === 0) return;
 
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const intersecting = entries.filter((e) => e.isIntersecting);
+        if (intersecting.length > 0) {
+          intersecting.sort(
+            (a, b) =>
+              Math.abs(a.boundingClientRect.top) -
+              Math.abs(b.boundingClientRect.top),
+          );
+          const targetId = intersecting[0].target.id;
+          setActiveSection((prev) => (prev === targetId ? prev : targetId));
+        }
+      },
+      {
+        rootMargin: "-10% 0px -65% 0px",
+        threshold: [0, 0.25],
+      },
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, [navItems]);
 
   const handleNavClick = (

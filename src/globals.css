@@ -36,16 +36,9 @@
 }
 
 html {
-  overflow-x: hidden;
+  overflow-x: clip;
   background: var(--bg);
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
 }
 
 body {
@@ -111,14 +104,6 @@ ul {
   filter: blur(16px);
   opacity: 0.18;
   transform: translateZ(0);
-}
-
-@media (max-width: 768px) {
-  .app-ascii-bg--blurred {
-    /* Full-screen blur convolutions during scrolling cause mobile GPU lag */
-    filter: none !important;
-    opacity: 0.08;
-  }
 }
 
 @keyframes field-fade {

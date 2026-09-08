@@ -36,16 +36,6 @@ function App() {
 
   const isHome = route === "home";
 
-  useEffect(() => {
-    if (!blobs.current) return;
-    const isMobile = window.innerWidth <= 768;
-    if (!isHome && isMobile) {
-      blobs.current.pause();
-    } else {
-      blobs.current.resume();
-    }
-  }, [isHome]);
-
   return (
     <div className={`app ${isHome ? "app--locked" : "app--flow"}`}>
       {/*
