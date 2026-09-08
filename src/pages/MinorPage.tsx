@@ -47,17 +47,29 @@ const MinorPage = ({
   useEffect(() => {
     const sectionIds = navItems.map((item) => item.id);
 
+    let ticking = false;
     const handleScroll = () => {
-      const scrollPos = window.scrollY + 140;
-      for (let i = sectionIds.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sectionIds[i]);
-        if (el && el.offsetTop <= scrollPos) {
-          setActiveSection(sectionIds[i]);
-          return;
-        }
-      }
-      if (window.scrollY < 100 && sectionIds.length > 0) {
-        setActiveSection(sectionIds[0]);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollPos = window.scrollY + 140;
+          for (let i = sectionIds.length - 1; i >= 0; i--) {
+            const el = document.getElementById(sectionIds[i]);
+            if (el && el.offsetTop <= scrollPos) {
+              setActiveSection((prev) =>
+                prev === sectionIds[i] ? prev : sectionIds[i],
+              );
+              ticking = false;
+              return;
+            }
+          }
+          if (window.scrollY < 100 && sectionIds.length > 0) {
+            setActiveSection((prev) =>
+              prev === sectionIds[0] ? prev : sectionIds[0],
+            );
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 

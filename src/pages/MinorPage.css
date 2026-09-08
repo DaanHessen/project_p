@@ -218,6 +218,18 @@
   color: var(--fg);
 }
 
+@media (max-width: 48rem) {
+  .minor__topbar-action {
+    gap: 0.35rem;
+  }
+
+  .minor__topbar-action .resume__btn {
+    padding: 0.35rem 0.55rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+  }
+}
+
 @media print {
   .minor__topbar-action {
     display: none !important;

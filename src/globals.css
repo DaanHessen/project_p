@@ -113,6 +113,14 @@ ul {
   transform: translateZ(0);
 }
 
+@media (max-width: 768px) {
+  .app-ascii-bg--blurred {
+    /* Full-screen blur convolutions during scrolling cause mobile GPU lag */
+    filter: none !important;
+    opacity: 0.08;
+  }
+}
+
 @keyframes field-fade {
   from {
     opacity: 0;
