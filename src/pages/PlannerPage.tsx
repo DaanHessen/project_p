@@ -17,14 +17,8 @@ const STORAGE_UNLOCKED_KEY = "daan_planner_unlocked";
 const STORAGE_STORIES_KEY = "daan_minor_stories_draft";
 const STORAGE_LOGS_KEY = "daan_minor_logs_draft";
 
-// Accepted passwords
-const ACCEPTED_PASSWORDS = [
-  "futureproof",
-  "daan",
-  "daan2026",
-  "project_p",
-  import.meta.env.VITE_PLANNER_PASSWORD,
-].filter(Boolean) as string[];
+// Configured environment password
+const ENV_PASSWORD = (import.meta.env.VITE_PLANNER_PASSWORD || "").trim();
 
 const ALL_LUS: LeeruitkomstId[] = ["LU1", "LU2", "LU3", "LU4", "LU5"];
 
@@ -92,10 +86,17 @@ export default function PlannerPage({ onNavigateBack }: PlannerPageProps) {
 
   const handleUnlockSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const clean = passwordInput.trim().toLowerCase();
-    const custom = (localStorage.getItem("daan_planner_pwd") || "").trim().toLowerCase();
 
-    if (ACCEPTED_PASSWORDS.map((p) => p.toLowerCase()).includes(clean) || (custom && clean === custom)) {
+    if (!ENV_PASSWORD) {
+      setPasswordError(
+        "Wachtwoord niet geconfigureerd. Stel VITE_PLANNER_PASSWORD in binnen je .env bestand of Vercel Environment Variables!"
+      );
+      return;
+    }
+
+    const input = passwordInput.trim().toLowerCase();
+
+    if (input === ENV_PASSWORD.toLowerCase()) {
       setIsUnlocked(true);
       try {
         localStorage.setItem(STORAGE_UNLOCKED_KEY, "true");
