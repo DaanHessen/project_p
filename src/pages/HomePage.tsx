@@ -8,6 +8,7 @@ import "./HomePage.css";
 
 interface HomePageProps {
   onNavigateToResume: () => void;
+  onNavigateToMinor: () => void;
 }
 
 const structuredData = {
@@ -25,7 +26,10 @@ const structuredData = {
   },
 };
 
-const HomePage = ({ onNavigateToResume }: HomePageProps) => {
+const HomePage = ({
+  onNavigateToResume,
+  onNavigateToMinor,
+}: HomePageProps) => {
   const [showBlobs, setShowBlobs] = useState(false);
   const [cellPx, setCellPx] = useState(CELL_SIZE);
   const blobs = useRef<AsciiBlobsRef>(null);
@@ -112,7 +116,10 @@ const HomePage = ({ onNavigateToResume }: HomePageProps) => {
             Currently looking for an internship.
           </p>
 
-          <SiteNav onNavigateToResume={onNavigateToResume} />
+          <SiteNav
+            onNavigateToResume={onNavigateToResume}
+            onNavigateToMinor={onNavigateToMinor}
+          />
         </div>
       </div>
     </>

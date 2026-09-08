@@ -22,7 +22,10 @@ function App() {
         ) : route === "minor" ? (
           <MinorPage onNavigateHome={() => navigate("/")} />
         ) : (
-          <HomePage onNavigateToResume={() => navigate("/cv")} />
+          <HomePage
+            onNavigateToResume={() => navigate("/cv")}
+            onNavigateToMinor={() => navigate("/minor")}
+          />
         )}
       </div>
     </div>

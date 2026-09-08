@@ -5,28 +5,42 @@
   gap: var(--space-6);
 }
 
+.site-nav__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
 /*
-  The résumé link is the only control on the page with a job to do, so it is
-  the only element that carries the accent. Everything else is a text link.
+  The action buttons are the primary controls on the page with jobs to do,
+  so they carry the accent and exact same styling and dimensions.
+  Everything else is a text link.
 */
 
+.site-nav__btn,
 .site-nav__resume {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-4);
+  justify-content: center;
   padding: 0.8rem 1.6rem;
+  min-width: 7.5rem;
   border: 1px solid var(--accent);
   /* Opaque enough that the blob field does not read through the control. */
   background: rgba(7, 8, 11, 0.82);
   color: var(--accent);
   font-size: 0.875rem;
   letter-spacing: 0.06em;
+  text-align: center;
   transition:
     background-color 0.18s ease,
     color 0.18s ease,
     box-shadow 0.18s ease;
 }
 
+.site-nav__btn:hover,
+.site-nav__btn:focus-visible,
 .site-nav__resume:hover,
 .site-nav__resume:focus-visible {
   background: var(--accent);
@@ -35,6 +49,7 @@
   box-shadow: 0 0 18px rgba(217, 164, 65, 0.28);
 }
 
+.site-nav__btn:active,
 .site-nav__resume:active {
   transform: translateY(1px);
 }
@@ -85,8 +100,14 @@
     gap: var(--space-5);
   }
 
+  .site-nav__actions {
+    gap: var(--space-3);
+  }
+
+  .site-nav__btn,
   .site-nav__resume {
     padding: 0.65rem 1.3rem;
+    min-width: 6.5rem;
     font-size: 0.8125rem;
   }
 

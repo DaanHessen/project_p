@@ -3,6 +3,7 @@ import "./SiteNav.css";
 
 interface SiteNavProps {
   onNavigateToResume: () => void;
+  onNavigateToMinor: () => void;
 }
 
 const links = [
@@ -16,7 +17,7 @@ const links = [
   { label: "email", href: "mailto:daanh2002@gmail.com" },
 ];
 
-const SiteNav = ({ onNavigateToResume }: SiteNavProps) => {
+const SiteNav = ({ onNavigateToResume, onNavigateToMinor }: SiteNavProps) => {
   /*
     A real href, intercepted. Modified clicks fall through so middle-click and
     "open in new tab" keep working, which a button-based nav would break.
@@ -36,11 +37,31 @@ const SiteNav = ({ onNavigateToResume }: SiteNavProps) => {
     onNavigateToResume();
   };
 
+  const handleMinorClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+    event.preventDefault();
+    onNavigateToMinor();
+  };
+
   return (
     <nav className="site-nav" aria-label="Primary">
-      <a className="site-nav__resume" href="/cv" onClick={handleResumeClick}>
-        résumé
-      </a>
+      <div className="site-nav__actions">
+        <a className="site-nav__btn" href="/cv" onClick={handleResumeClick}>
+          résumé
+        </a>
+        <a className="site-nav__btn" href="/minor" onClick={handleMinorClick}>
+          minor
+        </a>
+      </div>
 
       <ul className="site-nav__links">
         {links.map((link) => (
