@@ -140,17 +140,15 @@ const MinorPage = ({ onNavigateHome }: MinorPageProps) => {
                 <div className="resume__meta resume__meta--strong">
                   <span>{lu.code}</span>
                   <span className="resume__meta-place">
+                    min. {lu.minEvaluations}× voldaan
+                  </span>
+                  <span className="resume__meta-place">
                     {lu.status.toLowerCase()}
                   </span>
                 </div>
                 <div>
                   <h3 className="resume__entry-title">{lu.title}</h3>
                   <p className="resume__entry-desc">{lu.fullDescription}</p>
-                  <ul className="minor__criteria-list">
-                    {lu.criteria.map((criterion, idx) => (
-                      <li key={idx}>{criterion}</li>
-                    ))}
-                  </ul>
                 </div>
               </article>
             ))}

@@ -1,19 +1,11 @@
-export type LeeruitkomstId = "LU1" | "LU2" | "LU3";
+export type LeeruitkomstId = "LU1" | "LU2" | "LU3" | "LU4" | "LU5";
 
-export type LinkType =
-  | "onedrive"
-  | "youtube"
-  | "github"
-  | "doc"
-  | "demo"
-  | "canvas"
-  | "other";
+export type StoryType = "US" | "RS" | "LS"; // User Story, Research Story, Learning Story
 
 export interface EvidenceLink {
   label: string;
   url: string;
-  type: LinkType;
-  description?: string;
+  type: "github" | "demo" | "onedrive" | "youtube" | "doc" | "other";
 }
 
 export interface Leeruitkomst {
@@ -22,7 +14,7 @@ export interface Leeruitkomst {
   title: string;
   shortDescription: string;
   fullDescription: string;
-  criteria: string[];
+  minEvaluations: number;
   status: "In ontwikkeling" | "Aangetoond" | "Gepland";
 }
 
@@ -40,14 +32,14 @@ export interface Sprint {
   period: string;
   status: "Afgerond" | "In uitvoering" | "Gepland";
   goal?: string;
-  focus?: string;
   deliverables: SprintDeliverable[];
   reflection?: string;
 }
 
-export interface UserStory {
+export interface Story {
   id: string;
   sprint: number;
+  type: StoryType;
   title: string;
   asA: string;
   iWant: string;
@@ -69,7 +61,7 @@ export interface MinorData {
   };
   leeruitkomsten: Leeruitkomst[];
   sprints: Sprint[];
-  userStories: UserStory[];
+  userStories: Story[];
 }
 
 export const minorData: MinorData = {
@@ -82,36 +74,30 @@ export const minorData: MinorData = {
     academicYear: "2026 – 2027",
     contextDoc: "Future-proof met AI! v2.0 (Canvas)",
     description:
-      "Portfolio voor de Minor Future-proof met AI aan de Hogeschool Utrecht. Hier verzamel ik alle bewijzen, sprintopdrachten en uitwerkingen om de drie leeruitkomsten aan te tonen.",
+      "Portfolio voor de Minor Future-proof met AI aan de Hogeschool Utrecht. Hier verzamel ik alle bewijzen, sprintopdrachten en uitwerkingen om de vijf centrale leeruitkomsten aan te tonen.",
   },
 
   leeruitkomsten: [
     {
       id: "LU1",
       code: "LU 1",
-      title: "AI-impact op de beroepspraktijk analyseren en evalueren",
+      title: "AI-impact op de toekomstige beroepspraktijk analyseren en evalueren",
       shortDescription:
-        "Onderzoek naar de verandering van software engineering door AI.",
+        "Onderzoek naar de impact van AI in het toekomstig beroep en benodigde vaardigheden.",
       fullDescription:
-        "Zelfstandig onderzoeken hoe AI-tooling (LLM's, code-assistenten, agentic workflows) de dagelijkse praktijk van softwareontwikkeling transformeert, en vaststellen welke nieuwe vaardigheden daarvoor vereist zijn.",
-      criteria: [
-        "Analyse van verschuivingen in software engineering (syntaxis schrijven vs. prompten, architectuur en code review).",
-        "Nulmeting en doorlopende reflectie op de eigen professionele AI-vaardigheden.",
-      ],
+        "Je kunt zelfstandig onderzoek doen naar de impact van AI in jouw toekomstig beroep en vaststellen welke nieuwe AI en digitale vaardigheden daarvoor nodig zijn.",
+      minEvaluations: 2,
       status: "In ontwikkeling",
     },
     {
       id: "LU2",
       code: "LU 2",
-      title: "Praktijkgerichte AI-oplossing ontwerpen, realiseren en presenteren",
+      title: "Praktijkgerichte AI oplossing ontwerpen, realiseren en presenteren",
       shortDescription:
-        "Zelfstandig bouwen via vibe-coding en opleveren van een AI-oplossing.",
+        "Ontwerpen, bouwen en presenteren van een transformerende AI-oplossing.",
       fullDescription:
-        "Een concrete AI-oplossing ontwerpen, bouwen en presenteren die een relevant praktijkvraagstuk oplost, met behulp van vibe-coding, agents of workflow-automatisering.",
-      criteria: [
-        "Werkend prototype of applicatie met traceerbare Git-commits en documentatie.",
-        "Aantoonbare validatie via live demo en screencast.",
-      ],
+        "Je kunt zelfstandig een AI oplossing ontwerpen, realiseren en presenteren die een specifieke beroepspraktijk radicaal transformeert (verandert).",
+      minEvaluations: 4,
       status: "In ontwikkeling",
     },
     {
@@ -119,13 +105,32 @@ export const minorData: MinorData = {
       code: "LU 3",
       title: "Ethiek en verantwoordelijk AI-gebruik beoordelen",
       shortDescription:
-        "Kritische beoordeling van privacy, bias, betrouwbaarheid en regelgeving.",
+        "Ethische vraagstukken identificeren en aanbevelingen doen voor verantwoord AI-gebruik.",
       fullDescription:
-        "Kritisch beoordelen van ethische en juridische aspecten rondom AI in professionele context, zoals privacy (AVG), bias, hallucinatierisico's en human-in-the-loop controle.",
-      criteria: [
-        "Risico-analyse van het AI-model, privacy en gegevensbescherming.",
-        "Verantwoording van betrouwbaarheid, transparantie en menselijke controle.",
-      ],
+        "Je kunt zelfstandig de ethische vraagstukken en uitdagingen van AI in je vakgebied identificeren en aanbevelingen formuleren voor verantwoord AI-gebruik, rekening houdend met privacy, bias en transparantie.",
+      minEvaluations: 2,
+      status: "In ontwikkeling",
+    },
+    {
+      id: "LU4",
+      code: "LU 4",
+      title: "AI Tools en technieken gebruiken",
+      shortDescription:
+        "Verschillende AI-tools en platforms toepassen op specifieke vaktaken.",
+      fullDescription:
+        "Je kunt zelfstandig verschillende AI-tools en platforms toepassen (zoals AI machine learning technieken, chatbots, agents, prompts, vibe-coding, workflow tools zoals N8N/Make) en deze gebruiken om specifieke taken binnen je vakgebied op te lossen.",
+      minEvaluations: 4,
+      status: "In ontwikkeling",
+    },
+    {
+      id: "LU5",
+      code: "LU 5",
+      title: "Zelfstandig en zelfsturend werken",
+      shortDescription:
+        "Eigen leerroute bepalen, voortgang monitoren en kritisch reflecteren op leerproces.",
+      fullDescription:
+        "Je kunt een eigen leerroute vaststellen en uitvoeren waarbij je zelfstandig je leervragen stelt, relevante bronnen en tools selecteert, je eigen voortgang monitort en kritisch reflecteert op je leerproces en persoonlijke ontwikkeling in het AI-landschap.",
+      minEvaluations: 6,
       status: "In ontwikkeling",
     },
   ],
@@ -136,14 +141,14 @@ export const minorData: MinorData = {
       title: "Kickoff & Portfolio Opzet",
       period: "Sprint 1 · Weken 1 – 2",
       status: "In uitvoering",
-      goal: "Inrichten van het portfolio conform de eisen van de minor.",
+      goal: "Inrichten van het portfolio en verkenning van AI vibe-coding conform de minor-eisen.",
       deliverables: [
         {
           id: "DELIV-1-1",
           title: "Portfolio subpagina (/minor) op daanhessen.nl",
           description:
-            "Onderdeel van mijn bestaande portfolio, ingericht voor het aantonen van de 3 leeruitkomsten. Gebouwd met AI-ondersteuning (vibe-coding).",
-          leeruitkomsten: ["LU1", "LU2"],
+            "Onderdeel van mijn bestaande portfolio, ingericht voor het aantonen van de 5 leeruitkomsten. Gerealiseerd met behulp van AI vibe-coding.",
+          leeruitkomsten: ["LU4", "LU5"],
           links: [
             {
               label: "GitHub repository",
@@ -187,24 +192,46 @@ export const minorData: MinorData = {
       status: "Gepland",
       deliverables: [],
     },
+    {
+      number: 6,
+      title: "Sprint 6",
+      period: "Sprint 6 · Weken 11 – 12",
+      status: "Gepland",
+      deliverables: [],
+    },
+    {
+      number: 7,
+      title: "Sprint 7",
+      period: "Sprint 7 · Weken 13 – 14",
+      status: "Gepland",
+      deliverables: [],
+    },
+    {
+      number: 8,
+      title: "Sprint 8",
+      period: "Sprint 8 · Weken 15 – 16",
+      status: "Gepland",
+      deliverables: [],
+    },
   ],
 
   userStories: [
     {
       id: "US-01",
       sprint: 1,
+      type: "US",
       title: "Portfolio website bouwen met AI (vibe-coding)",
       asA: "student Minor Future-proof met AI",
       iWant:
         "een overzichtelijke portfolio-pagina toevoegen aan mijn bestaande site (daanhessen.nl/minor)",
       soThat:
-        "ik tijdens de minor al mijn bewijzen en sprintopdrachten transparant kan aantonen.",
+        "ik tijdens de minor al mijn bewijzen en sprintopdrachten transparant kan aantonen voor de 5 leeruitkomsten.",
       status: "Done",
       acceptanceCriteria: [
         "Gehost op daanhessen.nl/minor via Vercel.",
         "Sluit aan bij de esthetiek van de rest van de site (JetBrains Mono, dark theme, ASCII achtergrond).",
+        "Duidelijke structuur afgestemd op de 5 leeruitkomsten uit Future-proof met AI! v2.0.",
         "Geen overbodige persoonlijke info of foto's, puur gefocust op de academische eisen van de minor.",
-        "Duidelijke structuur voor de 3 leeruitkomsten.",
         "Direct herkenbare broncode zonder overbodige dependencies.",
       ],
     },

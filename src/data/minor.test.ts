@@ -9,14 +9,14 @@ describe("minor data integrity", () => {
     expect(minorData.meta.student).toBe("Daan Hessen");
   });
 
-  it("covers all 3 official HU learning outcomes", () => {
-    expect(minorData.leeruitkomsten).toHaveLength(3);
+  it("covers all 5 official HU learning outcomes from Future-proof met AI! v2.0", () => {
+    expect(minorData.leeruitkomsten).toHaveLength(5);
     const ids = minorData.leeruitkomsten.map((lu) => lu.id);
-    expect(ids).toEqual(["LU1", "LU2", "LU3"]);
+    expect(ids).toEqual(["LU1", "LU2", "LU3", "LU4", "LU5"]);
   });
 
-  it("has sprints and valid learning outcomes mapped on deliverables", () => {
-    expect(minorData.sprints.length).toBeGreaterThanOrEqual(5);
+  it("has 8 sprints covering the 20-week minor structure", () => {
+    expect(minorData.sprints).toHaveLength(8);
 
     const sprint1 = minorData.sprints.find((s) => s.number === 1);
     expect(sprint1).toBeDefined();
@@ -30,7 +30,7 @@ describe("minor data integrity", () => {
         expect(deliv.id).toBeDefined();
         expect(deliv.leeruitkomsten.length).toBeGreaterThan(0);
         for (const luId of deliv.leeruitkomsten) {
-          expect(["LU1", "LU2", "LU3"]).toContain(luId);
+          expect(["LU1", "LU2", "LU3", "LU4", "LU5"]).toContain(luId);
         }
         for (const link of deliv.links) {
           expect(link.label).toBeDefined();
