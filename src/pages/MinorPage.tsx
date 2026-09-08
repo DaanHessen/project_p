@@ -80,6 +80,16 @@ const MinorPage = ({ onNavigateHome }: MinorPageProps) => {
                 git
               </a>
             </li>
+            <li>
+              <a
+                className="resume__link"
+                href="https://futureproof-met-ai.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                dagboekje
+              </a>
+            </li>
           </ul>
 
           <p className="resume__about">{minorData.meta.description}</p>
@@ -244,7 +254,17 @@ const MinorPage = ({ onNavigateHome }: MinorPageProps) => {
                   style={{ marginTop: "var(--space-3)" }}
                 >
                   De achtergrond draait op de geanimeerde ASCII metaball engine (
-                  <code>ascii-blobs</code>).
+                  <code>ascii-blobs</code>). Voor dagelijkse notities en reflecties
+                  is daarnaast het digitale{" "}
+                  <a
+                    className="resume__link"
+                    href="https://futureproof-met-ai.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    dagboekje
+                  </a>{" "}
+                  beschikbaar.
                 </p>
               </div>
             </article>

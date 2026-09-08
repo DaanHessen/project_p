@@ -173,6 +173,11 @@ export const minorData: MinorData = {
               url: "https://daanhessen.nl/minor",
               type: "demo",
             },
+            {
+              label: "Dagboekje",
+              url: "https://futureproof-met-ai.vercel.app/",
+              type: "demo",
+            },
           ],
         },
       ],
@@ -278,6 +283,11 @@ export const minorData: MinorData = {
         "Start van de minor aan Hogeschool Utrecht. De officiële Canvas documentatie (Future-proof met AI! v2.0) doorgenomen. Besloten het portfolio als subpagina (/minor) te integreren binnen mijn bestaande React/Vite portfolio met behulp van AI vibe-coding en agentic workflows.",
       leeruitkomsten: ["LU4", "LU5"],
       links: [
+        {
+          label: "Dagboekje",
+          url: "https://futureproof-met-ai.vercel.app/",
+          type: "demo",
+        },
         {
           label: "Canvas HU",
           url: "https://canvas.hu.nl",
