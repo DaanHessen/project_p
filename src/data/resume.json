@@ -161,6 +161,17 @@
           "url": "https://aur.archlinux.org/packages/earctl"
         }
       ]
+    },
+    {
+      "name": "nvim-docx",
+      "description": "Neovim plugin for transparent editing of Word (.docx) documents in Markdown, using Pandoc and buffer lifecycle hooks to convert files seamlessly on open and save.",
+      "links": [
+        {
+          "type": "github",
+          "text": "GitHub",
+          "url": "https://github.com/DaanHessen/nvim-docx"
+        }
+      ]
     }
   ]
 }

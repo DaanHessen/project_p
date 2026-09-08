@@ -21,6 +21,7 @@ export interface RepoStats {
 export const INITIAL_PROJECT_STATS: Record<string, RepoStats> = {
   "ascii-blobs": { stars: 2, forks: 1 },
   "earctl": { stars: 4, forks: 1 },
+  "nvim-docx": { stars: 7, forks: 2 },
 };
 
 /**
