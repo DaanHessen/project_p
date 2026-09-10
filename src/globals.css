@@ -254,3 +254,59 @@ html[data-theme="light"] .app--flow::after {
   transition-duration: 0.15s;
   transition-timing-function: ease;
 }
+
+/* Matrix Easter Egg */
+html[data-matrix="true"] {
+  --bg: #000000;
+  --bg-rgb: 0, 0, 0;
+  --fg: #00ff41;
+  --fg-muted: #008f11;
+  --fg-faint: #003b00;
+  --accent: #00ff41;
+  --rule: #003b00;
+}
+
+
+
+/* Matrix Toast */
+.matrix-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid #00ff41;
+  padding: var(--space-4) var(--space-6);
+  border-radius: 4px;
+  color: #00ff41;
+  font-family: monospace;
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+  z-index: 1000;
+  pointer-events: none;
+  animation: matrix-fade 3s ease forwards;
+  text-shadow: 0 0 8px #00ff41;
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+}
+
+@keyframes matrix-fade {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Force dark gradients when in Matrix mode, even if light theme is active */
+html[data-matrix="true"] .home__scrim::before,
+html[data-matrix="true"] .app--flow::before,
+html[data-matrix="true"] .home__vignette::before {
+  opacity: 1 !important;
+  transition: opacity 0.5s ease 0.8s !important;
+}
+
+html[data-matrix="true"] .home__scrim::after,
+html[data-matrix="true"] .app--flow::after,
+html[data-matrix="true"] .home__vignette::after {
+  opacity: 0 !important;
+  transition: opacity 0.05s ease 0s !important;
+}

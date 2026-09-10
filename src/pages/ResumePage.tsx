@@ -5,6 +5,7 @@ import { useGitHubRepos } from "../data/github";
 import { proficiency, resume } from "../data/resume";
 import "./ResumePage.css";
 import { useSortBy, SortOption } from "../useSortBy";
+import { downloadVCard } from "../utils/vcard";
 
 interface ResumePageProps {
   onNavigateHome: () => void;
@@ -230,9 +231,14 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
         onNavigateHome={onNavigateHome}
         rightAction={
           <div className="resume__topbar-action">
-            <button type="button" className="resume__print" onClick={handlePrint}>
-              download as PDF
-            </button>
+            <div style={{ display: "flex", gap: "var(--space-3)" }}>
+              <button type="button" className="resume__print" onClick={downloadVCard}>
+                save vCard
+              </button>
+              <button type="button" className="resume__print" onClick={handlePrint}>
+                download as PDF
+              </button>
+            </div>
             {printHint && (
               <p className="resume__print-hint" role="status">
                 This browser will not open a print dialog. On iPhone use Share →

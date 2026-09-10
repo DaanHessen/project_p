@@ -44,16 +44,16 @@ const HomePage = ({
 
         <div className="home__credit">
           <div>
-            <a
-              href="https://github.com/DaanHessen/portfolio"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              className="home__matrix-btn"
+              onClick={() => window.dispatchEvent(new Event("toggleMatrix"))}
             >
               portfolio v{APP_VERSION}
-            </a>
+            </button>
             {" / "}
             <a
-              href="https://github.com/DaanHessen/portfolio"
+              href="https://github.com/DaanHessen/project_p"
               target="_blank"
               rel="noopener noreferrer"
             >
