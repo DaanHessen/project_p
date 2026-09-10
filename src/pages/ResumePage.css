@@ -29,10 +29,8 @@
 
   .resume__identity {
     position: sticky;
-    top: 4.5rem;
+    top: calc(var(--space-8) + 3.1rem);
     grid-column: 1;
-    max-height: calc(100vh - 6rem);
-    overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }

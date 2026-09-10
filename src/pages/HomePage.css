@@ -16,50 +16,13 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-}
-
-.home__scrim::before,
-.home__scrim::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  
-}
-
-.home__scrim::before {
-  /* Dark mode scrim */
   background: radial-gradient(
     ellipse 46rem 24rem at 50% 50%,
-    rgba(7, 8, 11, 0.7) 0%,
-    rgba(7, 8, 11, 0.66) 35%,
-    rgba(7, 8, 11, 0.45) 60%,
+    var(--scrim-0) 0%,
+    var(--scrim-35) 35%,
+    var(--scrim-60) 60%,
     transparent 78%
   );
-  opacity: 1;
-  transition: opacity 0.5s ease 0.8s;
-}
-
-.home__scrim::after {
-  /* Light mode scrim */
-  background: radial-gradient(
-    ellipse 46rem 24rem at 50% 50%,
-    rgba(245, 245, 247, 0.7) 0%,
-    rgba(245, 245, 247, 0.66) 35%,
-    rgba(245, 245, 247, 0.45) 60%,
-    transparent 78%
-  );
-  opacity: 0;
-  transition: opacity 0.05s ease 0s;
-}
-
-html[data-theme="light"] .home__scrim::before { 
-  opacity: 0; 
-  transition: opacity 0.05s ease 0s;
-}
-html[data-theme="light"] .home__scrim::after { 
-  opacity: 1; 
-  transition: opacity 0.5s ease 0.8s;
 }
 
 @keyframes home-enter {
@@ -91,44 +54,11 @@ html[data-theme="light"] .home__scrim::after {
   position: absolute;
   inset: 0;
   pointer-events: none;
-}
-
-.home__vignette::before,
-.home__vignette::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  
-}
-
-.home__vignette::before {
   background: radial-gradient(
     ellipse 90% 80% at 50% 50%,
     transparent 40%,
-    rgba(7, 8, 11, 0.55) 100%
+    var(--vig-100) 100%
   );
-  opacity: 1;
-  transition: opacity 0.5s ease 0.8s;
-}
-
-.home__vignette::after {
-  background: radial-gradient(
-    ellipse 90% 80% at 50% 50%,
-    transparent 40%,
-    rgba(245, 245, 247, 0.55) 100%
-  );
-  opacity: 0;
-  transition: opacity 0.05s ease 0s;
-}
-
-html[data-theme="light"] .home__vignette::before { 
-  opacity: 0; 
-  transition: opacity 0.05s ease 0s;
-}
-html[data-theme="light"] .home__vignette::after { 
-  opacity: 1; 
-  transition: opacity 0.5s ease 0.8s;
 }
 
 /* No overflow clip: the geometry mark can no longer overrun the way the font
