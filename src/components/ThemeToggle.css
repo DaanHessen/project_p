@@ -1,0 +1,80 @@
+.theme-toggle {
+  position: fixed;
+  bottom: var(--space-4);
+  right: var(--space-4);
+  z-index: 100;
+  
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.45rem 1.1rem;
+  border: 1px solid var(--accent);
+  background: rgba(var(--bg-rgb), 0.85);
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 0.78125rem;
+  letter-spacing: 0.05em;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: 2px;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.theme-toggle:active {
+  transform: translateY(1px);
+}
+
+.theme-toggle__text {
+  line-height: 1;
+}
+
+.theme-toggle__icon {
+  position: relative;
+  width: 14px;
+  height: 14px;
+}
+
+.theme-toggle__sun,
+.theme-toggle__moon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
+}
+
+/* Default (Dark Mode) state */
+.theme-toggle__sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.5);
+}
+.theme-toggle__moon {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+/* Light Mode state */
+.theme-toggle__icon--light .theme-toggle__sun {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+.theme-toggle__icon--light .theme-toggle__moon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.5);
+}
+
+@media (min-width: 48rem) {
+  .theme-toggle {
+    bottom: var(--space-6);
+    right: var(--space-6);
+  }
+}

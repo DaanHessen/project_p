@@ -9,8 +9,12 @@ import PlannerPage from "./pages/PlannerPage";
 import DagboekPage from "./pages/DagboekPage";
 import { useRoute } from "./router";
 
+import { ThemeToggle } from "./components/ThemeToggle";
+import { useThemeContext } from "./useTheme";
+
 function App() {
   const { route, navigate } = useRoute();
+  const { theme, toggleTheme } = useThemeContext();
   const [showBlobs, setShowBlobs] = useState(false);
   const [cellPx, setCellPx] = useState(CELL_SIZE);
   const blobs = useRef<AsciiBlobsRef>(null);
@@ -34,6 +38,14 @@ function App() {
     return () => window.removeEventListener("resize", readCell);
   }, [showBlobs]);
 
+  // When theme changes, AsciiBlobs doesn't automatically redraw unless we force it or pass the colors prop.
+  // Passing the colors prop directly will allow it to update dynamically.
+  const asciiColors = {
+    background: theme === "light" ? "#f5f5f7" : "#07080b",
+    primary: theme === "light" ? "#1d1d1f" : "#c4cbd6",
+    inkShadow: theme === "light" ? "#86868b" : "#5a6472",
+  };
+
   const isHome = route === "home";
 
   return (
@@ -49,6 +61,7 @@ function App() {
         {showBlobs && (
           <AsciiBlobs
             ref={blobs}
+            colors={asciiColors}
             animation={{ revealDuration: 0, revealFade: 1 }}
             onReady={() => {
               const stats = blobs.current?.getStats();
@@ -84,6 +97,8 @@ function App() {
           />
         )}
       </div>
+
+      <ThemeToggle theme={theme} toggle={toggleTheme} />
     </div>
   );
 }

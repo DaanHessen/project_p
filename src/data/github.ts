@@ -16,12 +16,16 @@ export interface Repo {
 export interface RepoStats {
   stars: number;
   forks: number;
+  updated: string;
 }
 
 export const INITIAL_PROJECT_STATS: Record<string, RepoStats> = {
-  "ascii-blobs": { stars: 2, forks: 1 },
-  "earctl": { stars: 4, forks: 1 },
-  "nvim-docx": { stars: 7, forks: 2 },
+  "ascii-blobs": { stars: 2, forks: 1, updated: "2023-01-01T00:00:00Z" },
+  "earctl": { stars: 4, forks: 1, updated: "2023-01-01T00:00:00Z" },
+  "nvim-docx": { stars: 7, forks: 2, updated: "2023-01-01T00:00:00Z" },
+  "krentenweger": { stars: 0, forks: 0, updated: "2024-01-01T00:00:00Z" },
+  "f.l.o.w.": { stars: 0, forks: 0, updated: "2023-06-01T00:00:00Z" },
+  "base": { stars: 0, forks: 0, updated: "2022-01-01T00:00:00Z" },
 };
 
 /**
@@ -55,6 +59,7 @@ export function toStatsMap(raw: ApiRepo[]): Record<string, RepoStats> {
     const stats: RepoStats = {
       stars: repo.stargazers_count,
       forks: repo.forks_count ?? 0,
+      updated: repo.pushed_at,
     };
     map[repo.name.toLowerCase()] = stats;
     map[repo.html_url.toLowerCase()] = stats;

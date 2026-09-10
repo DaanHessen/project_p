@@ -43,24 +43,41 @@ const HomePage = ({
       <div className="home">
 
         <div className="home__credit">
-          <a
-            href="https://www.npmjs.com/package/ascii-blobs"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            ascii-blobs v2.0.0
-          </a>
-          {" / "}
-          <a
-            href="https://github.com/DaanHessen/ASCII-blobs"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            git
-          </a>
+          <div>
+            <a
+              href="https://github.com/DaanHessen/portfolio"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              portfolio v{APP_VERSION}
+            </a>
+            {" / "}
+            <a
+              href="https://github.com/DaanHessen/portfolio"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              git
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://www.npmjs.com/package/ascii-blobs"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ascii-blobs v2.0.0
+            </a>
+            {" / "}
+            <a
+              href="https://github.com/DaanHessen/ASCII-blobs"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              git
+            </a>
+          </div>
         </div>
-
-        <div className="home__version">v{APP_VERSION}</div>
 
         <div className="home__scrim" aria-hidden="true" />
         <div className="home__vignette" aria-hidden="true" />

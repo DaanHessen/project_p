@@ -14,7 +14,7 @@
    this eats the characters exactly where they should be brightest. */
 .name-mark__halo {
   position: relative;
-  filter: drop-shadow(0 0 4px rgba(7, 8, 11, 0.7));
+  filter: drop-shadow(0 0 4px rgba(var(--bg-rgb), 0.7));
 }
 
 .name-mark__layer {

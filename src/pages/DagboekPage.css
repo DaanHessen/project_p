@@ -490,7 +490,7 @@
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: rgba(7, 8, 11, 0.85);
+  background: rgba(var(--bg-rgb), 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
@@ -500,7 +500,7 @@
 }
 
 .dagboek-modal {
-  background: #0d1017;
+  background: var(--bg);
   border: 1px solid var(--rule);
   border-radius: 4px;
   padding: var(--space-6);
@@ -525,7 +525,7 @@
 
 .dagboek-modal__input {
   width: 100%;
-  background: rgba(7, 8, 11, 0.6);
+  background: rgba(var(--bg-rgb), 0.6);
   border: 1px solid var(--rule);
   border-radius: 2px;
   padding: var(--space-3);

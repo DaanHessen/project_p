@@ -4,10 +4,24 @@ import BackButton from "../components/BackButton";
 import { useGitHubRepos } from "../data/github";
 import { proficiency, resume } from "../data/resume";
 import "./ResumePage.css";
+import { useSortBy, SortOption } from "../useSortBy";
 
 interface ResumePageProps {
   onNavigateHome: () => void;
 }
+
+type CombinedProject = {
+  id: string;
+  name: string;
+  description: string | null;
+  language: string | null;
+  stars: number;
+  forks: number;
+  updated: string;
+  isCurated: boolean;
+  links: { type: string; url: string; text: string; offline?: boolean }[];
+  statsObj: { stars: number; forks: number } | null;
+};
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -83,6 +97,7 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
     [],
   );
   const { repos, stats } = useGitHubRepos(curated);
+  const { sortBy, setSortBy } = useSortBy();
 
   const [printHint, setPrintHint] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("experience");
@@ -93,9 +108,6 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
       { id: "education", label: "education" },
       { id: "projects", label: "projects" },
     ];
-    if (repos.length > 0) {
-      items.push({ id: "github", label: "more on github" });
-    }
     items.push({ id: "technologies", label: "technologies" });
     items.push({ id: "languages", label: "languages" });
     return items;
@@ -144,6 +156,53 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
       setActiveSection(id);
     }
   };
+
+  const combinedProjects = useMemo(() => {
+    const list: CombinedProject[] = [];
+    
+    for (const p of resume.projects) {
+      const ghLink = p.links.find(l => l.type === "github" || l.url.toLowerCase().includes("github.com"));
+      const urlKey = ghLink?.url.toLowerCase().replace(/\/+$/, "");
+      const repoName = urlKey?.split("/").pop();
+      const st = (urlKey && stats[urlKey]) || (repoName && stats[repoName]) || stats[p.name.toLowerCase()];
+      
+      list.push({
+        id: p.name,
+        name: p.name,
+        description: p.description,
+        language: null,
+        stars: st?.stars ?? 0,
+        forks: st?.forks ?? 0,
+        updated: st?.updated ?? "1970-01-01T00:00:00Z",
+        isCurated: true,
+        links: p.links,
+        statsObj: ghLink ? st || null : null,
+      });
+    }
+    
+    for (const r of repos) {
+      list.push({
+        id: r.url,
+        name: r.name,
+        description: r.description,
+        language: r.language,
+        stars: r.stars,
+        forks: r.forks,
+        updated: r.updated,
+        isCurated: false,
+        links: [{ type: "github", url: r.url, text: "github" }],
+        statsObj: { stars: r.stars, forks: r.forks },
+      });
+    }
+    
+    list.sort((a, b) => {
+      if (sortBy === "stars") return b.stars - a.stars;
+      if (sortBy === "recent") return new Date(b.updated).getTime() - new Date(a.updated).getTime();
+      return a.name.localeCompare(b.name);
+    });
+    
+    return list;
+  }, [resume.projects, repos, stats, sortBy]);
 
   const handlePrint = () => {
     if (typeof window.print !== "function") {
@@ -301,92 +360,57 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
 
           {/* Projects */}
           <section id="projects" className="resume__section">
-            <h2 className="resume__section-title">projects</h2>
-            {resume.projects.map((project) => {
-              const ghLink = project.links.find(
-                (l) => l.type === "github" || l.url.toLowerCase().includes("github.com"),
-              );
-              const urlKey = ghLink?.url.toLowerCase().replace(/\/+$/, "");
-              const repoName = urlKey?.split("/").pop();
-              const projectStat =
-                (urlKey && stats[urlKey]) ||
-                (repoName && stats[repoName]) ||
-                stats[project.name.toLowerCase()] ||
-                null;
-
-              return (
-                <article className="resume__entry" key={project.name}>
-                  <div className="resume__meta resume__meta--strong">
-                    <span>{project.name}</span>
-                    <RepoStats stats={projectStat} />
-                  </div>
-                  <div>
-                    <p className="resume__entry-desc">{project.description}</p>
-                    <div className="resume__links">
-                        {project.links.map((link) =>
-                          link.offline ? (
-                            <span
-                              className="resume__link resume__link--offline"
-                              key={link.url}
-                              role="link"
-                              aria-disabled="true"
-                              tabIndex={0}
-                              title="website offline"
-                            >
-                              {link.text}
-                              <span className="resume__link-tooltip" role="tooltip">
-                                website offline
-                              </span>
-                            </span>
-                          ) : (
-                            <a
-                              className="resume__link"
-                              key={link.url}
-                              href={link.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {link.text}
-                            </a>
-                          ),
-                        )}
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
-          </section>
-
-          {/* More on GitHub */}
-          {repos.length > 0 && (
-            <section id="github" className="resume__section">
-              <h2 className="resume__section-title">more on github</h2>
-              {repos.map((repo) => (
-                <article className="resume__entry" key={repo.url}>
-                  <div className="resume__meta resume__meta--strong">
-                    <span>{repo.name}</span>
-                    {repo.language && (
-                      <span className="resume__meta-place">{repo.language}</span>
+            <div className="resume__section-header">
+              <h2 className="resume__section-title">projects</h2>
+              <div className="resume__sort">
+                <label htmlFor="sort-projects">sort by:</label>
+                <select
+                  id="sort-projects"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as SortOption)}
+                  className="resume__sort-select"
+                >
+                  <option value="stars">stars</option>
+                  <option value="recent">recent</option>
+                  <option value="name">name</option>
+                </select>
+              </div>
+            </div>
+            
+            {combinedProjects.map((project) => (
+              <article className="resume__entry" key={project.id}>
+                <div className="resume__meta resume__meta--strong">
+                  <span>{project.name}</span>
+                  {project.language && <span className="resume__meta-place">{project.language}</span>}
+                  <RepoStats stats={project.statsObj} />
+                </div>
+                <div>
+                  {project.description && <p className="resume__entry-desc">{project.description}</p>}
+                  <div className="resume__links">
+                    {project.links.map((link) =>
+                      link.offline ? (
+                        <span
+                          className="resume__link resume__link--offline"
+                          key={link.url}
+                          role="link"
+                          aria-disabled="true"
+                          tabIndex={0}
+                          title="website offline"
+                        >
+                          {link.text}
+                          <span className="resume__link-tooltip" role="tooltip">website offline</span>
+                        </span>
+                      ) : (
+                        <a className="resume__link" key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">
+                          {link.text}
+                        </a>
+                      )
                     )}
-                    <RepoStats stats={repo} />
                   </div>
-                  <div>
-                    <p className="resume__entry-desc">{repo.description}</p>
-                    <div className="resume__links">
-                      <a
-                        className="resume__link"
-                        href={repo.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        GitHub
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </section>
-          )}
+                </div>
+              </article>
+            ))}
+          </section>
 
           {/* Technologies & Tools (What I've worked with) */}
           <section id="technologies" className="resume__section">
@@ -397,7 +421,15 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
               {resume.skills.map((group) => (
                 <div className="resume__entry" key={group.group}>
                   <dt className="resume__meta">{group.group}</dt>
-                  <dd className="resume__def-value">{group.items.join(", ")}</dd>
+                  <dd className="resume__def-value">
+                  <ul className="resume__tag-list">
+                    {group.items.map((item) => (
+                      <li className="resume__tag" key={item}>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
                 </div>
               ))}
             </dl>
@@ -410,11 +442,11 @@ const ResumePage = ({ onNavigateHome }: ResumePageProps) => {
               <div className="resume__entry">
                 <dt className="resume__meta">spoken</dt>
                 <dd className="resume__def-value">
-                  <ul className="resume__language-list">
+                  <ul className="resume__tag-list">
                     {resume.languages.map((language) => (
-                      <li className="resume__language" key={language.name}>
+                      <li className="resume__tag" key={language.name}>
                         {language.name}
-                        <span className="resume__language-level">
+                        <span className="resume__tag-level">
                           {proficiency(language.level)}
                         </span>
                       </li>

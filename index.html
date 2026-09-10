@@ -100,9 +100,21 @@
       }
     </script>
 
+    <script>
+      (function() {
+        var match = document.cookie.match(/(?:^|; )theme=([^;]*)/);
+        var theme = match ? match[1] : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        if (theme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
     <style>
       body {
         background-color: #07080b;
+      }
+      html[data-theme='light'] body {
+        background-color: #f5f5f7;
       }
     </style>
   </head>

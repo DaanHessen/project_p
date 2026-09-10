@@ -8,7 +8,7 @@
   top: 0;
   z-index: 50;
   width: 100%;
-  background: rgba(7, 8, 11, 0.92);
+  background: rgba(var(--bg-rgb), 0.45);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid transparent;
@@ -17,7 +17,7 @@
 
 @media (max-width: 48rem) {
   .back-bar {
-    background: rgba(7, 8, 11, 0.98);
+    background: rgba(var(--bg-rgb), 0.98);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }

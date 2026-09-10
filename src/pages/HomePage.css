@@ -16,11 +16,19 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  /*
-    Lighter than it looks like it should be: the wordmark is solid white with
-    its own contact shadow now, so the scrim no longer has to carry legibility.
-    It only has to keep the field quiet enough for the corona to read against.
-  */
+}
+
+.home__scrim::before,
+.home__scrim::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  
+}
+
+.home__scrim::before {
+  /* Dark mode scrim */
   background: radial-gradient(
     ellipse 46rem 24rem at 50% 50%,
     rgba(7, 8, 11, 0.7) 0%,
@@ -28,6 +36,30 @@
     rgba(7, 8, 11, 0.45) 60%,
     transparent 78%
   );
+  opacity: 1;
+  transition: opacity 0.5s ease 0.8s;
+}
+
+.home__scrim::after {
+  /* Light mode scrim */
+  background: radial-gradient(
+    ellipse 46rem 24rem at 50% 50%,
+    rgba(245, 245, 247, 0.7) 0%,
+    rgba(245, 245, 247, 0.66) 35%,
+    rgba(245, 245, 247, 0.45) 60%,
+    transparent 78%
+  );
+  opacity: 0;
+  transition: opacity 0.05s ease 0s;
+}
+
+html[data-theme="light"] .home__scrim::before { 
+  opacity: 0; 
+  transition: opacity 0.05s ease 0s;
+}
+html[data-theme="light"] .home__scrim::after { 
+  opacity: 1; 
+  transition: opacity 0.5s ease 0.8s;
 }
 
 @keyframes home-enter {
@@ -59,11 +91,44 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+}
+
+.home__vignette::before,
+.home__vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  
+}
+
+.home__vignette::before {
   background: radial-gradient(
     ellipse 90% 80% at 50% 50%,
     transparent 40%,
     rgba(7, 8, 11, 0.55) 100%
   );
+  opacity: 1;
+  transition: opacity 0.5s ease 0.8s;
+}
+
+.home__vignette::after {
+  background: radial-gradient(
+    ellipse 90% 80% at 50% 50%,
+    transparent 40%,
+    rgba(245, 245, 247, 0.55) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.05s ease 0s;
+}
+
+html[data-theme="light"] .home__vignette::before { 
+  opacity: 0; 
+  transition: opacity 0.05s ease 0s;
+}
+html[data-theme="light"] .home__vignette::after { 
+  opacity: 1; 
+  transition: opacity 0.5s ease 0.8s;
 }
 
 /* No overflow clip: the geometry mark can no longer overrun the way the font
@@ -102,8 +167,11 @@
     0 0 18px var(--bg);
 }
 
-.home__credit,
-.home__version {
+.home__credit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
   position: fixed;
   right: var(--space-4);
   z-index: 3;
@@ -115,14 +183,7 @@
     0 0 10px var(--bg);
   opacity: 0;
   animation: home-enter 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) 0.25s forwards;
-}
-
-.home__credit {
   top: var(--space-4);
-}
-
-.home__version {
-  bottom: var(--space-4);
 }
 
 .home__stage .site-nav {
@@ -145,18 +206,10 @@
     padding: var(--space-5) var(--space-4);
   }
 
-  .home__credit,
-  .home__version {
+  .home__credit {
     font-size: 0.5625rem;
     right: var(--space-3);
-  }
-
-  .home__credit {
     top: var(--space-3);
-  }
-
-  .home__version {
-    bottom: var(--space-3);
   }
 
   .home__tagline {
