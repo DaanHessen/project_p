@@ -1,28 +1,36 @@
-import { useEffect, useRef, useState } from "react";
-import { AsciiBlobs, CELL_SIZE, type AsciiBlobsRef } from "ascii-blobs";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import type { AsciiBlobsRef } from "ascii-blobs";
 import "ascii-blobs/dist/style.css";
 import "./globals.css";
 import HomePage from "./pages/HomePage";
-import ResumePage from "./pages/ResumePage";
-import MinorPage from "./pages/MinorPage";
-import PlannerPage from "./pages/PlannerPage";
-import DagboekPage from "./pages/DagboekPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { useRoute } from "./router";
 
 import { ThemeToggle } from "./components/ThemeToggle";
 import { useThemeContext } from "./useTheme";
 
+// CELL_SIZE is 13 — inlining avoids an eager ascii-blobs module parse at startup
+const CELL_SIZE_DEFAULT = 13;
+
+const LazyAsciiBlobs = lazy(() => import("ascii-blobs").then(m => ({ default: m.AsciiBlobs })));
+const ResumePage = lazy(() => import("./pages/ResumePage"));
+const MinorPage = lazy(() => import("./pages/MinorPage"));
+const PlannerPage = lazy(() => import("./pages/PlannerPage"));
+const DagboekPage = lazy(() => import("./pages/DagboekPage"));
+
 function App() {
   const { route, navigate } = useRoute();
   const { theme, toggleTheme } = useThemeContext();
   const [showBlobs, setShowBlobs] = useState(false);
-  const [cellPx, setCellPx] = useState(CELL_SIZE);
+  const [cellPx, setCellPx] = useState(CELL_SIZE_DEFAULT);
   const blobs = useRef<AsciiBlobsRef>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowBlobs(true), 40);
-    return () => clearTimeout(timer);
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(() => setShowBlobs(true), { timeout: 1000 });
+    } else {
+      setTimeout(() => setShowBlobs(true), 200);
+    }
   }, []);
 
   useEffect(() => {
@@ -100,15 +108,18 @@ function App() {
         aria-hidden="true"
       >
         {showBlobs && (
-          <AsciiBlobs
-            ref={blobs}
-            colors={asciiColors}
-            animation={{ revealDuration: 0, revealFade: 1 }}
-            onReady={() => {
-              const stats = blobs.current?.getStats();
-              if (stats?.columns) setCellPx(window.innerWidth / stats.columns);
-            }}
-          />
+          <Suspense fallback={null}>
+            <LazyAsciiBlobs
+              ref={blobs}
+              colors={asciiColors}
+              animation={{ revealDuration: 0, revealFade: 1 }}
+              performance={isBlurred ? { targetFPS: 20 } : undefined}
+              onReady={() => {
+                const stats = blobs.current?.getStats();
+                if (stats?.columns) setCellPx(window.innerWidth / stats.columns);
+              }}
+            />
+          </Suspense>
         )}
       </div>
 
@@ -117,29 +128,31 @@ function App() {
         entrance and restarts this wrapper's fade. Short on purpose: it covers
         the swap without making navigation feel slow.
       */}
-      <div className="app__route" key={route}>
-        {route === "cv" ? (
-          <ResumePage onNavigateHome={() => navigate("/")} />
-        ) : route === "minor" ? (
-          <MinorPage
-            onNavigateHome={() => navigate("/")}
-            onNavigateToPlanner={() => navigate("/minor/logboek")}
-            onNavigateToDagboek={() => navigate("/minor/dagboek")}
-          />
-        ) : route === "dagboek" ? (
-          <DagboekPage onNavigateBack={() => navigate("/minor")} />
-        ) : route === "planner" ? (
-          <PlannerPage onNavigateBack={() => navigate("/minor")} />
-        ) : route === "404" ? (
-          <NotFoundPage onNavigateHome={() => navigate("/")} />
-        ) : (
-          <HomePage
-            cellPx={cellPx}
-            onNavigateToResume={() => navigate("/cv")}
-            onNavigateToMinor={() => navigate("/minor")}
-          />
-        )}
-      </div>
+      <Suspense fallback={null}>
+        <div className="app__route" key={route}>
+          {route === "cv" ? (
+            <ResumePage onNavigateHome={() => navigate("/")} />
+          ) : route === "minor" ? (
+            <MinorPage
+              onNavigateHome={() => navigate("/")}
+              onNavigateToPlanner={() => navigate("/minor/logboek")}
+              onNavigateToDagboek={() => navigate("/minor/dagboek")}
+            />
+          ) : route === "dagboek" ? (
+            <DagboekPage onNavigateBack={() => navigate("/minor")} />
+          ) : route === "planner" ? (
+            <PlannerPage onNavigateBack={() => navigate("/minor")} />
+          ) : route === "404" ? (
+            <NotFoundPage onNavigateHome={() => navigate("/")} />
+          ) : (
+            <HomePage
+              cellPx={cellPx}
+              onNavigateToResume={() => navigate("/cv")}
+              onNavigateToMinor={() => navigate("/minor")}
+            />
+          )}
+        </div>
+      </Suspense>
 
       <ThemeToggle theme={theme} toggle={toggleTheme} />
 

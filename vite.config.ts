@@ -39,9 +39,11 @@ export default defineConfig({
       output: {
         // Vite 8 bundles with rolldown, which only accepts the function form
         // of manualChunks. React is split out because it changes far less
-        // often than the site does.
+        // often than the site does. ascii-blobs is split so its heavy canvas
+        // module loads lazily (after idle) and caches independently.
         manualChunks(id) {
           if (id.includes("node_modules/react")) return "vendor";
+          if (id.includes("node_modules/ascii-blobs")) return "ascii-blobs";
           return undefined;
         },
       },

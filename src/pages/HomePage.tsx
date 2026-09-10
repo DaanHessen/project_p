@@ -1,9 +1,11 @@
-import { CELL_SIZE } from "ascii-blobs";
 import SEOHead from "../components/SEOHead";
 import SiteNav from "../components/SiteNav";
 import NameField from "../components/NameField";
 import { APP_VERSION } from "../version";
 import "./HomePage.css";
+
+// CELL_SIZE is 13 — inlining avoids pulling ascii-blobs onto the critical path
+const CELL_SIZE = 13;
 
 interface HomePageProps {
   onNavigateToResume: () => void;
