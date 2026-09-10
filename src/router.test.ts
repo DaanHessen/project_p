@@ -36,8 +36,8 @@ describe("routeFromPath", () => {
     expect(routeFromPath("/dagboek/")).toBe("dagboek");
   });
 
-  it("falls back to home for unknown paths", () => {
-    expect(routeFromPath("/resume.html")).toBe("home");
-    expect(routeFromPath("/nope")).toBe("home");
+  it("falls back to 404 for unknown paths", () => {
+    expect(routeFromPath("/resume.html")).toBe("404");
+    expect(routeFromPath("/nope")).toBe("404");
   });
 });

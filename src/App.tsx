@@ -7,6 +7,7 @@ import ResumePage from "./pages/ResumePage";
 import MinorPage from "./pages/MinorPage";
 import PlannerPage from "./pages/PlannerPage";
 import DagboekPage from "./pages/DagboekPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 import { useRoute } from "./router";
 
 import { ThemeToggle } from "./components/ThemeToggle";
@@ -85,16 +86,17 @@ function App() {
     inkShadow: isMatrix ? "#003b00" : theme === "light" ? "#86868b" : "#5a6472",
   };
 
-  const isHome = route === "home";
+  const isLocked = route === "home" || route === "404";
+  const isBlurred = route !== "home";
 
   return (
-    <div className={`app ${isHome ? "app--locked" : "app--flow"}`}>
+    <div className={`app ${isLocked ? "app--locked" : "app--flow"}`}>
       {/*
         Persistent ASCII background that remains running seamlessly across route transitions.
         On non-home pages, it animates with a strong soft blur and low opacity.
       */}
       <div
-        className={`app-ascii-bg ${!isHome ? "app-ascii-bg--blurred" : ""}`}
+        className={`app-ascii-bg ${isBlurred ? "app-ascii-bg--blurred" : ""}`}
         aria-hidden="true"
       >
         {showBlobs && (
@@ -128,6 +130,8 @@ function App() {
           <DagboekPage onNavigateBack={() => navigate("/minor")} />
         ) : route === "planner" ? (
           <PlannerPage onNavigateBack={() => navigate("/minor")} />
+        ) : route === "404" ? (
+          <NotFoundPage onNavigateHome={() => navigate("/")} />
         ) : (
           <HomePage
             cellPx={cellPx}

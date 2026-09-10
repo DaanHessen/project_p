@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-export type Route = "home" | "cv" | "minor" | "planner" | "dagboek";
+export type Route = "home" | "cv" | "minor" | "planner" | "dagboek" | "404";
 
 /**
  * Routes and fallback. Kept as a pure function so it can be tested
@@ -21,7 +21,8 @@ export function routeFromPath(pathname: string): Route {
   ) {
     return "planner";
   }
-  return "home";
+  if (normalised === "" || normalised === "/") return "home";
+  return "404";
 }
 
 function currentPath(): string {

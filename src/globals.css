@@ -248,7 +248,8 @@ ul {
 
 
 /* Matrix Easter Egg */
-:root[data-theme][data-matrix="true"] {
+:root[data-matrix="true"],
+:root[data-theme="light"][data-matrix="true"] {
   --bg: #000000;
   --bg-rgb: 0, 0, 0;
   --fg: #00ff41;
